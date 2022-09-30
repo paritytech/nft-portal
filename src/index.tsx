@@ -1,4 +1,4 @@
-import ReactDOM from 'react-dom';
+import ReactDOM from 'react-dom/client';
 import { createGlobalStyle } from 'styled-components';
 
 import App from './App';
@@ -10,10 +10,11 @@ const GlobalStyle = createGlobalStyle`
   }
 `;
 
-ReactDOM.render(
+const root = ReactDOM.createRoot(document.getElementById('app') as HTMLElement);
+
+root.render(
   <>
     <GlobalStyle />
     <App />
   </>,
-  document.getElementById('app'),
 );
