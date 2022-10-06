@@ -17,6 +17,7 @@
   "author": "SaltyCucumber",
   "license": "MIT",
   "dependencies": {
+    "@polkadot-wallets/react": "file:../wallet-sdk/packages/react",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.4.1",
@@ -28,6 +29,7 @@
     "@babel/preset-env": "^7.19.3",
     "@babel/preset-react": "^7.18.6",
     "@babel/preset-typescript": "^7.18.6",
+    "@svgr/webpack": "^6.4.0",
     "@types/react": "^18.0.21",
     "@types/react-dom": "^18.0.6",
     "@types/styled-components": "^5.1.26",

@@ -1,17 +1,18 @@
 import { memo } from 'react';
 import styled from 'styled-components';
 
+import Logo from '../../assets/logo.svg';
+import { routes } from '../../constants';
+
 const SHat = styled.div`
   margin-bottom: 20px;
 `;
 
-const STitle = styled.span`
-  font-size: 24px;
-`;
-
 const Hat = () => (
   <SHat>
-    <STitle>Assets Portal</STitle>
+    <a href={routes.homepage}>
+      <Logo />
+    </a>
   </SHat>
 );
 
