@@ -7,6 +7,8 @@ export const deviceScreenSize = {
 export const styleSettings = {
   colors: {
     blackHaze: '#f4f5f5',
+    cerise: '#D33079',
+    white: '#FFFFFF',
   },
   mediaQueries: {
     mobile: `(min-width: ${deviceScreenSize.mobile})`,

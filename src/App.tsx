@@ -1,8 +1,11 @@
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import styled from 'styled-components';
+import { PolkadotWalletsContextProvider } from '@polkadot-onboard/react';
+import { WalletAggregator } from '@polkadot-onboard/core';
+import { InjectedWalletProvider } from '@polkadot-onboard/injected-wallets';
 
 import { Hat, Home } from './components/Main';
-import { routes, styleSettings } from './constants';
+import { APP_NAME, extensionConfig, routes, styleSettings } from './constants';
 
 const SMainContainer = styled.div`
   padding-top: 20px;
@@ -18,7 +21,11 @@ const SMainContainer = styled.div`
   }
 `;
 
+let injectedWalletProvider = new InjectedWalletProvider(extensionConfig, APP_NAME);
+let walletAggregator = new WalletAggregator([injectedWalletProvider]);
+
 const App = () => (
+  <PolkadotWalletsContextProvider walletAggregator={walletAggregator}>
   <BrowserRouter>
     <SMainContainer>
       <Hat />
@@ -28,6 +35,7 @@ const App = () => (
       </Routes>
     </SMainContainer>
   </BrowserRouter>
+  </PolkadotWalletsContextProvider>
 );
 
 export default App;

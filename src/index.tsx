@@ -1,6 +1,8 @@
 import ReactDOM from 'react-dom/client';
 import { createGlobalStyle } from 'styled-components';
 
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 import App from './App';
 import { styleSettings } from './constants';
 

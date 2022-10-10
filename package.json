@@ -17,8 +17,12 @@
   "author": "SaltyCucumber",
   "license": "MIT",
   "dependencies": {
-    "@polkadot-wallets/react": "file:../wallet-sdk/packages/react",
+    "@polkadot-onboard/core": "^0.0.2-beta",
+    "@polkadot-onboard/injected-wallets": "^0.0.2-beta",
+    "@polkadot-onboard/react": "^0.0.2-beta",
+    "bootstrap": "^5.2.2",
     "react": "^18.2.0",
+    "react-bootstrap": "^2.5.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.4.1",
     "styled-components": "^5.3.6"
