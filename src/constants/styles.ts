@@ -8,6 +8,7 @@ export const styleSettings = {
   colors: {
     blackHaze: '#f4f5f5',
     cerise: '#D33079',
+    jaffa: '#F19135',
     white: '#FFFFFF',
   },
   mediaQueries: {

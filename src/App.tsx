@@ -6,6 +6,7 @@ import { InjectedWalletProvider } from '@polkadot-onboard/injected-wallets';
 
 import { Hat, Home } from './components/Main';
 import { APP_NAME, extensionConfig, routes, styleSettings } from './constants';
+import { AccountsContextProvider } from './Contexts';
 
 const SMainContainer = styled.div`
   padding-top: 20px;
@@ -26,15 +27,17 @@ let walletAggregator = new WalletAggregator([injectedWalletProvider]);
 
 const App = () => (
   <PolkadotWalletsContextProvider walletAggregator={walletAggregator}>
-  <BrowserRouter>
-    <SMainContainer>
-      <Hat />
-      <Routes>
-        <Route path={routes.homepage} element={<Home />} />
-        <Route path='*' element={<Navigate to={routes.homepage} replace />} />
-      </Routes>
-    </SMainContainer>
-  </BrowserRouter>
+    <AccountsContextProvider>
+      <BrowserRouter>
+        <SMainContainer>
+          <Hat />
+          <Routes>
+            <Route path={routes.homepage} element={<Home />} />
+            <Route path='*' element={<Navigate to={routes.homepage} replace />} />
+          </Routes>
+        </SMainContainer>
+      </BrowserRouter>
+    </AccountsContextProvider>
   </PolkadotWalletsContextProvider>
 );
 
