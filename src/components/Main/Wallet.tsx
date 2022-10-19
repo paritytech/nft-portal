@@ -4,6 +4,8 @@ import { Account, BaseWallet } from '@polkadot-onboard/core';
 
 import { useAccounts } from '../../Contexts';
 import { ActionButton } from '../Common';
+import { useNavigate } from 'react-router-dom';
+import { routes } from '../../constants';
 
 const SWalletContainer = styled.div`
   display: flex;
@@ -22,6 +24,7 @@ interface WalletProps {
 }
 
 const Wallet = ({ wallet, handleClose }: WalletProps) => {
+  const navigate = useNavigate();
   const { setActiveAccount } = useAccounts();
   const [accounts, setAccounts] = useState<Account[]>([]);
 
@@ -35,13 +38,13 @@ const Wallet = ({ wallet, handleClose }: WalletProps) => {
 
   const connectToAccount = (event: ChangeEvent<HTMLSelectElement>) => {
     const accountAddress = event.target.value;
-    console.log('event.target.value', event.target.value)
 
     const foundAccount = accounts.find((account) => account.address === accountAddress);
 
     if (foundAccount) {
       setActiveAccount(foundAccount);
       handleClose();
+      navigate(routes.nftCollections);
     }
   };
 

@@ -1,5 +1,6 @@
 import { memo } from 'react';
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
 import Logo from '../../assets/logo.svg';
 import Connect from './Connect';
@@ -12,12 +13,12 @@ const SHat = styled.div`
 `;
 
 const Hat = () => (
-    <SHat>
-      <a href={routes.homepage}>
-        <Logo />
-      </a>
-      <Connect />
-    </SHat>
+  <SHat>
+    <Link to={routes.homepage}>
+      <Logo />
+    </Link>
+    <Connect />
+  </SHat>
 );
 
 export default memo(Hat);

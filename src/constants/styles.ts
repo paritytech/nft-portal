@@ -6,9 +6,11 @@ export const deviceScreenSize = {
 
 export const styleSettings = {
   colors: {
+    alto: '#D9D9D9',
     blackHaze: '#f4f5f5',
     cerise: '#D33079',
     jaffa: '#F19135',
+    shark: '#212529',
     white: '#FFFFFF',
   },
   mediaQueries: {
