@@ -8,18 +8,19 @@ const SNav = styled.nav`
   display: flex;
   flex-direction: column;
   gap: 20px;
+
+  a {
+    color: ${styleSettings.colors.shark};
+  }
 `;
 
-const SMenuButton = styled.div<SMenuButtonProps>`
+const SMenuButton = styled(Link)<SMenuButtonProps>`
+  color: ${styleSettings.colors.shark};
+  text-decoration: none;
   padding: 8px 20px;
   background-color: ${({ route, currentRoute }) => (route === currentRoute ? styleSettings.colors.cerise : styleSettings.colors.alto)};
   border-radius: 20px;
   text-align: center;
-
-  a {
-    color: ${styleSettings.colors.shark};
-    text-decoration: none;
-  }
 `;
 
 interface SMenuButtonProps {
@@ -36,14 +37,14 @@ const SideMenu = () => {
 
   return (
     <SNav>
-      <SMenuButton route={routes.nftCollections} currentRoute={pathname}>
-        <Link to={routes.nftCollections}>My Nft Collection</Link>
+      <SMenuButton to={routes.nftCollections} route={routes.nftCollections} currentRoute={pathname}>
+        My Nft Collection
       </SMenuButton>
-      <SMenuButton route={routes.newCollection} currentRoute={pathname}>
-        <Link to={routes.newCollection}>New Collection</Link>
+      <SMenuButton to={routes.newCollection} route={routes.newCollection} currentRoute={pathname}>
+        New Collection
       </SMenuButton>
-      <SMenuButton route={routes.mintNft} currentRoute={pathname}>
-        <Link to={routes.mintNft}>Mint NFT</Link>
+      <SMenuButton to={routes.mintNft} route={routes.mintNft} currentRoute={pathname}>
+        Mint NFT
       </SMenuButton>
     </SNav>
   );
