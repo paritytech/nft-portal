@@ -1,11 +1,15 @@
 import ReactDOM from 'react-dom/client';
 import { createGlobalStyle } from 'styled-components';
 
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 import App from './App';
-import { styleSettings } from './helpers';
+import { styleSettings } from './constants';
 
 const GlobalStyle = createGlobalStyle`
   body {
+    margin: 0;
+    padding: 0;
     background-color: ${styleSettings.colors.blackHaze};
   }
 `;

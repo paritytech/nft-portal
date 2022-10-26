@@ -1,16 +1,59 @@
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
+import styled from 'styled-components';
+import { PolkadotWalletsContextProvider } from '@polkadot-onboard/react';
+import { WalletAggregator } from '@polkadot-onboard/core';
+import { InjectedWalletProvider } from '@polkadot-onboard/injected-wallets';
 
-import { Hat, Home } from './components/Main';
-import { routes } from './constants';
+import { Hat, Home, SideMenu } from './components/Main';
+import { APP_NAME, extensionConfig, routes, styleSettings } from './constants';
+import { AccountsContextProvider } from './Contexts';
+import { NftCollections } from './components/NftCollections';
+import { NewCollection } from './components/NewCollection';
+import { MintNft } from './components/MintNft';
+
+const SMainContainer = styled.div`
+  padding-top: 20px;
+  margin: 0 20px;
+  color: ${styleSettings.colors.shark};
+
+  @media ${styleSettings.mediaQueries.tablet} {
+    width: 728px;
+    margin: 0 auto;
+  }
+
+  @media ${styleSettings.mediaQueries.desktop} {
+    width: 984px;
+  }
+`;
+
+const SContainer = styled.div`
+  display: flex;
+  gap: 40px;
+`;
+
+let injectedWalletProvider = new InjectedWalletProvider(extensionConfig, APP_NAME);
+let walletAggregator = new WalletAggregator([injectedWalletProvider]);
 
 const App = () => (
-  <BrowserRouter>
-    <Hat />
-    <Routes>
-      <Route path={routes.homepage} element={<Home />} />
-      <Route path='*' element={<Navigate to={routes.homepage} replace />} />
-    </Routes>
-  </BrowserRouter>
+  <PolkadotWalletsContextProvider walletAggregator={walletAggregator}>
+    <AccountsContextProvider>
+      <BrowserRouter>
+        <SMainContainer>
+          <Hat />
+          <SContainer>
+            <SideMenu />
+            <Routes>
+              <Route path={routes.homepage} element={<Home />} />
+              <Route path={routes.nftCollections} element={<NftCollections />} />
+              <Route path={routes.newCollection} element={<NewCollection />} />
+              <Route path={routes.mintNft} element={<MintNft />} />
+              <Route path='*' element={<Navigate to={routes.homepage} replace />} />
+            </Routes>
+          </SContainer>
+        </SMainContainer>
+      </BrowserRouter>
+    </AccountsContextProvider>
+  </PolkadotWalletsContextProvider>
 );
 
 export default App;

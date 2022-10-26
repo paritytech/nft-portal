@@ -17,7 +17,12 @@
   "author": "SaltyCucumber",
   "license": "MIT",
   "dependencies": {
+    "@polkadot-onboard/core": "^0.0.2-beta",
+    "@polkadot-onboard/injected-wallets": "^0.0.2-beta",
+    "@polkadot-onboard/react": "^0.0.2-beta",
+    "bootstrap": "^5.2.2",
     "react": "^18.2.0",
+    "react-bootstrap": "^2.5.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.4.1",
     "styled-components": "^5.3.6"
@@ -28,6 +33,7 @@
     "@babel/preset-env": "^7.19.3",
     "@babel/preset-react": "^7.18.6",
     "@babel/preset-typescript": "^7.18.6",
+    "@svgr/webpack": "^6.4.0",
     "@types/react": "^18.0.21",
     "@types/react-dom": "^18.0.6",
     "@types/styled-components": "^5.1.26",
