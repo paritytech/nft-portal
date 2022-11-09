@@ -4,7 +4,7 @@ import { PolkadotWalletsContextProvider } from '@polkadot-onboard/react';
 import { WalletAggregator } from '@polkadot-onboard/core';
 import { InjectedWalletProvider } from '@polkadot-onboard/injected-wallets';
 
-import { Hat, Home, SideMenu } from './components/Main';
+import { Hat, Home, PrivateRoute, SideMenu } from './components/Main';
 import { APP_NAME, extensionConfig, routes, styleSettings } from './constants';
 import { AccountsContextProvider } from './Contexts';
 import { NftCollections } from './components/NftCollections';
@@ -44,9 +44,30 @@ const App = () => (
             <SideMenu />
             <Routes>
               <Route path={routes.homepage} element={<Home />} />
-              <Route path={routes.nftCollections} element={<NftCollections />} />
-              <Route path={routes.newCollection} element={<NewCollection />} />
-              <Route path={routes.mintNft} element={<MintNft />} />
+              <Route
+                path={routes.nftCollections}
+                element={
+                  <PrivateRoute>
+                    <NftCollections />
+                  </PrivateRoute>
+                }
+              />
+              <Route
+                path={routes.newCollection}
+                element={
+                  <PrivateRoute>
+                    <NewCollection />
+                  </PrivateRoute>
+                }
+              />
+              <Route
+                path={routes.mintNft}
+                element={
+                  <PrivateRoute>
+                    <MintNft />
+                  </PrivateRoute>
+                }
+              />
               <Route path='*' element={<Navigate to={routes.homepage} replace />} />
             </Routes>
           </SContainer>

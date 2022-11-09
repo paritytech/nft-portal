@@ -13,3 +13,13 @@ export const sizeMatters = (yourThing: string | undefined | null, size: number =
 
   return '';
 }
+
+export const normalizePath = (path: string) => {
+  const lastChar = path.charAt(path.length - 1);
+
+  if (lastChar === '/') {
+    return path.substring(0, path.length - 1);
+  }
+
+  return path;
+}
