@@ -1,19 +1,27 @@
 import { memo } from 'react';
+import styled from 'styled-components';
 
-import { INftCollection } from '../../constants';
+import { CollectionMetadata } from '../../constants';
+
+const SCollectionBlock = styled.div`
+  width: 250px;
+  word-break: break-word;
+`
 
 interface NftCollectionProps {
-  collection: INftCollection;
+  collectionMetadata: CollectionMetadata;
 }
 
-const NftCollection = ({ collection }: NftCollectionProps) => {
-  // TODO display final nft collection data
-  const { name } = collection;
+const NftCollection = ({ collectionMetadata }: NftCollectionProps) => {
+  const { id, name, description, image } = collectionMetadata;
 
   return (
-    <div>
-      <span>{name}</span>
-    </div>
+    <SCollectionBlock>
+      <div>{id}</div>
+      <div>{name}</div>
+      <div>{description}</div>
+      <div>{image}</div>
+    </SCollectionBlock>
   );
 };
 
