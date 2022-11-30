@@ -5,14 +5,14 @@ export const ellipseAddress = (address: string = '', width: number = 10): string
 export const sizeMatters = (yourThing: string | undefined | null, size: number = 16) => {
   if (typeof yourThing === 'string') {
     if (yourThing.length > size) {
-      return `${yourThing.slice(0, size)}...`
+      return `${yourThing.slice(0, size)}...`;
     } else {
       return yourThing;
     }
   }
 
   return '';
-}
+};
 
 export const normalizePath = (path: string) => {
   const lastChar = path.charAt(path.length - 1);
@@ -22,4 +22,4 @@ export const normalizePath = (path: string) => {
   }
 
   return path;
-}
+};

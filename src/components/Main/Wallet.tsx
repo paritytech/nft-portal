@@ -10,7 +10,7 @@ import { routes } from '../../constants';
 const SWalletContainer = styled.div`
   display: flex;
   justify-content: space-between;
-`
+`;
 
 const SWalletConnectButton = styled(ActionButton)`
   height: 30px;
@@ -25,11 +25,10 @@ interface WalletProps {
 
 const Wallet = ({ wallet, handleClose }: WalletProps) => {
   const navigate = useNavigate();
-  const { setActiveAccount } = useAccounts();
+  const { setActiveAccount, setActiveWallet } = useAccounts();
   const [accounts, setAccounts] = useState<Account[]>([]);
 
   const connectToWallet = async (wallet: BaseWallet) => {
-    // TODO need to check connection status and not allow connecting twice or more to the same wallet
     await wallet.connect();
     const accs = await wallet.getAccounts();
 
@@ -42,6 +41,7 @@ const Wallet = ({ wallet, handleClose }: WalletProps) => {
     const foundAccount = accounts.find((account) => account.address === accountAddress);
 
     if (foundAccount) {
+      setActiveWallet(wallet);
       setActiveAccount(foundAccount);
       handleClose();
       navigate(routes.nftCollections);
@@ -53,11 +53,11 @@ const Wallet = ({ wallet, handleClose }: WalletProps) => {
       <SWalletConnectButton action={() => connectToWallet(wallet)}>{wallet.metadata.title}</SWalletConnectButton>
       {accounts.length > 0 && (
         <select onChange={connectToAccount}>
-          <option value=''>
-            Select account
-          </option>
+          <option value=''>Select account</option>
           {accounts.map((account: Account) => (
-            <option key={account.address} value={account.address}>{account.name || account.address}</option>
+            <option key={account.address} value={account.address}>
+              {account.name || account.address}
+            </option>
           ))}
         </select>
       )}

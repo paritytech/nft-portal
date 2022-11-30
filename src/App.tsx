@@ -7,7 +7,7 @@ import { InjectedWalletProvider } from '@polkadot-onboard/injected-wallets';
 import { Hat, Home, PrivateRoute, SideMenu } from './components/Main';
 import { APP_NAME, extensionConfig, routes, styleSettings } from './constants';
 import { AccountsContextProvider } from './Contexts';
-import { NftCollections } from './components/NftCollections';
+import { NftCollectionEdit, NftCollections } from './components/NftCollections';
 import { NewCollection } from './components/NewCollection';
 import { MintNft } from './components/MintNft';
 
@@ -54,6 +54,14 @@ const App = () => (
                   element={
                     <PrivateRoute>
                       <NftCollections />
+                    </PrivateRoute>
+                  }
+                />
+                <Route
+                  path={routes.nftCollectionEdit}
+                  element={
+                    <PrivateRoute>
+                      <NftCollectionEdit />
                     </PrivateRoute>
                   }
                 />

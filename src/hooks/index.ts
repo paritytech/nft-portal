@@ -1,1 +1,1 @@
-export { default as useCollectionsData } from './useCollectionsData';
+export { default as useCollectionsMetadata } from './useCollectionsMetadata';

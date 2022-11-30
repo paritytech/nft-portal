@@ -1,4 +1,4 @@
-import { Account } from '@polkadot-onboard/core';
+import { Account, BaseWallet } from '@polkadot-onboard/core';
 import { ApiPromise, WsProvider } from '@polkadot/api';
 import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 
@@ -8,13 +8,17 @@ interface AccountsContextProviderProps {
 
 interface AccountsContextProps {
   activeAccount: Account | null;
+  activeWallet: BaseWallet | null;
   setActiveAccount: (value: Account) => void;
+  setActiveWallet: (wallet: BaseWallet) => void;
   api: ApiPromise | null;
 }
 
 const AccountsContext = createContext<AccountsContextProps>({
   activeAccount: null,
+  activeWallet: null,
   setActiveAccount: () => {},
+  setActiveWallet: () => {},
   api: null,
 });
 
@@ -22,6 +26,7 @@ export const useAccounts = () => useContext(AccountsContext);
 
 export const AccountsContextProvider = ({ children }: AccountsContextProviderProps) => {
   const [activeAccount, setActiveAccount] = useState<Account | null>(null);
+  const [activeWallet, setActiveWallet] = useState<BaseWallet | null>(null);
   const [api, setApi] = useState<ApiPromise | null>(null);
 
   useEffect(() => {
@@ -40,10 +45,12 @@ export const AccountsContextProvider = ({ children }: AccountsContextProviderPro
   const contextData = useMemo(
     () => ({
       activeAccount,
+      activeWallet,
       setActiveAccount,
+      setActiveWallet,
       api,
     }),
-    [activeAccount, api],
+    [activeAccount, activeWallet, api],
   );
 
   return <AccountsContext.Provider value={contextData}>{children}</AccountsContext.Provider>;

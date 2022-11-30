@@ -3,8 +3,11 @@ export interface CommonStyleProps {
   isDisabled?: boolean;
 }
 
-export interface CollectionMetadata {
+export interface CollectionMetadata extends CollectionMetadataData {
   id: string;
+}
+
+export interface CollectionMetadataData {
   name: string;
   description?: string;
   image?: string;
