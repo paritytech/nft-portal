@@ -1,27 +1,33 @@
-import { memo, useEffect, useState } from 'react';
+import { memo, useEffect } from 'react';
+import styled from 'styled-components';
 
-import { useAccounts } from '../../Contexts';
-import NftCollectionsData from './NftCollectionsData';
+import { useCollectionsData } from '../../hooks';
+import NftCollection from './NftCollection';
+
+const SCollectionsContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+`
 
 const NftCollections = () => {
-  const [accountCollectionsIds, setAccountCollectionsIds] = useState<string[] | null>(null);
-  const { getAccountCollectionsIds } = useAccounts();
+  const { getCollectionsData, collectionsMetadata } = useCollectionsData();
 
   useEffect(() => {
-    const setupNftCollections = async () => {
-      const ids = await getAccountCollectionsIds();
+    getCollectionsData();
+  }, [getCollectionsData]);
 
-      setAccountCollectionsIds(ids);
-    };
-
-    setupNftCollections();
-  }, [getAccountCollectionsIds]);
-
-  if (accountCollectionsIds === null) {
+  if (collectionsMetadata === null) {
     return null;
   }
 
-  return <NftCollectionsData collectionsIds={accountCollectionsIds} />;
+  return (
+    <SCollectionsContainer>
+      {collectionsMetadata.map((collectionMetadata) => (
+        <NftCollection key={collectionMetadata.id} collectionMetadata={collectionMetadata} />
+      ))}
+    </SCollectionsContainer>
+  );
 };
 
 export default memo(NftCollections);

@@ -11,7 +11,7 @@ import { NftCollections } from './components/NftCollections';
 import { NewCollection } from './components/NewCollection';
 import { MintNft } from './components/MintNft';
 
-const SMainContainer = styled.div`
+const SMainContainer = styled.main`
   padding-top: 20px;
   margin: 0 20px;
   color: ${styleSettings.colors.shark};
@@ -31,6 +31,10 @@ const SContainer = styled.div`
   gap: 40px;
 `;
 
+const SContent = styled.section`
+  width: 100%;
+`;
+
 let injectedWalletProvider = new InjectedWalletProvider(extensionConfig, APP_NAME);
 let walletAggregator = new WalletAggregator([injectedWalletProvider]);
 
@@ -42,34 +46,36 @@ const App = () => (
           <Hat />
           <SContainer>
             <SideMenu />
-            <Routes>
-              <Route path={routes.homepage} element={<Home />} />
-              <Route
-                path={routes.nftCollections}
-                element={
-                  <PrivateRoute>
-                    <NftCollections />
-                  </PrivateRoute>
-                }
-              />
-              <Route
-                path={routes.newCollection}
-                element={
-                  <PrivateRoute>
-                    <NewCollection />
-                  </PrivateRoute>
-                }
-              />
-              <Route
-                path={routes.mintNft}
-                element={
-                  <PrivateRoute>
-                    <MintNft />
-                  </PrivateRoute>
-                }
-              />
-              <Route path='*' element={<Navigate to={routes.homepage} replace />} />
-            </Routes>
+            <SContent>
+              <Routes>
+                <Route path={routes.homepage} element={<Home />} />
+                <Route
+                  path={routes.nftCollections}
+                  element={
+                    <PrivateRoute>
+                      <NftCollections />
+                    </PrivateRoute>
+                  }
+                />
+                <Route
+                  path={routes.newCollection}
+                  element={
+                    <PrivateRoute>
+                      <NewCollection />
+                    </PrivateRoute>
+                  }
+                />
+                <Route
+                  path={routes.mintNft}
+                  element={
+                    <PrivateRoute>
+                      <MintNft />
+                    </PrivateRoute>
+                  }
+                />
+                <Route path='*' element={<Navigate to={routes.homepage} replace />} />
+              </Routes>
+            </SContent>
           </SContainer>
         </SMainContainer>
       </BrowserRouter>

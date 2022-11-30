@@ -3,6 +3,9 @@ export interface CommonStyleProps {
   isDisabled?: boolean;
 }
 
-export interface INftCollection {
+export interface CollectionMetadata {
+  id: string;
   name: string;
+  description?: string;
+  image?: string;
 }

@@ -6,7 +6,7 @@ import Logo from '../../assets/logo.svg';
 import Connect from './Connect';
 import { routes } from '../../constants';
 
-const SHat = styled.div`
+const SHat = styled.header`
   display: flex;
   justify-content: space-between;
   margin-bottom: 20px;
