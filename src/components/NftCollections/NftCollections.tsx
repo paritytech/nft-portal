@@ -1,21 +1,21 @@
 import { memo, useEffect } from 'react';
 import styled from 'styled-components';
 
-import { useCollectionsData } from '../../hooks';
+import { useCollectionsMetadata } from '../../hooks';
 import NftCollection from './NftCollection';
 
 const SCollectionsContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: 14px;
-`
+`;
 
 const NftCollections = () => {
-  const { getCollectionsData, collectionsMetadata } = useCollectionsData();
+  const { getCollectionsMetadata, collectionsMetadata } = useCollectionsMetadata();
 
   useEffect(() => {
-    getCollectionsData();
-  }, [getCollectionsData]);
+    getCollectionsMetadata();
+  }, [getCollectionsMetadata]);
 
   if (collectionsMetadata === null) {
     return null;

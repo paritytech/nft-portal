@@ -22,6 +22,7 @@
     "@polkadot-onboard/react": "^0.0.2-beta",
     "@polkadot/api": "^9.8.1",
     "@popperjs/core": "^2.11.6",
+    "axios": "^1.2.0",
     "bootstrap": "^5.2.2",
     "react": "^18.2.0",
     "react-bootstrap": "^2.5.0",

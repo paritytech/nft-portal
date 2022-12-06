@@ -12,7 +12,7 @@ const SButton = styled.button<CommonStyleProps>`
   font-size: 20px;
   border-radius: 10px;
   border: 0;
-  opacity: ${({ isDisabled }) => (isDisabled ? 0.5 : 1 )};
+  opacity: ${({ isDisabled }) => (isDisabled ? 0.5 : 1)};
 `;
 
 interface ActionButtonProps extends CommonStyleProps {
