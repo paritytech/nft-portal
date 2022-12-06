@@ -45,9 +45,6 @@ const SideMenu = () => {
       <SMenuButton to={routes.newCollection} route={routes.newCollection} currentroute={pathname}>
         New Collection
       </SMenuButton>
-      <SMenuButton to={routes.mintNft} route={routes.mintNft} currentroute={pathname}>
-        Mint NFT
-      </SMenuButton>
     </SNav>
   );
 };

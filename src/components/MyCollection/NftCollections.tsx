@@ -1,32 +1,27 @@
 import { memo, useEffect } from 'react';
-import styled from 'styled-components';
 
-import { useCollectionsMetadata } from '../../hooks';
+import { SContentBlockContainer } from '../../constants';
+import { useCollections } from '../../hooks';
 import NftCollection from './NftCollection';
 
-const SCollectionsContainer = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  gap: 14px;
-`;
-
 const NftCollections = () => {
-  const { getCollectionsMetadata, collectionsMetadata } = useCollectionsMetadata();
+  const { getCollectionsMetadata, collectionsMetadata } = useCollections();
 
   useEffect(() => {
     getCollectionsMetadata();
   }, [getCollectionsMetadata]);
 
   if (collectionsMetadata === null) {
-    return null;
+    // TODO add button that leads to collection creation page
+    return <>No collections found</>;
   }
 
   return (
-    <SCollectionsContainer>
+    <SContentBlockContainer>
       {collectionsMetadata.map((collectionMetadata) => (
         <NftCollection key={collectionMetadata.id} collectionMetadata={collectionMetadata} />
       ))}
-    </SCollectionsContainer>
+    </SContentBlockContainer>
   );
 };
 

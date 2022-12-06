@@ -1,1 +1,2 @@
-export { default as useCollectionsMetadata } from './useCollectionsMetadata';
+export * from './useCollections';
+export * from './useNfts';
