@@ -4,14 +4,8 @@ import { useNavigate } from 'react-router-dom';
 
 import { CollectionMetadata } from '@helpers/interfaces';
 import { routes } from '@helpers/routes';
-import { SContentBlock, SActionButtonMini} from '@helpers/styles';
-import { IPFS_URL } from '@helpers/config';
-
-const SImg = styled.div`
-  img {
-    width: 200px;
-  }
-`;
+import { SContentBlock, SActionButtonMini } from '@helpers/styles';
+import ShowImage from '@common/ShowImage';
 
 interface NftCollectionProps {
   collectionMetadata: CollectionMetadata;
@@ -24,17 +18,18 @@ const NftCollection = ({ collectionMetadata }: NftCollectionProps) => {
   return (
     <SContentBlock>
       <div>
-        <label>Collection ID #</label>
+        <label>Collection ID: #</label>
         {id}
       </div>
-      <div>{name}</div>
+      <div>
+        <label>Name:</label>
+        {name}
+      </div>
       <div>
         <label>Description:</label>
         {description}
       </div>
-      <SImg>
-        <img src={`${IPFS_URL}${image}`} alt={description} />
-      </SImg>
+      <ShowImage image={image} altText={description} />
       <div>
         <SActionButtonMini action={() => navigate(routes.nftCollectionEdit(id))}>Edit metadata</SActionButtonMini>
       </div>

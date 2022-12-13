@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import styled from 'styled-components';
 
 import { CommonStyleProps } from '@helpers/interfaces';
@@ -35,4 +36,4 @@ const ActionButton = ({ children, action, className, isDisabled }: ActionButtonP
   );
 };
 
-export default ActionButton;
+export default memo(ActionButton);

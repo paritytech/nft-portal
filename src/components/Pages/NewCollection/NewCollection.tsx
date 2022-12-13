@@ -8,12 +8,10 @@ const NewCollection = () => {
 
   if (isCollectionDataLoading) {
     // TODO a status and callback hook should be implemented, on success redirect to "my collection"
-    return <>Creating collection</>
+    return <>Creating collection</>;
   }
 
-  return (
-      <ActionButton action={createNewCollection}>Mint new collection</ActionButton>
-  );
+  return <ActionButton action={createNewCollection}>Mint new collection</ActionButton>;
 };
 
 export default memo(NewCollection);
