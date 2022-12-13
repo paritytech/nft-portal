@@ -1,3 +1,5 @@
+import styled from 'styled-components';
+
 export const deviceScreenSize = {
   mobile: '480px',
   tablet: '768px',
@@ -26,3 +28,14 @@ export const styleSettings = {
     smallText: '12px',
   },
 };
+
+export const SContentBlockContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+`;
+
+export const SContentBlock = styled.div`
+  width: 250px;
+  word-break: break-word;
+`;

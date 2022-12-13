@@ -12,3 +12,13 @@ export interface CollectionMetadataData {
   description?: string;
   image?: string;
 }
+
+export interface NftMetadata extends NftMetadataData {
+  id: string;
+}
+
+export interface NftMetadataData {
+  name: string;
+  description?: string;
+  image?: string;
+}

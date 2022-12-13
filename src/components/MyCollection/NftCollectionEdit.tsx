@@ -1,13 +1,12 @@
-import { FormEvent, useCallback, useEffect, useRef } from 'react';
-import { memo } from 'react';
+import { FormEvent, memo, useCallback, useEffect, useRef } from 'react';
 import { Link, redirect, useParams } from 'react-router-dom';
-import { CollectionMetadataData, routes } from '../../constants';
 
-import { useCollectionsMetadata } from '../../hooks';
+import { CollectionMetadataData, routes } from '../../constants';
+import { useCollections } from '../../hooks';
 
 const NftCollectionEdit = () => {
   const { collectionId } = useParams();
-  const { getCollectionMetadata, saveCollectionMetadata, collectionMetadata } = useCollectionsMetadata();
+  const { getCollectionMetadata, saveCollectionMetadata, collectionMetadata, isCollectionDataLoading } = useCollections();
   const collectionNameRef = useRef<HTMLInputElement>(null);
   const collectionDescriptionRef = useRef<HTMLInputElement>(null);
   const collectionImageRef = useRef<HTMLInputElement>(null);
@@ -40,11 +39,9 @@ const NftCollectionEdit = () => {
     return null;
   }
 
-  if (!collectionMetadata) {
-    return null;
+  if (isCollectionDataLoading) {
+    return <>loading...</>;
   }
-
-  const { name, description, image } = collectionMetadata;
 
   return (
     <div>
@@ -52,20 +49,21 @@ const NftCollectionEdit = () => {
         Back to my collections
       </Link>
       <div>nft collection {collectionId} edit page</div>
+
       <form onSubmit={submitMetadata}>
         <div>
           <label>
-            Collection name: <input type='text' defaultValue={name} ref={collectionNameRef} required />
+            Collection name: <input type='text' defaultValue={collectionMetadata?.name} ref={collectionNameRef} required />
           </label>
         </div>
         <div>
           <label>
-            Description: <input type='text' defaultValue={description} ref={collectionDescriptionRef} />
+            Description: <input type='text' defaultValue={collectionMetadata?.description} ref={collectionDescriptionRef} />
           </label>
         </div>
         <div>
           <label>
-            Image url: <input type='text' defaultValue={image} ref={collectionImageRef} />
+            Image ipfs hash: <input type='text' defaultValue={collectionMetadata?.image} ref={collectionImageRef} />
           </label>
         </div>
         <div>
