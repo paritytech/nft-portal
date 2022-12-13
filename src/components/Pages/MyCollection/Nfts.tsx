@@ -1,8 +1,8 @@
 import { useEffect, memo } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { SContentBlockContainer } from '../../constants';
-import { useNfts } from '../../hooks';
+import { SContentBlockContainer } from '@helpers/styles';
+import { useNfts } from '@hooks/useNfts';
 import Nft from './Nft';
 
 const Nfts = () => {

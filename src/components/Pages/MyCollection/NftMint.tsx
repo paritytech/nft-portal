@@ -1,7 +1,7 @@
 import { FormEvent, useCallback, useRef, memo } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { useNfts } from '../../hooks';
+import { useNfts } from '@hooks/useNfts';
 
 const NftMint = () => {
   const { collectionId } = useParams();

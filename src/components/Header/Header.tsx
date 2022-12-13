@@ -2,9 +2,9 @@ import { memo } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
-import Logo from '../../assets/logo.svg';
+import { routes } from '@helpers/routes';
+import Logo from '@assets/logo.svg';
 import Connect from './Connect';
-import { routes } from '../../constants';
 
 const SHat = styled.header`
   display: flex;
@@ -12,7 +12,7 @@ const SHat = styled.header`
   margin-bottom: 20px;
 `;
 
-const Hat = () => (
+const Header = () => (
   <SHat>
     <Link to={routes.homepage}>
       <Logo />
@@ -21,4 +21,4 @@ const Hat = () => (
   </SHat>
 );
 
-export default memo(Hat);
+export default memo(Header);

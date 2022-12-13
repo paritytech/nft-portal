@@ -1,7 +1,7 @@
 import { memo, useEffect } from 'react';
 
-import { SContentBlockContainer } from '../../constants';
-import { useCollections } from '../../hooks';
+import { SContentBlockContainer } from '@helpers/styles';
+import { useCollections } from '@hooks/useCollections';
 import NftCollection from './NftCollection';
 
 const NftCollections = () => {

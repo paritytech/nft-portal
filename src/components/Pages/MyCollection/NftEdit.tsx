@@ -1,8 +1,9 @@
 import { FormEvent, memo, useCallback, useEffect, useRef } from 'react';
 import { Link, redirect, useParams } from 'react-router-dom';
 
-import { CollectionMetadataData, routes } from '../../constants';
-import { useNfts } from '../../hooks';
+import { CollectionMetadataData } from '@helpers/interfaces';
+import { routes } from '@helpers/routes';
+import { useNfts } from '@hooks/useNfts';
 
 const NftEdit = () => {
   const { collectionId, nftId } = useParams();

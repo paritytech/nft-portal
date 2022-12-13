@@ -1,7 +1,8 @@
 import { memo } from 'react';
 import { Link } from 'react-router-dom';
 
-import { NftMetadata, SContentBlock } from '../../constants';
+import { NftMetadata } from '@helpers/interfaces';
+import { SContentBlock } from '@helpers/styles';
 
 interface NftProps {
   nftMetadata: NftMetadata;

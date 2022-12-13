@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { CollectionMetadataData } from '../constants';
+import { CollectionMetadataData } from '@helpers/interfaces';
 
 // TODO will need to use netlify or something else in order to not expose API keys
 export const saveToIpfs = async (metadata: CollectionMetadataData): Promise<string> => {
