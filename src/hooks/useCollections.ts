@@ -3,10 +3,10 @@ import { StorageKey, u32 } from '@polkadot/types';
 import { AccountId32 } from '@polkadot/types/interfaces';
 import { useCallback, useEffect, useState } from 'react';
 
-import { CollectionMetadata, CollectionMetadataData } from '../constants';
-import { useAccounts } from '../Contexts';
-import { saveToIpfs } from '../api';
-import { IPFS_URL } from '../helpers';
+import { IPFS_URL } from '@helpers/config';
+import { CollectionMetadata, CollectionMetadataData } from '@helpers/interfaces';
+import { useAccounts } from '@contexts/AccountContext';
+import { saveToIpfs } from '@api/pinata';
 
 export const useCollections = () => {
   const { api, activeAccount, activeWallet } = useAccounts();
@@ -99,6 +99,19 @@ export const useCollections = () => {
     [api, ownedCollectionIds],
   );
 
+  const createNewCollection = useCallback(async () => {
+    if (api && activeAccount && activeWallet) {
+      setIsCollectionDataLoading(true);
+
+      try {
+        await api.tx.nfts.create(activeAccount.address, null).signAndSend(activeAccount.address, { signer: activeWallet.signer });
+      } catch (error) {
+      } finally {
+        setIsCollectionDataLoading(false);
+      }
+    }
+  }, [api, activeAccount, activeWallet]);
+
   const saveCollectionMetadata = useCallback(
     async (collectionId: string, collectionMetadata: CollectionMetadataData) => {
       if (api && activeAccount && activeWallet) {
@@ -118,6 +131,7 @@ export const useCollections = () => {
     getCollectionsMetadata,
     getCollectionMetadata,
     saveCollectionMetadata,
+    createNewCollection,
     ownedCollectionIds,
     collectionsMetadata,
     collectionMetadata,

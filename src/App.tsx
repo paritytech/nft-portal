@@ -4,11 +4,19 @@ import { PolkadotWalletsContextProvider } from '@polkadot-onboard/react';
 import { WalletAggregator } from '@polkadot-onboard/core';
 import { InjectedWalletProvider } from '@polkadot-onboard/injected-wallets';
 
-import { Hat, Home, PrivateRoute, SideMenu } from './components/Main';
-import { APP_NAME, extensionConfig, routes, styleSettings } from './constants';
-import { AccountsContextProvider } from './Contexts';
-import { NftCollections, NftCollectionEdit, NftMint, Nfts, NftEdit } from './components/MyCollection';
-import { NewCollection } from './components/NewCollection';
+import Hat from '@header/Header';
+import PrivateRoute from '@common/PrivateRoute';
+import SideMenu from '@common/SideMenu';
+import { APP_NAME, extensionConfig, styleSettings } from '@helpers/config';
+import { routes } from '@helpers/routes';
+import { AccountsContextProvider } from '@contexts/AccountContext';
+import Home from '@pages/Home/Home';
+import NftCollectionEdit from '@pages/MyCollection/NftCollectionEdit';
+import NftCollections from '@pages/MyCollection/NftCollections';
+import NftEdit from '@pages/MyCollection/NftEdit';
+import NftMint from '@pages/MyCollection/NftMint';
+import Nfts from '@pages/MyCollection/Nfts';
+import NewCollection from '@pages/NewCollection/NewCollection';
 
 const SMainContainer = styled.main`
   padding-top: 20px;

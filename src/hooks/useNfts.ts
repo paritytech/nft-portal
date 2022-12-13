@@ -2,10 +2,10 @@ import { useCallback, useEffect, useState } from 'react';
 import { StorageKey, u32 } from '@polkadot/types';
 import { AccountId32 } from '@polkadot/types/interfaces';
 
-import { saveToIpfs } from '../api';
-import { NftMetadata, NftMetadataData } from '../constants';
-import { useAccounts } from '../Contexts';
-import { IPFS_URL } from '../helpers';
+import { saveToIpfs } from '@api/pinata';
+import { IPFS_URL } from '@helpers/config';
+import { NftMetadata, NftMetadataData } from '@helpers/interfaces';
+import { useAccounts } from '@contexts/AccountContext';
 
 export const useNfts = (collectionId: string) => {
   const { api, activeAccount, activeWallet } = useAccounts();

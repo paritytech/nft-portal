@@ -3,10 +3,10 @@ import Modal from 'react-bootstrap/Modal';
 import { useWallets } from '@polkadot-onboard/react';
 import { BaseWallet } from '@polkadot-onboard/core';
 
+import { useAccounts } from '@contexts/AccountContext';
+import { ellipseAddress, sizeMatters } from '@helpers/utilities';
+import ActionButton from '@buttons/ActionButton';
 import Wallet from './Wallet';
-import { useAccounts } from '../../Contexts';
-import { ellipseAddress, sizeMatters } from '../../helpers';
-import { ActionButton } from '../Common';
 
 const Connect = () => {
   const { wallets } = useWallets();

@@ -2,8 +2,9 @@ import { memo } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { routes, styleSettings } from '../../constants';
-import { normalizePath } from '../../helpers';
+import { routes } from '@helpers/routes';
+import { styleSettings } from '@helpers/config';
+import { normalizePath } from '@helpers/utilities';
 
 const SNav = styled.nav`
   display: flex;

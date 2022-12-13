@@ -4,7 +4,7 @@ import { createGlobalStyle } from 'styled-components';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import App from './App';
-import { styleSettings } from './constants';
+import { styleSettings } from '@helpers/config';
 
 const GlobalStyle = createGlobalStyle`
   body {

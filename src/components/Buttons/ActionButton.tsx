@@ -1,10 +1,10 @@
 import { memo } from 'react';
 import styled from 'styled-components';
 
-import { styleSettings, CommonStyleProps } from '../../../constants';
+import { CommonStyleProps } from '@helpers/interfaces';
+import { styleSettings } from '@helpers/config';
 
 const SButton = styled.button<CommonStyleProps>`
-  height: 50px;
   line-height: 50px;
   padding: 0 50px;
   color: ${styleSettings.colors.white};

@@ -1,11 +1,11 @@
 import { ChangeEvent, memo, useState } from 'react';
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
 import { Account, BaseWallet } from '@polkadot-onboard/core';
 
-import { useAccounts } from '../../Contexts';
-import { ActionButton } from '../Common';
-import { useNavigate } from 'react-router-dom';
-import { routes } from '../../constants';
+import { useAccounts } from '@contexts/AccountContext';
+import ActionButton from '@buttons/ActionButton';
+import { routes } from '@helpers/routes';
 
 const SWalletContainer = styled.div`
   display: flex;
@@ -13,7 +13,6 @@ const SWalletContainer = styled.div`
 `;
 
 const SWalletConnectButton = styled(ActionButton)`
-  height: 30px;
   line-height: 30px;
   padding: 0 25px;
 `;
