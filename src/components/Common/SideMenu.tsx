@@ -23,7 +23,7 @@ const SMenuButton = styled(NavLink)`
 
   &.active {
     color: ${styleSettings.colors.white};
-    background-color:  ${styleSettings.colors.cerise};
+    background-color: ${styleSettings.colors.cerise};
   }
 
   :hover {
@@ -44,9 +44,7 @@ const SideMenu = () => {
 
   return (
     <SNav>
-      <SMenuButton to={routes.nftCollections}>
-        My NFT Collection
-      </SMenuButton>
+      <SMenuButton to={routes.collections}>My NFTs</SMenuButton>
     </SNav>
   );
 };

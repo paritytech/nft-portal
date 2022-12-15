@@ -43,7 +43,7 @@ const Wallet = ({ wallet, handleClose }: WalletProps) => {
       setActiveWallet(wallet);
       setActiveAccount(foundAccount);
       handleClose();
-      navigate(routes.nftCollections);
+      navigate(routes.collections);
     }
   };
 

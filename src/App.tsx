@@ -11,12 +11,11 @@ import { APP_NAME, extensionConfig, styleSettings } from '@helpers/config';
 import { routes } from '@helpers/routes';
 import { AccountsContextProvider } from '@contexts/AccountContext';
 import Home from '@pages/Home/Home';
-import NftCollectionEdit from '@pages/MyNftCollection/NftCollectionEdit';
-import NftEdit from '@pages/MyNftCollection/NftEdit';
-import NftMint from '@pages/MyNftCollection/NftMint';
-import Nfts from '@pages/MyNftCollection/Nfts';
-import NewCollection from '@pages/MyNftCollection/NewCollection';
-import MyNftCollection from '@pages/MyNftCollection/MyNftCollection';
+import CollectionsView from '@pages/MyNfts/Collections/CollectionsView';
+import CollectionEdit from '@pages/MyNfts/Collections/CollectionEdit';
+import NftsView from '@pages/MyNfts/Nfts/NftsView';
+import NftEdit from '@pages/MyNfts/Nfts/NftEdit';
+import NewNft from '@pages/MyNfts/Nfts/NewNft';
 
 const SMainContainer = styled.main`
   padding-top: 20px;
@@ -58,35 +57,26 @@ const App = () => (
               <Routes>
                 <Route path={routes.homepage} element={<Home />} />
                 <Route
-                  path={routes.nftCollections}
+                  path={routes.collections}
                   element={
                     <PrivateRoute>
-                      <MyNftCollection />
+                      <CollectionsView />
                     </PrivateRoute>
                   }
                 />
                 <Route
-                  path={routes.nftCollectionEdit()}
+                  path={routes.collectionEdit()}
                   element={
                     <PrivateRoute>
-                      <NftCollectionEdit />
+                      <CollectionEdit />
                     </PrivateRoute>
                   }
                 />
                 <Route
-                  path={routes.newCollection}
+                  path={routes.nfts()}
                   element={
                     <PrivateRoute>
-                      <NewCollection />
-                    </PrivateRoute>
-                  }
-                />
-
-                <Route
-                  path={routes.ownedNfts()}
-                  element={
-                    <PrivateRoute>
-                      <Nfts />
+                      <NftsView />
                     </PrivateRoute>
                   }
                 />
@@ -94,7 +84,7 @@ const App = () => (
                   path={routes.nftMint()}
                   element={
                     <PrivateRoute>
-                      <NftMint />
+                      <NewNft />
                     </PrivateRoute>
                   }
                 />
