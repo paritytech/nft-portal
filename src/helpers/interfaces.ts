@@ -1,6 +1,7 @@
 export interface CommonStyleProps {
   className?: string;
   isDisabled?: boolean;
+  type?: 'button' | 'submit' | 'reset' | undefined;
 }
 
 export interface CollectionMetadata extends CollectionMetadataData {

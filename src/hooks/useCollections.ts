@@ -1,7 +1,7 @@
 import { StorageKey, u32 } from '@polkadot/types';
 // import { PalletUniquesCollectionMetadata } from '@polkadot/types/lookup';
 import { AccountId32 } from '@polkadot/types/interfaces';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 
 import { IPFS_URL } from '@helpers/config';
 import { CollectionMetadata, CollectionMetadataData } from '@helpers/interfaces';
@@ -10,10 +10,10 @@ import { saveToIpfs } from '@api/pinata';
 
 export const useCollections = () => {
   const { api, activeAccount, activeWallet } = useAccounts();
-  const [ownedCollectionIds, setOwnedCollectionIds] = useState<string[] | null>(null);
   const [collectionsMetadata, setCollectionsMetadata] = useState<CollectionMetadata[] | null>(null);
   const [collectionMetadata, setCollectionMetadata] = useState<CollectionMetadata | null>(null);
   const [isCollectionDataLoading, setIsCollectionDataLoading] = useState(false);
+  const [isCollectionDataSaving, setIsCollectionDataSaving] = useState(false);
 
   const getCollectionIds = useCallback(async () => {
     if (api && activeAccount) {
@@ -25,7 +25,7 @@ export const useCollections = () => {
         .map((collectionId) => collectionId.toString());
 
       if (collectionIds.length > 0) {
-        setOwnedCollectionIds(collectionIds);
+        return collectionIds;
       }
     }
 
@@ -33,11 +33,16 @@ export const useCollections = () => {
   }, [api, activeAccount]);
 
   const getCollectionsMetadata = useCallback(async () => {
-    if (api && ownedCollectionIds) {
+    if (api) {
       setIsCollectionDataLoading(true);
 
       try {
         let metadata: CollectionMetadata[] = [];
+        const ownedCollectionIds = await getCollectionIds();
+        if (!ownedCollectionIds) {
+          return;
+        }
+
         const rawMetadata = await api.query.nfts.collectionMetadataOf.multi(ownedCollectionIds);
 
         if (Array.isArray(rawMetadata) && rawMetadata.length > 0) {
@@ -67,14 +72,19 @@ export const useCollections = () => {
         setIsCollectionDataLoading(false);
       }
     }
-  }, [api, ownedCollectionIds]);
+  }, [api, getCollectionIds]);
 
   const getCollectionMetadata = useCallback(
     async (collectionId: string) => {
-      if (api && collectionId && ownedCollectionIds && ownedCollectionIds.includes(collectionId)) {
+      if (api && collectionId) {
         setIsCollectionDataLoading(true);
 
         try {
+          const ownedCollectionIds = await getCollectionIds();
+          if (!ownedCollectionIds || !ownedCollectionIds.includes(collectionId)) {
+            return;
+          }
+
           let metadata: CollectionMetadata | null = null;
           const rawMetadata = await api.query.nfts.collectionMetadataOf(collectionId);
 
@@ -96,45 +106,55 @@ export const useCollections = () => {
         }
       }
     },
-    [api, ownedCollectionIds],
+    [api, getCollectionIds],
   );
 
   const createNewCollection = useCallback(async () => {
     if (api && activeAccount && activeWallet) {
-      setIsCollectionDataLoading(true);
+      setIsCollectionDataSaving(true);
 
       try {
-        await api.tx.nfts.create(activeAccount.address, null).signAndSend(activeAccount.address, { signer: activeWallet.signer });
+        const unsub = await api.tx.nfts
+          .create(activeAccount.address, null)
+          .signAndSend(activeAccount.address, { signer: activeWallet.signer }, ({ status }) => {
+            if (status.isFinalized) {
+              setIsCollectionDataSaving(false);
+              getCollectionsMetadata();
+              unsub();
+            }
+          });
       } catch (error) {
-      } finally {
-        setIsCollectionDataLoading(false);
+        setIsCollectionDataSaving(false);
       }
     }
-  }, [api, activeAccount, activeWallet]);
+  }, [api, activeAccount, activeWallet, getCollectionsMetadata]);
 
   const saveCollectionMetadata = useCallback(
     async (collectionId: string, collectionMetadata: CollectionMetadataData) => {
       if (api && activeAccount && activeWallet) {
-        const metadataCid = await saveToIpfs(collectionMetadata);
+        setIsCollectionDataSaving(true);
 
-        await api.tx.nfts.setCollectionMetadata(collectionId, metadataCid).signAndSend(activeAccount.address, { signer: activeWallet.signer });
+        try {
+          const metadataCid = await saveToIpfs(collectionMetadata);
+
+          await api.tx.nfts.setCollectionMetadata(collectionId, metadataCid).signAndSend(activeAccount.address, { signer: activeWallet.signer });
+        } catch (error) {
+        } finally {
+          setIsCollectionDataSaving(false);
+        }
       }
     },
     [api, activeAccount, activeWallet],
   );
-
-  useEffect(() => {
-    getCollectionIds();
-  }, [getCollectionIds, api]);
 
   return {
     getCollectionsMetadata,
     getCollectionMetadata,
     saveCollectionMetadata,
     createNewCollection,
-    ownedCollectionIds,
     collectionsMetadata,
     collectionMetadata,
     isCollectionDataLoading,
+    isCollectionDataSaving,
   };
 };
