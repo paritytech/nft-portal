@@ -11,12 +11,12 @@ import { APP_NAME, extensionConfig, styleSettings } from '@helpers/config';
 import { routes } from '@helpers/routes';
 import { AccountsContextProvider } from '@contexts/AccountContext';
 import Home from '@pages/Home/Home';
-import NftCollectionEdit from '@pages/MyCollection/NftCollectionEdit';
-import NftCollections from '@pages/MyCollection/NftCollections';
-import NftEdit from '@pages/MyCollection/NftEdit';
-import NftMint from '@pages/MyCollection/NftMint';
-import Nfts from '@pages/MyCollection/Nfts';
-import NewCollection from '@pages/NewCollection/NewCollection';
+import NftCollectionEdit from '@pages/MyNftCollection/NftCollectionEdit';
+import NftEdit from '@pages/MyNftCollection/NftEdit';
+import NftMint from '@pages/MyNftCollection/NftMint';
+import Nfts from '@pages/MyNftCollection/Nfts';
+import NewCollection from '@pages/MyNftCollection/NewCollection';
+import MyNftCollection from '@pages/MyNftCollection/MyNftCollection';
 
 const SMainContainer = styled.main`
   padding-top: 20px;
@@ -35,7 +35,8 @@ const SMainContainer = styled.main`
 
 const SContainer = styled.div`
   display: flex;
-  gap: 40px;
+  gap: 30px;
+  margin-bottom: 30px;
 `;
 
 const SContent = styled.section`
@@ -60,7 +61,7 @@ const App = () => (
                   path={routes.nftCollections}
                   element={
                     <PrivateRoute>
-                      <NftCollections />
+                      <MyNftCollection />
                     </PrivateRoute>
                   }
                 />

@@ -17,27 +17,21 @@ const SButton = styled.button<CommonStyleProps>`
   :hover {
     cursor: ${({ isDisabled }) => (isDisabled ? 'not-allowed' : 'pointer')};
   }
+
+  a {
+    text-decoration: none;
+    color: ${styleSettings.colors.white};
+  }
 `;
 
-interface ActionButtonProps extends CommonStyleProps {
+interface BasicButtonProps extends CommonStyleProps {
   children: any;
-  action: () => void;
 }
 
-const ActionButton = ({ children, action, className, isDisabled }: ActionButtonProps) => {
-  const handleClick = () => {
-    if (isDisabled) {
-      return;
-    }
+const BasicButton = ({ children, type, className, isDisabled }: BasicButtonProps) => (
+  <SButton type={type} className={className} isDisabled={isDisabled}>
+    {children}
+  </SButton>
+);
 
-    action();
-  };
-
-  return (
-    <SButton className={className} isDisabled={isDisabled} onClick={handleClick}>
-      {children}
-    </SButton>
-  );
-};
-
-export default memo(ActionButton);
+export default memo(BasicButton);

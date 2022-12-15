@@ -1,4 +1,5 @@
 export const APP_NAME = 'assets-portal';
+export const IPFS_URL = 'https://gateway.pinata.cloud/ipfs/';
 
 export const extensionConfig = {
   disallowed: [],
@@ -29,8 +30,6 @@ export const extensionConfig = {
     },
   ],
 };
-
-export const IPFS_URL = 'https://gateway.pinata.cloud/ipfs/';
 
 export const deviceScreenSize = {
   mobile: '480px',

@@ -1,11 +1,14 @@
 import { memo } from 'react';
 import styled from 'styled-components';
+import Card from 'react-bootstrap/Card';
 
 import { IPFS_URL } from '@helpers/config';
 
 const SImg = styled.div`
   img {
-    width: 200px;
+    width: 250px;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
   }
 `;
 
@@ -16,13 +19,16 @@ interface ShowImageProps {
 
 const ShowImage = ({ image, altText }: ShowImageProps) => {
   if (!image) {
-    // TODO maybe add some default placeholder image
-    return <>no image available</>;
+    return (
+      <SImg>
+        <Card.Img className='rounded-bottom-0' src='https://placehold.co/250' alt='placeholder image for collection' />
+      </SImg>
+    );
   }
 
   return (
     <SImg>
-      <img src={`${IPFS_URL}${image}`} alt={altText} />
+      <Card.Img src={`${IPFS_URL}${image}`} alt={altText} />
     </SImg>
   );
 };
