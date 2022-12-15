@@ -1,5 +1,4 @@
 import { StorageKey, u32 } from '@polkadot/types';
-// import { PalletUniquesCollectionMetadata } from '@polkadot/types/lookup';
 import { AccountId32 } from '@polkadot/types/interfaces';
 import { useCallback, useState } from 'react';
 
@@ -29,7 +28,7 @@ export const useCollections = () => {
       }
     }
 
-    return [];
+    return null;
   }, [api, activeAccount]);
 
   const getCollectionsMetadata = useCallback(async () => {
@@ -38,8 +37,10 @@ export const useCollections = () => {
 
       try {
         let metadata: CollectionMetadata[] = [];
+
         const ownedCollectionIds = await getCollectionIds();
         if (!ownedCollectionIds) {
+          setCollectionsMetadata(metadata);
           return;
         }
 
@@ -80,12 +81,13 @@ export const useCollections = () => {
         setIsCollectionDataLoading(true);
 
         try {
+          let metadata: CollectionMetadata | null = null;
+
           const ownedCollectionIds = await getCollectionIds();
           if (!ownedCollectionIds || !ownedCollectionIds.includes(collectionId)) {
             return;
           }
 
-          let metadata: CollectionMetadata | null = null;
           const rawMetadata = await api.query.nfts.collectionMetadataOf(collectionId);
 
           if (rawMetadata) {
@@ -109,7 +111,7 @@ export const useCollections = () => {
     [api, getCollectionIds],
   );
 
-  const createNewCollection = useCallback(async () => {
+  const mintCollection = useCallback(async () => {
     if (api && activeAccount && activeWallet) {
       setIsCollectionDataSaving(true);
 
@@ -151,7 +153,7 @@ export const useCollections = () => {
     getCollectionsMetadata,
     getCollectionMetadata,
     saveCollectionMetadata,
-    createNewCollection,
+    mintCollection,
     collectionsMetadata,
     collectionMetadata,
     isCollectionDataLoading,

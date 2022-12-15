@@ -9,7 +9,7 @@ import { SSecondaryButton } from '@helpers/styles';
 import { useCollections } from '@hooks/useCollections';
 import BasicButton from '@buttons/BasicButton';
 
-const NftCollectionEdit = () => {
+const CollectionEdit = () => {
   const { collectionId } = useParams();
   const navigate = useNavigate();
   const { getCollectionMetadata, saveCollectionMetadata, collectionMetadata, isCollectionDataLoading, isCollectionDataSaving } = useCollections();
@@ -42,7 +42,7 @@ const NftCollectionEdit = () => {
   }, [collectionId, getCollectionMetadata]);
 
   if (!collectionId) {
-    navigate(routes.nftCollections);
+    navigate(routes.collections);
   }
 
   if (isCollectionDataLoading) {
@@ -79,4 +79,4 @@ const NftCollectionEdit = () => {
   );
 };
 
-export default memo(NftCollectionEdit);
+export default memo(CollectionEdit);

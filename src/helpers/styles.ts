@@ -1,4 +1,5 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
+import Card from 'react-bootstrap/Card';
 
 import ActionButton from '@buttons/ActionButton';
 import BasicButton from '@buttons/BasicButton';
@@ -22,9 +23,17 @@ export const SContentBlock = styled.div`
   align-items: center;
 `;
 
-export const SActionButtonMini = styled(ActionButton)`
+const ButtonMini = css`
   line-height: 30px;
   padding: 0 25px;
+`;
+
+export const SActionButtonMini = styled(ActionButton)`
+  ${ButtonMini}
+`;
+
+export const SBasicButtonMini = styled(BasicButton)`
+  ${ButtonMini}
 `;
 
 export const SSecondaryButton = styled(BasicButton)`
@@ -33,5 +42,28 @@ export const SSecondaryButton = styled(BasicButton)`
 
   a {
     color: ${styleSettings.colors.shark};
+  }
+`;
+
+export const SCardEdit = styled(Card.Subtitle)`
+  display: flex;
+  justify-content: space-between;
+
+  a {
+    position: relative;
+    padding-right: 6px;
+    color: ${styleSettings.colors.cerise};
+    text-decoration: none;
+
+    :hover {
+      text-decoration: underline;
+    }
+
+    svg {
+      width: 15px;
+      position: absolute;
+      top: -2px;
+      right: -12px;
+    }
   }
 `;
