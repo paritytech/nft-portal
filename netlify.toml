@@ -2,3 +2,7 @@
   command="yarn start"
   targetPort=3000
   port=8888
+
+[build]
+  command="yarn build"
+  publish="build"
