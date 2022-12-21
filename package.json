@@ -4,9 +4,8 @@
   "description": "",
   "main": "index.jsx",
   "scripts": {
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d build",
-    "start": "webpack serve --open --config webpack.dev.js",
+    "start": "netlify dev",
+    "start-webpack": "webpack serve --config webpack.dev.js",
     "build": "webpack --config webpack.prod.js",
     "format": "prettier --write \"./src/**/*.{ts,tsx}\""
   },

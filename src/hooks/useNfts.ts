@@ -155,5 +155,17 @@ export const useNfts = (collectionId: string) => {
     [api, activeAccount, activeWallet, collectionId],
   );
 
-  return { nftsMetadata, nftMetadata, mintNft, getNftMetadata, getNftsMetadata, saveNftMetadata, isNftDataLoading, isNftDataSaving };
+  const getNft = useCallback(
+    async (nftId: string) => {
+      if (api && collectionId) {
+        try {
+          const response = await api.query.nfts.item(collectionId, nftId);
+          return response.toHuman();
+        } catch (error) {}
+      }
+    },
+    [api, collectionId],
+  );
+
+  return { nftsMetadata, nftMetadata, mintNft, getNftMetadata, getNftsMetadata, saveNftMetadata, isNftDataLoading, isNftDataSaving, getNft };
 };

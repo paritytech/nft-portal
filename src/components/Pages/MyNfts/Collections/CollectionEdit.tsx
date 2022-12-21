@@ -29,7 +29,6 @@ const CollectionEdit = () => {
         };
 
         saveCollectionMetadata(collectionId, updatedMetadata);
-        // TODO need to add a status seeker, that will tell if save was a success or not and communicate that to the user
       }
     },
     [collectionId, saveCollectionMetadata],

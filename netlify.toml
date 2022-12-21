@@ -1,5 +1,5 @@
 [dev]
-  command="yarn start"
+  command="yarn start-webpack"
   targetPort=3000
   port=8888
 
