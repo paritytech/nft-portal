@@ -1,6 +1,10 @@
 # assets-portal
 
-## start the dapp
-yarn install
+## Prerequisites to run locally
+install netlify CLI
 
-yarn start
+`npm install netlify-cli -g`
+## start the dapp
+`yarn install`
+
+`yarn start`
