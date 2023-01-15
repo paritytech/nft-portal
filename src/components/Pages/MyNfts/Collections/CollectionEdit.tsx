@@ -1,4 +1,4 @@
-import { FormEvent, memo, useCallback, useEffect, useRef } from 'react';
+import { ChangeEvent, FormEvent, memo, useCallback, useEffect, useRef, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import Form from 'react-bootstrap/Form';
 import Stack from 'react-bootstrap/Stack';
@@ -8,6 +8,9 @@ import { routes } from '@helpers/routes';
 import { SSecondaryButton } from '@helpers/styles';
 import { useCollections } from '@hooks/useCollections';
 import BasicButton from '@buttons/BasicButton';
+import { saveImageToIpfs } from '@api/pinata';
+import ImagePreview from '@common/ImagePreview';
+import { prefecthCid } from '@helpers/prefetchCid';
 
 const CollectionEdit = () => {
   const { collectionId } = useParams();
@@ -15,30 +18,49 @@ const CollectionEdit = () => {
   const { getCollectionMetadata, saveCollectionMetadata, collectionMetadata, isCollectionDataLoading, isCollectionDataSaving } = useCollections();
   const collectionNameRef = useRef<HTMLInputElement>(null);
   const collectionDescriptionRef = useRef<HTMLTextAreaElement>(null);
-  const collectionImageRef = useRef<HTMLInputElement>(null);
+  const collectionImageCidRef = useRef<HTMLInputElement>(null);
+  const [imageSourceUrl, setImageSourceUrl] = useState<string | null>(null);
 
   const submitMetadata = useCallback(
-    (event: FormEvent) => {
+    async (event: FormEvent) => {
       event.preventDefault();
 
       if (collectionId && collectionNameRef.current) {
         const updatedMetadata: CollectionMetadataData = {
           name: collectionNameRef.current.value,
           description: collectionDescriptionRef.current ? collectionDescriptionRef.current.value : undefined,
-          image: collectionImageRef.current ? collectionImageRef.current.value : undefined,
+          image: collectionImageCidRef.current ? collectionImageCidRef.current.value : undefined,
         };
 
-        saveCollectionMetadata(collectionId, updatedMetadata);
+        Promise.all([saveImageToIpfs(imageSourceUrl), saveCollectionMetadata(collectionId, updatedMetadata)]);
+
+        // TODO notify user that everything went well
       }
     },
-    [collectionId, saveCollectionMetadata],
+    [collectionId, saveCollectionMetadata, imageSourceUrl],
   );
+
+  const onImageChange = useCallback(async (event: ChangeEvent<HTMLInputElement>) => {
+    // TODO any restrictions on extensions and size?
+    if (event.target.files && collectionImageCidRef.current) {
+      const { cid, url } = await prefecthCid(event.target.files[0]);
+      collectionImageCidRef.current.value = cid;
+
+      setImageSourceUrl(url);
+    }
+  }, []);
 
   useEffect(() => {
     if (collectionId) {
       getCollectionMetadata(collectionId);
     }
   }, [collectionId, getCollectionMetadata]);
+
+  useEffect(() => {
+    if (imageSourceUrl) {
+      return () => URL.revokeObjectURL(imageSourceUrl);
+    }
+  }, [imageSourceUrl]);
 
   if (!collectionId) {
     navigate(routes.collections);
@@ -62,8 +84,10 @@ const CollectionEdit = () => {
           <Form.Control as='textarea' rows={3} defaultValue={collectionMetadata?.description} ref={collectionDescriptionRef} />
         </Form.Group>
         <Form.Group className='mb-3'>
-          <Form.Label>Image ipfs hash:</Form.Label>
-          <Form.Control type='text' defaultValue={collectionMetadata?.image} ref={collectionImageRef} />
+          <Form.Label>Image:</Form.Label>
+          <Form.Control type='file' onChange={onImageChange} className='mb-1' />
+          <Form.Control type='text' defaultValue={collectionMetadata?.image} ref={collectionImageCidRef} className='mb-1' required readOnly />
+          <ImagePreview imageCid={collectionMetadata?.image} imageSourceUrl={imageSourceUrl} />
         </Form.Group>
         <Stack direction='horizontal' gap={2} className='justify-content-end'>
           <BasicButton type='submit' isDisabled={isCollectionDataSaving}>

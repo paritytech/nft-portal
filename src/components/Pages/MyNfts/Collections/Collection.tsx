@@ -18,7 +18,7 @@ const Collection = ({ collectionMetadata }: CollectionProps) => {
   return (
     <SContentBlock>
       <Card>
-        <ShowImage image={image} altText={description} />
+        <ShowImage imageCid={image} altText={description} />
         <Card.Body>
           <SCardEdit className='text-muted'>
             <span>Collection ID #{id}</span>

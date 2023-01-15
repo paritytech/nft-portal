@@ -28,7 +28,7 @@ const Nfts = ({ nftsMetadata }: NftsProps) => {
       {nftsMetadata.map(({ id, name, description, image }) => (
         <SContentBlock key={id}>
           <Card>
-            <ShowImage image={image} altText={description} />
+            <ShowImage imageCid={image} altText={description} />
             <Card.Body>
               <SCardEdit className='text-muted'>
                 <span>NFT ID #{id}</span>
