@@ -31,7 +31,7 @@ const Collections = ({ getCollectionsMetadata, collectionsMetadata }: Collection
       {collectionsMetadata.map(({ id, name, description, image }) => (
         <SContentBlock key={id}>
           <Card>
-            <ShowImage image={image} altText={description} />
+            <ShowImage imageCid={image} altText={description} />
             <Card.Body>
               <SCardEdit className='text-muted'>
                 <span>Collection ID #{id}</span>

@@ -12,7 +12,7 @@ exports.handler = async function (event) {
 
     return {
       statusCode: 200,
-      body: JSON.stringify({ ipfsHash: result.data.IpfsHash }),
+      body: JSON.stringify({ ipfsCid: result.data.IpfsHash }),
     };
   } catch (error) {
     return {

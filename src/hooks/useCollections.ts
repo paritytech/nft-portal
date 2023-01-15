@@ -5,7 +5,7 @@ import { useCallback, useState } from 'react';
 import { IPFS_URL } from '@helpers/config';
 import { CollectionMetadata, CollectionMetadataData } from '@helpers/interfaces';
 import { useAccounts } from '@contexts/AccountContext';
-import { saveToIpfs } from '@api/pinata';
+import { saveDataToIpfs } from '@api/pinata';
 
 export const useCollections = () => {
   const { api, activeAccount, activeWallet } = useAccounts();
@@ -49,7 +49,7 @@ export const useCollections = () => {
         if (Array.isArray(rawMetadata) && rawMetadata.length > 0) {
           const fetchCalls = rawMetadata.map((metadata) => {
             const primitiveMetadata = metadata.toPrimitive() as any; //TODO can't import proper type PalletUniquesCollectionMetadata;
-            if (primitiveMetadata === null) {
+            if (!primitiveMetadata?.data) {
               return null;
             }
 
@@ -92,7 +92,7 @@ export const useCollections = () => {
 
           if (rawMetadata) {
             const primitiveMetadata = rawMetadata.toPrimitive() as any; //TODO can't import proper type PalletUniquesCollectionMetadata;
-            if (primitiveMetadata === null) {
+            if (!primitiveMetadata?.data) {
               return null;
             }
 
@@ -137,7 +137,7 @@ export const useCollections = () => {
         setIsCollectionDataSaving(true);
 
         try {
-          const metadataCid = await saveToIpfs(collectionMetadata);
+          const metadataCid = await saveDataToIpfs(collectionMetadata);
 
           await api.tx.nfts.setCollectionMetadata(collectionId, metadataCid).signAndSend(activeAccount.address, { signer: activeWallet.signer });
         } catch (error) {

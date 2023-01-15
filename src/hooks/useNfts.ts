@@ -1,12 +1,12 @@
 import { useCallback, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { StorageKey, u32 } from '@polkadot/types';
 import { AccountId32 } from '@polkadot/types/interfaces';
 
-import { saveToIpfs } from '@api/pinata';
+import { saveDataToIpfs } from '@api/pinata';
 import { IPFS_URL } from '@helpers/config';
 import { NftMetadata, NftMetadataData } from '@helpers/interfaces';
 import { useAccounts } from '@contexts/AccountContext';
-import { useNavigate } from 'react-router-dom';
 import { routes } from '@helpers/routes';
 
 export const useNfts = (collectionId: string) => {
@@ -48,12 +48,10 @@ export const useNfts = (collectionId: string) => {
         }
 
         const rawMetadata = await api.query.nfts.itemMetadataOf.multi(ownedNftIds.map((ownedNftId) => [collectionId, ownedNftId]));
-
         if (Array.isArray(rawMetadata) && rawMetadata.length > 0) {
           const fetchCalls = rawMetadata.map((metadata) => {
             const primitiveMetadata = metadata.toPrimitive() as any; // TODO can't import proper type
-
-            if (primitiveMetadata === null) {
+            if (!primitiveMetadata?.data) {
               return null;
             }
 
@@ -97,7 +95,7 @@ export const useNfts = (collectionId: string) => {
 
           if (rawMetadata) {
             const primitiveMetadata = rawMetadata.toPrimitive() as any; // TODO can't import proper type
-            if (primitiveMetadata === null) {
+            if (!primitiveMetadata?.data) {
               return null;
             }
 
@@ -122,13 +120,15 @@ export const useNfts = (collectionId: string) => {
         setIsNftDataSaving(true);
 
         try {
-          const unsub = await api.tx.nfts.mint(collectionId, nftId, null).signAndSend(activeAccount.address, { signer: activeWallet.signer }, ({ status }) => {
-            if (status.isFinalized) {
-              setIsNftDataSaving(false);
-              navigate(routes.nfts(collectionId));
-              unsub();
-            }
-          });
+          const unsub = await api.tx.nfts
+            .mint(collectionId, nftId, activeAccount.address, null)
+            .signAndSend(activeAccount.address, { signer: activeWallet.signer }, ({ status }) => {
+              if (status.isFinalized) {
+                setIsNftDataSaving(false);
+                navigate(routes.nfts(collectionId));
+                unsub();
+              }
+            });
         } catch (error) {
           setIsNftDataSaving(false);
         }
@@ -141,9 +141,8 @@ export const useNfts = (collectionId: string) => {
     async (nftId: string, nftMetadata: NftMetadataData) => {
       if (api && activeAccount && activeWallet && collectionId) {
         setIsNftDataSaving(true);
-
         try {
-          const metadataCid = await saveToIpfs(nftMetadata);
+          const metadataCid = await saveDataToIpfs(nftMetadata);
 
           await api.tx.nfts.setMetadata(collectionId, nftId, metadataCid).signAndSend(activeAccount.address, { signer: activeWallet.signer });
         } catch (error) {
