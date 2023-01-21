@@ -1,6 +1,9 @@
+import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import { Account, BaseWallet } from '@polkadot-onboard/core';
 import { ApiPromise, WsProvider } from '@polkadot/api';
-import { createContext, useContext, useEffect, useMemo, useState } from 'react';
+
+import { StoredActiveAccount } from '@helpers/interfaces';
+import { useLocalStorage } from '@hooks/useLocalStorage';
 
 interface AccountsContextProviderProps {
   children: any;
@@ -12,6 +15,8 @@ interface AccountsContextProps {
   setActiveAccount: (value: Account) => void;
   setActiveWallet: (wallet: BaseWallet) => void;
   api: ApiPromise | null;
+  storedActiveAccount: StoredActiveAccount | null;
+  setStoredActiveAccount: (value: StoredActiveAccount) => void;
 }
 
 const AccountsContext = createContext<AccountsContextProps>({
@@ -20,6 +25,8 @@ const AccountsContext = createContext<AccountsContextProps>({
   setActiveAccount: () => {},
   setActiveWallet: () => {},
   api: null,
+  storedActiveAccount: null,
+  setStoredActiveAccount: () => {},
 });
 
 export const useAccounts = () => useContext(AccountsContext);
@@ -28,6 +35,7 @@ export const AccountsContextProvider = ({ children }: AccountsContextProviderPro
   const [activeAccount, setActiveAccount] = useState<Account | null>(null);
   const [activeWallet, setActiveWallet] = useState<BaseWallet | null>(null);
   const [api, setApi] = useState<ApiPromise | null>(null);
+  const [storedActiveAccount, setStoredActiveAccount] = useLocalStorage<StoredActiveAccount | null>('activeAccount', null);
 
   useEffect(() => {
     const setupApi = async () => {
@@ -49,8 +57,10 @@ export const AccountsContextProvider = ({ children }: AccountsContextProviderPro
       setActiveAccount,
       setActiveWallet,
       api,
+      storedActiveAccount,
+      setStoredActiveAccount,
     }),
-    [activeAccount, activeWallet, api],
+    [activeAccount, activeWallet, api, storedActiveAccount, setStoredActiveAccount],
   );
 
   return <AccountsContext.Provider value={contextData}>{children}</AccountsContext.Provider>;

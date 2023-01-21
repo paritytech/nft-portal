@@ -1,16 +1,14 @@
 import { memo, useState } from 'react';
 import Modal from 'react-bootstrap/Modal';
-import { useWallets } from '@polkadot-onboard/react';
 import { BaseWallet } from '@polkadot-onboard/core';
 
-import { useAccounts } from '@contexts/AccountContext';
 import { ellipseAddress, sizeMatters } from '@helpers/utilities';
 import ActionButton from '@buttons/ActionButton';
+import { useConnectToStoredAccount } from '@hooks/useConnectToStoredAccount';
 import Wallet from './Wallet';
 
 const Connect = () => {
-  const { wallets } = useWallets();
-  const { activeAccount } = useAccounts();
+  const [wallets, activeAccount] = useConnectToStoredAccount();
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
