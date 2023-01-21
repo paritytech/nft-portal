@@ -1,4 +1,4 @@
-import { ChangeEvent, memo, useState } from 'react';
+import { ChangeEvent, memo } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { Account, BaseWallet } from '@polkadot-onboard/core';
@@ -6,6 +6,7 @@ import { Account, BaseWallet } from '@polkadot-onboard/core';
 import { useAccounts } from '@contexts/AccountContext';
 import ActionButton from '@buttons/ActionButton';
 import { routes } from '@helpers/routes';
+import { useWalletAccounts } from '@hooks/useWalletAccounts';
 
 const SWalletContainer = styled.div`
   display: flex;
@@ -32,30 +33,18 @@ interface WalletProps {
 
 const Wallet = ({ wallet, handleClose }: WalletProps) => {
   const navigate = useNavigate();
-  const { setActiveAccount, setActiveWallet } = useAccounts();
-  const [accounts, setAccounts] = useState<Account[]>([]);
-
-  const connectToWallet = async (wallet: BaseWallet) => {
-    // if accounts exist, means we are already connected to the wallet
-    // unfortunately isConnected method doesn't work yet, so can't use it
-    if (accounts.length > 0) {
-      return;
-    }
-
-    await wallet.connect();
-    const accs = await wallet.getAccounts();
-
-    setAccounts([...accounts, ...accs]);
-  };
+  const { setActiveAccount, setActiveWallet, storedActiveAccount, setStoredActiveAccount } = useAccounts();
+  const { walletAccounts, connectToWallet } = useWalletAccounts(wallet);
 
   const connectToAccount = (event: ChangeEvent<HTMLSelectElement>) => {
     const accountAddress = event.target.value;
 
-    const foundAccount = accounts.find((account) => account.address === accountAddress);
+    const foundAccount = walletAccounts.find((account) => account.address === accountAddress);
 
     if (foundAccount) {
       setActiveWallet(wallet);
       setActiveAccount(foundAccount);
+      setStoredActiveAccount({ wallet: wallet.metadata.title, account: foundAccount.address });
       handleClose();
       navigate(routes.collections);
     }
@@ -64,10 +53,10 @@ const Wallet = ({ wallet, handleClose }: WalletProps) => {
   return (
     <SWalletContainer>
       <SWalletConnectButton action={() => connectToWallet(wallet)}>{wallet.metadata.title}</SWalletConnectButton>
-      {accounts.length > 0 && (
-        <SSelectAccount className='form-select' onChange={connectToAccount}>
+      {walletAccounts.length > 0 && (
+        <SSelectAccount className='form-select' onChange={connectToAccount} defaultValue={storedActiveAccount?.account}>
           <option value=''>Select account</option>
-          {accounts.map((account: Account) => (
+          {walletAccounts.map((account: Account) => (
             <option key={account.address} value={account.address}>
               {account.name || account.address}
             </option>

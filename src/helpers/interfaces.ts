@@ -23,3 +23,8 @@ export interface NftMetadataData {
   description?: string;
   image?: string;
 }
+
+export interface StoredActiveAccount {
+  wallet: string;
+  account: string;
+}
