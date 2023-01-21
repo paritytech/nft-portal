@@ -4,5 +4,20 @@
   "printWidth": 160,
   "jsxSingleQuote": true,
   "bracketSpacing": true,
-  "bracketSameLine": false
+  "bracketSameLine": false,
+  "importOrder": [
+    "<THIRD_PARTY_MODULES>",
+    "^@api/(.*)$",
+    "^@assets/(.*)$",
+    "^@buttons/(.*)$",
+    "^@common/(.*)$",
+    "^@contexts/(.*)$",
+    "^@header/(.*)$",
+    "^@helpers/(.*)$",
+    "^@hooks/(.*)$",
+    "^@pages/(.*)$",
+    "^[./]"
+  ],
+  "importOrderSeparation": true,
+  "importOrderSortSpecifiers": true
 }

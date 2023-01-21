@@ -1,12 +1,14 @@
 import { memo } from 'react';
-import { Link, useParams } from 'react-router-dom';
 import Card from 'react-bootstrap/Card';
+import { Link, useParams } from 'react-router-dom';
 
 import EditIcon from '@assets/edit-icon.svg';
+
 import ShowImage from '@common/ShowImage';
+
 import { NftMetadata } from '@helpers/interfaces';
-import { SCardEdit, SContentBlock } from '@helpers/styles';
 import { routes } from '@helpers/routes';
+import { SCardEdit, SContentBlock } from '@helpers/styles';
 
 interface NftsProps {
   nftsMetadata: NftMetadata[] | null;

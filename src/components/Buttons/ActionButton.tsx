@@ -1,8 +1,8 @@
 import { memo } from 'react';
 import styled from 'styled-components';
 
-import { CommonStyleProps } from '@helpers/interfaces';
 import { styleSettings } from '@helpers/config';
+import { CommonStyleProps } from '@helpers/interfaces';
 
 const SButton = styled.button<CommonStyleProps>`
   line-height: 50px;

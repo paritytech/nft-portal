@@ -1,14 +1,16 @@
-import { FormEvent, useCallback, useRef, memo } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { FormEvent, memo, useCallback, useRef } from 'react';
 import Form from 'react-bootstrap/Form';
 import Stack from 'react-bootstrap/Stack';
+import { Link, useParams } from 'react-router-dom';
 import styled from 'styled-components';
+
+import BasicButton from '@buttons/BasicButton';
+
+import { routes } from '@helpers/routes';
+import { SSecondaryButton } from '@helpers/styles';
 
 import { useNfts } from '@hooks/useNfts';
 import { useStatus } from '@hooks/useStatus';
-import BasicButton from '@buttons/BasicButton';
-import { SSecondaryButton } from '@helpers/styles';
-import { routes } from '@helpers/routes';
 
 const SNftTaken = styled.div`
   margin-top: 5px;

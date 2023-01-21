@@ -1,16 +1,20 @@
 import { ChangeEvent, FormEvent, memo, useCallback, useEffect, useRef, useState } from 'react';
-import { Link, redirect, useParams } from 'react-router-dom';
 import Form from 'react-bootstrap/esm/Form';
 import Stack from 'react-bootstrap/esm/Stack';
+import { Link, redirect, useParams } from 'react-router-dom';
+
+import { saveImageToIpfs } from '@api/pinata';
+
+import BasicButton from '@buttons/BasicButton';
+
+import ImagePreview from '@common/ImagePreview';
 
 import { CollectionMetadataData } from '@helpers/interfaces';
-import { routes } from '@helpers/routes';
-import { useNfts } from '@hooks/useNfts';
-import BasicButton from '@buttons/BasicButton';
-import { SSecondaryButton } from '@helpers/styles';
-import ImagePreview from '@common/ImagePreview';
-import { saveImageToIpfs } from '@api/pinata';
 import { prefecthCid } from '@helpers/prefetchCid';
+import { routes } from '@helpers/routes';
+import { SSecondaryButton } from '@helpers/styles';
+
+import { useNfts } from '@hooks/useNfts';
 
 const NftEdit = () => {
   const { collectionId, nftId } = useParams();
