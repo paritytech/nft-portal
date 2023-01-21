@@ -1,10 +1,10 @@
+import 'bootstrap/dist/css/bootstrap.min.css';
 import ReactDOM from 'react-dom/client';
 import { createGlobalStyle } from 'styled-components';
 
-import 'bootstrap/dist/css/bootstrap.min.css';
+import { styleSettings } from '@helpers/config';
 
 import App from './App';
-import { styleSettings } from '@helpers/config';
 
 const GlobalStyle = createGlobalStyle`
   body {

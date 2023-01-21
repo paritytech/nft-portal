@@ -1,12 +1,14 @@
-import { useCallback, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { StorageKey, u32 } from '@polkadot/types';
 import { AccountId32 } from '@polkadot/types/interfaces';
+import { useCallback, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import { saveDataToIpfs } from '@api/pinata';
+
+import { useAccounts } from '@contexts/AccountContext';
+
 import { IPFS_URL } from '@helpers/config';
 import { NftMetadata, NftMetadataData } from '@helpers/interfaces';
-import { useAccounts } from '@contexts/AccountContext';
 import { routes } from '@helpers/routes';
 
 export const useNfts = (collectionId: string) => {

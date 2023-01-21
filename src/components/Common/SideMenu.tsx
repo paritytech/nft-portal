@@ -2,8 +2,8 @@ import { memo } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { routes } from '@helpers/routes';
 import { styleSettings } from '@helpers/config';
+import { routes } from '@helpers/routes';
 import { normalizePath } from '@helpers/utilities';
 
 const SNav = styled.nav`

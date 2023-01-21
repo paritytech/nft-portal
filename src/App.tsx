@@ -1,21 +1,25 @@
-import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
-import styled from 'styled-components';
-import { PolkadotWalletsContextProvider } from '@polkadot-onboard/react';
 import { WalletAggregator } from '@polkadot-onboard/core';
 import { InjectedWalletProvider } from '@polkadot-onboard/injected-wallets';
+import { PolkadotWalletsContextProvider } from '@polkadot-onboard/react';
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
+import styled from 'styled-components';
 
-import Hat from '@header/Header';
 import PrivateRoute from '@common/PrivateRoute';
 import SideMenu from '@common/SideMenu';
+
+import { AccountsContextProvider } from '@contexts/AccountContext';
+
+import Hat from '@header/Header';
+
 import { APP_NAME, extensionConfig, styleSettings } from '@helpers/config';
 import { routes } from '@helpers/routes';
-import { AccountsContextProvider } from '@contexts/AccountContext';
+
 import Home from '@pages/Home/Home';
-import CollectionsView from '@pages/MyNfts/Collections/CollectionsView';
 import CollectionEdit from '@pages/MyNfts/Collections/CollectionEdit';
-import NftsView from '@pages/MyNfts/Nfts/NftsView';
-import NftEdit from '@pages/MyNfts/Nfts/NftEdit';
+import CollectionsView from '@pages/MyNfts/Collections/CollectionsView';
 import NewNft from '@pages/MyNfts/Nfts/NewNft';
+import NftEdit from '@pages/MyNfts/Nfts/NftEdit';
+import NftsView from '@pages/MyNfts/Nfts/NftsView';
 
 const SMainContainer = styled.main`
   padding-top: 20px;

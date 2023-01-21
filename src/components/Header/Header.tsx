@@ -1,9 +1,11 @@
 import { memo } from 'react';
-import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import styled from 'styled-components';
+
+import Logo from '@assets/logo.svg';
 
 import { routes } from '@helpers/routes';
-import Logo from '@assets/logo.svg';
+
 import Connect from './Connect';
 
 const SHat = styled.header`

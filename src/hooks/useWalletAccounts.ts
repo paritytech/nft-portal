@@ -1,5 +1,5 @@
-import { useCallback, useEffect, useState } from 'react';
 import { Account, BaseWallet } from '@polkadot-onboard/core';
+import { useCallback, useEffect, useState } from 'react';
 
 import { useAccounts } from '@contexts/AccountContext';
 

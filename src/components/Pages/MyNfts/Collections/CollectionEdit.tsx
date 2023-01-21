@@ -1,16 +1,20 @@
 import { ChangeEvent, FormEvent, memo, useCallback, useEffect, useRef, useState } from 'react';
-import { Link, useNavigate, useParams } from 'react-router-dom';
 import Form from 'react-bootstrap/Form';
 import Stack from 'react-bootstrap/Stack';
+import { Link, useNavigate, useParams } from 'react-router-dom';
+
+import { saveImageToIpfs } from '@api/pinata';
+
+import BasicButton from '@buttons/BasicButton';
+
+import ImagePreview from '@common/ImagePreview';
 
 import { CollectionMetadataData } from '@helpers/interfaces';
+import { prefecthCid } from '@helpers/prefetchCid';
 import { routes } from '@helpers/routes';
 import { SSecondaryButton } from '@helpers/styles';
+
 import { useCollections } from '@hooks/useCollections';
-import BasicButton from '@buttons/BasicButton';
-import { saveImageToIpfs } from '@api/pinata';
-import ImagePreview from '@common/ImagePreview';
-import { prefecthCid } from '@helpers/prefetchCid';
 
 const CollectionEdit = () => {
   const { collectionId } = useParams();

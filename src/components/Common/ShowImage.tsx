@@ -1,6 +1,6 @@
 import { memo } from 'react';
-import styled from 'styled-components';
 import Card from 'react-bootstrap/Card';
+import styled from 'styled-components';
 
 import { IPFS_URL } from '@helpers/config';
 

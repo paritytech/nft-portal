@@ -1,9 +1,12 @@
 import { memo } from 'react';
 import Stack from 'react-bootstrap/Stack';
 
-import { SContentBlockContainer } from '@helpers/styles';
-import { useCollections } from '@hooks/useCollections';
 import ActionButton from '@buttons/ActionButton';
+
+import { SContentBlockContainer } from '@helpers/styles';
+
+import { useCollections } from '@hooks/useCollections';
+
 import Collections from './Collections';
 
 const CollectionsView = () => {

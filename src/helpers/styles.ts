@@ -1,8 +1,9 @@
-import styled, { css } from 'styled-components';
 import Card from 'react-bootstrap/Card';
+import styled, { css } from 'styled-components';
 
 import ActionButton from '@buttons/ActionButton';
 import BasicButton from '@buttons/BasicButton';
+
 import { styleSettings } from './config';
 
 export const SContentBlockContainer = styled.div`

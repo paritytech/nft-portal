@@ -1,11 +1,12 @@
+import { Account, BaseWallet } from '@polkadot-onboard/core';
+import { useWallets } from '@polkadot-onboard/react';
 import { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import { useAccounts } from '@contexts/AccountContext';
+
 import { routes } from '@helpers/routes';
 import { normalizePath } from '@helpers/utilities';
-import { useWallets } from '@polkadot-onboard/react';
-import { Account, BaseWallet } from '@polkadot-onboard/core';
 
 export const useConnectToStoredAccount = () => {
   const { wallets } = useWallets();

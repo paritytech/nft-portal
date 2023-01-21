@@ -1,11 +1,14 @@
-import { useEffect, memo } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { memo, useEffect } from 'react';
 import Stack from 'react-bootstrap/Stack';
+import { Link, useParams } from 'react-router-dom';
 
-import { SContentBlockContainer, SSecondaryButton } from '@helpers/styles';
-import { useNfts } from '@hooks/useNfts';
-import { routes } from '@helpers/routes';
 import BasicButton from '@buttons/BasicButton';
+
+import { routes } from '@helpers/routes';
+import { SContentBlockContainer, SSecondaryButton } from '@helpers/styles';
+
+import { useNfts } from '@hooks/useNfts';
+
 import Nfts from './Nfts';
 
 const NftsView = () => {

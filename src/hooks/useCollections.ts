@@ -2,10 +2,12 @@ import { StorageKey, u32 } from '@polkadot/types';
 import { AccountId32 } from '@polkadot/types/interfaces';
 import { useCallback, useState } from 'react';
 
+import { saveDataToIpfs } from '@api/pinata';
+
+import { useAccounts } from '@contexts/AccountContext';
+
 import { IPFS_URL } from '@helpers/config';
 import { CollectionMetadata, CollectionMetadataData } from '@helpers/interfaces';
-import { useAccounts } from '@contexts/AccountContext';
-import { saveDataToIpfs } from '@api/pinata';
 
 export const useCollections = () => {
   const { api, activeAccount, activeWallet } = useAccounts();

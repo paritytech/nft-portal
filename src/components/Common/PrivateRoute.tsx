@@ -1,8 +1,9 @@
 import { memo } from 'react';
 import { Navigate } from 'react-router-dom';
 
-import { routes } from '@helpers/routes';
 import { useAccounts } from '@contexts/AccountContext';
+
+import { routes } from '@helpers/routes';
 
 interface PrivateRouteProps {
   children: JSX.Element;

@@ -1,8 +1,9 @@
-import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import { Account, BaseWallet } from '@polkadot-onboard/core';
 import { ApiPromise, WsProvider } from '@polkadot/api';
+import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 
 import { StoredActiveAccount } from '@helpers/interfaces';
+
 import { useLocalStorage } from '@hooks/useLocalStorage';
 
 interface AccountsContextProviderProps {
