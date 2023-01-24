@@ -1,8 +1,9 @@
 import { Account, BaseWallet } from '@polkadot-onboard/core';
 import { ApiPromise, WsProvider } from '@polkadot/api';
-import { createContext, useContext, useEffect, useMemo, useState } from 'react';
+import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 
-import { StoredActiveAccount } from '@helpers/interfaces';
+import { chains } from '@helpers/config';
+import { ActiveAccount, Chain } from '@helpers/interfaces';
 
 import { useLocalStorage } from '@hooks/useLocalStorage';
 
@@ -16,8 +17,10 @@ interface AccountsContextProps {
   setActiveAccount: (value: Account) => void;
   setActiveWallet: (wallet: BaseWallet) => void;
   api: ApiPromise | null;
-  storedActiveAccount: StoredActiveAccount | null;
-  setStoredActiveAccount: (value: StoredActiveAccount) => void;
+  storedActiveAccount: ActiveAccount | null;
+  setStoredActiveAccount: (value: ActiveAccount) => void;
+  setupApi: (value: Chain) => void;
+  storedChain: Chain | null;
 }
 
 const AccountsContext = createContext<AccountsContextProps>({
@@ -28,6 +31,8 @@ const AccountsContext = createContext<AccountsContextProps>({
   api: null,
   storedActiveAccount: null,
   setStoredActiveAccount: () => {},
+  setupApi: () => {},
+  storedChain: null,
 });
 
 export const useAccounts = () => useContext(AccountsContext);
@@ -36,20 +41,23 @@ export const AccountsContextProvider = ({ children }: AccountsContextProviderPro
   const [activeAccount, setActiveAccount] = useState<Account | null>(null);
   const [activeWallet, setActiveWallet] = useState<BaseWallet | null>(null);
   const [api, setApi] = useState<ApiPromise | null>(null);
-  const [storedActiveAccount, setStoredActiveAccount] = useLocalStorage<StoredActiveAccount | null>('activeAccount', null);
+  const [storedActiveAccount, setStoredActiveAccount] = useLocalStorage<ActiveAccount | null>('activeAccount', null);
+  const [storedChain, setStoredChain] = useLocalStorage<Chain | null>('chain', null);
 
-  useEffect(() => {
-    const setupApi = async () => {
-      const provider = new WsProvider('ws://127.0.0.1:9944');
+  const setupApi = useCallback(
+    async (chain: Chain) => {
+      const provider = new WsProvider(chain.url);
       const api = await ApiPromise.create({ provider });
 
+      setStoredChain(chain);
       setApi(api);
-    };
+    },
+    [setStoredChain],
+  );
 
-    if (activeAccount) {
-      setupApi();
-    }
-  }, [activeAccount]);
+  useEffect(() => {
+    setupApi(storedChain || chains[0]);
+  }, [setupApi, storedChain]);
 
   const contextData = useMemo(
     () => ({
@@ -60,8 +68,10 @@ export const AccountsContextProvider = ({ children }: AccountsContextProviderPro
       api,
       storedActiveAccount,
       setStoredActiveAccount,
+      setupApi,
+      storedChain,
     }),
-    [activeAccount, activeWallet, api, storedActiveAccount, setStoredActiveAccount],
+    [activeAccount, activeWallet, api, storedActiveAccount, setStoredActiveAccount, setupApi, storedChain],
   );
 
   return <AccountsContext.Provider value={contextData}>{children}</AccountsContext.Provider>;

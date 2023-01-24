@@ -1,5 +1,19 @@
+import { ChainTitles } from './interfaces';
+
 export const APP_NAME = 'assets-portal';
 export const IPFS_URL = 'https://gateway.pinata.cloud/ipfs/';
+
+// first chain in the list will be default chain
+export const chains = [
+  {
+    url: 'ws://127.0.0.1:9944',
+    title: 'localhost' as ChainTitles,
+  },
+  {
+    url: 'wss://westmint-rpc.polkadot.io',
+    title: 'westmint' as ChainTitles,
+  },
+];
 
 export const extensionConfig = {
   disallowed: [],

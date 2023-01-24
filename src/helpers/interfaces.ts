@@ -24,7 +24,14 @@ export interface NftMetadataData {
   image?: string;
 }
 
-export interface StoredActiveAccount {
+export interface ActiveAccount {
   wallet: string;
   account: string;
 }
+
+export interface Chain {
+  url: string;
+  title: ChainTitles;
+}
+
+export type ChainTitles = 'localhost' | 'westmint';
