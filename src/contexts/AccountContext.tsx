@@ -47,6 +47,10 @@ export const AccountsContextProvider = ({ children }: AccountsContextProviderPro
   const setupApi = useCallback(
     async (chain: Chain) => {
       const provider = new WsProvider(chain.url);
+      const unsub = provider.on('error', () => {
+        provider.disconnect();
+        unsub();
+      });
       const api = await ApiPromise.create({ provider });
 
       setStoredChain(chain);
