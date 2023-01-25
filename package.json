@@ -1,5 +1,7 @@
 {
   "name": "assets-portal",
+  "version": "1.0.1",
+  "description": "",
   "main": "index.jsx",
   "scripts": {
     "start": "netlify dev",
