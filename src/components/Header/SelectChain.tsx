@@ -53,7 +53,7 @@ const SChainList = styled.div`
 const STriangle = styled.span`
   position: absolute;
   top: -9px;
-  right: 6px;
+  right: 8px;
   width: 0;
   height: 0;
   border-left: 7px solid transparent;
