@@ -1,17 +1,15 @@
-import { WalletAggregator } from '@polkadot-onboard/core';
-import { InjectedWalletProvider } from '@polkadot-onboard/injected-wallets';
-import { PolkadotWalletsContextProvider } from '@polkadot-onboard/react';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
-import styled from 'styled-components';
+import styled, { createGlobalStyle } from 'styled-components';
 
 import PrivateRoute from '@common/PrivateRoute';
 import SideMenu from '@common/SideMenu';
 
-import { AccountsContextProvider } from '@contexts/AccountContext';
+import { useAccounts } from '@contexts/AccountContext';
 
 import Hat from '@header/Header';
 
-import { APP_NAME, extensionConfig, styleSettings } from '@helpers/config';
+import { styleSettings } from '@helpers/config';
+import { CommonStyleProps } from '@helpers/interfaces';
 import { routes } from '@helpers/routes';
 
 import Home from '@pages/Home/Home';
@@ -21,10 +19,10 @@ import NewNft from '@pages/MyNfts/Nfts/NewNft';
 import NftEdit from '@pages/MyNfts/Nfts/NftEdit';
 import NftsView from '@pages/MyNfts/Nfts/NftsView';
 
-const SMainContainer = styled.main`
+const SMainContainer = styled.main<CommonStyleProps>`
   padding-top: 20px;
   margin: 0 20px;
-  color: ${styleSettings.colors.shark};
+  color: ${({ activeTheme }) => activeTheme.defaultTextColor};
 
   @media ${styleSettings.mediaQueries.tablet} {
     width: 728px;
@@ -46,14 +44,22 @@ const SContent = styled.section`
   width: 100%;
 `;
 
-let injectedWalletProvider = new InjectedWalletProvider(extensionConfig, APP_NAME);
-let walletAggregator = new WalletAggregator([injectedWalletProvider]);
+const App = () => {
+  const { theme } = useAccounts();
 
-const App = () => (
-  <PolkadotWalletsContextProvider walletAggregator={walletAggregator}>
-    <AccountsContextProvider>
+  const GlobalStyle = createGlobalStyle`
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: ${theme.bodyBackground};
+    }
+  `;
+
+  return (
+    <>
+      <GlobalStyle />
       <BrowserRouter>
-        <SMainContainer>
+        <SMainContainer activeTheme={theme}>
           <Hat />
           <SContainer>
             <SideMenu />
@@ -106,8 +112,8 @@ const App = () => (
           </SContainer>
         </SMainContainer>
       </BrowserRouter>
-    </AccountsContextProvider>
-  </PolkadotWalletsContextProvider>
-);
+    </>
+  );
+};
 
 export default App;

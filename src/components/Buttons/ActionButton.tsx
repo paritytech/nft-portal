@@ -1,14 +1,15 @@
 import { memo } from 'react';
 import styled from 'styled-components';
 
-import { styleSettings } from '@helpers/config';
+import { useAccounts } from '@contexts/AccountContext';
+
 import { CommonStyleProps } from '@helpers/interfaces';
 
 const SButton = styled.button<CommonStyleProps>`
   line-height: 50px;
   padding: 0 50px;
-  color: ${styleSettings.colors.white};
-  background-color: ${styleSettings.colors.cerise};
+  color: ${({ activeTheme }) => activeTheme.buttonTextColor};
+  background-color: ${({ activeTheme }) => activeTheme.buttonBackgroundColor};
   font-size: 20px;
   border-radius: 10px;
   border: 0;
@@ -25,6 +26,8 @@ interface ActionButtonProps extends CommonStyleProps {
 }
 
 const ActionButton = ({ children, action, className, isDisabled }: ActionButtonProps) => {
+  const { theme } = useAccounts();
+
   const handleClick = () => {
     if (isDisabled) {
       return;
@@ -34,7 +37,7 @@ const ActionButton = ({ children, action, className, isDisabled }: ActionButtonP
   };
 
   return (
-    <SButton className={className} isDisabled={isDisabled} onClick={handleClick}>
+    <SButton className={className} isDisabled={isDisabled} activeTheme={theme} onClick={handleClick}>
       {children}
     </SButton>
   );
