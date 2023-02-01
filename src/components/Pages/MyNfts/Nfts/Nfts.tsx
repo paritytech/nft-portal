@@ -7,8 +7,9 @@ import EditIcon from '@assets/edit-icon.svg';
 import ShowImage from '@common/ShowImage';
 
 import { NftMetadata } from '@helpers/interfaces';
+import { SContentBlock } from '@helpers/reusableStyles';
 import { routes } from '@helpers/routes';
-import { SCardEdit, SContentBlock } from '@helpers/styles';
+import { SCardEdit } from '@helpers/styledComponents';
 
 interface NftsProps {
   nftsMetadata: NftMetadata[] | null;

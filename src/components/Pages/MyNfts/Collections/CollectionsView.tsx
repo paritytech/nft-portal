@@ -3,7 +3,7 @@ import Stack from 'react-bootstrap/Stack';
 
 import ActionButton from '@buttons/ActionButton';
 
-import { SContentBlockContainer } from '@helpers/styles';
+import { SContentBlockContainer } from '@helpers/reusableStyles';
 
 import { useCollections } from '@hooks/useCollections';
 

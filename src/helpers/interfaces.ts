@@ -1,5 +1,4 @@
 export interface CommonStyleProps {
-  activeTheme: ThemeStyle;
   className?: string;
   isDisabled?: boolean;
   type?: 'button' | 'submit' | 'reset' | undefined;
@@ -38,9 +37,18 @@ export interface Chain {
 export type ChainTitles = 'localhost' | 'westmint';
 export type ChainThemes = 'kusama' | 'polkadot';
 
+export interface Themeable {
+  activeTheme: ThemeStyle;
+}
+
 export interface ThemeStyle {
   bodyBackground: string;
-  buttonTextColor: string;
+  borderRadius: string;
   buttonBackgroundColor: string;
+  buttonBorder: string;
+  buttonBorderColorHover: string;
+  buttonTextColor: string;
+  buttonTextColorHover: string;
   defaultTextColor: string;
+  logoTextColor: string;
 }

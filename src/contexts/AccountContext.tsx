@@ -2,8 +2,9 @@ import { Account, BaseWallet } from '@polkadot-onboard/core';
 import { ApiPromise, WsProvider } from '@polkadot/api';
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 
-import { chains, themes } from '@helpers/config';
+import { chains } from '@helpers/config';
 import { ActiveAccount, Chain, ThemeStyle } from '@helpers/interfaces';
+import { themes } from '@helpers/reusableStyles';
 
 import { useLocalStorage } from '@hooks/useLocalStorage';
 

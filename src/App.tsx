@@ -8,8 +8,8 @@ import { useAccounts } from '@contexts/AccountContext';
 
 import Hat from '@header/Header';
 
-import { styleSettings } from '@helpers/config';
-import { CommonStyleProps } from '@helpers/interfaces';
+import { Themeable } from '@helpers/interfaces';
+import { styleSettings } from '@helpers/reusableStyles';
 import { routes } from '@helpers/routes';
 
 import Home from '@pages/Home/Home';
@@ -19,7 +19,7 @@ import NewNft from '@pages/MyNfts/Nfts/NewNft';
 import NftEdit from '@pages/MyNfts/Nfts/NftEdit';
 import NftsView from '@pages/MyNfts/Nfts/NftsView';
 
-const SMainContainer = styled.main<CommonStyleProps>`
+const SMainContainer = styled.main<Themeable>`
   padding-top: 20px;
   margin: 0 20px;
   color: ${({ activeTheme }) => activeTheme.defaultTextColor};

@@ -2,7 +2,7 @@ import { memo } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { styleSettings } from '@helpers/config';
+import { styleSettings } from '@helpers/reusableStyles';
 import { routes } from '@helpers/routes';
 import { normalizePath } from '@helpers/utilities';
 

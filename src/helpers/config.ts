@@ -1,19 +1,19 @@
-import { ChainThemes, ChainTitles } from './interfaces';
+import { Chain } from './interfaces';
 
 export const APP_NAME = 'assets-portal';
 export const IPFS_URL = 'https://gateway.pinata.cloud/ipfs/';
 
 // first chain in the list will be default chain
-export const chains = [
+export const chains: Chain[] = [
   {
     url: 'wss://westmint-rpc.polkadot.io',
-    title: 'westmint' as ChainTitles,
-    theme: 'kusama' as ChainThemes,
+    title: 'westmint',
+    theme: 'kusama',
   },
   {
     url: 'ws://127.0.0.1:9944',
-    title: 'localhost' as ChainTitles,
-    theme: 'polkadot' as ChainThemes,
+    title: 'localhost',
+    theme: 'polkadot',
   },
 ];
 
@@ -45,51 +45,4 @@ export const extensionConfig = {
       },
     },
   ],
-};
-
-export const deviceScreenSize = {
-  mobile: '480px',
-  tablet: '768px',
-  desktop: '1024px',
-};
-
-export const styleSettings = {
-  colors: {
-    alto: '#D9D9D9',
-    black: '#000000',
-    blackHaze: '#f4f5f5',
-    cerise: '#D33079',
-    gallery: '#EEEEEE',
-    jaffa: '#F19135',
-    rose: '#E6007A',
-    shark: '#212529',
-    white: '#FFFFFF',
-  },
-  mediaQueries: {
-    mobile: `(min-width: ${deviceScreenSize.mobile})`,
-    tablet: `(min-width: ${deviceScreenSize.tablet})`,
-    desktop: `(min-width: ${deviceScreenSize.desktop})`,
-  },
-  sizes: {
-    largeText: '36px',
-    majorText: '30px',
-    emphasizedText: '20px',
-    mediumText: '16px',
-    smallText: '12px',
-  },
-};
-
-export const themes = {
-  kusama: {
-    bodyBackground: styleSettings.colors.black,
-    buttonTextColor: styleSettings.colors.rose,
-    buttonBackgroundColor: 'transparent',
-    defaultTextColor: styleSettings.colors.white,
-  },
-  polkadot: {
-    bodyBackground: styleSettings.colors.blackHaze,
-    buttonTextColor: styleSettings.colors.white,
-    buttonBackgroundColor: styleSettings.colors.cerise,
-    defaultTextColor: styleSettings.colors.shark,
-  },
 };

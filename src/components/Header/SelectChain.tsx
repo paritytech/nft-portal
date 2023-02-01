@@ -6,8 +6,9 @@ import Westmint from '@assets/chain-westmint.svg';
 
 import { useAccounts } from '@contexts/AccountContext';
 
-import { chains, styleSettings } from '@helpers/config';
+import { chains } from '@helpers/config';
 import { Chain } from '@helpers/interfaces';
+import { styleSettings } from '@helpers/reusableStyles';
 
 import { useOutsideClick } from '@hooks/useOutsideClick';
 
