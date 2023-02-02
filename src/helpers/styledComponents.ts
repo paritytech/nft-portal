@@ -1,9 +1,11 @@
 import Card from 'react-bootstrap/Card';
+import Modal from 'react-bootstrap/Modal';
 import styled from 'styled-components';
 
 import ActionButton from '@buttons/ActionButton';
 import BasicButton from '@buttons/BasicButton';
 
+import { ThemeStyle, Themeable } from './interfaces';
 import { ButtonMini, styleSettings } from './reusableStyles';
 
 export const SActionButtonMini = styled(ActionButton)`
@@ -14,12 +16,16 @@ export const SBasicButtonMini = styled(BasicButton)`
   ${ButtonMini}
 `;
 
-export const SSecondaryButton = styled(BasicButton)`
-  color: ${styleSettings.colors.shark};
-  background-color: ${styleSettings.colors.alto};
+export const SSecondaryButton = styled(BasicButton)<Themeable>`
+  color: ${({ activeTheme }) => activeTheme.menuButtonTextColor};
+  background-color: ${({ activeTheme }) => activeTheme.menuButtonBackgroundColor};
+
+  :hover {
+    background-color: ${({ activeTheme }) => activeTheme.menuButtonActiveBackgroundColor};
+  }
 
   a {
-    color: ${styleSettings.colors.shark};
+    color: ${({ activeTheme }) => activeTheme.menuButtonTextColor};
   }
 `;
 
@@ -42,6 +48,19 @@ export const SCardEdit = styled(Card.Subtitle)`
       position: absolute;
       top: -2px;
       right: -12px;
+    }
+  }
+`;
+
+export const SModal = styled(Modal)`
+  .modal-content,
+  select {
+    background-color: ${({ activetheme: activeTheme }: { activetheme: ThemeStyle }) => activeTheme.bodyBackground};
+    color: ${({ activetheme: activeTheme }: { activetheme: ThemeStyle }) => activeTheme.defaultTextColor};
+    border: 2px solid ${({ activetheme: activeTheme }: { activetheme: ThemeStyle }) => activeTheme.buttonBorderColor};
+
+    .modal-header {
+      border-bottom: 1px solid ${({ activetheme: activeTheme }: { activetheme: ThemeStyle }) => activeTheme.buttonBorderColor};
     }
   }
 `;

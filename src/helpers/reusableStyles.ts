@@ -13,7 +13,7 @@ export const styleSettings = {
     alto: '#D9D9D9',
     aqua: '#00FFE1',
     black: '#000000',
-    blackHaze: '#f4f5f5',
+    blackHaze: '#F4F5F5',
     cerise: '#D33079',
     gallery: '#EEEEEE',
     jaffa: '#F19135',
@@ -37,26 +37,40 @@ export const styleSettings = {
 
 export const themes: Record<string, ThemeStyle> = {
   kusama: {
+    blockBackgroundColorHover: styleSettings.colors.rose,
     bodyBackground: styleSettings.colors.black,
     borderRadius: '0',
     buttonBackgroundColor: 'transparent',
-    buttonBorder: `2px solid ${styleSettings.colors.rose}`,
+    buttonBorderColor: styleSettings.colors.rose,
     buttonBorderColorHover: styleSettings.colors.aqua,
     buttonTextColor: styleSettings.colors.rose,
     buttonTextColorHover: styleSettings.colors.aqua,
     defaultTextColor: styleSettings.colors.white,
     logoTextColor: styleSettings.colors.white,
+    menuButtonBackgroundColor: styleSettings.colors.black,
+    menuButtonTextColor: styleSettings.colors.rose,
+    menuButtonBorderColor: styleSettings.colors.rose,
+    menuButtonActiveBackgroundColor: styleSettings.colors.black,
+    menuButtonActiveTextColor: styleSettings.colors.aqua,
+    menuButtonActiveBorderColor: styleSettings.colors.aqua,
   },
   polkadot: {
+    blockBackgroundColorHover: styleSettings.colors.cerise,
     bodyBackground: styleSettings.colors.blackHaze,
     borderRadius: '10px',
     buttonBackgroundColor: styleSettings.colors.cerise,
-    buttonBorder: '0',
+    buttonBorderColor: styleSettings.colors.cerise,
     buttonBorderColorHover: styleSettings.colors.cerise,
     buttonTextColor: styleSettings.colors.white,
     buttonTextColorHover: styleSettings.colors.white,
     defaultTextColor: styleSettings.colors.shark,
     logoTextColor: styleSettings.colors.black,
+    menuButtonBackgroundColor: styleSettings.colors.blackHaze,
+    menuButtonTextColor: styleSettings.colors.cerise,
+    menuButtonBorderColor: styleSettings.colors.cerise,
+    menuButtonActiveBackgroundColor: styleSettings.colors.cerise,
+    menuButtonActiveTextColor: styleSettings.colors.white,
+    menuButtonActiveBorderColor: styleSettings.colors.cerise,
   },
 };
 
@@ -69,13 +83,23 @@ export const SContentBlockContainer = styled.div`
   border-bottom: 1px dashed ${styleSettings.colors.cerise};
 `;
 
-export const SContentBlock = styled.div`
+export const SContentBlock = styled.div<Themeable>`
   display: flex;
   flex-direction: column;
   gap: 15px;
   width: 250px;
   word-break: break-word;
   align-items: center;
+
+  .card {
+    background-color: ${({ activeTheme }) => activeTheme.bodyBackground};
+    border: 2px solid ${({ activeTheme }) => activeTheme.menuButtonBorderColor};
+
+    .card-footer {
+      background-color: inherit;
+      border-top: 1px solid ${({ activeTheme }) => activeTheme.buttonBorderColor};
+    }
+  }
 `;
 
 export const ButtonMini = css`
@@ -90,7 +114,7 @@ export const CommonButtonStyles = css<CommonStyleProps & Themeable>`
   background-color: ${({ activeTheme }) => activeTheme.buttonBackgroundColor};
   font-size: 20px;
   border-radius: ${({ activeTheme }) => activeTheme.borderRadius};
-  border: ${({ activeTheme }) => activeTheme.buttonBorder};
+  border: 2px solid ${({ activeTheme }) => activeTheme.buttonBorderColor};
   opacity: ${({ isDisabled }) => (isDisabled ? 0.5 : 1)};
   box-sizing: border-box;
 
@@ -102,6 +126,6 @@ export const CommonButtonStyles = css<CommonStyleProps & Themeable>`
 
   a {
     text-decoration: none;
-    color: ${styleSettings.colors.white};
+    color: ${({ activeTheme }) => activeTheme.buttonTextColor};
   }
 `;

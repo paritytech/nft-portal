@@ -6,6 +6,8 @@ import EditIcon from '@assets/edit-icon.svg';
 
 import ShowImage from '@common/ShowImage';
 
+import { useAccounts } from '@contexts/AccountContext';
+
 import { NftMetadata } from '@helpers/interfaces';
 import { SContentBlock } from '@helpers/reusableStyles';
 import { routes } from '@helpers/routes';
@@ -17,6 +19,7 @@ interface NftsProps {
 
 const Nfts = ({ nftsMetadata }: NftsProps) => {
   const { collectionId } = useParams();
+  const { theme } = useAccounts();
 
   if (nftsMetadata === null) {
     return <>Gathering data... please wait</>;
@@ -29,7 +32,7 @@ const Nfts = ({ nftsMetadata }: NftsProps) => {
   return (
     <>
       {nftsMetadata.map(({ id, name, description, image }) => (
-        <SContentBlock key={id}>
+        <SContentBlock key={id} activeTheme={theme}>
           <Card>
             <ShowImage imageCid={image} altText={description} />
             <Card.Body>

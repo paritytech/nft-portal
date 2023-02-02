@@ -12,6 +12,7 @@ import { Themeable } from '@helpers/interfaces';
 import { styleSettings } from '@helpers/reusableStyles';
 import { routes } from '@helpers/routes';
 
+import Dex from '@pages/Dex/Dex';
 import Home from '@pages/Home/Home';
 import CollectionEdit from '@pages/MyNfts/Collections/CollectionEdit';
 import CollectionsView from '@pages/MyNfts/Collections/CollectionsView';
@@ -106,6 +107,7 @@ const App = () => {
                     </PrivateRoute>
                   }
                 />
+                <Route path={routes.dex} element={<Dex />} />
                 <Route path='*' element={<Navigate to={routes.homepage} replace />} />
               </Routes>
             </SContent>

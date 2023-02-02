@@ -4,6 +4,8 @@ import { Link, useParams } from 'react-router-dom';
 
 import BasicButton from '@buttons/BasicButton';
 
+import { useAccounts } from '@contexts/AccountContext';
+
 import { SContentBlockContainer } from '@helpers/reusableStyles';
 import { routes } from '@helpers/routes';
 import { SSecondaryButton } from '@helpers/styledComponents';
@@ -15,6 +17,7 @@ import Nfts from './Nfts';
 const NftsView = () => {
   const { collectionId } = useParams();
   const { getNftsMetadata, nftsMetadata } = useNfts(collectionId || '');
+  const { theme } = useAccounts();
 
   useEffect(() => {
     if (collectionId) {
@@ -32,7 +35,9 @@ const NftsView = () => {
           <BasicButton>Mint NFT</BasicButton>
         </Link>
         <Link to={routes.collections}>
-          <SSecondaryButton type='button'>Back</SSecondaryButton>
+          <SSecondaryButton type='button' activeTheme={theme}>
+            Back
+          </SSecondaryButton>
         </Link>
       </Stack>
     </>
