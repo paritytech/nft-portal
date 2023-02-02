@@ -1,33 +1,10 @@
 import Card from 'react-bootstrap/Card';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 
 import ActionButton from '@buttons/ActionButton';
 import BasicButton from '@buttons/BasicButton';
 
-import { styleSettings } from './config';
-
-export const SContentBlockContainer = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  gap: 14px;
-  margin-bottom: 20px;
-  padding-bottom: 20px;
-  border-bottom: 1px dashed ${styleSettings.colors.cerise};
-`;
-
-export const SContentBlock = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  width: 250px;
-  word-break: break-word;
-  align-items: center;
-`;
-
-const ButtonMini = css`
-  line-height: 30px;
-  padding: 0 25px;
-`;
+import { ButtonMini, styleSettings } from './reusableStyles';
 
 export const SActionButtonMini = styled(ActionButton)`
   ${ButtonMini}

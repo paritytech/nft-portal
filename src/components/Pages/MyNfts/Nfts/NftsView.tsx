@@ -4,8 +4,9 @@ import { Link, useParams } from 'react-router-dom';
 
 import BasicButton from '@buttons/BasicButton';
 
+import { SContentBlockContainer } from '@helpers/reusableStyles';
 import { routes } from '@helpers/routes';
-import { SContentBlockContainer, SSecondaryButton } from '@helpers/styles';
+import { SSecondaryButton } from '@helpers/styledComponents';
 
 import { useNfts } from '@hooks/useNfts';
 

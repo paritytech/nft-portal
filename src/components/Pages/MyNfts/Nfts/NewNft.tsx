@@ -7,7 +7,7 @@ import styled from 'styled-components';
 import BasicButton from '@buttons/BasicButton';
 
 import { routes } from '@helpers/routes';
-import { SSecondaryButton } from '@helpers/styles';
+import { SSecondaryButton } from '@helpers/styledComponents';
 
 import { useNfts } from '@hooks/useNfts';
 import { useStatus } from '@hooks/useStatus';

@@ -7,8 +7,9 @@ import EditIcon from '@assets/edit-icon.svg';
 import ShowImage from '@common/ShowImage';
 
 import { CollectionMetadata } from '@helpers/interfaces';
+import { SContentBlock } from '@helpers/reusableStyles';
 import { routes } from '@helpers/routes';
-import { SBasicButtonMini, SCardEdit, SContentBlock } from '@helpers/styles';
+import { SBasicButtonMini, SCardEdit } from '@helpers/styledComponents';
 
 interface CollectionProps {
   collectionMetadata: CollectionMetadata;

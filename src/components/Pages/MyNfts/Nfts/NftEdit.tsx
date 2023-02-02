@@ -12,7 +12,7 @@ import ImagePreview from '@common/ImagePreview';
 import { CollectionMetadataData } from '@helpers/interfaces';
 import { prefecthCid } from '@helpers/prefetchCid';
 import { routes } from '@helpers/routes';
-import { SSecondaryButton } from '@helpers/styles';
+import { SSecondaryButton } from '@helpers/styledComponents';
 
 import { useNfts } from '@hooks/useNfts';
 

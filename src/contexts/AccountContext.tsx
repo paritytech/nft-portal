@@ -3,7 +3,8 @@ import { ApiPromise, WsProvider } from '@polkadot/api';
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 
 import { chains } from '@helpers/config';
-import { ActiveAccount, Chain } from '@helpers/interfaces';
+import { ActiveAccount, Chain, ThemeStyle } from '@helpers/interfaces';
+import { themes } from '@helpers/reusableStyles';
 
 import { useLocalStorage } from '@hooks/useLocalStorage';
 
@@ -21,6 +22,7 @@ interface AccountsContextProps {
   setStoredActiveAccount: (value: ActiveAccount) => void;
   setupApi: (value: Chain) => void;
   storedChain: Chain | null;
+  theme: ThemeStyle;
 }
 
 const AccountsContext = createContext<AccountsContextProps>({
@@ -33,6 +35,7 @@ const AccountsContext = createContext<AccountsContextProps>({
   setStoredActiveAccount: () => {},
   setupApi: () => {},
   storedChain: null,
+  theme: themes.kusama,
 });
 
 export const useAccounts = () => useContext(AccountsContext);
@@ -43,6 +46,7 @@ export const AccountsContextProvider = ({ children }: AccountsContextProviderPro
   const [api, setApi] = useState<ApiPromise | null>(null);
   const [storedActiveAccount, setStoredActiveAccount] = useLocalStorage<ActiveAccount | null>('activeAccount', null);
   const [storedChain, setStoredChain] = useLocalStorage<Chain | null>('chain', null);
+  const [theme, setTheme] = useState<ThemeStyle>(themes.kusama);
 
   const setupApi = useCallback(
     async (chain: Chain) => {
@@ -59,9 +63,23 @@ export const AccountsContextProvider = ({ children }: AccountsContextProviderPro
     [setStoredChain],
   );
 
+  const setupTheme = useCallback((chain: Chain) => {
+    switch (chain.theme) {
+      case 'kusama':
+        setTheme(themes.kusama);
+        break;
+      case 'polkadot':
+        setTheme(themes.polkadot);
+        break;
+      default:
+        setTheme(themes.kusama);
+    }
+  }, []);
+
   useEffect(() => {
     setupApi(storedChain || chains[0]);
-  }, [setupApi, storedChain]);
+    setupTheme(storedChain || chains[0]);
+  }, [setupApi, setupTheme, storedChain]);
 
   const contextData = useMemo(
     () => ({
@@ -74,8 +92,9 @@ export const AccountsContextProvider = ({ children }: AccountsContextProviderPro
       setStoredActiveAccount,
       setupApi,
       storedChain,
+      theme,
     }),
-    [activeAccount, activeWallet, api, storedActiveAccount, setStoredActiveAccount, setupApi, storedChain],
+    [activeAccount, activeWallet, api, storedActiveAccount, setStoredActiveAccount, setupApi, storedChain, theme],
   );
 
   return <AccountsContext.Provider value={contextData}>{children}</AccountsContext.Provider>;

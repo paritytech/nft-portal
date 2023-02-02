@@ -3,7 +3,6 @@ export interface CommonStyleProps {
   isDisabled?: boolean;
   type?: 'button' | 'submit' | 'reset' | undefined;
 }
-
 export interface CollectionMetadata extends CollectionMetadataData {
   id: string;
 }
@@ -32,6 +31,24 @@ export interface ActiveAccount {
 export interface Chain {
   url: string;
   title: ChainTitles;
+  theme: ChainThemes;
 }
 
 export type ChainTitles = 'localhost' | 'westmint';
+export type ChainThemes = 'kusama' | 'polkadot';
+
+export interface Themeable {
+  activeTheme: ThemeStyle;
+}
+
+export interface ThemeStyle {
+  bodyBackground: string;
+  borderRadius: string;
+  buttonBackgroundColor: string;
+  buttonBorder: string;
+  buttonBorderColorHover: string;
+  buttonTextColor: string;
+  buttonTextColorHover: string;
+  defaultTextColor: string;
+  logoTextColor: string;
+}
