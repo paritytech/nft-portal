@@ -1,16 +1,21 @@
 import { StorageKey, u32 } from '@polkadot/types';
 import { AccountId32 } from '@polkadot/types/interfaces';
 import { useCallback, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import { saveDataToIpfs } from '@api/pinata';
 
-import { useAccounts } from '@contexts/AccountContext';
+import { useAccounts } from '@contexts/AccountsContext';
+import { useStatusModal } from '@contexts/StatusModalContext';
 
 import { IPFS_URL } from '@helpers/config';
 import { CollectionMetadata, CollectionMetadataData } from '@helpers/interfaces';
+import { routes } from '@helpers/routes';
 
 export const useCollections = () => {
   const { api, activeAccount, activeWallet } = useAccounts();
+  const navigate = useNavigate();
+  const { openStatusModal } = useStatusModal();
   const [collectionsMetadata, setCollectionsMetadata] = useState<CollectionMetadata[] | null>(null);
   const [collectionMetadata, setCollectionMetadata] = useState<CollectionMetadata | null>(null);
   const [isCollectionDataLoading, setIsCollectionDataLoading] = useState(false);
@@ -115,23 +120,34 @@ export const useCollections = () => {
 
   const mintCollection = useCallback(async () => {
     if (api && activeAccount && activeWallet) {
+      openStatusModal();
       setIsCollectionDataSaving(true);
 
       try {
         const unsub = await api.tx.nfts
           .create(activeAccount.address, null)
-          .signAndSend(activeAccount.address, { signer: activeWallet.signer }, ({ status }) => {
+          .signAndSend(activeAccount.address, { signer: activeWallet.signer }, ({ events, status }) => {
             if (status.isFinalized) {
               setIsCollectionDataSaving(false);
-              getCollectionsMetadata();
               unsub();
+
+              events.some(({ event: { data, method } }) => {
+                if (method === 'Created') {
+                  const mintedCollectionId = data[0].toString();
+                  navigate(routes.collectionEdit(mintedCollectionId));
+
+                  return true;
+                }
+
+                return false;
+              });
             }
           });
       } catch (error) {
         setIsCollectionDataSaving(false);
       }
     }
-  }, [api, activeAccount, activeWallet, getCollectionsMetadata]);
+  }, [api, activeAccount, activeWallet, navigate, openStatusModal]);
 
   const saveCollectionMetadata = useCallback(
     async (collectionId: string, collectionMetadata: CollectionMetadataData) => {

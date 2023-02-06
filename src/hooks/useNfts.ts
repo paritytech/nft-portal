@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { saveDataToIpfs } from '@api/pinata';
 
-import { useAccounts } from '@contexts/AccountContext';
+import { useAccounts } from '@contexts/AccountsContext';
 
 import { IPFS_URL } from '@helpers/config';
 import { NftMetadata, NftMetadataData } from '@helpers/interfaces';

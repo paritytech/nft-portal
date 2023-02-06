@@ -1,7 +1,7 @@
 import { memo } from 'react';
 import { Navigate } from 'react-router-dom';
 
-import { useAccounts } from '@contexts/AccountContext';
+import { useAccounts } from '@contexts/AccountsContext';
 
 import { routes } from '@helpers/routes';
 

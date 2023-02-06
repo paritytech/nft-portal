@@ -5,7 +5,7 @@ import styled from 'styled-components';
 
 import ActionButton from '@buttons/ActionButton';
 
-import { useAccounts } from '@contexts/AccountContext';
+import { useAccounts } from '@contexts/AccountsContext';
 
 import { routes } from '@helpers/routes';
 

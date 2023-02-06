@@ -3,7 +3,7 @@ import { useWallets } from '@polkadot-onboard/react';
 import { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
-import { useAccounts } from '@contexts/AccountContext';
+import { useAccounts } from '@contexts/AccountsContext';
 
 import { routes } from '@helpers/routes';
 import { normalizePath } from '@helpers/utilities';

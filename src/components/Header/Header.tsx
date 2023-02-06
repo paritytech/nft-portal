@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 import Logo from '@assets/logo.svg';
 
-import { useAccounts } from '@contexts/AccountContext';
+import { useAccounts } from '@contexts/AccountsContext';
 
 import SelectChain from '@header/SelectChain';
 
