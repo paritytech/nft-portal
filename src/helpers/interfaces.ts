@@ -1,3 +1,5 @@
+import { ModalStatusTypes, StatusMessages } from './constants';
+
 export interface CommonStyleProps {
   className?: string;
   isDisabled?: boolean;
@@ -51,4 +53,9 @@ export interface ThemeStyle {
   buttonTextColorHover: string;
   defaultTextColor: string;
   logoTextColor: string;
+}
+
+export interface StatusEntry {
+  type: ModalStatusTypes;
+  message: StatusMessages;
 }
