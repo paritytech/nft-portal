@@ -42,13 +42,20 @@ export interface Themeable {
 }
 
 export interface ThemeStyle {
+  blockBackgroundColorHover: string;
   bodyBackground: string;
   borderRadius: string;
   buttonBackgroundColor: string;
-  buttonBorder: string;
+  buttonBorderColor: string;
   buttonBorderColorHover: string;
   buttonTextColor: string;
   buttonTextColorHover: string;
   defaultTextColor: string;
   logoTextColor: string;
+  menuButtonBackgroundColor: string;
+  menuButtonTextColor: string;
+  menuButtonBorderColor: string;
+  menuButtonActiveBackgroundColor: string;
+  menuButtonActiveTextColor: string;
+  menuButtonActiveBorderColor: string;
 }

@@ -6,6 +6,8 @@ import styled from 'styled-components';
 
 import BasicButton from '@buttons/BasicButton';
 
+import { useAccounts } from '@contexts/AccountContext';
+
 import { routes } from '@helpers/routes';
 import { SSecondaryButton } from '@helpers/styledComponents';
 
@@ -19,6 +21,7 @@ const SNftTaken = styled.div`
 const NewNft = () => {
   const { collectionId } = useParams();
   const { mintNft, getNft, isNftDataSaving } = useNfts(collectionId || '');
+  const { theme } = useAccounts();
   const { nftTaken, statusMessage, clearStatus } = useStatus();
   const nftIdRef = useRef<HTMLInputElement>(null);
 
@@ -57,7 +60,9 @@ const NewNft = () => {
           {isNftDataSaving ? 'Minting NFT' : 'Mint NFT'}
         </BasicButton>
         <Link to={routes.nfts(collectionId)}>
-          <SSecondaryButton type='button'>Back</SSecondaryButton>
+          <SSecondaryButton type='button' activeTheme={theme}>
+            Back
+          </SSecondaryButton>
         </Link>
       </Stack>
     </Form>
