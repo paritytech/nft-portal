@@ -1,26 +1,14 @@
 import { memo } from 'react';
-import Card from 'react-bootstrap/Card';
-import { Link, useParams } from 'react-router-dom';
-
-import EditIcon from '@assets/edit-icon.svg';
-
-import ShowImage from '@common/ShowImage';
-
-import { useAccounts } from '@contexts/AccountContext';
 
 import { NftMetadata } from '@helpers/interfaces';
-import { SContentBlock } from '@helpers/reusableStyles';
-import { routes } from '@helpers/routes';
-import { SCardEdit } from '@helpers/styledComponents';
+
+import Nft from './Nft';
 
 interface NftsProps {
   nftsMetadata: NftMetadata[] | null;
 }
 
 const Nfts = ({ nftsMetadata }: NftsProps) => {
-  const { collectionId } = useParams();
-  const { theme } = useAccounts();
-
   if (nftsMetadata === null) {
     return <>Gathering data... please wait</>;
   }
@@ -31,23 +19,8 @@ const Nfts = ({ nftsMetadata }: NftsProps) => {
 
   return (
     <>
-      {nftsMetadata.map(({ id, name, description, image }) => (
-        <SContentBlock key={id} activeTheme={theme}>
-          <Card>
-            <ShowImage imageCid={image} altText={description} />
-            <Card.Body>
-              <SCardEdit className='text-muted'>
-                <span>NFT ID #{id}</span>
-                <Link to={routes.nftEdit(collectionId, id)}>
-                  Edit
-                  <EditIcon />
-                </Link>
-              </SCardEdit>
-              <Card.Title>{name}</Card.Title>
-              <Card.Text>{description}</Card.Text>
-            </Card.Body>
-          </Card>
-        </SContentBlock>
+      {nftsMetadata.map((nftMetadata) => (
+        <Nft key={nftMetadata.id} nftMetadata={nftMetadata} />
       ))}
     </>
   );

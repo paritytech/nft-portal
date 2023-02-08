@@ -29,6 +29,16 @@ export const SSecondaryButton = styled(BasicButton)<Themeable>`
   }
 `;
 
+export const SCard = styled(Card)`
+  background-color: ${({ activetheme }: { activetheme: ThemeStyle }) => activetheme.bodyBackground};
+  border: 2px solid ${({ activetheme }: { activetheme: ThemeStyle }) => activetheme.menuButtonBorderColor};
+
+  .card-footer {
+    background-color: inherit;
+    border-top: 1px solid ${({ activetheme }: { activetheme: ThemeStyle }) => activetheme.buttonBorderColor};
+  }
+`;
+
 export const SCardEdit = styled(Card.Subtitle)`
   display: flex;
   justify-content: space-between;

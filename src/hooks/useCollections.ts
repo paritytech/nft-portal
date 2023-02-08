@@ -1,20 +1,26 @@
 import { StorageKey, u32 } from '@polkadot/types';
 import { AccountId32 } from '@polkadot/types/interfaces';
 import { useCallback, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import { saveDataToIpfs } from '@api/pinata';
 
-import { useAccounts } from '@contexts/AccountContext';
+import { useAccounts } from '@contexts/AccountsContext';
+import { useModalStatus } from '@contexts/ModalStatusContext';
 
 import { IPFS_URL } from '@helpers/config';
+import { ModalStatusTypes, StatusMessages } from '@helpers/constants';
+import { handleError } from '@helpers/handleError';
 import { CollectionMetadata, CollectionMetadataData } from '@helpers/interfaces';
+import { routes } from '@helpers/routes';
 
 export const useCollections = () => {
   const { api, activeAccount, activeWallet } = useAccounts();
+  const navigate = useNavigate();
+  const { openModalStatus, setStatus, setAction } = useModalStatus();
   const [collectionsMetadata, setCollectionsMetadata] = useState<CollectionMetadata[] | null>(null);
   const [collectionMetadata, setCollectionMetadata] = useState<CollectionMetadata | null>(null);
   const [isCollectionDataLoading, setIsCollectionDataLoading] = useState(false);
-  const [isCollectionDataSaving, setIsCollectionDataSaving] = useState(false);
 
   const getCollectionIds = useCallback(async () => {
     if (api && activeAccount) {
@@ -115,40 +121,68 @@ export const useCollections = () => {
 
   const mintCollection = useCallback(async () => {
     if (api && activeAccount && activeWallet) {
-      setIsCollectionDataSaving(true);
+      setStatus({ type: ModalStatusTypes.INIT_TRANSACTION, message: StatusMessages.TRANSACTION_CONFIRM });
+      openModalStatus();
 
       try {
         const unsub = await api.tx.nfts
           .create(activeAccount.address, null)
-          .signAndSend(activeAccount.address, { signer: activeWallet.signer }, ({ status }) => {
+          .signAndSend(activeAccount.address, { signer: activeWallet.signer }, ({ events, status }) => {
+            if (status.isReady) {
+              setStatus({ type: ModalStatusTypes.IN_PROGRESS, message: StatusMessages.COLLECTION_MINTING });
+            }
+
             if (status.isFinalized) {
-              setIsCollectionDataSaving(false);
-              getCollectionsMetadata();
+              setStatus({ type: ModalStatusTypes.COMPLETE, message: StatusMessages.COLLECTION_MINTED });
               unsub();
+
+              events.some(({ event: { data, method } }) => {
+                if (method === 'Created') {
+                  const mintedCollectionId = data[0].toString();
+                  setAction(() => () => navigate(routes.collectionEdit(mintedCollectionId)));
+
+                  return true;
+                }
+
+                return false;
+              });
             }
           });
-      } catch (error) {
-        setIsCollectionDataSaving(false);
+      } catch (error: any) {
+        setStatus({ type: ModalStatusTypes.ERROR, message: handleError(error) });
       }
     }
-  }, [api, activeAccount, activeWallet, getCollectionsMetadata]);
+  }, [api, activeAccount, activeWallet, navigate, openModalStatus, setStatus, setAction]);
 
   const saveCollectionMetadata = useCallback(
     async (collectionId: string, collectionMetadata: CollectionMetadataData) => {
       if (api && activeAccount && activeWallet) {
-        setIsCollectionDataSaving(true);
+        setStatus({ type: ModalStatusTypes.INIT_TRANSACTION, message: StatusMessages.TRANSACTION_CONFIRM });
+        openModalStatus();
 
         try {
           const metadataCid = await saveDataToIpfs(collectionMetadata);
 
-          await api.tx.nfts.setCollectionMetadata(collectionId, metadataCid).signAndSend(activeAccount.address, { signer: activeWallet.signer });
+          const unsub = await api.tx.nfts
+            .setCollectionMetadata(collectionId, metadataCid)
+            .signAndSend(activeAccount.address, { signer: activeWallet.signer }, ({ status }) => {
+              if (status.isReady) {
+                setStatus({ type: ModalStatusTypes.IN_PROGRESS, message: StatusMessages.METADATA_UPDATING });
+              }
+
+              if (status.isFinalized) {
+                setStatus({ type: ModalStatusTypes.COMPLETE, message: StatusMessages.METADATA_UPDATED });
+                unsub();
+
+                setAction(() => () => navigate(routes.collections));
+              }
+            });
         } catch (error) {
-        } finally {
-          setIsCollectionDataSaving(false);
+          setStatus({ type: ModalStatusTypes.ERROR, message: handleError(error) });
         }
       }
     },
-    [api, activeAccount, activeWallet],
+    [api, activeAccount, activeWallet, navigate, openModalStatus, setStatus, setAction],
   );
 
   return {
@@ -159,6 +193,5 @@ export const useCollections = () => {
     collectionsMetadata,
     collectionMetadata,
     isCollectionDataLoading,
-    isCollectionDataSaving,
   };
 };

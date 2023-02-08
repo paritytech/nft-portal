@@ -1,7 +1,7 @@
 import { memo } from 'react';
 import styled from 'styled-components';
 
-import { useAccounts } from '@contexts/AccountContext';
+import { useAccounts } from '@contexts/AccountsContext';
 
 import { CommonStyleProps } from '@helpers/interfaces';
 import { CommonButtonStyles } from '@helpers/reusableStyles';

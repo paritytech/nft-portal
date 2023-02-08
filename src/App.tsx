@@ -4,7 +4,7 @@ import styled, { createGlobalStyle } from 'styled-components';
 import PrivateRoute from '@common/PrivateRoute';
 import SideMenu from '@common/SideMenu';
 
-import { useAccounts } from '@contexts/AccountContext';
+import { useAccounts } from '@contexts/AccountsContext';
 
 import Hat from '@header/Header';
 

@@ -3,6 +3,8 @@ import Stack from 'react-bootstrap/Stack';
 
 import ActionButton from '@buttons/ActionButton';
 
+import ModalStatus from '@common/ModalStatus';
+
 import { SContentBlockContainer } from '@helpers/reusableStyles';
 
 import { useCollections } from '@hooks/useCollections';
@@ -14,6 +16,7 @@ const CollectionsView = () => {
 
   return (
     <>
+      <ModalStatus />
       <SContentBlockContainer>
         <Collections getCollectionsMetadata={getCollectionsMetadata} collectionsMetadata={collectionsMetadata} />
       </SContentBlockContainer>

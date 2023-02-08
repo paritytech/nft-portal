@@ -3,7 +3,8 @@ import { InjectedWalletProvider } from '@polkadot-onboard/injected-wallets';
 import { PolkadotWalletsContextProvider } from '@polkadot-onboard/react';
 import App from 'App';
 
-import { AccountsContextProvider } from '@contexts/AccountContext';
+import { AccountsContextProvider } from '@contexts/AccountsContext';
+import { ModalStatusContextProvider } from '@contexts/ModalStatusContext';
 
 import { APP_NAME, extensionConfig } from '@helpers/config';
 
@@ -12,9 +13,11 @@ let walletAggregator = new WalletAggregator([injectedWalletProvider]);
 
 const SetupApp = () => (
   <PolkadotWalletsContextProvider walletAggregator={walletAggregator}>
-    <AccountsContextProvider>
-      <App />
-    </AccountsContextProvider>
+    <ModalStatusContextProvider>
+      <AccountsContextProvider>
+        <App />
+      </AccountsContextProvider>
+    </ModalStatusContextProvider>
   </PolkadotWalletsContextProvider>
 );
 

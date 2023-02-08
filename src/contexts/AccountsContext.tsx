@@ -16,7 +16,7 @@ interface AccountsContextProps {
   activeAccount: Account | null;
   activeWallet: BaseWallet | null;
   setActiveAccount: (value: Account) => void;
-  setActiveWallet: (wallet: BaseWallet) => void;
+  setActiveWallet: (value: BaseWallet) => void;
   api: ApiPromise | null;
   storedActiveAccount: ActiveAccount | null;
   setStoredActiveAccount: (value: ActiveAccount) => void;

@@ -1,7 +1,7 @@
 import { Account, BaseWallet } from '@polkadot-onboard/core';
 import { useCallback, useEffect, useState } from 'react';
 
-import { useAccounts } from '@contexts/AccountContext';
+import { useAccounts } from '@contexts/AccountsContext';
 
 export const useWalletAccounts = (wallet: BaseWallet) => {
   const { storedActiveAccount } = useAccounts();

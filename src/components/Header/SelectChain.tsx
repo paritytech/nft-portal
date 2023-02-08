@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import Localhost from '@assets/chain-localhost.svg';
 import Westmint from '@assets/chain-westmint.svg';
 
-import { useAccounts } from '@contexts/AccountContext';
+import { useAccounts } from '@contexts/AccountsContext';
 
 import { chains } from '@helpers/config';
 import { Chain, Themeable } from '@helpers/interfaces';

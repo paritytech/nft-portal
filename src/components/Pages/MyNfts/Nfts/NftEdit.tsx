@@ -9,7 +9,7 @@ import BasicButton from '@buttons/BasicButton';
 
 import ImagePreview from '@common/ImagePreview';
 
-import { useAccounts } from '@contexts/AccountContext';
+import { useAccounts } from '@contexts/AccountsContext';
 
 import { CollectionMetadataData } from '@helpers/interfaces';
 import { prefecthCid } from '@helpers/prefetchCid';
@@ -17,10 +17,11 @@ import { routes } from '@helpers/routes';
 import { SSecondaryButton } from '@helpers/styledComponents';
 
 import { useNfts } from '@hooks/useNfts';
+import ModalStatus from '@common/ModalStatus';
 
 const NftEdit = () => {
   const { collectionId, nftId } = useParams();
-  const { getNftMetadata, saveNftMetadata, nftMetadata, isNftDataLoading, isNftDataSaving } = useNfts(collectionId || '');
+  const { getNftMetadata, saveNftMetadata, nftMetadata, isNftDataLoading } = useNfts(collectionId || '');
   const { theme } = useAccounts();
   const nftNameRef = useRef<HTMLInputElement>(null);
   const nftDescriptionRef = useRef<HTMLTextAreaElement>(null);
@@ -71,6 +72,7 @@ const NftEdit = () => {
 
   return (
     <>
+      <ModalStatus />
       <h2>NFT ID #{nftId} metadata:</h2>
 
       <Form onSubmit={submitMetadata}>
@@ -89,7 +91,7 @@ const NftEdit = () => {
           <ImagePreview imageCid={nftMetadata?.image} imageSourceUrl={imageSourceUrl} />
         </Form.Group>
         <Stack direction='horizontal' gap={2} className='justify-content-end'>
-          <BasicButton type='submit' isDisabled={isNftDataSaving}>
+          <BasicButton type='submit'>
             Submit metadata
           </BasicButton>
           <Link to='..' relative='path'>
