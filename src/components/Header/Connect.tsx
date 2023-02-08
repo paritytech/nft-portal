@@ -4,7 +4,7 @@ import Modal from 'react-bootstrap/Modal';
 
 import ActionButton from '@buttons/ActionButton';
 
-import { useAccounts } from '@contexts/AccountContext';
+import { useAccounts } from '@contexts/AccountsContext';
 
 import { SModal } from '@helpers/styledComponents';
 import { ellipseAddress, sizeMatters } from '@helpers/utilities';

@@ -4,7 +4,7 @@ import { Link, useParams } from 'react-router-dom';
 
 import BasicButton from '@buttons/BasicButton';
 
-import { useAccounts } from '@contexts/AccountContext';
+import { useAccounts } from '@contexts/AccountsContext';
 
 import { SContentBlockContainer } from '@helpers/reusableStyles';
 import { routes } from '@helpers/routes';

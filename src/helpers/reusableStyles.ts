@@ -83,23 +83,13 @@ export const SContentBlockContainer = styled.div`
   border-bottom: 1px dashed ${styleSettings.colors.cerise};
 `;
 
-export const SContentBlock = styled.div<Themeable>`
+export const SContentBlock = styled.div`
   display: flex;
   flex-direction: column;
   gap: 15px;
   width: 250px;
   word-break: break-word;
   align-items: center;
-
-  .card {
-    background-color: ${({ activeTheme }) => activeTheme.bodyBackground};
-    border: 2px solid ${({ activeTheme }) => activeTheme.menuButtonBorderColor};
-
-    .card-footer {
-      background-color: inherit;
-      border-top: 1px solid ${({ activeTheme }) => activeTheme.buttonBorderColor};
-    }
-  }
 `;
 
 export const ButtonMini = css`

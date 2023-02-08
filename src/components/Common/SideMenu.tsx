@@ -2,7 +2,7 @@ import { memo } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { useAccounts } from '@contexts/AccountContext';
+import { useAccounts } from '@contexts/AccountsContext';
 
 import { ThemeStyle } from '@helpers/interfaces';
 import { routes } from '@helpers/routes';

@@ -8,8 +8,9 @@ import { saveImageToIpfs } from '@api/pinata';
 import BasicButton from '@buttons/BasicButton';
 
 import ImagePreview from '@common/ImagePreview';
+import ModalStatus from '@common/ModalStatus';
 
-import { useAccounts } from '@contexts/AccountContext';
+import { useAccounts } from '@contexts/AccountsContext';
 
 import { CollectionMetadataData } from '@helpers/interfaces';
 import { prefecthCid } from '@helpers/prefetchCid';
@@ -21,8 +22,8 @@ import { useCollections } from '@hooks/useCollections';
 const CollectionEdit = () => {
   const { collectionId } = useParams();
   const navigate = useNavigate();
-  const { getCollectionMetadata, saveCollectionMetadata, collectionMetadata, isCollectionDataLoading, isCollectionDataSaving } = useCollections();
   const { theme } = useAccounts();
+  const { getCollectionMetadata, saveCollectionMetadata, collectionMetadata, isCollectionDataLoading } = useCollections();
   const collectionNameRef = useRef<HTMLInputElement>(null);
   const collectionDescriptionRef = useRef<HTMLTextAreaElement>(null);
   const collectionImageCidRef = useRef<HTMLInputElement>(null);
@@ -40,8 +41,6 @@ const CollectionEdit = () => {
         };
 
         Promise.all([saveImageToIpfs(imageSourceUrl), saveCollectionMetadata(collectionId, updatedMetadata)]);
-
-        // TODO notify user that everything went well
       }
     },
     [collectionId, saveCollectionMetadata, imageSourceUrl],
@@ -79,6 +78,7 @@ const CollectionEdit = () => {
 
   return (
     <>
+      <ModalStatus />
       <h2>NFT collection ID #{collectionId} metadata:</h2>
 
       <Form onSubmit={submitMetadata}>
@@ -97,9 +97,7 @@ const CollectionEdit = () => {
           <ImagePreview imageCid={collectionMetadata?.image} imageSourceUrl={imageSourceUrl} />
         </Form.Group>
         <Stack direction='horizontal' gap={2} className='justify-content-end'>
-          <BasicButton type='submit' isDisabled={isCollectionDataSaving}>
-            Submit metadata
-          </BasicButton>
+          <BasicButton type='submit'>Submit metadata</BasicButton>
           <Link to='..' relative='path'>
             <SSecondaryButton type='button' activeTheme={theme}>
               Back

@@ -9,7 +9,7 @@ import BasicButton from '@buttons/BasicButton';
 
 import ImagePreview from '@common/ImagePreview';
 
-import { useAccounts } from '@contexts/AccountContext';
+import { useAccounts } from '@contexts/AccountsContext';
 
 import { CollectionMetadataData } from '@helpers/interfaces';
 import { prefecthCid } from '@helpers/prefetchCid';

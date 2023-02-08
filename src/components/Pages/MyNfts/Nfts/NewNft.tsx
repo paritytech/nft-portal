@@ -6,7 +6,7 @@ import styled from 'styled-components';
 
 import BasicButton from '@buttons/BasicButton';
 
-import { useAccounts } from '@contexts/AccountContext';
+import { useAccounts } from '@contexts/AccountsContext';
 
 import { routes } from '@helpers/routes';
 import { SSecondaryButton } from '@helpers/styledComponents';
