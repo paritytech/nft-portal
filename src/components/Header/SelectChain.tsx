@@ -7,7 +7,7 @@ import Westmint from '@assets/chain-westmint.svg';
 import { useAccounts } from '@contexts/AccountsContext';
 
 import { chains } from '@helpers/config';
-import { Chain } from '@helpers/interfaces';
+import { Chain, Themeable } from '@helpers/interfaces';
 import { styleSettings } from '@helpers/reusableStyles';
 
 import { useOutsideClick } from '@hooks/useOutsideClick';
@@ -35,14 +35,14 @@ const SCurrentChain = styled.div`
   }
 `;
 
-const SChainList = styled.div`
+const SChainList = styled.div<Themeable>`
   display: none;
   position: absolute;
   top: 100%;
   right: 0;
   margin-top: 5px;
-  background-color: ${styleSettings.colors.white};
-  border: 2px solid ${styleSettings.colors.cerise};
+  background-color: ${({ activeTheme }) => activeTheme.bodyBackground};
+  border: 2px solid ${({ activeTheme }) => activeTheme.buttonBorderColor};
   border-radius: 10px;
   z-index: 1;
 
@@ -62,14 +62,14 @@ const STriangle = styled.span`
   border-bottom: 7px solid ${styleSettings.colors.cerise};
 `;
 
-const SChainOption = styled.div`
+const SChainOption = styled.div<Themeable>`
   display: flex;
   align-items: center;
   gap: 10px;
   padding: 5px 10px;
 
   :hover {
-    background-color: ${styleSettings.colors.cerise};
+    background-color: ${({ activeTheme }) => activeTheme.blockBackgroundColorHover};
     color: ${styleSettings.colors.white};
     cursor: pointer;
   }
@@ -90,7 +90,7 @@ const SChainOption = styled.div`
 `;
 
 const SelectChain = () => {
-  const { storedChain, setupApi } = useAccounts();
+  const { storedChain, setupApi, theme } = useAccounts();
   const [isChainListVisible, setIsChainListVisible] = useState(false);
   const dropdownRef = useOutsideClick(() => setIsChainListVisible(false));
 
@@ -114,13 +114,13 @@ const SelectChain = () => {
       <SCurrentChain onClick={toggleChainList}>
         <ChainIcon />
       </SCurrentChain>
-      <SChainList className={isChainListVisible ? 'showlist' : ''}>
+      <SChainList className={isChainListVisible ? 'showlist' : ''} activeTheme={theme}>
         <STriangle />
         {chains.map((chain) => {
           const ChainIcon = chainIcons[chain.title];
 
           return (
-            <SChainOption onClick={() => selectChain(chain)} key={chain.title}>
+            <SChainOption onClick={() => selectChain(chain)} key={chain.title} activeTheme={theme}>
               <ChainIcon />
               <span>{chain.title}</span>
             </SChainOption>

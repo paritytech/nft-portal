@@ -6,6 +6,8 @@ import EditIcon from '@assets/edit-icon.svg';
 
 import ShowImage from '@common/ShowImage';
 
+import { useAccounts } from '@contexts/AccountContext';
+
 import { CollectionMetadata } from '@helpers/interfaces';
 import { SContentBlock } from '@helpers/reusableStyles';
 import { routes } from '@helpers/routes';
@@ -17,6 +19,8 @@ interface CollectionsProps {
 }
 
 const Collections = ({ getCollectionsMetadata, collectionsMetadata }: CollectionsProps) => {
+  const { theme } = useAccounts();
+
   useEffect(() => {
     getCollectionsMetadata();
   }, [getCollectionsMetadata]);
@@ -32,7 +36,7 @@ const Collections = ({ getCollectionsMetadata, collectionsMetadata }: Collection
   return (
     <>
       {collectionsMetadata.map(({ id, name, description, image }) => (
-        <SContentBlock key={id}>
+        <SContentBlock key={id} activeTheme={theme}>
           <Card>
             <ShowImage imageCid={image} altText={description} />
             <Card.Body>

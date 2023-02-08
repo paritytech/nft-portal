@@ -9,6 +9,8 @@ import BasicButton from '@buttons/BasicButton';
 
 import ImagePreview from '@common/ImagePreview';
 
+import { useAccounts } from '@contexts/AccountContext';
+
 import { CollectionMetadataData } from '@helpers/interfaces';
 import { prefecthCid } from '@helpers/prefetchCid';
 import { routes } from '@helpers/routes';
@@ -19,6 +21,7 @@ import { useNfts } from '@hooks/useNfts';
 const NftEdit = () => {
   const { collectionId, nftId } = useParams();
   const { getNftMetadata, saveNftMetadata, nftMetadata, isNftDataLoading, isNftDataSaving } = useNfts(collectionId || '');
+  const { theme } = useAccounts();
   const nftNameRef = useRef<HTMLInputElement>(null);
   const nftDescriptionRef = useRef<HTMLTextAreaElement>(null);
   const nftImageCidRef = useRef<HTMLInputElement>(null);
@@ -90,7 +93,9 @@ const NftEdit = () => {
             Submit metadata
           </BasicButton>
           <Link to='..' relative='path'>
-            <SSecondaryButton type='button'>Back</SSecondaryButton>
+            <SSecondaryButton type='button' activeTheme={theme}>
+              Back
+            </SSecondaryButton>
           </Link>
         </Stack>
       </Form>

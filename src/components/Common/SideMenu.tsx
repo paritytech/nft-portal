@@ -2,7 +2,9 @@ import { memo } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { styleSettings } from '@helpers/reusableStyles';
+import { useAccounts } from '@contexts/AccountContext';
+
+import { ThemeStyle } from '@helpers/interfaces';
 import { routes } from '@helpers/routes';
 import { normalizePath } from '@helpers/utilities';
 
@@ -16,27 +18,23 @@ const SNav = styled.nav`
 const SMenuButton = styled(NavLink)`
   text-decoration: none;
   padding: 8px 20px;
-  color: ${styleSettings.colors.shark};
-  background-color: ${styleSettings.colors.alto};
+  color: ${({ activetheme: activeTheme }: { activetheme: ThemeStyle }) => activeTheme.menuButtonTextColor};
+  background-color: ${({ activetheme: activeTheme }: { activetheme: ThemeStyle }) => activeTheme.menuButtonBackgroundColor};
+  border: 2px solid ${({ activetheme: activeTheme }: { activetheme: ThemeStyle }) => activeTheme.menuButtonBorderColor};
   border-radius: 20px;
   text-align: center;
 
-  &.active {
-    color: ${styleSettings.colors.white};
-    background-color: ${styleSettings.colors.cerise};
-  }
-
+  &.active,
   :hover {
-    color: ${styleSettings.colors.shark};
-  }
-
-  &.active:hover {
-    color: ${styleSettings.colors.white};
+    color: ${({ activetheme: activeTheme }: { activetheme: ThemeStyle }) => activeTheme.menuButtonActiveTextColor};
+    border-color: ${({ activetheme: activeTheme }: { activetheme: ThemeStyle }) => activeTheme.menuButtonActiveBorderColor};
+    background-color: ${({ activetheme: activeTheme }: { activetheme: ThemeStyle }) => activeTheme.menuButtonActiveBackgroundColor};
   }
 `;
 
 const SideMenu = () => {
   const { pathname } = useLocation();
+  const { theme } = useAccounts();
 
   if (normalizePath(pathname) === routes.homepage) {
     return null;
@@ -44,7 +42,12 @@ const SideMenu = () => {
 
   return (
     <SNav>
-      <SMenuButton to={routes.collections}>My NFTs</SMenuButton>
+      <SMenuButton to={routes.collections} activetheme={theme}>
+        My NFTs
+      </SMenuButton>
+      <SMenuButton to={routes.dex} activetheme={theme}>
+        DEX
+      </SMenuButton>
     </SNav>
   );
 };

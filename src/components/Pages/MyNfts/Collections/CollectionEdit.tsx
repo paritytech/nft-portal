@@ -9,6 +9,8 @@ import BasicButton from '@buttons/BasicButton';
 
 import ImagePreview from '@common/ImagePreview';
 
+import { useAccounts } from '@contexts/AccountContext';
+
 import { CollectionMetadataData } from '@helpers/interfaces';
 import { prefecthCid } from '@helpers/prefetchCid';
 import { routes } from '@helpers/routes';
@@ -20,6 +22,7 @@ const CollectionEdit = () => {
   const { collectionId } = useParams();
   const navigate = useNavigate();
   const { getCollectionMetadata, saveCollectionMetadata, collectionMetadata, isCollectionDataLoading, isCollectionDataSaving } = useCollections();
+  const { theme } = useAccounts();
   const collectionNameRef = useRef<HTMLInputElement>(null);
   const collectionDescriptionRef = useRef<HTMLTextAreaElement>(null);
   const collectionImageCidRef = useRef<HTMLInputElement>(null);
@@ -98,7 +101,9 @@ const CollectionEdit = () => {
             Submit metadata
           </BasicButton>
           <Link to='..' relative='path'>
-            <SSecondaryButton type='button'>Back</SSecondaryButton>
+            <SSecondaryButton type='button' activeTheme={theme}>
+              Back
+            </SSecondaryButton>
           </Link>
         </Stack>
       </Form>
