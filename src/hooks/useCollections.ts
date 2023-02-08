@@ -165,7 +165,7 @@ export const useCollections = () => {
 
           const unsub = await api.tx.nfts
             .setCollectionMetadata(collectionId, metadataCid)
-            .signAndSend(activeAccount.address, { signer: activeWallet.signer }, ({ events, status }) => {
+            .signAndSend(activeAccount.address, { signer: activeWallet.signer }, ({ status }) => {
               if (status.isReady) {
                 setStatus({ type: ModalStatusTypes.IN_PROGRESS, message: StatusMessages.METADATA_UPDATING });
               }

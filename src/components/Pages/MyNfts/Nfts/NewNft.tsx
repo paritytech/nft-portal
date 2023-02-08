@@ -13,6 +13,7 @@ import { SSecondaryButton } from '@helpers/styledComponents';
 
 import { useNfts } from '@hooks/useNfts';
 import { useStatus } from '@hooks/useStatus';
+import ModalStatus from '@common/ModalStatus';
 
 const SNftTaken = styled.div`
   margin-top: 5px;
@@ -20,7 +21,7 @@ const SNftTaken = styled.div`
 
 const NewNft = () => {
   const { collectionId } = useParams();
-  const { mintNft, getNft, isNftDataSaving } = useNfts(collectionId || '');
+  const { mintNft, getNft } = useNfts(collectionId || '');
   const { theme } = useAccounts();
   const { nftTaken, statusMessage, clearStatus } = useStatus();
   const nftIdRef = useRef<HTMLInputElement>(null);
@@ -45,27 +46,30 @@ const NewNft = () => {
   );
 
   return (
-    <Form onSubmit={submitMintNft}>
-      <Form.Group className='mb-3'>
-        <Form.Label>Collection ID:</Form.Label>
-        <Form.Control type='text' defaultValue={collectionId} disabled />
-      </Form.Group>
-      <Form.Group className='mb-3'>
-        <Form.Label>NFT ID:</Form.Label>
-        <Form.Control type='number' ref={nftIdRef} required />
-        {statusMessage && <SNftTaken className='text-danger'>{statusMessage}</SNftTaken>}
-      </Form.Group>
-      <Stack direction='horizontal' gap={2} className='justify-content-end'>
-        <BasicButton type='submit' isDisabled={isNftDataSaving}>
-          {isNftDataSaving ? 'Minting NFT' : 'Mint NFT'}
-        </BasicButton>
-        <Link to={routes.nfts(collectionId)}>
-          <SSecondaryButton type='button' activeTheme={theme}>
-            Back
-          </SSecondaryButton>
-        </Link>
-      </Stack>
-    </Form>
+    <>
+      <ModalStatus />
+      <Form onSubmit={submitMintNft}>
+        <Form.Group className='mb-3'>
+          <Form.Label>Collection ID:</Form.Label>
+          <Form.Control type='text' defaultValue={collectionId} disabled />
+        </Form.Group>
+        <Form.Group className='mb-3'>
+          <Form.Label>NFT ID:</Form.Label>
+          <Form.Control type='number' ref={nftIdRef} required />
+          {statusMessage && <SNftTaken className='text-danger'>{statusMessage}</SNftTaken>}
+        </Form.Group>
+        <Stack direction='horizontal' gap={2} className='justify-content-end'>
+          <BasicButton type='submit'>
+            Mint NFT
+          </BasicButton>
+          <Link to={routes.nfts(collectionId)}>
+            <SSecondaryButton type='button' activeTheme={theme}>
+              Back
+            </SSecondaryButton>
+          </Link>
+        </Stack>
+      </Form>
+    </>
   );
 };
 

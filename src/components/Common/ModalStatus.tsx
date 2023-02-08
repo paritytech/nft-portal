@@ -4,17 +4,28 @@ import styled from 'styled-components';
 
 import ActionButton from '@buttons/ActionButton';
 
+import { useAccounts } from '@contexts/AccountsContext';
 import { useModalStatus } from '@contexts/ModalStatusContext';
 
 import { ModalStatusTypes } from '@helpers/constants';
+import { ThemeStyle } from '@helpers/interfaces';
 
 import Loader from './Loader';
+
+const SModal = styled(Modal)`
+  .modal-content {
+    background-color: ${({ activetheme }: { activetheme: ThemeStyle }) => activetheme.bodyBackground};
+    border: 2px solid ${({ activetheme }: { activetheme: ThemeStyle }) => activetheme.buttonBorderColor};
+    color: ${({ activetheme }: { activetheme: ThemeStyle }) => activetheme.defaultTextColor};
+  }
+`;
 
 const SStatusMessage = styled.p`
   font-size: 24px;
 `;
 
 const ModalStatus = () => {
+  const { theme } = useAccounts();
   const { isModalVisible, status, resetModalStatus, concludeModalStatus } = useModalStatus();
 
   useEffect(() => {
@@ -28,13 +39,13 @@ const ModalStatus = () => {
   const showButton = status.type === ModalStatusTypes.COMPLETE || status.type === ModalStatusTypes.ERROR;
 
   return (
-    <Modal centered show={isModalVisible}>
+    <SModal centered show={isModalVisible} activetheme={theme}>
       <Modal.Body className='text-center'>
         <Loader />
         <SStatusMessage>{status.message}</SStatusMessage>
         {showButton && <ActionButton action={concludeModalStatus}>OK</ActionButton>}
       </Modal.Body>
-    </Modal>
+    </SModal>
   );
 };
 

@@ -6,18 +6,21 @@ import { useNavigate } from 'react-router-dom';
 import { saveDataToIpfs } from '@api/pinata';
 
 import { useAccounts } from '@contexts/AccountsContext';
+import { useModalStatus } from '@contexts/ModalStatusContext';
 
 import { IPFS_URL } from '@helpers/config';
+import { ModalStatusTypes, StatusMessages } from '@helpers/constants';
+import { handleError } from '@helpers/handleError';
 import { NftMetadata, NftMetadataData } from '@helpers/interfaces';
 import { routes } from '@helpers/routes';
 
 export const useNfts = (collectionId: string) => {
   const { api, activeAccount, activeWallet } = useAccounts();
   const navigate = useNavigate();
+  const { openModalStatus, setStatus, setAction } = useModalStatus();
   const [nftsMetadata, setNftsMetadata] = useState<NftMetadata[] | null>(null);
   const [nftMetadata, setNftMetadata] = useState<NftMetadata | null>(null);
   const [isNftDataLoading, setIsNftDataLoading] = useState(false);
-  const [isNftDataSaving, setIsNftDataSaving] = useState(false);
 
   const getNftIds = useCallback(async () => {
     if (api && activeAccount && collectionId) {
@@ -119,41 +122,61 @@ export const useNfts = (collectionId: string) => {
   const mintNft = useCallback(
     async (nftId: string) => {
       if (api && activeAccount && activeWallet && collectionId) {
-        setIsNftDataSaving(true);
+        setStatus({ type: ModalStatusTypes.INIT_TRANSACTION, message: StatusMessages.TRANSACTION_CONFIRM });
+        openModalStatus();
 
         try {
           const unsub = await api.tx.nfts
             .mint(collectionId, nftId, activeAccount.address, null)
             .signAndSend(activeAccount.address, { signer: activeWallet.signer }, ({ status }) => {
+              if (status.isReady) {
+                setStatus({ type: ModalStatusTypes.IN_PROGRESS, message: StatusMessages.NFT_MINTING });
+              }
+
               if (status.isFinalized) {
-                setIsNftDataSaving(false);
-                navigate(routes.nfts(collectionId));
+                setStatus({ type: ModalStatusTypes.COMPLETE, message: StatusMessages.NFT_MINTED });
                 unsub();
+
+                setAction(() => () => navigate(routes.nfts(collectionId)));
               }
             });
         } catch (error) {
-          setIsNftDataSaving(false);
+          setStatus({ type: ModalStatusTypes.ERROR, message: handleError(error) });
         }
       }
     },
-    [api, activeAccount, activeWallet, collectionId, navigate],
+    [api, activeAccount, activeWallet, collectionId, navigate, openModalStatus, setStatus, setAction],
   );
 
   const saveNftMetadata = useCallback(
     async (nftId: string, nftMetadata: NftMetadataData) => {
       if (api && activeAccount && activeWallet && collectionId) {
-        setIsNftDataSaving(true);
+        setStatus({ type: ModalStatusTypes.INIT_TRANSACTION, message: StatusMessages.TRANSACTION_CONFIRM });
+        openModalStatus();
+
         try {
           const metadataCid = await saveDataToIpfs(nftMetadata);
 
-          await api.tx.nfts.setMetadata(collectionId, nftId, metadataCid).signAndSend(activeAccount.address, { signer: activeWallet.signer });
+          const unsub = await api.tx.nfts
+            .setMetadata(collectionId, nftId, metadataCid)
+            .signAndSend(activeAccount.address, { signer: activeWallet.signer }, ({ status }) => {
+              if (status.isReady) {
+                setStatus({ type: ModalStatusTypes.IN_PROGRESS, message: StatusMessages.METADATA_UPDATING });
+              }
+
+              if (status.isFinalized) {
+                setStatus({ type: ModalStatusTypes.COMPLETE, message: StatusMessages.METADATA_UPDATED });
+                unsub();
+
+                setAction(() => () => navigate(routes.nfts(collectionId)));
+              }
+            });
         } catch (error) {
-        } finally {
-          setIsNftDataSaving(false);
+          setStatus({ type: ModalStatusTypes.ERROR, message: handleError(error) });
         }
       }
     },
-    [api, activeAccount, activeWallet, collectionId],
+    [api, activeAccount, activeWallet, collectionId, navigate, openModalStatus, setStatus, setAction],
   );
 
   const getNft = useCallback(
@@ -168,5 +191,5 @@ export const useNfts = (collectionId: string) => {
     [api, collectionId],
   );
 
-  return { nftsMetadata, nftMetadata, mintNft, getNftMetadata, getNftsMetadata, saveNftMetadata, isNftDataLoading, isNftDataSaving, getNft };
+  return { nftsMetadata, nftMetadata, mintNft, getNftMetadata, getNftsMetadata, saveNftMetadata, isNftDataLoading, getNft };
 };
