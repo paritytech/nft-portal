@@ -8,6 +8,7 @@ import { saveImageToIpfs } from '@api/pinata';
 import BasicButton from '@buttons/BasicButton';
 
 import ImagePreview from '@common/ImagePreview';
+import ModalStatus from '@common/ModalStatus';
 
 import { useAccounts } from '@contexts/AccountsContext';
 
@@ -17,7 +18,6 @@ import { routes } from '@helpers/routes';
 import { SSecondaryButton } from '@helpers/styledComponents';
 
 import { useNfts } from '@hooks/useNfts';
-import ModalStatus from '@common/ModalStatus';
 
 const NftEdit = () => {
   const { collectionId, nftId } = useParams();
@@ -91,9 +91,7 @@ const NftEdit = () => {
           <ImagePreview imageCid={nftMetadata?.image} imageSourceUrl={imageSourceUrl} />
         </Form.Group>
         <Stack direction='horizontal' gap={2} className='justify-content-end'>
-          <BasicButton type='submit'>
-            Submit metadata
-          </BasicButton>
+          <BasicButton type='submit'>Submit metadata</BasicButton>
           <Link to='..' relative='path'>
             <SSecondaryButton type='button' activeTheme={theme}>
               Back

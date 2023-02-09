@@ -1,4 +1,4 @@
-import { ChangeEvent, FormEvent, memo, useCallback, useEffect, useRef, useState } from 'react';
+import { FormEvent, memo, useCallback, useEffect, useRef, useState } from 'react';
 import Form from 'react-bootstrap/Form';
 import Stack from 'react-bootstrap/Stack';
 import { Link, useNavigate, useParams } from 'react-router-dom';
@@ -7,13 +7,12 @@ import { saveImageToIpfs } from '@api/pinata';
 
 import BasicButton from '@buttons/BasicButton';
 
-import ImagePreview from '@common/ImagePreview';
+import FileDropZone from '@common/FileDropZone';
 import ModalStatus from '@common/ModalStatus';
 
 import { useAccounts } from '@contexts/AccountsContext';
 
 import { CollectionMetadataData } from '@helpers/interfaces';
-import { prefecthCid } from '@helpers/prefetchCid';
 import { routes } from '@helpers/routes';
 import { SSecondaryButton } from '@helpers/styledComponents';
 
@@ -26,7 +25,7 @@ const CollectionEdit = () => {
   const { getCollectionMetadata, saveCollectionMetadata, collectionMetadata, isCollectionDataLoading } = useCollections();
   const collectionNameRef = useRef<HTMLInputElement>(null);
   const collectionDescriptionRef = useRef<HTMLTextAreaElement>(null);
-  const collectionImageCidRef = useRef<HTMLInputElement>(null);
+  const [imageCid, setImageCid] = useState<string | undefined>();
   const [imageSourceUrl, setImageSourceUrl] = useState<string | null>(null);
 
   const submitMetadata = useCallback(
@@ -37,24 +36,18 @@ const CollectionEdit = () => {
         const updatedMetadata: CollectionMetadataData = {
           name: collectionNameRef.current.value,
           description: collectionDescriptionRef.current ? collectionDescriptionRef.current.value : undefined,
-          image: collectionImageCidRef.current ? collectionImageCidRef.current.value : undefined,
+          image: imageCid ?? undefined,
         };
 
         Promise.all([saveImageToIpfs(imageSourceUrl), saveCollectionMetadata(collectionId, updatedMetadata)]);
       }
     },
-    [collectionId, saveCollectionMetadata, imageSourceUrl],
+    [collectionId, saveCollectionMetadata, imageSourceUrl, imageCid],
   );
 
-  const onImageChange = useCallback(async (event: ChangeEvent<HTMLInputElement>) => {
-    // TODO any restrictions on extensions and size?
-    if (event.target.files && collectionImageCidRef.current) {
-      const { cid, url } = await prefecthCid(event.target.files[0]);
-      collectionImageCidRef.current.value = cid;
-
-      setImageSourceUrl(url);
-    }
-  }, []);
+  useEffect(() => {
+    setImageCid(collectionMetadata?.image);
+  }, [collectionMetadata]);
 
   useEffect(() => {
     if (collectionId) {
@@ -92,9 +85,7 @@ const CollectionEdit = () => {
         </Form.Group>
         <Form.Group className='mb-3'>
           <Form.Label>Image:</Form.Label>
-          <Form.Control type='file' onChange={onImageChange} className='mb-1' />
-          <Form.Control type='text' defaultValue={collectionMetadata?.image} ref={collectionImageCidRef} className='mb-1' required readOnly />
-          <ImagePreview imageCid={collectionMetadata?.image} imageSourceUrl={imageSourceUrl} />
+          <FileDropZone imageSourceUrl={imageSourceUrl} setImageSourceUrl={setImageSourceUrl} imageCid={imageCid} setImageCid={setImageCid} />
         </Form.Group>
         <Stack direction='horizontal' gap={2} className='justify-content-end'>
           <BasicButton type='submit'>Submit metadata</BasicButton>
