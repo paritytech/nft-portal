@@ -1,4 +1,4 @@
-import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 import styled, { createGlobalStyle } from 'styled-components';
 
 import PrivateRoute from '@common/PrivateRoute';
@@ -59,61 +59,59 @@ const App = () => {
   return (
     <>
       <GlobalStyle />
-      <BrowserRouter>
-        <SMainContainer activeTheme={theme}>
-          <Hat />
-          <SContainer>
-            <SideMenu />
-            <SContent>
-              <Routes>
-                <Route path={routes.homepage} element={<Home />} />
-                <Route
-                  path={routes.collections}
-                  element={
-                    <PrivateRoute>
-                      <CollectionsView />
-                    </PrivateRoute>
-                  }
-                />
-                <Route
-                  path={routes.collectionEdit()}
-                  element={
-                    <PrivateRoute>
-                      <CollectionEdit />
-                    </PrivateRoute>
-                  }
-                />
-                <Route
-                  path={routes.nfts()}
-                  element={
-                    <PrivateRoute>
-                      <NftsView />
-                    </PrivateRoute>
-                  }
-                />
-                <Route
-                  path={routes.nftMint()}
-                  element={
-                    <PrivateRoute>
-                      <NewNft />
-                    </PrivateRoute>
-                  }
-                />
-                <Route
-                  path={routes.nftEdit()}
-                  element={
-                    <PrivateRoute>
-                      <NftEdit />
-                    </PrivateRoute>
-                  }
-                />
-                <Route path={routes.dex} element={<Dex />} />
-                <Route path='*' element={<Navigate to={routes.homepage} replace />} />
-              </Routes>
-            </SContent>
-          </SContainer>
-        </SMainContainer>
-      </BrowserRouter>
+      <SMainContainer activeTheme={theme}>
+        <Hat />
+        <SContainer>
+          <SideMenu />
+          <SContent>
+            <Routes>
+              <Route path={routes.homepage} element={<Home />} />
+              <Route
+                path={routes.collections}
+                element={
+                  <PrivateRoute>
+                    <CollectionsView />
+                  </PrivateRoute>
+                }
+              />
+              <Route
+                path={routes.collectionEdit()}
+                element={
+                  <PrivateRoute>
+                    <CollectionEdit />
+                  </PrivateRoute>
+                }
+              />
+              <Route
+                path={routes.nfts()}
+                element={
+                  <PrivateRoute>
+                    <NftsView />
+                  </PrivateRoute>
+                }
+              />
+              <Route
+                path={routes.nftMint()}
+                element={
+                  <PrivateRoute>
+                    <NewNft />
+                  </PrivateRoute>
+                }
+              />
+              <Route
+                path={routes.nftEdit()}
+                element={
+                  <PrivateRoute>
+                    <NftEdit />
+                  </PrivateRoute>
+                }
+              />
+              <Route path={routes.dex} element={<Dex />} />
+              <Route path='*' element={<Navigate to={routes.homepage} replace />} />
+            </Routes>
+          </SContent>
+        </SContainer>
+      </SMainContainer>
     </>
   );
 };

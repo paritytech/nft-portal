@@ -1,19 +1,18 @@
-import { ChangeEvent, FormEvent, memo, useCallback, useEffect, useRef, useState } from 'react';
+import { FormEvent, memo, useCallback, useEffect, useRef, useState } from 'react';
 import Form from 'react-bootstrap/esm/Form';
 import Stack from 'react-bootstrap/esm/Stack';
-import { Link, redirect, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 
 import { saveImageToIpfs } from '@api/pinata';
 
 import BasicButton from '@buttons/BasicButton';
 
-import ImagePreview from '@common/ImagePreview';
+import FileDropZone from '@common/FileDropZone';
 import ModalStatus from '@common/ModalStatus';
 
 import { useAccounts } from '@contexts/AccountsContext';
 
 import { CollectionMetadataData } from '@helpers/interfaces';
-import { prefecthCid } from '@helpers/prefetchCid';
 import { routes } from '@helpers/routes';
 import { SSecondaryButton } from '@helpers/styledComponents';
 
@@ -23,9 +22,10 @@ const NftEdit = () => {
   const { collectionId, nftId } = useParams();
   const { getNftMetadata, saveNftMetadata, nftMetadata, isNftDataLoading } = useNfts(collectionId || '');
   const { theme } = useAccounts();
+  const navigate = useNavigate();
   const nftNameRef = useRef<HTMLInputElement>(null);
   const nftDescriptionRef = useRef<HTMLTextAreaElement>(null);
-  const nftImageCidRef = useRef<HTMLInputElement>(null);
+  const [imageCid, setImageCid] = useState<string | undefined>();
   const [imageSourceUrl, setImageSourceUrl] = useState<string | null>(null);
 
   const submitMetadata = useCallback(
@@ -36,24 +36,18 @@ const NftEdit = () => {
         const updatedMetadata: CollectionMetadataData = {
           name: nftNameRef.current.value,
           description: nftDescriptionRef.current ? nftDescriptionRef.current.value : undefined,
-          image: nftImageCidRef.current ? nftImageCidRef.current.value : undefined,
+          image: imageCid,
         };
 
         Promise.all([saveImageToIpfs(imageSourceUrl), saveNftMetadata(nftId, updatedMetadata)]);
       }
     },
-    [collectionId, nftId, saveNftMetadata, imageSourceUrl],
+    [collectionId, nftId, saveNftMetadata, imageSourceUrl, imageCid],
   );
 
-  const onImageChange = useCallback(async (event: ChangeEvent<HTMLInputElement>) => {
-    // TODO any restrictions on extensions and size?
-    if (event.target.files && nftImageCidRef.current) {
-      const { cid, url } = await prefecthCid(event.target.files[0]);
-      nftImageCidRef.current.value = cid;
-
-      setImageSourceUrl(url);
-    }
-  }, []);
+  useEffect(() => {
+    setImageCid(nftMetadata?.image);
+  }, [nftMetadata]);
 
   useEffect(() => {
     if (collectionId && nftId) {
@@ -62,7 +56,7 @@ const NftEdit = () => {
   }, [collectionId, nftId, getNftMetadata]);
 
   if (!collectionId || !nftId) {
-    redirect(routes.collections);
+    navigate(routes.collections);
     return null;
   }
 
@@ -86,9 +80,7 @@ const NftEdit = () => {
         </Form.Group>
         <Form.Group className='mb-3'>
           <Form.Label>Image:</Form.Label>
-          <Form.Control type='file' onChange={onImageChange} className='mb-1' />
-          <Form.Control type='text' defaultValue={nftMetadata?.image} ref={nftImageCidRef} className='mb-1' required readOnly />
-          <ImagePreview imageCid={nftMetadata?.image} imageSourceUrl={imageSourceUrl} />
+          <FileDropZone imageSourceUrl={imageSourceUrl} setImageSourceUrl={setImageSourceUrl} imageCid={imageCid} setImageCid={setImageCid} />
         </Form.Group>
         <Stack direction='horizontal' gap={2} className='justify-content-end'>
           <BasicButton type='submit'>Submit metadata</BasicButton>

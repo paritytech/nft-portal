@@ -52,6 +52,8 @@ export interface ThemeStyle {
   buttonBorderColorHover: string;
   buttonTextColor: string;
   buttonTextColorHover: string;
+  closeButtonBackgroundColor: string;
+  closeButtonVariant: string | undefined;
   defaultTextColor: string;
   logoTextColor: string;
   menuButtonBackgroundColor: string;
@@ -60,6 +62,7 @@ export interface ThemeStyle {
   menuButtonActiveBackgroundColor: string;
   menuButtonActiveTextColor: string;
   menuButtonActiveBorderColor: string;
+  transparentHoverHighlight: string;
 }
 
 export interface StatusEntry {

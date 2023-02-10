@@ -36,7 +36,7 @@ const CollectionEdit = () => {
         const updatedMetadata: CollectionMetadataData = {
           name: collectionNameRef.current.value,
           description: collectionDescriptionRef.current ? collectionDescriptionRef.current.value : undefined,
-          image: imageCid ?? undefined,
+          image: imageCid,
         };
 
         Promise.all([saveImageToIpfs(imageSourceUrl), saveCollectionMetadata(collectionId, updatedMetadata)]);
@@ -54,12 +54,6 @@ const CollectionEdit = () => {
       getCollectionMetadata(collectionId);
     }
   }, [collectionId, getCollectionMetadata]);
-
-  useEffect(() => {
-    if (imageSourceUrl) {
-      return () => URL.revokeObjectURL(imageSourceUrl);
-    }
-  }, [imageSourceUrl]);
 
   if (!collectionId) {
     navigate(routes.collections);
