@@ -137,7 +137,7 @@ export const useNfts = (collectionId: string) => {
                 setStatus({ type: ModalStatusTypes.COMPLETE, message: StatusMessages.NFT_MINTED });
                 unsub();
 
-                setAction(() => () => navigate(routes.nfts(collectionId)));
+                setAction(() => () => navigate(routes.nftEdit(collectionId, nftId)));
               }
             });
         } catch (error) {

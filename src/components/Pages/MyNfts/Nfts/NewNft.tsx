@@ -6,6 +6,8 @@ import styled from 'styled-components';
 
 import BasicButton from '@buttons/BasicButton';
 
+import ModalStatus from '@common/ModalStatus';
+
 import { useAccounts } from '@contexts/AccountsContext';
 
 import { routes } from '@helpers/routes';
@@ -13,7 +15,6 @@ import { SSecondaryButton } from '@helpers/styledComponents';
 
 import { useNfts } from '@hooks/useNfts';
 import { useStatus } from '@hooks/useStatus';
-import ModalStatus from '@common/ModalStatus';
 
 const SNftTaken = styled.div`
   margin-top: 5px;
@@ -59,9 +60,7 @@ const NewNft = () => {
           {statusMessage && <SNftTaken className='text-danger'>{statusMessage}</SNftTaken>}
         </Form.Group>
         <Stack direction='horizontal' gap={2} className='justify-content-end'>
-          <BasicButton type='submit'>
-            Mint NFT
-          </BasicButton>
+          <BasicButton type='submit'>Mint NFT</BasicButton>
           <Link to={routes.nfts(collectionId)}>
             <SSecondaryButton type='button' activeTheme={theme}>
               Back

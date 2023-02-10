@@ -3,6 +3,7 @@ import { memo, useState } from 'react';
 import Modal from 'react-bootstrap/Modal';
 
 import ActionButton from '@buttons/ActionButton';
+import CrossCloseButton from '@buttons/CrossCloseButton';
 
 import { useAccounts } from '@contexts/AccountsContext';
 
@@ -28,8 +29,9 @@ const Connect = () => {
       </ActionButton>
 
       <SModal show={show} onHide={handleClose} activetheme={theme}>
-        <Modal.Header closeButton>
+        <Modal.Header>
           <Modal.Title>Available wallets</Modal.Title>
+          <CrossCloseButton variant={theme.closeButtonVariant} handleClose={handleClose} />
         </Modal.Header>
         <Modal.Body>
           {wallets.map((wallet: BaseWallet, index) => (

@@ -90,7 +90,7 @@ const SChainOption = styled.div<Themeable>`
 `;
 
 const SelectChain = () => {
-  const { storedChain, setupApi, theme } = useAccounts();
+  const { storedChain, setStoredChain, theme } = useAccounts();
   const [isChainListVisible, setIsChainListVisible] = useState(false);
   const dropdownRef = useOutsideClick(() => setIsChainListVisible(false));
 
@@ -100,7 +100,7 @@ const SelectChain = () => {
 
   const selectChain = (chain: Chain) => {
     setIsChainListVisible(false);
-    setupApi(chain);
+    setStoredChain(chain);
   };
 
   if (storedChain === null) {

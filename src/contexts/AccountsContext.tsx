@@ -1,10 +1,12 @@
 import { Account, BaseWallet } from '@polkadot-onboard/core';
 import { ApiPromise, WsProvider } from '@polkadot/api';
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import { chains } from '@helpers/config';
 import { ActiveAccount, Chain, ThemeStyle } from '@helpers/interfaces';
 import { themes } from '@helpers/reusableStyles';
+import { routes } from '@helpers/routes';
 
 import { useLocalStorage } from '@hooks/useLocalStorage';
 
@@ -22,6 +24,7 @@ interface AccountsContextProps {
   setStoredActiveAccount: (value: ActiveAccount) => void;
   setupApi: (value: Chain) => void;
   storedChain: Chain | null;
+  setStoredChain: (value: Chain | null) => void;
   theme: ThemeStyle;
 }
 
@@ -35,6 +38,7 @@ const AccountsContext = createContext<AccountsContextProps>({
   setStoredActiveAccount: () => {},
   setupApi: () => {},
   storedChain: null,
+  setStoredChain: () => {},
   theme: themes.kusama,
 });
 
@@ -44,24 +48,22 @@ export const AccountsContextProvider = ({ children }: AccountsContextProviderPro
   const [activeAccount, setActiveAccount] = useState<Account | null>(null);
   const [activeWallet, setActiveWallet] = useState<BaseWallet | null>(null);
   const [api, setApi] = useState<ApiPromise | null>(null);
+  const [theme, setTheme] = useState<ThemeStyle>(themes.kusama);
   const [storedActiveAccount, setStoredActiveAccount] = useLocalStorage<ActiveAccount | null>('activeAccount', null);
   const [storedChain, setStoredChain] = useLocalStorage<Chain | null>('chain', null);
-  const [theme, setTheme] = useState<ThemeStyle>(themes.kusama);
+  const navigate = useNavigate();
 
-  const setupApi = useCallback(
-    async (chain: Chain) => {
-      const provider = new WsProvider(chain.url);
-      const unsub = provider.on('error', () => {
-        provider.disconnect();
-        unsub();
-      });
-      const api = await ApiPromise.create({ provider });
+  const setupApi = useCallback(async () => {
+    const provider = new WsProvider(storedChain?.url || chains[0].url);
+    const unsub = provider.on('error', () => {
+      provider.disconnect();
+      unsub();
+    });
+    const api = await ApiPromise.create({ provider });
 
-      setStoredChain(chain);
-      setApi(api);
-    },
-    [setStoredChain],
-  );
+    setApi(api);
+    navigate(routes.collections);
+  }, [storedChain, navigate]);
 
   const setupTheme = useCallback((chain: Chain) => {
     switch (chain.theme) {
@@ -77,9 +79,13 @@ export const AccountsContextProvider = ({ children }: AccountsContextProviderPro
   }, []);
 
   useEffect(() => {
-    setupApi(storedChain || chains[0]);
-    setupTheme(storedChain || chains[0]);
-  }, [setupApi, setupTheme, storedChain]);
+    if (storedChain === null) {
+      setStoredChain(chains[0]);
+    } else {
+      setupApi();
+      setupTheme(storedChain);
+    }
+  }, [storedChain]);
 
   const contextData = useMemo(
     () => ({
@@ -92,9 +98,10 @@ export const AccountsContextProvider = ({ children }: AccountsContextProviderPro
       setStoredActiveAccount,
       setupApi,
       storedChain,
+      setStoredChain,
       theme,
     }),
-    [activeAccount, activeWallet, api, storedActiveAccount, setStoredActiveAccount, setupApi, storedChain, theme],
+    [activeAccount, activeWallet, api, storedActiveAccount, setStoredActiveAccount, setupApi, storedChain, setStoredChain, theme],
   );
 
   return <AccountsContext.Provider value={contextData}>{children}</AccountsContext.Provider>;

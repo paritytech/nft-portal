@@ -45,6 +45,8 @@ export const themes: Record<string, ThemeStyle> = {
     buttonBorderColorHover: styleSettings.colors.aqua,
     buttonTextColor: styleSettings.colors.rose,
     buttonTextColorHover: styleSettings.colors.aqua,
+    closeButtonBackgroundColor: styleSettings.colors.white,
+    closeButtonVariant: 'white',
     defaultTextColor: styleSettings.colors.white,
     logoTextColor: styleSettings.colors.white,
     menuButtonBackgroundColor: styleSettings.colors.black,
@@ -53,6 +55,7 @@ export const themes: Record<string, ThemeStyle> = {
     menuButtonActiveBackgroundColor: styleSettings.colors.black,
     menuButtonActiveTextColor: styleSettings.colors.aqua,
     menuButtonActiveBorderColor: styleSettings.colors.aqua,
+    transparentHoverHighlight: 'rgba(255, 255, 255, 0.3)',
   },
   polkadot: {
     blockBackgroundColorHover: styleSettings.colors.cerise,
@@ -63,6 +66,8 @@ export const themes: Record<string, ThemeStyle> = {
     buttonBorderColorHover: styleSettings.colors.cerise,
     buttonTextColor: styleSettings.colors.white,
     buttonTextColorHover: styleSettings.colors.white,
+    closeButtonBackgroundColor: styleSettings.colors.blackHaze,
+    closeButtonVariant: undefined,
     defaultTextColor: styleSettings.colors.shark,
     logoTextColor: styleSettings.colors.black,
     menuButtonBackgroundColor: styleSettings.colors.blackHaze,
@@ -71,6 +76,7 @@ export const themes: Record<string, ThemeStyle> = {
     menuButtonActiveBackgroundColor: styleSettings.colors.cerise,
     menuButtonActiveTextColor: styleSettings.colors.white,
     menuButtonActiveBorderColor: styleSettings.colors.cerise,
+    transparentHoverHighlight: 'rgba(0, 0, 0, 0.3)',
   },
 };
 
