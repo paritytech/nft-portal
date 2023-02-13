@@ -16,6 +16,7 @@ import Dex from '@pages/Dex/Dex';
 import Home from '@pages/Home/Home';
 import CollectionEdit from '@pages/MyNfts/Collections/CollectionEdit';
 import CollectionsView from '@pages/MyNfts/Collections/CollectionsView';
+import NewCollection from '@pages/MyNfts/Collections/NewCollection';
 import NewNft from '@pages/MyNfts/Nfts/NewNft';
 import NftEdit from '@pages/MyNfts/Nfts/NftEdit';
 import NftsView from '@pages/MyNfts/Nfts/NftsView';
@@ -71,6 +72,14 @@ const App = () => {
                 element={
                   <PrivateRoute>
                     <CollectionsView />
+                  </PrivateRoute>
+                }
+              />
+              <Route
+                path={routes.collectionMint}
+                element={
+                  <PrivateRoute>
+                    <NewCollection />
                   </PrivateRoute>
                 }
               />
