@@ -4,6 +4,7 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useState } 
 import { useNavigate } from 'react-router-dom';
 
 import { chains } from '@helpers/config';
+import { ChainThemes } from '@helpers/constants';
 import { ActiveAccount, Chain, ThemeStyle } from '@helpers/interfaces';
 import { themes } from '@helpers/reusableStyles';
 import { routes } from '@helpers/routes';
@@ -67,10 +68,10 @@ export const AccountsContextProvider = ({ children }: AccountsContextProviderPro
 
   const setupTheme = useCallback((chain: Chain) => {
     switch (chain.theme) {
-      case 'kusama':
+      case ChainThemes.KUSAMA:
         setTheme(themes.kusama);
         break;
-      case 'polkadot':
+      case ChainThemes.POLKADOT:
         setTheme(themes.polkadot);
         break;
       default:

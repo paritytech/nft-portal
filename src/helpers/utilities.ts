@@ -23,3 +23,12 @@ export const normalizePath = (path: string) => {
 
   return path;
 };
+
+export const convertToBitFlagValue = (values: boolean[]) => {
+  const bitFlag = values
+    .map((value) => +value)
+    .reverse()
+    .join('');
+
+  return parseInt(bitFlag, 2);
+};

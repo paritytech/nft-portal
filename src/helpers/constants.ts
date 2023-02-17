@@ -1,3 +1,13 @@
+export enum ChainTitles {
+  LOCALHOST = 'localhost',
+  WESTMINT = 'westmint',
+}
+
+export enum ChainThemes {
+  KUSAMA = 'kusama',
+  POLKADOT = 'polkadot',
+}
+
 export enum ModalStatusTypes {
   INIT_TRANSACTION = 'INIT_TRANSACTION',
   IN_PROGRESS = 'IN_PROGRESS',
@@ -15,4 +25,10 @@ export enum StatusMessages {
   NFT_MINTING = 'Minting NFT, please wait',
   TRANSACTION_CANCELED = 'Transaction was canceled',
   TRANSACTION_CONFIRM = 'Please confirm transaction in your wallet',
+}
+
+export enum MintTypes {
+  ISSUER = 'Issuer',
+  PUBLIC = 'Public',
+  HOLDER_OF = 'HolderOf',
 }
