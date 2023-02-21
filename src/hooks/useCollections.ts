@@ -11,7 +11,7 @@ import { useModalStatus } from '@contexts/ModalStatusContext';
 import { IPFS_URL } from '@helpers/config';
 import { ModalStatusTypes, StatusMessages } from '@helpers/constants';
 import { handleError } from '@helpers/handleError';
-import { CollectionMetadata, CollectionMetadataData } from '@helpers/interfaces';
+import { CollectionConfig, CollectionMetadata, CollectionMetadataData } from '@helpers/interfaces';
 import { routes } from '@helpers/routes';
 
 export const useCollections = () => {
@@ -119,14 +119,14 @@ export const useCollections = () => {
     [api, getCollectionIds],
   );
 
-  const mintCollection = useCallback(async () => {
+  const mintCollection = useCallback(async (collectionConfig: CollectionConfig) => {
     if (api && activeAccount && activeWallet) {
       setStatus({ type: ModalStatusTypes.INIT_TRANSACTION, message: StatusMessages.TRANSACTION_CONFIRM });
       openModalStatus();
 
       try {
         const unsub = await api.tx.nfts
-          .create(activeAccount.address, null)
+          .create(activeAccount.address, collectionConfig)
           .signAndSend(activeAccount.address, { signer: activeWallet.signer }, ({ events, status }) => {
             if (status.isReady) {
               setStatus({ type: ModalStatusTypes.IN_PROGRESS, message: StatusMessages.COLLECTION_MINTING });
@@ -144,11 +144,18 @@ export const useCollections = () => {
                   return true;
                 }
 
+                if (method === 'ExtrinsicFailed') {
+                  setStatus({ type: ModalStatusTypes.ERROR, message: StatusMessages.ACTION_FAILED });
+
+                  return true;
+                }
+
                 return false;
               });
             }
           });
       } catch (error: any) {
+        console.log(error)
         setStatus({ type: ModalStatusTypes.ERROR, message: handleError(error) });
       }
     }

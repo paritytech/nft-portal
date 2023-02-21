@@ -24,9 +24,12 @@ export const normalizePath = (path: string) => {
   return path;
 };
 
+// the values are flipped to opposite because in the nfts pallet we use bitflags
+// where we select what to disable, so in pallet true = disabled, false = enabled
+// in order to not confuse users, in UI we use normal logic and then flip values here
 export const convertToBitFlagValue = (values: boolean[]) => {
   const bitFlag = values
-    .map((value) => +value)
+    .map((value) => +(!value))
     .reverse()
     .join('');
 
