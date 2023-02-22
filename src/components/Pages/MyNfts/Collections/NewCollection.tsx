@@ -23,7 +23,7 @@ const SIndentation = styled.section`
 `;
 
 const NewCollection = () => {
-  const { theme } = useAccounts();
+  const { api, theme } = useAccounts();
   const { mintCollection } = useCollections();
   const transferrableItemsRef = useRef<HTMLInputElement>(null);
   const unlockedMetadataRef = useRef<HTMLInputElement>(null);
@@ -43,6 +43,7 @@ const NewCollection = () => {
       const collectionConfig: CollectionConfig = {};
 
       if (
+        api !== null &&
         transferrableItemsRef.current !== null &&
         unlockedMetadataRef.current !== null &&
         unlockedAttributesRef.current !== null &&
@@ -67,18 +68,22 @@ const NewCollection = () => {
           unlockedItemAttributesRef.current.checked,
         ]);
 
+        // TODO get startBlock, endBlock with getBlockNumber()
+
         collectionConfig.settings = settings;
         collectionConfig.maxSupply = maxSupplyRef.current.value === '' ? undefined : parseInt(maxSupplyRef.current.value, 10);
         collectionConfig.mintSettings = {
           mintType: mintTypeRef.current.value as MintTypes,
-          price: priceRef.current.value === '' ? undefined : parseInt(priceRef.current.value),
+          price: priceRef.current.value === '' ? undefined : parseFloat(priceRef.current.value) * 10 ** api.registry.chainDecimals[0],
+          startBlock: undefined,
+          endBlock: undefined,
           defaultItemSettings,
         };
       }
 
       mintCollection(collectionConfig);
     },
-    [mintCollection],
+    [api, mintCollection],
   );
 
   return (
@@ -97,7 +102,7 @@ const NewCollection = () => {
             </Form.Group>
 
             <Form.Group className='mb-3'>
-              <Form.Label>Max supply:</Form.Label>
+              <Form.Label>Max supply (optional):</Form.Label>
               <Form.Control type='number' ref={maxSupplyRef} />
             </Form.Group>
           </SIndentation>
@@ -111,15 +116,24 @@ const NewCollection = () => {
               <Form.Label>Mint type:</Form.Label>
               <Form.Select ref={mintTypeRef}>
                 {Object.entries(MintTypes).map(([key, value]) => (
-                  <option key={key} value={value}>{value}</option>
+                  <option key={key} value={value}>
+                    {value}
+                  </option>
                 ))}
               </Form.Select>
             </Form.Group>
 
             <Form.Group className='mb-3'>
-              <Form.Label>Price:</Form.Label>
-              <Form.Control type='number' ref={priceRef} />
+              <Form.Label>Price (optional):</Form.Label>
+              <Form.Control
+                type='text'
+                ref={priceRef}
+                pattern={`^(0|[1-9][0-9]*)(\.[0-9]{0,${api?.registry.chainDecimals[0]}})?$`}
+                title={`Please enter a number e.g. 10.25, max precision is ${api?.registry.chainDecimals[0]} decimals after .`}
+              />
             </Form.Group>
+
+            {/* TODO add optional range picker */}
 
             <Form.Group className='mb-3'>
               <Form.Label>Default item settings:</Form.Label>
