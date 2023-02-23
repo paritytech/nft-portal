@@ -1,5 +1,5 @@
 import { memo } from 'react';
-import Stack from 'react-bootstrap/Stack';
+import Stack from 'react-bootstrap/esm/Stack';
 import { Link } from 'react-router-dom';
 
 import BasicButton from '@buttons/BasicButton';

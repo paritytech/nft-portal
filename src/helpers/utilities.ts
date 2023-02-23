@@ -38,12 +38,16 @@ export const convertToBitFlagValue = (values: boolean[]) => {
   return parseInt(bitFlag, 2);
 };
 
-export const getBlockNumber = async (api: ApiPromise, timestamp: number) => {
+export const getBlockNumber = async (api: ApiPromise, timestamp?: number) => {
+  if (typeof timestamp === 'undefined') {
+    return timestamp;
+  }
+
   const blockTime = (api.consts.babe.expectedBlockTime.toPrimitive() as number) / 1000; // in seconds
   const activeBlockNumber = (await api.derive.chain.bestNumber()).toNumber();
 
   const currentDate = Math.floor(Date.now() / 1000); // current timestamp in seconds
   const laterDate = Math.floor(timestamp / 1000); // user provided timestamp in seconds
 
-  return (laterDate - currentDate) / blockTime + activeBlockNumber;
+  return Math.floor((laterDate - currentDate) / blockTime + activeBlockNumber);
 };

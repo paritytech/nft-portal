@@ -1,4 +1,4 @@
-import { memo } from 'react';
+import { FormEvent, memo } from 'react';
 import styled from 'styled-components';
 
 import { useAccounts } from '@contexts/AccountsContext';
@@ -18,7 +18,9 @@ interface ActionButtonProps extends CommonStyleProps {
 const ActionButton = ({ children, action, className, isDisabled }: ActionButtonProps) => {
   const { theme } = useAccounts();
 
-  const handleClick = () => {
+  const handleClick = (event: FormEvent) => {
+    event.preventDefault();
+
     if (isDisabled) {
       return;
     }

@@ -1,6 +1,6 @@
 import { FormEvent, memo, useCallback, useRef } from 'react';
-import Form from 'react-bootstrap/Form';
-import Stack from 'react-bootstrap/Stack';
+import Form from 'react-bootstrap/esm/Form';
+import Stack from 'react-bootstrap/esm/Stack';
 import { Link, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 

@@ -1,10 +1,11 @@
-import { FormEvent, memo, useCallback, useRef } from 'react';
-import Form from 'react-bootstrap/Form';
-import Stack from 'react-bootstrap/Stack';
+import { FormEvent, memo, useCallback, useRef, useState } from 'react';
+import Form from 'react-bootstrap/esm/Form';
+import Stack from 'react-bootstrap/esm/Stack';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 import BasicButton from '@buttons/BasicButton';
+import DateRangeButton from '@buttons/DateRangeButton';
 
 import ModalStatus from '@common/ModalStatus';
 
@@ -14,7 +15,7 @@ import { MintTypes } from '@helpers/constants';
 import { CollectionConfig } from '@helpers/interfaces';
 import { routes } from '@helpers/routes';
 import { SSecondaryButton } from '@helpers/styledComponents';
-import { convertToBitFlagValue } from '@helpers/utilities';
+import { convertToBitFlagValue, getBlockNumber } from '@helpers/utilities';
 
 import { useCollections } from '@hooks/useCollections';
 
@@ -35,9 +36,11 @@ const NewCollection = () => {
   const transferrableItemRef = useRef<HTMLInputElement>(null);
   const unlockedItemMetadataRef = useRef<HTMLInputElement>(null);
   const unlockedItemAttributesRef = useRef<HTMLInputElement>(null);
+  const [startDate, setStartDate] = useState<Date>();
+  const [endDate, setEndDate] = useState<Date>();
 
   const submitMintCollection = useCallback(
-    (event: FormEvent) => {
+    async (event: FormEvent) => {
       event.preventDefault();
 
       const collectionConfig: CollectionConfig = {};
@@ -68,22 +71,23 @@ const NewCollection = () => {
           unlockedItemAttributesRef.current.checked,
         ]);
 
-        // TODO get startBlock, endBlock with getBlockNumber()
+        const startBlock = await getBlockNumber(api, startDate?.getTime());
+        const endBlock = await getBlockNumber(api, endDate?.getTime());
 
         collectionConfig.settings = settings;
         collectionConfig.maxSupply = maxSupplyRef.current.value === '' ? undefined : parseInt(maxSupplyRef.current.value, 10);
         collectionConfig.mintSettings = {
           mintType: mintTypeRef.current.value as MintTypes,
           price: priceRef.current.value === '' ? undefined : parseFloat(priceRef.current.value) * 10 ** api.registry.chainDecimals[0],
-          startBlock: undefined,
-          endBlock: undefined,
+          startBlock,
+          endBlock,
           defaultItemSettings,
         };
       }
 
       mintCollection(collectionConfig);
     },
-    [api, mintCollection],
+    [api, mintCollection, startDate, endDate],
   );
 
   return (
@@ -102,7 +106,9 @@ const NewCollection = () => {
             </Form.Group>
 
             <Form.Group className='mb-3'>
-              <Form.Label>Max supply (optional):</Form.Label>
+              <Form.Label>
+                Max supply <i>(optional)</i>:
+              </Form.Label>
               <Form.Control type='number' ref={maxSupplyRef} />
             </Form.Group>
           </SIndentation>
@@ -124,7 +130,9 @@ const NewCollection = () => {
             </Form.Group>
 
             <Form.Group className='mb-3'>
-              <Form.Label>Price (optional):</Form.Label>
+              <Form.Label>
+                Price <i>(optional)</i>:
+              </Form.Label>
               <Form.Control
                 type='text'
                 ref={priceRef}
@@ -133,7 +141,9 @@ const NewCollection = () => {
               />
             </Form.Group>
 
-            {/* TODO add optional range picker */}
+            <Form.Group className='mb-3'>
+              <DateRangeButton startDate={startDate} setStartDate={setStartDate} endDate={endDate} setEndDate={setEndDate} />
+            </Form.Group>
 
             <Form.Group className='mb-3'>
               <Form.Label>Default item settings:</Form.Label>

@@ -1,5 +1,5 @@
 import { memo, useEffect } from 'react';
-import Stack from 'react-bootstrap/Stack';
+import Stack from 'react-bootstrap/esm/Stack';
 import { Link, useParams } from 'react-router-dom';
 
 import BasicButton from '@buttons/BasicButton';
