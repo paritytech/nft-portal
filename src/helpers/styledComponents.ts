@@ -1,5 +1,5 @@
-import Card from 'react-bootstrap/Card';
-import Modal from 'react-bootstrap/Modal';
+import Card from 'react-bootstrap/esm/Card';
+import Modal from 'react-bootstrap/esm/Modal';
 import styled from 'styled-components';
 
 import ActionButton from '@buttons/ActionButton';

@@ -1,5 +1,5 @@
 import { memo } from 'react';
-import CloseButton, { CloseButtonProps } from 'react-bootstrap/CloseButton';
+import CloseButton, { CloseButtonProps } from 'react-bootstrap/esm/CloseButton';
 
 import { useAccounts } from '@contexts/AccountsContext';
 

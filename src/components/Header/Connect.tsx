@@ -1,6 +1,6 @@
 import { BaseWallet } from '@polkadot-onboard/core';
 import { memo, useState } from 'react';
-import Modal from 'react-bootstrap/Modal';
+import Modal from 'react-bootstrap/esm/Modal';
 
 import ActionButton from '@buttons/ActionButton';
 import CrossCloseButton from '@buttons/CrossCloseButton';

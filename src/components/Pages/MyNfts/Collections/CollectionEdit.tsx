@@ -1,6 +1,6 @@
 import { FormEvent, memo, useCallback, useEffect, useRef, useState } from 'react';
-import Form from 'react-bootstrap/Form';
-import Stack from 'react-bootstrap/Stack';
+import Form from 'react-bootstrap/esm/Form';
+import Stack from 'react-bootstrap/esm/Stack';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 
 import { saveImageToIpfs } from '@api/pinata';

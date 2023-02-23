@@ -1,9 +1,9 @@
-import { ModalStatusTypes, StatusMessages } from './constants';
+import { ChainThemes, ChainTitles, MintTypes, ModalStatusTypes, StatusMessages } from './constants';
 
 export interface CommonStyleProps {
   className?: string;
   isDisabled?: boolean;
-  type?: 'button' | 'submit' | 'reset' | undefined;
+  type?: 'button' | 'submit' | 'reset';
 }
 export interface CollectionMetadata extends CollectionMetadataData {
   id: string;
@@ -36,9 +36,6 @@ export interface Chain {
   theme: ChainThemes;
 }
 
-export type ChainTitles = 'localhost' | 'westmint';
-export type ChainThemes = 'kusama' | 'polkadot';
-
 export interface Themeable {
   activeTheme: ThemeStyle;
 }
@@ -68,4 +65,16 @@ export interface ThemeStyle {
 export interface StatusEntry {
   type: ModalStatusTypes;
   message: StatusMessages;
+}
+
+export interface CollectionConfig {
+  settings?: number;
+  maxSupply?: number;
+  mintSettings?: {
+    mintType?: MintTypes;
+    price?: number;
+    startBlock?: number;
+    endBlock?: number;
+    defaultItemSettings?: number;
+  };
 }

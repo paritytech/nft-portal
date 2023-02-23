@@ -1,3 +1,4 @@
+import { ChainThemes, ChainTitles } from './constants';
 import { Chain } from './interfaces';
 
 export const APP_NAME = 'assets-portal';
@@ -7,13 +8,13 @@ export const IPFS_URL = 'https://gateway.pinata.cloud/ipfs/';
 export const chains: Chain[] = [
   {
     url: 'wss://westmint-rpc.polkadot.io',
-    title: 'westmint',
-    theme: 'kusama',
+    title: ChainTitles.WESTMINT,
+    theme: ChainThemes.KUSAMA,
   },
   {
     url: 'ws://127.0.0.1:9944',
-    title: 'localhost',
-    theme: 'polkadot',
+    title: ChainTitles.LOCALHOST,
+    theme: ChainThemes.POLKADOT,
   },
 ];
 

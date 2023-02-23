@@ -1,5 +1,6 @@
 import styled, { css } from 'styled-components';
 
+import { ChainThemes } from './constants';
 import { CommonStyleProps, ThemeStyle, Themeable } from './interfaces';
 
 export const deviceScreenSize = {
@@ -35,8 +36,8 @@ export const styleSettings = {
   },
 };
 
-export const themes: Record<string, ThemeStyle> = {
-  kusama: {
+export const themes: Record<ChainThemes, ThemeStyle> = {
+  [ChainThemes.KUSAMA]: {
     blockBackgroundColorHover: styleSettings.colors.rose,
     bodyBackground: styleSettings.colors.black,
     borderRadius: '0',
@@ -57,7 +58,7 @@ export const themes: Record<string, ThemeStyle> = {
     menuButtonActiveBorderColor: styleSettings.colors.aqua,
     transparentHoverHighlight: 'rgba(255, 255, 255, 0.3)',
   },
-  polkadot: {
+  [ChainThemes.POLKADOT]: {
     blockBackgroundColorHover: styleSettings.colors.cerise,
     bodyBackground: styleSettings.colors.blackHaze,
     borderRadius: '10px',

@@ -1,5 +1,5 @@
 import { memo } from 'react';
-import Card from 'react-bootstrap/Card';
+import Card from 'react-bootstrap/esm/Card';
 import styled from 'styled-components';
 
 import { IPFS_URL } from '@helpers/config';

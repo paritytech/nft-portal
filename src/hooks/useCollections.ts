@@ -11,7 +11,7 @@ import { useModalStatus } from '@contexts/ModalStatusContext';
 import { IPFS_URL } from '@helpers/config';
 import { ModalStatusTypes, StatusMessages } from '@helpers/constants';
 import { handleError } from '@helpers/handleError';
-import { CollectionMetadata, CollectionMetadataData } from '@helpers/interfaces';
+import { CollectionConfig, CollectionMetadata, CollectionMetadataData } from '@helpers/interfaces';
 import { routes } from '@helpers/routes';
 
 export const useCollections = () => {
@@ -119,40 +119,49 @@ export const useCollections = () => {
     [api, getCollectionIds],
   );
 
-  const mintCollection = useCallback(async () => {
-    if (api && activeAccount && activeWallet) {
-      setStatus({ type: ModalStatusTypes.INIT_TRANSACTION, message: StatusMessages.TRANSACTION_CONFIRM });
-      openModalStatus();
+  const mintCollection = useCallback(
+    async (collectionConfig: CollectionConfig) => {
+      if (api && activeAccount && activeWallet) {
+        setStatus({ type: ModalStatusTypes.INIT_TRANSACTION, message: StatusMessages.TRANSACTION_CONFIRM });
+        openModalStatus();
 
-      try {
-        const unsub = await api.tx.nfts
-          .create(activeAccount.address, null)
-          .signAndSend(activeAccount.address, { signer: activeWallet.signer }, ({ events, status }) => {
-            if (status.isReady) {
-              setStatus({ type: ModalStatusTypes.IN_PROGRESS, message: StatusMessages.COLLECTION_MINTING });
-            }
+        try {
+          const unsub = await api.tx.nfts
+            .create(activeAccount.address, collectionConfig)
+            .signAndSend(activeAccount.address, { signer: activeWallet.signer }, ({ events, status }) => {
+              if (status.isReady) {
+                setStatus({ type: ModalStatusTypes.IN_PROGRESS, message: StatusMessages.COLLECTION_MINTING });
+              }
 
-            if (status.isFinalized) {
-              setStatus({ type: ModalStatusTypes.COMPLETE, message: StatusMessages.COLLECTION_MINTED });
-              unsub();
+              if (status.isFinalized) {
+                setStatus({ type: ModalStatusTypes.COMPLETE, message: StatusMessages.COLLECTION_MINTED });
+                unsub();
 
-              events.some(({ event: { data, method } }) => {
-                if (method === 'Created') {
-                  const mintedCollectionId = data[0].toString();
-                  setAction(() => () => navigate(routes.collectionEdit(mintedCollectionId)));
+                events.some(({ event: { data, method } }) => {
+                  if (method === 'Created') {
+                    const mintedCollectionId = data[0].toString();
+                    setAction(() => () => navigate(routes.collectionEdit(mintedCollectionId)));
 
-                  return true;
-                }
+                    return true;
+                  }
 
-                return false;
-              });
-            }
-          });
-      } catch (error: any) {
-        setStatus({ type: ModalStatusTypes.ERROR, message: handleError(error) });
+                  if (method === 'ExtrinsicFailed') {
+                    setStatus({ type: ModalStatusTypes.ERROR, message: StatusMessages.ACTION_FAILED });
+
+                    return true;
+                  }
+
+                  return false;
+                });
+              }
+            });
+        } catch (error: any) {
+          setStatus({ type: ModalStatusTypes.ERROR, message: handleError(error) });
+        }
       }
-    }
-  }, [api, activeAccount, activeWallet, navigate, openModalStatus, setStatus, setAction]);
+    },
+    [api, activeAccount, activeWallet, navigate, openModalStatus, setStatus, setAction],
+  );
 
   const saveCollectionMetadata = useCallback(
     async (collectionId: string, collectionMetadata: CollectionMetadataData) => {

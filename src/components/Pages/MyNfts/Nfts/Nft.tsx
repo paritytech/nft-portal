@@ -1,5 +1,5 @@
 import { memo } from 'react';
-import Card from 'react-bootstrap/Card';
+import Card from 'react-bootstrap/esm/Card';
 import { Link, useParams } from 'react-router-dom';
 
 import EditIcon from '@assets/edit-icon.svg';
