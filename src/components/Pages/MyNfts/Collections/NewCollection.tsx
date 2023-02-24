@@ -15,7 +15,7 @@ import { MintTypes } from '@helpers/constants';
 import { CollectionConfig } from '@helpers/interfaces';
 import { routes } from '@helpers/routes';
 import { SSecondaryButton } from '@helpers/styledComponents';
-import { convertToBitFlagValue, getBlockNumber } from '@helpers/utilities';
+import { convertToBitFlagValue, getBlockNumber, pricePattern } from '@helpers/utilities';
 
 import { useCollections } from '@hooks/useCollections';
 
@@ -90,6 +90,10 @@ const NewCollection = () => {
     [api, mintCollection, startDate, endDate],
   );
 
+  if (!api) {
+    return null;
+  }
+
   return (
     <>
       <ModalStatus />
@@ -136,8 +140,8 @@ const NewCollection = () => {
               <Form.Control
                 type='text'
                 ref={priceRef}
-                pattern={`^(0|[1-9][0-9]*)(\.[0-9]{0,${api?.registry.chainDecimals[0]}})?$`}
-                title={`Please enter a number e.g. 10.25, max precision is ${api?.registry.chainDecimals[0]} decimals after .`}
+                pattern={pricePattern(api.registry.chainDecimals[0])}
+                title={`Please enter a number e.g. 10.25, max precision is ${api.registry.chainDecimals[0]} decimals after .`}
               />
             </Form.Group>
 

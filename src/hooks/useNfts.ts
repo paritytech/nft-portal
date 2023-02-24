@@ -120,14 +120,14 @@ export const useNfts = (collectionId: string) => {
   );
 
   const mintNft = useCallback(
-    async (nftId: string) => {
+    async (nftId: string, nftReceiver: string) => {
       if (api && activeAccount && activeWallet && collectionId) {
         setStatus({ type: ModalStatusTypes.INIT_TRANSACTION, message: StatusMessages.TRANSACTION_CONFIRM });
         openModalStatus();
 
         try {
           const unsub = await api.tx.nfts
-            .mint(collectionId, nftId, activeAccount.address, null)
+            .mint(collectionId, nftId, nftReceiver, null)
             .signAndSend(activeAccount.address, { signer: activeWallet.signer }, ({ status }) => {
               if (status.isReady) {
                 setStatus({ type: ModalStatusTypes.IN_PROGRESS, message: StatusMessages.NFT_MINTING });
@@ -137,7 +137,13 @@ export const useNfts = (collectionId: string) => {
                 setStatus({ type: ModalStatusTypes.COMPLETE, message: StatusMessages.NFT_MINTED });
                 unsub();
 
-                setAction(() => () => navigate(routes.nftEdit(collectionId, nftId)));
+                setAction(() => () => {
+                  if (nftReceiver === activeAccount.address) {
+                    navigate(routes.nftEdit(collectionId, nftId));
+                  }
+
+                  navigate(routes.nfts(collectionId));
+                });
               }
             });
         } catch (error) {

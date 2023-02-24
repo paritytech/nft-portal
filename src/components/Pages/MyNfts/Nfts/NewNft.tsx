@@ -23,21 +23,22 @@ const SNftTaken = styled.div`
 const NewNft = () => {
   const { collectionId } = useParams();
   const { mintNft, getNft } = useNfts(collectionId || '');
-  const { theme } = useAccounts();
+  const { activeAccount, theme } = useAccounts();
   const { nftTaken, statusMessage, clearStatus } = useStatus();
   const nftIdRef = useRef<HTMLInputElement>(null);
+  const nftReceiverRef = useRef<HTMLInputElement>(null);
 
   const submitMintNft = useCallback(
     async (event: FormEvent) => {
       event.preventDefault();
       clearStatus();
 
-      if (collectionId && nftIdRef.current) {
+      if (collectionId && nftIdRef.current !== null && nftReceiverRef.current !== null) {
         const nftId = nftIdRef.current.value;
         const nft = await getNft(nftId);
 
         if (nft === null) {
-          mintNft(nftId);
+          mintNft(nftId, nftReceiverRef.current.value);
         } else {
           nftTaken(nftId);
         }
@@ -45,6 +46,10 @@ const NewNft = () => {
     },
     [collectionId, mintNft, getNft, nftTaken, clearStatus],
   );
+
+  if (activeAccount === null) {
+    return null;
+  }
 
   return (
     <>
@@ -58,6 +63,10 @@ const NewNft = () => {
           <Form.Label>NFT ID:</Form.Label>
           <Form.Control type='number' ref={nftIdRef} required />
           {statusMessage && <SNftTaken className='text-danger'>{statusMessage}</SNftTaken>}
+        </Form.Group>
+        <Form.Group className='mb-3'>
+          <Form.Label>NFT receiver:</Form.Label>
+          <Form.Control ref={nftReceiverRef} defaultValue={activeAccount.address} />
         </Form.Group>
         <Stack direction='horizontal' gap={2} className='justify-content-end'>
           <BasicButton type='submit'>Mint NFT</BasicButton>

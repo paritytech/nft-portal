@@ -51,3 +51,5 @@ export const getBlockNumber = async (api: ApiPromise, timestamp?: number) => {
 
   return Math.floor((laterDate - currentDate) / blockTime + activeBlockNumber);
 };
+
+export const pricePattern = (maxPrecision: number) => `^(0|[1-9][0-9]*)([.][0-9]{0,${maxPrecision}})?$`;
