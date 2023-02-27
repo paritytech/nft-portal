@@ -14,13 +14,17 @@ import { handleError } from '@helpers/handleError';
 import { NftMetadata, NftMetadataData } from '@helpers/interfaces';
 import { routes } from '@helpers/routes';
 
+import { useCollections } from './useCollections';
+
 export const useNfts = (collectionId: string) => {
   const { api, activeAccount, activeWallet } = useAccounts();
   const navigate = useNavigate();
   const { openModalStatus, setStatus, setAction } = useModalStatus();
+  const { getCollectionConfig } = useCollections();
   const [nftsMetadata, setNftsMetadata] = useState<NftMetadata[] | null>(null);
   const [nftMetadata, setNftMetadata] = useState<NftMetadata | null>(null);
   const [isNftDataLoading, setIsNftDataLoading] = useState(false);
+  const [holderOf, setHolderOf] = useState<undefined | null | number>();
 
   const getNftIds = useCallback(async () => {
     if (api && activeAccount && collectionId) {
@@ -197,5 +201,20 @@ export const useNfts = (collectionId: string) => {
     [api, collectionId],
   );
 
-  return { nftsMetadata, nftMetadata, mintNft, getNftMetadata, getNftsMetadata, saveNftMetadata, isNftDataLoading, getNft };
+  const checkHolderOfRestriction = useCallback(async () => {
+    if (api) {
+      try {
+        const config = await getCollectionConfig(collectionId);
+
+        if (config?.mintSettings && typeof config.mintSettings.mintType === 'object') {
+          const collectionId = Object.values(config.mintSettings.mintType)[0] as number;
+          setHolderOf(collectionId);
+        } else {
+          setHolderOf(null);
+        }
+      } catch (error) {}
+    }
+  }, [api, collectionId, getCollectionConfig]);
+
+  return { nftsMetadata, nftMetadata, mintNft, getNftMetadata, getNftsMetadata, saveNftMetadata, isNftDataLoading, getNft, checkHolderOfRestriction, holderOf };
 };

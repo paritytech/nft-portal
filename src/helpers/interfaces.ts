@@ -1,4 +1,4 @@
-import { ChainThemes, ChainTitles, MintTypes, ModalStatusTypes, StatusMessages } from './constants';
+import { ChainThemes, ChainTitles, MintTypes, ModalStatusTypes, StatusMessages, StatusTypes } from './constants';
 
 export interface CommonStyleProps {
   className?: string;
@@ -68,13 +68,20 @@ export interface StatusEntry {
 }
 
 export interface CollectionConfig {
-  settings?: number;
+  settings: number;
   maxSupply?: number;
-  mintSettings?: {
-    mintType?: MintTypes;
+  mintSettings: {
+    mintType: MintType;
     price?: number;
     startBlock?: number;
     endBlock?: number;
-    defaultItemSettings?: number;
+    defaultItemSettings: number;
   };
+}
+
+export type MintType = MintTypes | { [key in MintTypes]?: string };
+
+export interface ContextualStatusMessage {
+  statusType: StatusTypes;
+  statusMessage: string;
 }
