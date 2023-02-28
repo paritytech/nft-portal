@@ -1,4 +1,4 @@
-import { FormEvent, memo, useCallback, useEffect, useRef, useState } from 'react';
+import { FormEvent, memo, useCallback, useRef, useState } from 'react';
 import Form from 'react-bootstrap/esm/Form';
 import Stack from 'react-bootstrap/esm/Stack';
 import { Link, useParams } from 'react-router-dom';
@@ -14,6 +14,7 @@ import { StatusTypes } from '@helpers/constants';
 import { routes } from '@helpers/routes';
 import { SSecondaryButton } from '@helpers/styledComponents';
 
+import { useCheckMintingEligibility } from '@hooks/useCheckMintingEligibility';
 import { useNfts } from '@hooks/useNfts';
 import { useStatus } from '@hooks/useStatus';
 
@@ -23,12 +24,13 @@ const SNftTaken = styled.div`
 
 const NewNft = () => {
   const { collectionId } = useParams();
-  const { mintNft, getNft, checkHolderOfRestriction, holderOf } = useNfts(collectionId || '');
+  const { mintNft, getNft } = useNfts(collectionId || '');
   const { activeAccount, theme } = useAccounts();
-  const { nftTaken, mustBeHolderOf, contextualStatusMessage, clearStatus } = useStatus();
+  const { nftTaken, contextualStatusMessage, clearStatus } = useStatus();
+  const { holderOfStatusMessage, isEligibleToMint, ownedNftsFromAnotherCollection } = useCheckMintingEligibility(collectionId || '');
+  const [mintAccessNft, setMintAccessNft] = useState<string | null>(null);
   const nftIdRef = useRef<HTMLInputElement>(null);
   const nftReceiverRef = useRef<HTMLInputElement>(null);
-  const [isEligibleToMint, setIsEligibleToMint] = useState(false);
 
   const submitMintNft = useCallback(
     async (event: FormEvent) => {
@@ -40,40 +42,16 @@ const NewNft = () => {
         const nft = await getNft(nftId);
 
         if (nft === null) {
-          // TODO provide witness data or null
-          mintNft(nftId, nftReceiverRef.current.value);
+          // TODO provide witness data or null, { ownerOfNft: 'nft_id_here' }
+          // this will also be changed soon to 'nftOwned'
+          mintNft(nftId, nftReceiverRef.current.value, mintAccessNft);
         } else {
           nftTaken(nftId);
         }
       }
     },
-    [collectionId, mintNft, getNft, nftTaken, clearStatus],
+    [collectionId, mintNft, getNft, nftTaken, clearStatus, mintAccessNft],
   );
-
-  const checkEligibilityToMint = useCallback((holderOf: number | null | undefined) => {
-    if (holderOf) {
-      // TODO check if user has NFT from specified collection
-      const hasNftFromCollection = false;
-      if (hasNftFromCollection) {
-        setIsEligibleToMint(true);
-      } else {
-        mustBeHolderOf(holderOf.toString());
-        setIsEligibleToMint(false);
-      }
-    }
-
-    if (holderOf === null) {
-      setIsEligibleToMint(true);
-    }
-  }, []);
-
-  useEffect(() => {
-    checkHolderOfRestriction();
-  }, []);
-
-  useEffect(() => {
-    checkEligibilityToMint(holderOf);
-  }, [holderOf]);
 
   if (activeAccount === null) {
     return null;
@@ -98,8 +76,8 @@ const NewNft = () => {
           <Form.Label>NFT receiver:</Form.Label>
           <Form.Control ref={nftReceiverRef} defaultValue={activeAccount.address} />
         </Form.Group>
-        {contextualStatusMessage && contextualStatusMessage.statusType === StatusTypes.MUST_BE_HOLDER_OF && (
-          <SNftTaken className='text-danger'>{contextualStatusMessage.statusMessage}</SNftTaken>
+        {holderOfStatusMessage && holderOfStatusMessage.statusType === StatusTypes.MUST_BE_HOLDER_OF && (
+          <SNftTaken className='text-danger'>{holderOfStatusMessage.statusMessage}</SNftTaken>
         )}
         <Stack direction='horizontal' gap={2} className='justify-content-end'>
           <BasicButton type='submit' isDisabled={!isEligibleToMint}>
