@@ -42,9 +42,9 @@ const NewNft = () => {
         const nft = await getNft(nftId);
 
         if (nft === null) {
-          // TODO provide witness data or null, { ownerOfNft: 'nft_id_here' }
+          // TODO provide witness data or null, { owner_of_item: 'nft_id_here' }
           // this will also be changed soon to 'nftOwned'
-          mintNft(nftId, nftReceiverRef.current.value, mintAccessNft);
+          mintNft(nftId, nftReceiverRef.current.value, { owner_of_item: '%%%nft_id_from_another_collection%%%' });
         } else {
           nftTaken(nftId);
         }

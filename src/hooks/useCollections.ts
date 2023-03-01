@@ -51,12 +51,15 @@ export const useCollections = () => {
           setCollectionsMetadata(metadata);
           return;
         }
+// TODO remove later, this is used for Bob to see Alice's collection, as currently you are able to see only your own collections
+// so set ids of Alice collections 0, 1 or more and then proceed to mint in them
+        // const ownedCollectionIds = ['0', '1', '2'];
 
         const rawMetadata = await api.query.nfts.collectionMetadataOf.multi(ownedCollectionIds);
 
         if (Array.isArray(rawMetadata) && rawMetadata.length > 0) {
           const fetchCalls = rawMetadata.map((metadata) => {
-            const primitiveMetadata = metadata.toPrimitive() as any; //TODO can't import proper type PalletUniquesCollectionMetadata;
+            const primitiveMetadata = metadata.toPrimitive() as any;
             if (!primitiveMetadata?.data) {
               return null;
             }
@@ -99,7 +102,7 @@ export const useCollections = () => {
           const rawMetadata = await api.query.nfts.collectionMetadataOf(collectionId);
 
           if (rawMetadata) {
-            const primitiveMetadata = rawMetadata.toPrimitive() as any; //TODO can't import proper type PalletUniquesCollectionMetadata;
+            const primitiveMetadata = rawMetadata.toPrimitive() as any;
             if (!primitiveMetadata?.data) {
               return null;
             }

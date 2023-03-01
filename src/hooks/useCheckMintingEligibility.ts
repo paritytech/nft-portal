@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
+import { stringToU8a, stringToHex } from '@polkadot/util';
 
 import { useAccounts } from '@contexts/AccountsContext';
 
@@ -38,9 +39,15 @@ export const useCheckMintingEligibility = (collectionId: string) => {
         console.log('ownedNftIds', ownedNftIds)
         if (Array.isArray(ownedNftIds) && ownedNftIds.length > 0) {
           // TODO must check all ownedNftIds
-          const tryingAttribute = await api.query.nfts.attribute(holderOfCollectionId, ownedNftIds[0], 'Pallet', null);
+          // console.log('holderOfCollectionId', holderOfCollectionId);
+          // console.log('ownedNftIds', ownedNftIds);
+          // const results: any = await api.query.nfts.attribute.keys(holderOfCollectionId, ownedNftIds[0], 'Pallet');
+          // console.log('results', results.map(({ args }: any) => args[3].toPrimitive()));
+          // key '0x0001000000', can be set instead of null, assuming the main collection is ID 0, and current is ID 1
+          // if ID 2 then key is '0x0002000000'
+          const tryingAttribute = await api.query.nfts.attribute(holderOfCollectionId, 12, 'Pallet', null);
           console.log('tryingAttribute', tryingAttribute.toPrimitive());
-          console.log('tryingAttribute', tryingAttribute.toJSON());
+          console.log('tryingAttribute', tryingAttribute);
         }
 
         const hasNftFromCollection = true;
