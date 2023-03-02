@@ -124,7 +124,8 @@ export const useNfts = (collectionId: string) => {
   );
 
   const mintNft = useCallback(
-    async (nftId: string, nftReceiver: string, mintAccessNft: string | null) => {
+    // TODO replace any with proper type
+    async (nftId: string, nftReceiver: string, mintAccessNft: any | null) => {
       if (api && activeAccount && activeWallet && collectionId) {
         setStatus({ type: ModalStatusTypes.INIT_TRANSACTION, message: StatusMessages.TRANSACTION_CONFIRM });
         openModalStatus();
