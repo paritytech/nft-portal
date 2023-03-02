@@ -124,12 +124,10 @@ export const useNfts = (collectionId: string) => {
   );
 
   const mintNft = useCallback(
-    // TODO change any to proper type, remove console logs
-    async (nftId: string, nftReceiver: string, mintAccessNft: any | null) => {
+    async (nftId: string, nftReceiver: string, mintAccessNft: string | null) => {
       if (api && activeAccount && activeWallet && collectionId) {
         setStatus({ type: ModalStatusTypes.INIT_TRANSACTION, message: StatusMessages.TRANSACTION_CONFIRM });
         openModalStatus();
-console.log('mintAccessNft', collectionId, nftId, nftReceiver, mintAccessNft)
         try {
           const unsub = await api.tx.nfts
             .mint(collectionId, nftId, nftReceiver, mintAccessNft)
@@ -149,13 +147,12 @@ console.log('mintAccessNft', collectionId, nftId, nftReceiver, mintAccessNft)
                   // if (error.isModule) {
                   //   const decoded = api.registry.findMetaError(error.asModule);
                   //   const { docs, method, section } = decoded;
-                  
+
                   //   console.log(`${section}.${method}: ${docs.join(' ')}`);
                   // } else {
                   //   // Other, CannotLookup, BadOrigin, no extra info
                   //   console.log(data[0].toString());
                   // }
-
 
                   if (method === 'ExtrinsicSuccess') {
                     setAction(() => () => {

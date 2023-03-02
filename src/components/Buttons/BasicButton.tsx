@@ -1,4 +1,4 @@
-import { memo } from 'react';
+import { FormEvent, memo } from 'react';
 import styled from 'styled-components';
 
 import { useAccounts } from '@contexts/AccountsContext';
@@ -17,8 +17,14 @@ interface BasicButtonProps extends CommonStyleProps {
 const BasicButton = ({ children, type, className, isDisabled }: BasicButtonProps) => {
   const { theme } = useAccounts();
 
+  const handleClick = (event: FormEvent) => {
+    if (isDisabled) {
+      event.preventDefault();
+    }
+  };
+
   return (
-    <SButton type={type} className={className} isDisabled={isDisabled} activeTheme={theme}>
+    <SButton type={type} className={className} isDisabled={isDisabled} activeTheme={theme} onClick={handleClick}>
       {children}
     </SButton>
   );

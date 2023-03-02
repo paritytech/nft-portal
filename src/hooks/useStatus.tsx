@@ -17,10 +17,10 @@ export const useStatus = () => {
     });
   };
 
-  const mustBeHolderOf = (collection: string) => {
+  const mustBeHolderOf = (holderOfCollectionId: string, collectionId: string) => {
     setContextualStatusMessage({
       statusType: StatusTypes.MUST_BE_HOLDER_OF,
-      statusMessage: `Minting is only available for collection "${collection}" NFT holders`,
+      statusMessage: `In order to mint, you must have NFTs from collection "${holderOfCollectionId}", that were not used to mint in collection "${collectionId}"`,
     });
   };
 

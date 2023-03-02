@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useState } from 'react';
-import { stringToU8a, stringToHex } from '@polkadot/util';
 
 import { useAccounts } from '@contexts/AccountsContext';
 
@@ -14,7 +13,7 @@ export const useCheckMintingEligibility = (collectionId: string) => {
   const { mustBeHolderOf, contextualStatusMessage } = useStatus();
   const [holderOfCollectionId, setHolderOfCollectionId] = useState<undefined | null | string>();
   const [isEligibleToMint, setIsEligibleToMint] = useState(false);
-  const [ownedNftsFromAnotherCollection, setOwnedNftsFromAnotherCollection] = useState(null);
+  const [ownedNftsFromAnotherCollection, setOwnedNftsFromAnotherCollection] = useState<string[] | null>(null);
 
   const checkHolderOfRestriction = async () => {
     try {
@@ -26,35 +25,39 @@ export const useCheckMintingEligibility = (collectionId: string) => {
       } else {
         setHolderOfCollectionId(null);
       }
-    } catch (error) {
-    }
+    } catch (error) {}
   };
 
-  // TODO remove all consoles
   const checkEligibilityToMint = useCallback(
     async (holderOfCollectionId: string | null | undefined) => {
-      console.log('check eligibility', holderOfCollectionId);
       if (holderOfCollectionId && api !== null) {
         const ownedNftIds = await getNftIds(holderOfCollectionId);
-        console.log('ownedNftIds', ownedNftIds)
+        const availableForClaimingNfts: string[] = [];
+
+        // filter out nfts that were already used to claim
         if (Array.isArray(ownedNftIds) && ownedNftIds.length > 0) {
-          // TODO must check all ownedNftIds
-          // console.log('holderOfCollectionId', holderOfCollectionId);
-          // console.log('ownedNftIds', ownedNftIds);
-          // const results: any = await api.query.nfts.attribute.keys(holderOfCollectionId, ownedNftIds[0], 'Pallet');
-          // console.log('results', results.map(({ args }: any) => args[3].toPrimitive()));
-          // key '0x0001000000', can be set instead of null, assuming the main collection is ID 0, and current is ID 1
-          // if ID 2 then key is '0x0002000000'
-          const tryingAttribute = await api.query.nfts.attribute(holderOfCollectionId, 12, 'Pallet', null);
-          console.log('tryingAttribute', tryingAttribute.toPrimitive());
-          console.log('tryingAttribute', tryingAttribute);
+          const calls = ownedNftIds.map((ownedNftId) => {
+            // TODO need to find a way to get the "key" (e.g. 0x0001000000)
+            return api.query.nfts.attribute(holderOfCollectionId, ownedNftId, 'Pallet', '0x0001000000');
+          });
+
+          const results = await Promise.all(calls);
+
+          results.forEach((usedToClaim, index) => {
+            const data = usedToClaim.toPrimitive();
+
+            // claim attribute exists only when nft was already used
+            if (data === null) {
+              availableForClaimingNfts.push(ownedNftIds[index]);
+            }
+          });
         }
 
-        const hasNftFromCollection = true;
-        if (hasNftFromCollection) {
+        if (availableForClaimingNfts.length > 0) {
+          setOwnedNftsFromAnotherCollection(availableForClaimingNfts);
           setIsEligibleToMint(true);
         } else {
-          mustBeHolderOf(holderOfCollectionId);
+          mustBeHolderOf(holderOfCollectionId, collectionId);
           setIsEligibleToMint(false);
         }
       }
