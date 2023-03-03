@@ -10,6 +10,7 @@ import ModalStatus from '@common/ModalStatus';
 import { useAccounts } from '@contexts/AccountsContext';
 
 import { StatusTypes } from '@helpers/constants';
+import { MintAccessNft } from '@helpers/interfaces';
 import { routes } from '@helpers/routes';
 import { SSecondaryButton } from '@helpers/styledComponents';
 
@@ -23,7 +24,7 @@ const NewNft = () => {
   const { activeAccount, theme } = useAccounts();
   const { nftTaken, contextualStatusMessage, clearStatus } = useStatus();
   const { holderOfStatusMessage, isEligibleToMint, ownedNftsFromAnotherCollection } = useCheckMintingEligibility(collectionId || '');
-  const [mintAccessNft, setMintAccessNft] = useState<string | null>(null);
+  const [mintAccessNft, setMintAccessNft] = useState<MintAccessNft | null>(null);
   const nftIdRef = useRef<HTMLInputElement>(null);
   const nftReceiverRef = useRef<HTMLInputElement>(null);
 
@@ -37,8 +38,7 @@ const NewNft = () => {
         const nft = await getNft(nftId);
 
         if (nft === null) {
-          // TODO this will also be changed soon to 'nftOwned'
-          mintNft(nftId, nftReceiverRef.current.value, { owner_of_item: mintAccessNft });
+          mintNft(nftId, nftReceiverRef.current.value, mintAccessNft);
         } else {
           nftTaken(nftId);
         }
@@ -76,7 +76,9 @@ const NewNft = () => {
         {Array.isArray(ownedNftsFromAnotherCollection) && ownedNftsFromAnotherCollection.length > 0 && (
           <Form.Group className='mb-3'>
             <Form.Label>Select which access NFT you want to use for the mint:</Form.Label>
-            <Form.Select onChange={(event) => setMintAccessNft(event.target.value)}>
+            {/* TODO owner_of_item will also be changed soon to 'nft_owned' */}
+            <Form.Select onChange={(event) => setMintAccessNft({ owner_of_item: event.target.value })} required>
+              <option value=''>Select NFT</option>
               {ownedNftsFromAnotherCollection.map((ownedNft) => (
                 <option key={ownedNft} value={ownedNft}>
                   {ownedNft}

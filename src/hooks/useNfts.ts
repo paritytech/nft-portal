@@ -11,7 +11,7 @@ import { useModalStatus } from '@contexts/ModalStatusContext';
 import { IPFS_URL } from '@helpers/config';
 import { ModalStatusTypes, StatusMessages } from '@helpers/constants';
 import { handleError } from '@helpers/handleError';
-import { NftMetadata, NftMetadataData } from '@helpers/interfaces';
+import { MintAccessNft, NftMetadata, NftMetadataData } from '@helpers/interfaces';
 import { routes } from '@helpers/routes';
 
 export const useNfts = (collectionId: string) => {
@@ -29,7 +29,7 @@ export const useNfts = (collectionId: string) => {
         const results: StorageKey<[AccountId32, u32, u32]>[] = await api.query.nfts.account.keys(activeAccount.address, collectionIdParam);
 
         const nftIds = results
-          .map(({ args: [, , nftId] }) => nftId)
+          .map(({ args: { 2: nftId } }) => nftId)
           .sort((a, b) => a.cmp(b))
           .map((nftId) => nftId.toString());
 
@@ -124,8 +124,7 @@ export const useNfts = (collectionId: string) => {
   );
 
   const mintNft = useCallback(
-    // TODO replace any with proper type
-    async (nftId: string, nftReceiver: string, mintAccessNft: any | null) => {
+    async (nftId: string, nftReceiver: string, mintAccessNft: MintAccessNft | null) => {
       if (api && activeAccount && activeWallet && collectionId) {
         setStatus({ type: ModalStatusTypes.INIT_TRANSACTION, message: StatusMessages.TRANSACTION_CONFIRM });
         openModalStatus();
@@ -133,7 +132,6 @@ export const useNfts = (collectionId: string) => {
           const unsub = await api.tx.nfts
             .mint(collectionId, nftId, nftReceiver, mintAccessNft)
             .signAndSend(activeAccount.address, { signer: activeWallet.signer }, ({ status, events }) => {
-              console.log('status', status);
               if (status.isReady) {
                 setStatus({ type: ModalStatusTypes.IN_PROGRESS, message: StatusMessages.NFT_MINTING });
               }
@@ -143,17 +141,6 @@ export const useNfts = (collectionId: string) => {
                 unsub();
 
                 events.some(({ event: { data, method } }) => {
-                  // TODO remove error event hunting, once done
-                  // const [error]: any = data;
-                  // if (error.isModule) {
-                  //   const decoded = api.registry.findMetaError(error.asModule);
-                  //   const { docs, method, section } = decoded;
-
-                  //   console.log(`${section}.${method}: ${docs.join(' ')}`);
-                  // } else {
-                  //   // Other, CannotLookup, BadOrigin, no extra info
-                  //   console.log(data[0].toString());
-                  // }
 
                   if (method === 'ExtrinsicSuccess') {
                     setAction(() => () => {

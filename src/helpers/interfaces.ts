@@ -85,3 +85,8 @@ export interface ContextualStatusMessage {
   statusType: StatusTypes;
   statusMessage: string;
 }
+
+// TODO owner_of_item will also be changed soon to 'nft_owned'
+export interface MintAccessNft {
+  owner_of_item: string;
+}

@@ -2,6 +2,8 @@ import { useCallback, useEffect, useState } from 'react';
 
 import { useAccounts } from '@contexts/AccountsContext';
 
+import { MintTypes } from '@helpers/constants';
+
 import { useCollections } from './useCollections';
 import { useNfts } from './useNfts';
 import { useStatus } from './useStatus';
@@ -17,11 +19,10 @@ export const useCheckMintingEligibility = (collectionId: string) => {
 
   const checkHolderOfRestriction = async () => {
     try {
-      const config = await getCollectionConfig(collectionId);
+      const config = ((await getCollectionConfig(collectionId)) as any).toHuman();
 
-      if (config?.mintSettings && Object.values(config.mintSettings.mintType)[0] !== null) {
-        const collectionId = (Object.values(config.mintSettings.mintType)[0] as string).toString();
-        setHolderOfCollectionId(collectionId);
+      if (config?.mintSettings && typeof config.mintSettings.mintType[MintTypes.HOLDER_OF] !== 'undefined') {
+        setHolderOfCollectionId(config.mintSettings.mintType[MintTypes.HOLDER_OF]);
       } else {
         setHolderOfCollectionId(null);
       }
@@ -37,18 +38,31 @@ export const useCheckMintingEligibility = (collectionId: string) => {
         // filter out nfts that were already used to claim
         if (Array.isArray(ownedNftIds) && ownedNftIds.length > 0) {
           const calls = ownedNftIds.map((ownedNftId) => {
-            // TODO need to find a way to get the "key" (e.g. 0x0001000000)
-            return api.query.nfts.attribute(holderOfCollectionId, ownedNftId, 'Pallet', '0x0001000000');
+            return api.query.nfts.attribute.keys(holderOfCollectionId, ownedNftId, 'Pallet');
           });
 
           const results = await Promise.all(calls);
 
-          results.forEach((usedToClaim, index) => {
-            const data = usedToClaim.toPrimitive();
+          results.forEach((attributes, nftIdIndex) => {
+            let hasClaimAttribute = false;
+
+            // TODO remove console when done
+            // console.log('attributes', attributes);
+            attributes.forEach((attribute) => {
+              if (attribute) {
+                const {
+                  args: { 3: attributeKey },
+                } = attribute;
+                // TODO uncomment when @polkadot/api is updated with the enum PalletAttributes
+                // if (attributeKey.isUsedToClaim()) {
+                // hasClaimAttribute = true;
+                // }
+              }
+            });
 
             // claim attribute exists only when nft was already used
-            if (data === null) {
-              availableForClaimingNfts.push(ownedNftIds[index]);
+            if (!hasClaimAttribute) {
+              availableForClaimingNfts.push(ownedNftIds[nftIdIndex]);
             }
           });
         }
@@ -71,10 +85,12 @@ export const useCheckMintingEligibility = (collectionId: string) => {
 
   useEffect(() => {
     checkHolderOfRestriction();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
     checkEligibilityToMint(holderOfCollectionId);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [holderOfCollectionId]);
 
   return {

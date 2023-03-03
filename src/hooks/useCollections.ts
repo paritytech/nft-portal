@@ -27,7 +27,7 @@ export const useCollections = () => {
       const results: StorageKey<[AccountId32, u32]>[] = await api.query.nfts.collectionAccount.keys(activeAccount.address);
 
       const collectionIds = results
-        .map(({ args: [, collectionId] }) => collectionId)
+        .map(({ args: { 1: collectionId } }) => collectionId)
         .sort((a, b) => a.cmp(b))
         .map((collectionId) => collectionId.toString());
 
@@ -200,7 +200,7 @@ export const useCollections = () => {
   const getCollectionConfig = useCallback(
     async (collectionId: string) => {
       if (api) {
-        const config = (await api.query.nfts.collectionConfigOf(collectionId)).toPrimitive() as any;
+        const config = await api.query.nfts.collectionConfigOf(collectionId);
 
         return config;
       }
