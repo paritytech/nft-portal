@@ -45,8 +45,14 @@ const SideMenu = () => {
       <SMenuButton to={routes.collections} activetheme={theme}>
         My NFTs
       </SMenuButton>
-      <SMenuButton to={routes.dex} activetheme={theme}>
-        DEX
+      <SMenuButton to={routes.allAssets} activetheme={theme}>
+        All Assets
+      </SMenuButton>
+      <SMenuButton to={routes.tokens} activetheme={theme}>
+        Tokens
+      </SMenuButton>
+      <SMenuButton to={routes.pools} activetheme={theme}>
+        Pools
       </SMenuButton>
     </SNav>
   );

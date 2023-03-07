@@ -1,3 +1,5 @@
+import { BN } from '@polkadot/util';
+
 import { ChainThemes, ChainTitles, MintTypes, ModalStatusTypes, StatusMessages } from './constants';
 
 export interface CommonStyleProps {
@@ -77,4 +79,19 @@ export interface CollectionConfig {
     endBlock?: number;
     defaultItemSettings?: number;
   };
+}
+
+export interface TokenBalance {
+  id: number;
+  balance: BN;
+}
+
+export interface TokenMetadata extends TokenMetadataData {
+  id: number;
+}
+
+export interface TokenMetadataData {
+  name: string | null;
+  symbol: string | null;
+  decimals: number;
 }
