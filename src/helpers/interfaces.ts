@@ -95,3 +95,7 @@ export interface TokenMetadataData {
   symbol: string | null;
   decimals: number;
 }
+export interface NativeTokenMetadata {
+  name: string | null;
+  decimals: number;
+}

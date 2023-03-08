@@ -2,10 +2,10 @@ import { BN, formatBalance } from '@polkadot/util';
 import { memo } from 'react';
 import styled from 'styled-components';
 
-import { TokenMetadata } from '@helpers/interfaces';
+import { NativeTokenMetadata } from '@helpers/interfaces';
 
-interface TokenProps {
-  tokenMetadata: TokenMetadata;
+interface Props {
+  metadata: NativeTokenMetadata;
   balance: BN | null;
 }
 
@@ -26,15 +26,15 @@ const SBalance = styled.span`
   text-align: right;
 `;
 
-const Token = ({ tokenMetadata, balance }: TokenProps) => {
-  const { id, name, symbol, decimals } = tokenMetadata;
-  const formattedSymbol = (symbol || '').toUpperCase();
+const Token = ({ metadata, balance }: Props) => {
+  const { name, decimals } = metadata;
+  const formattedName = (name || '').toUpperCase();
   const formattedBalance = balance
-    ? formatBalance(balance, { decimals, forceUnit: '-', withSi: true, withUnit: formattedSymbol, withZero: false })
+    ? formatBalance(balance, { decimals, forceUnit: '-', withSi: true, withUnit: formattedName, withZero: false })
     : '0';
 
   return (
-    <SRow key={id}>
+    <SRow>
       <SColumn>
         <span>{name || ''}</span>
       </SColumn>

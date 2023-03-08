@@ -1,21 +1,32 @@
 import { memo } from 'react';
 
-import { SContentBlockContainer } from '@helpers/reusableStyles';
-
 import { useAssets } from '@hooks/useAssets';
 
 import Tokens from './Tokens';
 
 const TokensView = () => {
-  const { getTokensBalances, getTokensMetadata, tokensBalances, tokensMetadata } = useAssets();
+  const {
+    getNativeBalance,
+    getNativeMetadata,
+    getTokensBalances,
+    getTokensMetadata,
+    nativeBalance,
+    nativeMetadata,
+    tokensBalances,
+    tokensMetadata,
+  } = useAssets();
 
   return (
     <>
       <h2>All Tokens</h2>
       <Tokens
+        getNativeBalance={getNativeBalance}
+        getNativeMetadata={getNativeMetadata}
         getTokensBalances={getTokensBalances}
-        tokensBalances={tokensBalances}
         getTokensMetadata={getTokensMetadata}
+        nativeBalance={nativeBalance}
+        nativeMetadata={nativeMetadata}
+        tokensBalances={tokensBalances}
         tokensMetadata={tokensMetadata}
       />
     </>

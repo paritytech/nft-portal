@@ -1,16 +1,23 @@
 import type { Option, StorageKey } from '@polkadot/types';
 import type { AssetId } from '@polkadot/types/interfaces';
-import type { PalletAssetsAssetAccount, PalletAssetsAssetMetadata } from '@polkadot/types/lookup';
+import type {
+  PalletAssetsAssetAccount,
+  PalletAssetsAssetMetadata,
+  PalletBalancesAccountData,
+} from '@polkadot/types/lookup';
+import { BN } from '@polkadot/util';
 import { useCallback, useState } from 'react';
 
 import { useAccounts } from '@contexts/AccountsContext';
 
-import type { TokenBalance, TokenMetadata } from '@helpers/interfaces';
+import type { NativeTokenMetadata, TokenBalance, TokenMetadata } from '@helpers/interfaces';
 
 export const useAssets = () => {
   const { api, activeAccount } = useAccounts();
   const [tokensMetadata, setTokensMetadata] = useState<TokenMetadata[] | null>(null);
   const [tokensBalances, setTokensBalances] = useState<TokenBalance[] | null>(null);
+  const [nativeBalance, setNativeBalance] = useState<BN | null>(null);
+  const [nativeMetadata, setNativeMetadata] = useState<NativeTokenMetadata | null>(null);
 
   const getTokenIds = useCallback(async () => {
     if (api) {
@@ -46,13 +53,32 @@ export const useAssets = () => {
               id,
               balance: record.unwrap()?.balance.toBn(),
             }));
-          console.log(balances);
         }
 
         setTokensBalances(balances);
       } catch (error) {}
     }
   }, [api, activeAccount, getTokenIds]);
+
+  const getNativeBalance = useCallback(async () => {
+    if (api && activeAccount) {
+      try {
+        const { data: balance } = await api.query.system.account(activeAccount.address);
+        setNativeBalance((balance as PalletBalancesAccountData).free.toBn());
+      } catch (error) {}
+    }
+  }, [api, activeAccount]);
+
+  const getNativeMetadata = useCallback(async () => {
+    if (api) {
+      const decimals = api.registry.chainDecimals[0];
+      const name = api.registry.chainTokens[0];
+      setNativeMetadata({
+        name,
+        decimals,
+      });
+    }
+  }, [api]);
 
   const getTokensMetadata = useCallback(async () => {
     if (api) {
@@ -84,8 +110,12 @@ export const useAssets = () => {
   }, [api]);
 
   return {
+    getNativeBalance,
+    getNativeMetadata,
     getTokensBalances,
     getTokensMetadata,
+    nativeBalance,
+    nativeMetadata,
     tokensBalances,
     tokensMetadata,
   };
