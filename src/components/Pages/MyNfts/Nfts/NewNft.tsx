@@ -23,7 +23,9 @@ const NewNft = () => {
   const { mintNft, getNft } = useNfts(collectionId || '');
   const { activeAccount, theme } = useAccounts();
   const { nftTaken, contextualStatusMessage, clearStatus } = useStatus();
-  const { holderOfStatusMessage, isEligibleToMint, ownedNftsFromAnotherCollection } = useCheckMintingEligibility(collectionId || '');
+  const { holderOfStatusMessage, isEligibleToMint, ownedNftsFromAnotherCollection } = useCheckMintingEligibility(
+    collectionId || '',
+  );
   const [mintAccessNft, setMintAccessNft] = useState<MintAccessNft | null>(null);
   const nftIdRef = useRef<HTMLInputElement>(null);
   const nftReceiverRef = useRef<HTMLInputElement>(null);

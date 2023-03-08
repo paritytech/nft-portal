@@ -28,7 +28,8 @@ export const extensionConfig = {
       urls: {
         main: '',
         browsers: {
-          chrome: 'https://chrome.google.com/webstore/detail/polkadot%7Bjs%7D-extension/mopnmbcafieddcagagdcbnhejhlodfdd',
+          chrome:
+            'https://chrome.google.com/webstore/detail/polkadot%7Bjs%7D-extension/mopnmbcafieddcagagdcbnhejhlodfdd',
           firefox: 'https://addons.mozilla.org/en-US/firefox/addon/polkadot-js-extension/',
         },
       },
@@ -36,7 +37,8 @@ export const extensionConfig = {
     {
       id: 'talisman',
       title: 'talisman',
-      description: 'Talisman is a Polkadot wallet that unlocks a new world of multichain web3 applications in the Paraverse',
+      description:
+        'Talisman is a Polkadot wallet that unlocks a new world of multichain web3 applications in the Paraverse',
       urls: {
         main: '',
         browsers: {

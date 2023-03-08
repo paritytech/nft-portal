@@ -16,16 +16,6 @@ export const sizeMatters = (yourThing: string | undefined | null, size: number =
   return '';
 };
 
-export const normalizePath = (path: string) => {
-  const lastChar = path.charAt(path.length - 1);
-
-  if (lastChar === '/') {
-    return path.substring(0, path.length - 1);
-  }
-
-  return path;
-};
-
 // the values are flipped to opposite because in the nfts pallet we use bitflags
 // where we select what to disable, so in pallet true = disabled, false = enabled
 // in order to not confuse users, in UI we use normal logic and then flip values here

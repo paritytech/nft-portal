@@ -26,7 +26,10 @@ export const useNfts = (collectionId: string) => {
     async (specifiedCollectionId = '') => {
       if (api && activeAccount && collectionId) {
         const collectionIdParam = specifiedCollectionId || collectionId;
-        const results: StorageKey<[AccountId32, u32, u32]>[] = await api.query.nfts.account.keys(activeAccount.address, collectionIdParam);
+        const results: StorageKey<[AccountId32, u32, u32]>[] = await api.query.nfts.account.keys(
+          activeAccount.address,
+          collectionIdParam,
+        );
 
         const nftIds = results
           .map(({ args: { 2: nftId } }) => nftId)
@@ -56,7 +59,9 @@ export const useNfts = (collectionId: string) => {
           return;
         }
 
-        const rawMetadata = await api.query.nfts.itemMetadataOf.multi(ownedNftIds.map((ownedNftId) => [collectionId, ownedNftId]));
+        const rawMetadata = await api.query.nfts.itemMetadataOf.multi(
+          ownedNftIds.map((ownedNftId) => [collectionId, ownedNftId]),
+        );
         if (Array.isArray(rawMetadata) && rawMetadata.length > 0) {
           const fetchCalls = rawMetadata.map((metadata) => {
             const primitiveMetadata = metadata.toPrimitive() as any;

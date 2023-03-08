@@ -70,7 +70,8 @@ export const SModal = styled(Modal)`
     border: 2px solid ${({ activetheme: activeTheme }: { activetheme: ThemeStyle }) => activeTheme.buttonBorderColor};
 
     .modal-header {
-      border-bottom: 1px solid ${({ activetheme: activeTheme }: { activetheme: ThemeStyle }) => activeTheme.buttonBorderColor};
+      border-bottom: 1px solid
+        ${({ activetheme: activeTheme }: { activetheme: ThemeStyle }) => activeTheme.buttonBorderColor};
     }
   }
 `;

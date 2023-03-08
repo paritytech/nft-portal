@@ -13,12 +13,7 @@ interface TokensViewProps {
   tokensMetadata: TokenMetadata[] | null;
 }
 
-const TokensView = ({
-  nativeBalance,
-  nativeMetadata,
-  tokensBalances,
-  tokensMetadata,
-}: TokensViewProps) => {
+const TokensView = ({ nativeBalance, nativeMetadata, tokensBalances, tokensMetadata }: TokensViewProps) => {
   if (tokensMetadata === null || nativeMetadata === null) {
     return <>Gathering data... please wait</>;
   }

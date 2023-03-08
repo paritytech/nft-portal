@@ -11,7 +11,12 @@ import { useModalStatus } from '@contexts/ModalStatusContext';
 import { IPFS_URL } from '@helpers/config';
 import { ModalStatusTypes, StatusMessages } from '@helpers/constants';
 import { handleError } from '@helpers/handleError';
-import { CollectionConfig, CollectionMetadata, CollectionMetadataData, CollectionMetadataPrimitive } from '@helpers/interfaces';
+import {
+  CollectionConfig,
+  CollectionMetadata,
+  CollectionMetadataData,
+  CollectionMetadataPrimitive,
+} from '@helpers/interfaces';
 import { routes } from '@helpers/routes';
 
 export const useCollections = () => {
@@ -24,7 +29,9 @@ export const useCollections = () => {
 
   const getCollectionIds = useCallback(async () => {
     if (api && activeAccount) {
-      const results: StorageKey<[AccountId32, u32]>[] = await api.query.nfts.collectionAccount.keys(activeAccount.address);
+      const results: StorageKey<[AccountId32, u32]>[] = await api.query.nfts.collectionAccount.keys(
+        activeAccount.address,
+      );
 
       const collectionIds = results
         .map(({ args: { 1: collectionId } }) => collectionId)

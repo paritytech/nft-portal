@@ -25,7 +25,9 @@ const Connect = () => {
   return (
     <>
       <ActionButton action={handleShow}>
-        {activeAccount !== null ? sizeMatters(activeAccount.name) || ellipseAddress(activeAccount.address, 4) : 'Connect'}
+        {activeAccount !== null
+          ? sizeMatters(activeAccount.name) || ellipseAddress(activeAccount.address, 4)
+          : 'Connect'}
       </ActionButton>
 
       <SModal show={show} onHide={handleClose} activetheme={theme}>

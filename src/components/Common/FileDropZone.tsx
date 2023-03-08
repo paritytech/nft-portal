@@ -89,7 +89,12 @@ const FileDropZone = ({ imageSourceUrl, setImageSourceUrl, setImageCid, imageCid
     [imageSourceUrl, setImageCid, setImageSourceUrl],
   );
 
-  const { getRootProps } = useDropzone({ onDrop, accept: { 'image/*': allowedFileTypes }, maxFiles: 1, maxSize: maxSizeInMb * 1024 * 1024 });
+  const { getRootProps } = useDropzone({
+    onDrop,
+    accept: { 'image/*': allowedFileTypes },
+    maxFiles: 1,
+    maxSize: maxSizeInMb * 1024 * 1024,
+  });
 
   return (
     <SDropZone {...getRootProps({ className: 'dropzone' })} activeTheme={theme}>
