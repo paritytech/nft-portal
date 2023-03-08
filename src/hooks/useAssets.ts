@@ -14,10 +14,10 @@ import type { NativeTokenMetadata, TokenBalance, TokenMetadata } from '@helpers/
 
 export const useAssets = () => {
   const { api, activeAccount } = useAccounts();
-  const [tokensMetadata, setTokensMetadata] = useState<TokenMetadata[] | null>(null);
-  const [tokensBalances, setTokensBalances] = useState<TokenBalance[] | null>(null);
   const [nativeBalance, setNativeBalance] = useState<BN | null>(null);
   const [nativeMetadata, setNativeMetadata] = useState<NativeTokenMetadata | null>(null);
+  const [tokensMetadata, setTokensMetadata] = useState<TokenMetadata[] | null>(null);
+  const [tokensBalances, setTokensBalances] = useState<TokenBalance[] | null>(null);
 
   const getNativeBalance = useCallback(async () => {
     if (api && activeAccount) {
