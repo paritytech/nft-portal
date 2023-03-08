@@ -86,10 +86,14 @@ const NewCollection = () => {
         const endBlock = await getBlockNumber(api, endDate?.getTime());
 
         collectionConfig.settings = settings;
-        collectionConfig.maxSupply = maxSupplyRef.current.value === '' ? undefined : parseInt(maxSupplyRef.current.value, 10);
+        collectionConfig.maxSupply =
+          maxSupplyRef.current.value === '' ? undefined : parseInt(maxSupplyRef.current.value, 10);
         collectionConfig.mintSettings = {
           mintType: mintTypeFinalized,
-          price: priceRef.current.value === '' ? undefined : parseFloat(priceRef.current.value) * 10 ** api.registry.chainDecimals[0],
+          price:
+            priceRef.current.value === ''
+              ? undefined
+              : parseFloat(priceRef.current.value) * 10 ** api.registry.chainDecimals[0],
           startBlock,
           endBlock,
           defaultItemSettings,
@@ -163,7 +167,12 @@ const NewCollection = () => {
             </Form.Group>
 
             <Form.Group className='mb-3'>
-              <DateRangeButton startDate={startDate} setStartDate={setStartDate} endDate={endDate} setEndDate={setEndDate} />
+              <DateRangeButton
+                startDate={startDate}
+                setStartDate={setStartDate}
+                endDate={endDate}
+                setEndDate={setEndDate}
+              />
             </Form.Group>
 
             <Form.Group className='mb-3'>

@@ -1,7 +1,7 @@
 import { FormEvent, memo, useCallback, useEffect, useRef, useState } from 'react';
 import Form from 'react-bootstrap/esm/Form';
 import Stack from 'react-bootstrap/esm/Stack';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
 import { saveImageToIpfs } from '@api/pinata';
 
@@ -13,7 +13,6 @@ import ModalStatus from '@common/ModalStatus';
 import { useAccounts } from '@contexts/AccountsContext';
 
 import { CollectionMetadataData } from '@helpers/interfaces';
-import { routes } from '@helpers/routes';
 import { SSecondaryButton } from '@helpers/styledComponents';
 
 import { useNfts } from '@hooks/useNfts';
@@ -22,7 +21,6 @@ const NftEdit = () => {
   const { collectionId, nftId } = useParams();
   const { getNftMetadata, saveNftMetadata, nftMetadata, isNftDataLoading } = useNfts(collectionId || '');
   const { theme } = useAccounts();
-  const navigate = useNavigate();
   const nftNameRef = useRef<HTMLInputElement>(null);
   const nftDescriptionRef = useRef<HTMLTextAreaElement>(null);
   const [imageCid, setImageCid] = useState<string | undefined>();
@@ -55,11 +53,6 @@ const NftEdit = () => {
     }
   }, [collectionId, nftId, getNftMetadata]);
 
-  if (!collectionId || !nftId) {
-    navigate(routes.collections);
-    return null;
-  }
-
   if (isNftDataLoading) {
     return <>loading...</>;
   }
@@ -80,7 +73,12 @@ const NftEdit = () => {
         </Form.Group>
         <Form.Group className='mb-3'>
           <Form.Label>Image:</Form.Label>
-          <FileDropZone imageSourceUrl={imageSourceUrl} setImageSourceUrl={setImageSourceUrl} imageCid={imageCid} setImageCid={setImageCid} />
+          <FileDropZone
+            imageSourceUrl={imageSourceUrl}
+            setImageSourceUrl={setImageSourceUrl}
+            imageCid={imageCid}
+            setImageCid={setImageCid}
+          />
         </Form.Group>
         <Stack direction='horizontal' gap={2} className='justify-content-end'>
           <BasicButton type='submit'>Submit metadata</BasicButton>

@@ -1,12 +1,11 @@
 import { memo } from 'react';
-import { NavLink, useLocation } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { useAccounts } from '@contexts/AccountsContext';
 
 import { ThemeStyle } from '@helpers/interfaces';
 import { routes } from '@helpers/routes';
-import { normalizePath } from '@helpers/utilities';
 
 const SNav = styled.nav`
   display: flex;
@@ -36,12 +35,7 @@ const SMenuButton = styled(NavLink)`
 `;
 
 const SideMenu = () => {
-  const { pathname } = useLocation();
   const { theme } = useAccounts();
-
-  if (normalizePath(pathname) === routes.homepage) {
-    return null;
-  }
 
   return (
     <SNav>

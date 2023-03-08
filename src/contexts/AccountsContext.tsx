@@ -52,7 +52,6 @@ export const AccountsContextProvider = ({ children }: AccountsContextProviderPro
   const [theme, setTheme] = useState<ThemeStyle>(themes.kusama);
   const [storedActiveAccount, setStoredActiveAccount] = useLocalStorage<ActiveAccount | null>('activeAccount', null);
   const [storedChain, setStoredChain] = useLocalStorage<Chain | null>('chain', null);
-  const navigate = useNavigate();
 
   const setupApi = useCallback(async () => {
     const provider = new WsProvider(storedChain?.url || chains[0].url);
@@ -63,8 +62,7 @@ export const AccountsContextProvider = ({ children }: AccountsContextProviderPro
     const api = await ApiPromise.create({ provider });
 
     setApi(api);
-    navigate(routes.collections);
-  }, [storedChain, navigate]);
+  }, [storedChain]);
 
   const setupTheme = useCallback((chain: Chain) => {
     switch (chain.theme) {
@@ -78,6 +76,10 @@ export const AccountsContextProvider = ({ children }: AccountsContextProviderPro
         setTheme(themes.kusama);
     }
   }, []);
+
+  // TODO when chain is changed there could be issues with data from one chain
+  // showing up as the same data on the just set chain, need to add a reset
+  // or similar, it should be called once a chain change is called
 
   useEffect(() => {
     if (storedChain === null) {
@@ -103,7 +105,17 @@ export const AccountsContextProvider = ({ children }: AccountsContextProviderPro
       setStoredChain,
       theme,
     }),
-    [activeAccount, activeWallet, api, storedActiveAccount, setStoredActiveAccount, setupApi, storedChain, setStoredChain, theme],
+    [
+      activeAccount,
+      activeWallet,
+      api,
+      storedActiveAccount,
+      setStoredActiveAccount,
+      setupApi,
+      storedChain,
+      setStoredChain,
+      theme,
+    ],
   );
 
   return <AccountsContext.Provider value={contextData}>{children}</AccountsContext.Provider>;

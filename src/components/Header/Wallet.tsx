@@ -1,13 +1,10 @@
 import { Account, BaseWallet } from '@polkadot-onboard/core';
 import { ChangeEvent, memo } from 'react';
-import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 import ActionButton from '@buttons/ActionButton';
 
 import { useAccounts } from '@contexts/AccountsContext';
-
-import { routes } from '@helpers/routes';
 
 import { useWalletAccounts } from '@hooks/useWalletAccounts';
 
@@ -35,7 +32,6 @@ interface WalletProps {
 }
 
 const Wallet = ({ wallet, handleClose }: WalletProps) => {
-  const navigate = useNavigate();
   const { setActiveAccount, setActiveWallet, storedActiveAccount, setStoredActiveAccount } = useAccounts();
   const { walletAccounts, connectToWallet } = useWalletAccounts(wallet);
 
@@ -49,7 +45,6 @@ const Wallet = ({ wallet, handleClose }: WalletProps) => {
       setActiveAccount(foundAccount);
       setStoredActiveAccount({ wallet: wallet.metadata.title, account: foundAccount.address });
       handleClose();
-      navigate(routes.collections);
     }
   };
 

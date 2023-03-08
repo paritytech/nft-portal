@@ -1,7 +1,7 @@
 import { FormEvent, memo, useCallback, useEffect, useRef, useState } from 'react';
 import Form from 'react-bootstrap/esm/Form';
 import Stack from 'react-bootstrap/esm/Stack';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
 import { saveImageToIpfs } from '@api/pinata';
 
@@ -13,16 +13,15 @@ import ModalStatus from '@common/ModalStatus';
 import { useAccounts } from '@contexts/AccountsContext';
 
 import { CollectionMetadataData } from '@helpers/interfaces';
-import { routes } from '@helpers/routes';
 import { SSecondaryButton } from '@helpers/styledComponents';
 
 import { useCollections } from '@hooks/useCollections';
 
 const CollectionEdit = () => {
   const { collectionId } = useParams();
-  const navigate = useNavigate();
   const { theme } = useAccounts();
-  const { getCollectionMetadata, saveCollectionMetadata, collectionMetadata, isCollectionDataLoading } = useCollections();
+  const { getCollectionMetadata, saveCollectionMetadata, collectionMetadata, isCollectionDataLoading } =
+    useCollections();
   const collectionNameRef = useRef<HTMLInputElement>(null);
   const collectionDescriptionRef = useRef<HTMLTextAreaElement>(null);
   const [imageCid, setImageCid] = useState<string | undefined>();
@@ -55,10 +54,6 @@ const CollectionEdit = () => {
     }
   }, [collectionId, getCollectionMetadata]);
 
-  if (!collectionId) {
-    navigate(routes.collections);
-  }
-
   if (isCollectionDataLoading) {
     return <>Gathering data... please wait</>;
   }
@@ -75,11 +70,21 @@ const CollectionEdit = () => {
         </Form.Group>
         <Form.Group className='mb-3'>
           <Form.Label>Description:</Form.Label>
-          <Form.Control as='textarea' rows={3} defaultValue={collectionMetadata?.description} ref={collectionDescriptionRef} />
+          <Form.Control
+            as='textarea'
+            rows={3}
+            defaultValue={collectionMetadata?.description}
+            ref={collectionDescriptionRef}
+          />
         </Form.Group>
         <Form.Group className='mb-3'>
           <Form.Label>Image:</Form.Label>
-          <FileDropZone imageSourceUrl={imageSourceUrl} setImageSourceUrl={setImageSourceUrl} imageCid={imageCid} setImageCid={setImageCid} />
+          <FileDropZone
+            imageSourceUrl={imageSourceUrl}
+            setImageSourceUrl={setImageSourceUrl}
+            imageCid={imageCid}
+            setImageCid={setImageCid}
+          />
         </Form.Group>
         <Stack direction='horizontal' gap={2} className='justify-content-end'>
           <BasicButton type='submit'>Submit metadata</BasicButton>

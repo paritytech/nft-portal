@@ -17,7 +17,7 @@ import Tokens from '@pages/Assets/Tokens/Tokens';
 import Home from '@pages/Home/Home';
 import CollectionEdit from '@pages/MyNfts/Collections/CollectionEdit';
 import Collections from '@pages/MyNfts/Collections/Collections';
-// import PoolsView from '@pages/Assets/Pools/PoolsView';
+// import Pools from '@pages/Assets/Pools/Pools';
 import NewCollection from '@pages/MyNfts/Collections/NewCollection';
 import NewNft from '@pages/MyNfts/Nfts/NewNft';
 import NftEdit from '@pages/MyNfts/Nfts/NftEdit';
@@ -69,14 +69,7 @@ const App = () => {
           <SContent>
             <Routes>
               <Route path={routes.homepage} element={<Home />} />
-              <Route
-                path={routes.collections}
-                element={
-                  <PrivateRoute>
-                    <Collections />
-                  </PrivateRoute>
-                }
-              />
+              <Route path={routes.collections} element={<Collections />} />
               <Route
                 path={routes.collectionMint}
                 element={
