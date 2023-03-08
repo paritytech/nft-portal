@@ -19,6 +19,26 @@ export const useAssets = () => {
   const [nativeBalance, setNativeBalance] = useState<BN | null>(null);
   const [nativeMetadata, setNativeMetadata] = useState<NativeTokenMetadata | null>(null);
 
+  const getNativeBalance = useCallback(async () => {
+    if (api && activeAccount) {
+      try {
+        const { data: balance } = await api.query.system.account(activeAccount.address);
+        setNativeBalance((balance as PalletBalancesAccountData).free.toBn());
+      } catch (error) {}
+    }
+  }, [api, activeAccount]);
+
+  const getNativeMetadata = useCallback(async () => {
+    if (api) {
+      const decimals = api.registry.chainDecimals[0];
+      const name = api.registry.chainTokens[0];
+      setNativeMetadata({
+        name,
+        decimals,
+      });
+    }
+  }, [api]);
+
   const getTokenIds = useCallback(async () => {
     if (api) {
       const results: StorageKey<[AssetId]>[] = await api.query.assets.asset.keys();
@@ -59,26 +79,6 @@ export const useAssets = () => {
       } catch (error) {}
     }
   }, [api, activeAccount, getTokenIds]);
-
-  const getNativeBalance = useCallback(async () => {
-    if (api && activeAccount) {
-      try {
-        const { data: balance } = await api.query.system.account(activeAccount.address);
-        setNativeBalance((balance as PalletBalancesAccountData).free.toBn());
-      } catch (error) {}
-    }
-  }, [api, activeAccount]);
-
-  const getNativeMetadata = useCallback(async () => {
-    if (api) {
-      const decimals = api.registry.chainDecimals[0];
-      const name = api.registry.chainTokens[0];
-      setNativeMetadata({
-        name,
-        decimals,
-      });
-    }
-  }, [api]);
 
   const getTokensMetadata = useCallback(async () => {
     if (api) {
