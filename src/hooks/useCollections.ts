@@ -11,7 +11,7 @@ import { useModalStatus } from '@contexts/ModalStatusContext';
 import { IPFS_URL } from '@helpers/config';
 import { ModalStatusTypes, StatusMessages } from '@helpers/constants';
 import { handleError } from '@helpers/handleError';
-import { CollectionConfig, CollectionMetadata, CollectionMetadataData } from '@helpers/interfaces';
+import { CollectionConfig, CollectionMetadata, CollectionMetadataData, CollectionMetadataPrimitive } from '@helpers/interfaces';
 import { routes } from '@helpers/routes';
 
 export const useCollections = () => {
@@ -51,15 +51,12 @@ export const useCollections = () => {
           setCollectionsMetadata(metadata);
           return;
         }
-        // TODO remove later, this is used for Bob to see Alice's collection, as currently you are able to see only your own collections
-        // so set ids of Alice collections 0, 1 or more and then proceed to mint in them
-        // const ownedCollectionIds = ['0', '1', '2'];
 
         const rawMetadata = await api.query.nfts.collectionMetadataOf.multi(ownedCollectionIds);
 
         if (Array.isArray(rawMetadata) && rawMetadata.length > 0) {
           const fetchCalls = rawMetadata.map((metadata) => {
-            const primitiveMetadata = metadata.toPrimitive() as any;
+            const primitiveMetadata = metadata.toPrimitive() as unknown as CollectionMetadataPrimitive;
             if (!primitiveMetadata?.data) {
               return null;
             }
@@ -102,7 +99,7 @@ export const useCollections = () => {
           const rawMetadata = await api.query.nfts.collectionMetadataOf(collectionId);
 
           if (rawMetadata) {
-            const primitiveMetadata = rawMetadata.toPrimitive() as any;
+            const primitiveMetadata = rawMetadata.toPrimitive() as unknown as CollectionMetadataPrimitive;
             if (!primitiveMetadata?.data) {
               return null;
             }
@@ -158,7 +155,7 @@ export const useCollections = () => {
                 });
               }
             });
-        } catch (error: any) {
+        } catch (error) {
           setStatus({ type: ModalStatusTypes.ERROR, message: handleError(error) });
         }
       }

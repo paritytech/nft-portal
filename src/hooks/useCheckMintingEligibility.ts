@@ -3,6 +3,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { useAccounts } from '@contexts/AccountsContext';
 
 import { MintTypes } from '@helpers/constants';
+import { CollectionConfigHuman } from '@helpers/interfaces';
 
 import { useCollections } from './useCollections';
 import { useNfts } from './useNfts';
@@ -19,12 +20,15 @@ export const useCheckMintingEligibility = (collectionId: string) => {
 
   const checkHolderOfRestriction = async () => {
     try {
-      const config = ((await getCollectionConfig(collectionId)) as any).toHuman();
+      const rawConfig = await getCollectionConfig(collectionId);
+      if (rawConfig) {
+        const config = rawConfig.toHuman() as unknown as CollectionConfigHuman;
 
-      if (config?.mintSettings && typeof config.mintSettings.mintType[MintTypes.HOLDER_OF] !== 'undefined') {
-        setHolderOfCollectionId(config.mintSettings.mintType[MintTypes.HOLDER_OF]);
-      } else {
-        setHolderOfCollectionId(null);
+        if (config.mintSettings && typeof config.mintSettings.mintType === 'object') {
+          setHolderOfCollectionId(config.mintSettings.mintType[MintTypes.HOLDER_OF]);
+        } else {
+          setHolderOfCollectionId(null);
+        }
       }
     } catch (error) {}
   };
@@ -46,8 +50,6 @@ export const useCheckMintingEligibility = (collectionId: string) => {
           results.forEach((attributes, nftIdIndex) => {
             let hasClaimAttribute = false;
 
-            // TODO remove console when done
-            // console.log('attributes', attributes);
             attributes.forEach((attribute) => {
               if (attribute) {
                 const {

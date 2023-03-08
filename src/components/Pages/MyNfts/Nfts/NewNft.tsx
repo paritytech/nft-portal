@@ -76,8 +76,8 @@ const NewNft = () => {
         {Array.isArray(ownedNftsFromAnotherCollection) && ownedNftsFromAnotherCollection.length > 0 && (
           <Form.Group className='mb-3'>
             <Form.Label>Select which access NFT you want to use for the mint:</Form.Label>
-            {/* TODO owner_of_item will also be changed soon to 'nft_owned' */}
-            <Form.Select onChange={(event) => setMintAccessNft({ owner_of_item: event.target.value })} required>
+            {/* TODO ownerOfItem will be changed to 'nftOwned' */}
+            <Form.Select onChange={(event) => setMintAccessNft({ ownerOfItem: event.target.value })} required>
               <option value=''>Select NFT</option>
               {ownedNftsFromAnotherCollection.map((ownedNft) => (
                 <option key={ownedNft} value={ownedNft}>

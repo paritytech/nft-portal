@@ -15,6 +15,35 @@ export interface CollectionMetadataData {
   image?: string;
 }
 
+export interface CollectionMetadataPrimitive {
+  data: string;
+  deposit: string;
+}
+
+export interface CollectionConfig {
+  settings: number;
+  maxSupply?: number;
+  mintSettings: {
+    mintType: MintType;
+    price?: number;
+    startBlock?: number;
+    endBlock?: number;
+    defaultItemSettings: number;
+  };
+}
+
+export interface CollectionConfigHuman {
+  settings: string;
+  maxSupply: string | null;
+  mintSettings: {
+    mintType: MintType;
+    price: string | null;
+    startBlock: string | null;
+    endBlock: string | null;
+    defaultItemSettings: string;
+  };
+}
+
 export interface NftMetadata extends NftMetadataData {
   id: string;
 }
@@ -67,26 +96,14 @@ export interface StatusEntry {
   message: StatusMessages;
 }
 
-export interface CollectionConfig {
-  settings: number;
-  maxSupply?: number;
-  mintSettings: {
-    mintType: MintType;
-    price?: number;
-    startBlock?: number;
-    endBlock?: number;
-    defaultItemSettings: number;
-  };
-}
-
-export type MintType = MintTypes | { [key in MintTypes]?: string };
+export type MintType = MintTypes | { [MintTypes.HOLDER_OF]: string };
 
 export interface ContextualStatusMessage {
   statusType: StatusTypes;
   statusMessage: string;
 }
 
-// TODO owner_of_item will also be changed soon to 'nft_owned'
+// TODO ownerOfItem will be changed to 'nftOwned'
 export interface MintAccessNft {
-  owner_of_item: string;
+  ownerOfItem: string;
 }

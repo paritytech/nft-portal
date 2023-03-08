@@ -128,6 +128,7 @@ export const useNfts = (collectionId: string) => {
       if (api && activeAccount && activeWallet && collectionId) {
         setStatus({ type: ModalStatusTypes.INIT_TRANSACTION, message: StatusMessages.TRANSACTION_CONFIRM });
         openModalStatus();
+
         try {
           const unsub = await api.tx.nfts
             .mint(collectionId, nftId, nftReceiver, mintAccessNft)
@@ -141,7 +142,6 @@ export const useNfts = (collectionId: string) => {
                 unsub();
 
                 events.some(({ event: { data, method } }) => {
-
                   if (method === 'ExtrinsicSuccess') {
                     setAction(() => () => {
                       if (nftReceiver === activeAccount.address) {
