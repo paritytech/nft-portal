@@ -1,45 +1,27 @@
-import { memo, useEffect } from 'react';
-import Stack from 'react-bootstrap/esm/Stack';
-import { Link, useParams } from 'react-router-dom';
+import { memo } from 'react';
 
-import BasicButton from '@buttons/BasicButton';
+import { NftMetadata } from '@helpers/interfaces';
 
-import { useAccounts } from '@contexts/AccountsContext';
+import Nft from './Nft';
 
-import { SContentBlockContainer } from '@helpers/reusableStyles';
-import { routes } from '@helpers/routes';
-import { SSecondaryButton } from '@helpers/styledComponents';
+interface NftsViewProps {
+  nftsMetadata: NftMetadata[] | null;
+}
 
-import { useNfts } from '@hooks/useNfts';
+const NftsView = ({ nftsMetadata }: NftsViewProps) => {
+  if (nftsMetadata === null) {
+    return <>Gathering data... please wait</>;
+  }
 
-import Nfts from './Nfts';
-
-const NftsView = () => {
-  const { collectionId } = useParams();
-  const { getNftsMetadata, nftsMetadata } = useNfts(collectionId || '');
-  const { theme } = useAccounts();
-
-  useEffect(() => {
-    if (collectionId) {
-      getNftsMetadata();
-    }
-  }, [getNftsMetadata, collectionId]);
+  if (Array.isArray(nftsMetadata) && nftsMetadata.length === 0) {
+    return <>No NFTs found</>;
+  }
 
   return (
     <>
-      <SContentBlockContainer>
-        <Nfts nftsMetadata={nftsMetadata} />
-      </SContentBlockContainer>
-      <Stack direction='horizontal' gap={2} className='justify-content-end'>
-        <Link to={routes.nftMint(collectionId)}>
-          <BasicButton>Mint NFT</BasicButton>
-        </Link>
-        <Link to={routes.collections}>
-          <SSecondaryButton type='button' activeTheme={theme}>
-            Back
-          </SSecondaryButton>
-        </Link>
-      </Stack>
+      {nftsMetadata.map((nftMetadata) => (
+        <Nft key={nftMetadata.id} nftMetadata={nftMetadata} />
+      ))}
     </>
   );
 };
