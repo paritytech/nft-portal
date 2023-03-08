@@ -11,7 +11,7 @@ import { useModalStatus } from '@contexts/ModalStatusContext';
 import { IPFS_URL } from '@helpers/config';
 import { ModalStatusTypes, StatusMessages } from '@helpers/constants';
 import { handleError } from '@helpers/handleError';
-import { NftMetadata, NftMetadataData } from '@helpers/interfaces';
+import { MintAccessNft, NftMetadata, NftMetadataData } from '@helpers/interfaces';
 import { routes } from '@helpers/routes';
 
 export const useNfts = (collectionId: string) => {
@@ -22,22 +22,26 @@ export const useNfts = (collectionId: string) => {
   const [nftMetadata, setNftMetadata] = useState<NftMetadata | null>(null);
   const [isNftDataLoading, setIsNftDataLoading] = useState(false);
 
-  const getNftIds = useCallback(async () => {
-    if (api && activeAccount && collectionId) {
-      const results: StorageKey<[AccountId32, u32, u32]>[] = await api.query.nfts.account.keys(activeAccount.address, collectionId);
+  const getNftIds = useCallback(
+    async (specifiedCollectionId = '') => {
+      if (api && activeAccount && collectionId) {
+        const collectionIdParam = specifiedCollectionId || collectionId;
+        const results: StorageKey<[AccountId32, u32, u32]>[] = await api.query.nfts.account.keys(activeAccount.address, collectionIdParam);
 
-      const nftIds = results
-        .map(({ args: [, , nftId] }) => nftId)
-        .sort((a, b) => a.cmp(b))
-        .map((nftId) => nftId.toString());
+        const nftIds = results
+          .map(({ args: { 2: nftId } }) => nftId)
+          .sort((a, b) => a.cmp(b))
+          .map((nftId) => nftId.toString());
 
-      if (nftIds.length > 0) {
-        return nftIds;
+        if (nftIds.length > 0) {
+          return nftIds;
+        }
       }
-    }
 
-    return null;
-  }, [api, activeAccount, collectionId]);
+      return null;
+    },
+    [api, activeAccount, collectionId],
+  );
 
   const getNftsMetadata = useCallback(async () => {
     if (api && activeAccount && collectionId) {
@@ -55,7 +59,7 @@ export const useNfts = (collectionId: string) => {
         const rawMetadata = await api.query.nfts.itemMetadataOf.multi(ownedNftIds.map((ownedNftId) => [collectionId, ownedNftId]));
         if (Array.isArray(rawMetadata) && rawMetadata.length > 0) {
           const fetchCalls = rawMetadata.map((metadata) => {
-            const primitiveMetadata = metadata.toPrimitive() as any; // TODO can't import proper type
+            const primitiveMetadata = metadata.toPrimitive() as any;
             if (!primitiveMetadata?.data) {
               return null;
             }
@@ -99,7 +103,7 @@ export const useNfts = (collectionId: string) => {
           const rawMetadata = await api.query.nfts.itemMetadataOf(collectionId, nftId);
 
           if (rawMetadata) {
-            const primitiveMetadata = rawMetadata.toPrimitive() as any; // TODO can't import proper type
+            const primitiveMetadata = rawMetadata.toPrimitive() as any;
             if (!primitiveMetadata?.data) {
               return null;
             }
@@ -120,15 +124,15 @@ export const useNfts = (collectionId: string) => {
   );
 
   const mintNft = useCallback(
-    async (nftId: string) => {
+    async (nftId: string, nftReceiver: string, mintAccessNft: MintAccessNft | null) => {
       if (api && activeAccount && activeWallet && collectionId) {
         setStatus({ type: ModalStatusTypes.INIT_TRANSACTION, message: StatusMessages.TRANSACTION_CONFIRM });
         openModalStatus();
 
         try {
           const unsub = await api.tx.nfts
-            .mint(collectionId, nftId, activeAccount.address, null)
-            .signAndSend(activeAccount.address, { signer: activeWallet.signer }, ({ status }) => {
+            .mint(collectionId, nftId, nftReceiver, mintAccessNft)
+            .signAndSend(activeAccount.address, { signer: activeWallet.signer }, ({ status, events }) => {
               if (status.isReady) {
                 setStatus({ type: ModalStatusTypes.IN_PROGRESS, message: StatusMessages.NFT_MINTING });
               }
@@ -137,7 +141,27 @@ export const useNfts = (collectionId: string) => {
                 setStatus({ type: ModalStatusTypes.COMPLETE, message: StatusMessages.NFT_MINTED });
                 unsub();
 
-                setAction(() => () => navigate(routes.nftEdit(collectionId, nftId)));
+                events.some(({ event: { data, method } }) => {
+                  if (method === 'ExtrinsicSuccess') {
+                    setAction(() => () => {
+                      if (nftReceiver === activeAccount.address) {
+                        navigate(routes.nftEdit(collectionId, nftId));
+                      }
+
+                      navigate(routes.nfts(collectionId));
+                    });
+
+                    return true;
+                  }
+
+                  if (method === 'ExtrinsicFailed') {
+                    setStatus({ type: ModalStatusTypes.ERROR, message: StatusMessages.ACTION_FAILED });
+
+                    return true;
+                  }
+
+                  return false;
+                });
               }
             });
         } catch (error) {
@@ -191,5 +215,15 @@ export const useNfts = (collectionId: string) => {
     [api, collectionId],
   );
 
-  return { nftsMetadata, nftMetadata, mintNft, getNftMetadata, getNftsMetadata, saveNftMetadata, isNftDataLoading, getNft };
+  return {
+    getNftIds,
+    nftsMetadata,
+    nftMetadata,
+    mintNft,
+    getNftMetadata,
+    getNftsMetadata,
+    saveNftMetadata,
+    isNftDataLoading,
+    getNft,
+  };
 };

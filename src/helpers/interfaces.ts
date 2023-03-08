@@ -1,4 +1,4 @@
-import { ChainThemes, ChainTitles, MintTypes, ModalStatusTypes, StatusMessages } from './constants';
+import { ChainThemes, ChainTitles, MintTypes, ModalStatusTypes, StatusMessages, StatusTypes } from './constants';
 
 export interface CommonStyleProps {
   className?: string;
@@ -13,6 +13,35 @@ export interface CollectionMetadataData {
   name: string;
   description?: string;
   image?: string;
+}
+
+export interface CollectionMetadataPrimitive {
+  data: string;
+  deposit: string;
+}
+
+export interface CollectionConfig {
+  settings: number;
+  maxSupply?: number;
+  mintSettings: {
+    mintType: MintType;
+    price?: number;
+    startBlock?: number;
+    endBlock?: number;
+    defaultItemSettings: number;
+  };
+}
+
+export interface CollectionConfigHuman {
+  settings: string;
+  maxSupply: string | null;
+  mintSettings: {
+    mintType: MintType;
+    price: string | null;
+    startBlock: string | null;
+    endBlock: string | null;
+    defaultItemSettings: string;
+  };
 }
 
 export interface NftMetadata extends NftMetadataData {
@@ -67,14 +96,14 @@ export interface StatusEntry {
   message: StatusMessages;
 }
 
-export interface CollectionConfig {
-  settings?: number;
-  maxSupply?: number;
-  mintSettings?: {
-    mintType?: MintTypes;
-    price?: number;
-    startBlock?: number;
-    endBlock?: number;
-    defaultItemSettings?: number;
-  };
+export type MintType = MintTypes | { [MintTypes.HOLDER_OF]: string };
+
+export interface ContextualStatusMessage {
+  statusType: StatusTypes;
+  statusMessage: string;
+}
+
+// TODO ownerOfItem will be changed to 'nftOwned'
+export interface MintAccessNft {
+  ownerOfItem: string;
 }
