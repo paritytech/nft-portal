@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 import { NativeTokenMetadata } from '@helpers/interfaces';
 
-interface Props {
+interface NativeTokenProps {
   metadata: NativeTokenMetadata;
   balance: BN | null;
 }
@@ -26,7 +26,7 @@ const SBalance = styled.span`
   text-align: right;
 `;
 
-const Token = ({ metadata, balance }: Props) => {
+const NativeToken = ({ metadata, balance }: NativeTokenProps) => {
   const { name, decimals } = metadata;
   const formattedName = (name || '').toUpperCase();
   const formattedBalance = balance
@@ -45,4 +45,4 @@ const Token = ({ metadata, balance }: Props) => {
   );
 };
 
-export default memo(Token);
+export default memo(NativeToken);
