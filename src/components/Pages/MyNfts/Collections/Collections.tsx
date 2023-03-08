@@ -1,32 +1,33 @@
 import { memo, useEffect } from 'react';
+import Stack from 'react-bootstrap/esm/Stack';
+import { Link } from 'react-router-dom';
 
-import { CollectionMetadata } from '@helpers/interfaces';
+import BasicButton from '@buttons/BasicButton';
 
-import Collection from './Collection';
+import { SContentBlockContainer } from '@helpers/reusableStyles';
+import { routes } from '@helpers/routes';
 
-interface CollectionsProps {
-  getCollectionsMetadata: () => void;
-  collectionsMetadata: CollectionMetadata[] | null;
-}
+import { useCollections } from '@hooks/useCollections';
 
-const Collections = ({ getCollectionsMetadata, collectionsMetadata }: CollectionsProps) => {
+import CollectionsView from './CollectionsView';
+
+const Collections = () => {
+  const { getCollectionsMetadata, collectionsMetadata } = useCollections();
+
   useEffect(() => {
     getCollectionsMetadata();
   }, [getCollectionsMetadata]);
 
-  if (collectionsMetadata === null) {
-    return <>Gathering data... please wait</>;
-  }
-
-  if (Array.isArray(collectionsMetadata) && collectionsMetadata.length === 0) {
-    return <>No collections found</>;
-  }
-
   return (
     <>
-      {collectionsMetadata.map((collectionMetadata) => (
-        <Collection key={collectionMetadata.id} collectionMetadata={collectionMetadata} />
-      ))}
+      <SContentBlockContainer>
+        <CollectionsView collectionsMetadata={collectionsMetadata} />
+      </SContentBlockContainer>
+      <Stack direction='horizontal' gap={2} className='justify-content-end'>
+        <Link to={routes.collectionMint}>
+          <BasicButton>Mint Collection</BasicButton>
+        </Link>
+      </Stack>
     </>
   );
 };

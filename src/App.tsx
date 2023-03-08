@@ -13,15 +13,15 @@ import { Themeable } from '@helpers/interfaces';
 import { styleSettings } from '@helpers/reusableStyles';
 import { routes } from '@helpers/routes';
 
-import TokensView from '@pages/Assets/Tokens/TokensView';
+import Tokens from '@pages/Assets/Tokens/Tokens';
 import Home from '@pages/Home/Home';
 import CollectionEdit from '@pages/MyNfts/Collections/CollectionEdit';
-import CollectionsView from '@pages/MyNfts/Collections/CollectionsView';
+import Collections from '@pages/MyNfts/Collections/Collections';
 // import PoolsView from '@pages/Assets/Pools/PoolsView';
 import NewCollection from '@pages/MyNfts/Collections/NewCollection';
 import NewNft from '@pages/MyNfts/Nfts/NewNft';
 import NftEdit from '@pages/MyNfts/Nfts/NftEdit';
-import NftsView from '@pages/MyNfts/Nfts/NftsView';
+import Nfts from '@pages/MyNfts/Nfts/Nfts';
 
 const SMainContainer = styled.main<Themeable>`
   padding-top: 20px;
@@ -73,7 +73,7 @@ const App = () => {
                 path={routes.collections}
                 element={
                   <PrivateRoute>
-                    <CollectionsView />
+                    <Collections />
                   </PrivateRoute>
                 }
               />
@@ -97,7 +97,7 @@ const App = () => {
                 path={routes.nfts()}
                 element={
                   <PrivateRoute>
-                    <NftsView />
+                    <Nfts />
                   </PrivateRoute>
                 }
               />
@@ -117,7 +117,7 @@ const App = () => {
                   </PrivateRoute>
                 }
               />
-              <Route path={routes.tokens} element={<TokensView />} />
+              <Route path={routes.tokens} element={<Tokens />} />
               <Route path='*' element={<Navigate to={routes.homepage} replace />} />
             </Routes>
           </SContent>

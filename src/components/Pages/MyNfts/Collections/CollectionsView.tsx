@@ -1,29 +1,27 @@
 import { memo } from 'react';
-import Stack from 'react-bootstrap/esm/Stack';
-import { Link } from 'react-router-dom';
 
-import BasicButton from '@buttons/BasicButton';
+import { CollectionMetadata } from '@helpers/interfaces';
 
-import { SContentBlockContainer } from '@helpers/reusableStyles';
-import { routes } from '@helpers/routes';
+import Collection from './Collection';
 
-import { useCollections } from '@hooks/useCollections';
+interface CollectionsViewProps {
+  collectionsMetadata: CollectionMetadata[] | null;
+}
 
-import Collections from './Collections';
+const CollectionsView = ({ collectionsMetadata }: CollectionsViewProps) => {
+  if (collectionsMetadata === null) {
+    return <>Gathering data... please wait</>;
+  }
 
-const CollectionsView = () => {
-  const { getCollectionsMetadata, collectionsMetadata } = useCollections();
+  if (Array.isArray(collectionsMetadata) && collectionsMetadata.length === 0) {
+    return <>No collections found</>;
+  }
 
   return (
     <>
-      <SContentBlockContainer>
-        <Collections getCollectionsMetadata={getCollectionsMetadata} collectionsMetadata={collectionsMetadata} />
-      </SContentBlockContainer>
-      <Stack direction='horizontal' gap={2} className='justify-content-end'>
-        <Link to={routes.collectionMint}>
-          <BasicButton>Mint Collection</BasicButton>
-        </Link>
-      </Stack>
+      {collectionsMetadata.map((collectionMetadata) => (
+        <Collection key={collectionMetadata.id} collectionMetadata={collectionMetadata} />
+      ))}
     </>
   );
 };

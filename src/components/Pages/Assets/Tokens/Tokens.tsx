@@ -1,32 +1,21 @@
-import { BN } from '@polkadot/util';
 import { memo, useEffect } from 'react';
 
-import type { NativeTokenMetadata, TokenBalance, TokenMetadata } from '@helpers/interfaces';
+import { useAssets } from '@hooks/useAssets';
 
-import NativeToken from './NativeToken';
-import Token from './Token';
+import TokensView from './TokensView';
 
-interface TokensProps {
-  getNativeBalance: () => void;
-  getNativeMetadata: () => void;
-  getTokensBalances: () => void;
-  getTokensMetadata: () => void;
-  nativeBalance: BN | null;
-  nativeMetadata: NativeTokenMetadata | null;
-  tokensBalances: TokenBalance[] | null;
-  tokensMetadata: TokenMetadata[] | null;
-}
+const Tokens = () => {
+  const {
+    getNativeBalance,
+    getNativeMetadata,
+    getTokensBalances,
+    getTokensMetadata,
+    nativeBalance,
+    nativeMetadata,
+    tokensBalances,
+    tokensMetadata,
+  } = useAssets();
 
-const Tokens = ({
-  getNativeBalance,
-  getNativeMetadata,
-  getTokensBalances,
-  getTokensMetadata,
-  nativeBalance,
-  nativeMetadata,
-  tokensBalances,
-  tokensMetadata,
-}: TokensProps) => {
   useEffect(() => {
     getNativeBalance();
     getNativeMetadata();
@@ -34,22 +23,15 @@ const Tokens = ({
     getTokensMetadata();
   }, [getNativeBalance, getNativeMetadata, getTokensBalances, getTokensMetadata]);
 
-  if (tokensMetadata === null || nativeMetadata === null) {
-    return <>Gathering data... please wait</>;
-  }
-
-  if (Array.isArray(tokensMetadata) && tokensMetadata.length === 0) {
-    return <>No tokens found</>;
-  }
-
   return (
     <>
-      {nativeMetadata && <NativeToken metadata={nativeMetadata} balance={nativeBalance} />}
-      {Array.isArray(tokensMetadata) &&
-        tokensMetadata.map((tokenMetadata) => {
-          const balance = tokensBalances?.find((el) => el.id === tokenMetadata.id)?.balance;
-          return <Token key={tokenMetadata.id} tokenMetadata={tokenMetadata} balance={balance || null} />;
-        })}
+      <h2>All Tokens</h2>
+      <TokensView
+        nativeBalance={nativeBalance}
+        nativeMetadata={nativeMetadata}
+        tokensBalances={tokensBalances}
+        tokensMetadata={tokensMetadata}
+      />
     </>
   );
 };

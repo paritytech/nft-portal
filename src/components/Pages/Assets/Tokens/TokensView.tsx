@@ -1,34 +1,40 @@
+import { BN } from '@polkadot/util';
 import { memo } from 'react';
 
-import { useAssets } from '@hooks/useAssets';
+import type { NativeTokenMetadata, TokenBalance, TokenMetadata } from '@helpers/interfaces';
 
-import Tokens from './Tokens';
+import NativeToken from './NativeToken';
+import Token from './Token';
 
-const TokensView = () => {
-  const {
-    getNativeBalance,
-    getNativeMetadata,
-    getTokensBalances,
-    getTokensMetadata,
-    nativeBalance,
-    nativeMetadata,
-    tokensBalances,
-    tokensMetadata,
-  } = useAssets();
+interface TokensViewProps {
+  nativeBalance: BN | null;
+  nativeMetadata: NativeTokenMetadata | null;
+  tokensBalances: TokenBalance[] | null;
+  tokensMetadata: TokenMetadata[] | null;
+}
+
+const TokensView = ({
+  nativeBalance,
+  nativeMetadata,
+  tokensBalances,
+  tokensMetadata,
+}: TokensViewProps) => {
+  if (tokensMetadata === null || nativeMetadata === null) {
+    return <>Gathering data... please wait</>;
+  }
+
+  if (Array.isArray(tokensMetadata) && tokensMetadata.length === 0) {
+    return <>No tokens found</>;
+  }
 
   return (
     <>
-      <h2>All Tokens</h2>
-      <Tokens
-        getNativeBalance={getNativeBalance}
-        getNativeMetadata={getNativeMetadata}
-        getTokensBalances={getTokensBalances}
-        getTokensMetadata={getTokensMetadata}
-        nativeBalance={nativeBalance}
-        nativeMetadata={nativeMetadata}
-        tokensBalances={tokensBalances}
-        tokensMetadata={tokensMetadata}
-      />
+      {nativeMetadata && <NativeToken metadata={nativeMetadata} balance={nativeBalance} />}
+      {Array.isArray(tokensMetadata) &&
+        tokensMetadata.map((tokenMetadata) => {
+          const balance = tokensBalances?.find((el) => el.id === tokenMetadata.id)?.balance;
+          return <Token key={tokenMetadata.id} tokenMetadata={tokenMetadata} balance={balance || null} />;
+        })}
     </>
   );
 };
