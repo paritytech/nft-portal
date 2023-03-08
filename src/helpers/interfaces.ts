@@ -1,3 +1,5 @@
+import { BN } from '@polkadot/util';
+
 import { ChainThemes, ChainTitles, MintTypes, ModalStatusTypes, StatusMessages, StatusTypes } from './constants';
 
 export interface CommonStyleProps {
@@ -106,4 +108,23 @@ export interface ContextualStatusMessage {
 // TODO ownerOfItem will be changed to 'nftOwned'
 export interface MintAccessNft {
   ownerOfItem: string;
+}
+
+export interface TokenBalance {
+  id: number;
+  balance: BN;
+}
+
+export interface TokenMetadata extends TokenMetadataData {
+  id: number;
+}
+
+export interface TokenMetadataData {
+  name: string | null;
+  symbol: string | null;
+  decimals: number;
+}
+export interface NativeTokenMetadata {
+  name: string | null;
+  decimals: number;
 }

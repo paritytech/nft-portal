@@ -9,5 +9,7 @@ export const routes = {
   nfts: (collectionId: string = COLLECTION_ID_PARAM) => `/collections/${collectionId}/nfts`,
   nftMint: (collectionId: string = COLLECTION_ID_PARAM) => `/collections/${collectionId}/mint`,
   nftEdit: (collectionId: string = COLLECTION_ID_PARAM, nftId: string = NFT_ID_PARAM) => `/collections/${collectionId}/nfts/${nftId}`,
-  dex: '/dex',
+  allAssets: '/all-assets',
+  tokens: '/tokens',
+  pools: '/pools',
 };

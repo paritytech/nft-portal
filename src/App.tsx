@@ -1,3 +1,4 @@
+import '@polkadot/api-augment';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import styled, { createGlobalStyle } from 'styled-components';
 
@@ -12,10 +13,11 @@ import { Themeable } from '@helpers/interfaces';
 import { styleSettings } from '@helpers/reusableStyles';
 import { routes } from '@helpers/routes';
 
-import Dex from '@pages/Dex/Dex';
+import TokensView from '@pages/Assets/Tokens/TokensView';
 import Home from '@pages/Home/Home';
 import CollectionEdit from '@pages/MyNfts/Collections/CollectionEdit';
 import CollectionsView from '@pages/MyNfts/Collections/CollectionsView';
+// import PoolsView from '@pages/Assets/Pools/PoolsView';
 import NewCollection from '@pages/MyNfts/Collections/NewCollection';
 import NewNft from '@pages/MyNfts/Nfts/NewNft';
 import NftEdit from '@pages/MyNfts/Nfts/NftEdit';
@@ -115,7 +117,7 @@ const App = () => {
                   </PrivateRoute>
                 }
               />
-              <Route path={routes.dex} element={<Dex />} />
+              <Route path={routes.tokens} element={<TokensView />} />
               <Route path='*' element={<Navigate to={routes.homepage} replace />} />
             </Routes>
           </SContent>
