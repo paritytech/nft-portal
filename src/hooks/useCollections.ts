@@ -11,7 +11,7 @@ import { useModalStatus } from '@contexts/ModalStatusContext';
 import { IPFS_URL } from '@helpers/config';
 import { ModalStatusTypes, StatusMessages } from '@helpers/constants';
 import { handleError } from '@helpers/handleError';
-import { CollectionConfig, CollectionMetadata, CollectionMetadataData } from '@helpers/interfaces';
+import { CollectionConfig, CollectionMetadata, CollectionMetadataData, CollectionMetadataPrimitive } from '@helpers/interfaces';
 import { routes } from '@helpers/routes';
 
 export const useCollections = () => {
@@ -27,7 +27,7 @@ export const useCollections = () => {
       const results: StorageKey<[AccountId32, u32]>[] = await api.query.nfts.collectionAccount.keys(activeAccount.address);
 
       const collectionIds = results
-        .map(({ args: [, collectionId] }) => collectionId)
+        .map(({ args: { 1: collectionId } }) => collectionId)
         .sort((a, b) => a.cmp(b))
         .map((collectionId) => collectionId.toString());
 
@@ -56,7 +56,7 @@ export const useCollections = () => {
 
         if (Array.isArray(rawMetadata) && rawMetadata.length > 0) {
           const fetchCalls = rawMetadata.map((metadata) => {
-            const primitiveMetadata = metadata.toPrimitive() as any; //TODO can't import proper type PalletUniquesCollectionMetadata;
+            const primitiveMetadata = metadata.toPrimitive() as unknown as CollectionMetadataPrimitive;
             if (!primitiveMetadata?.data) {
               return null;
             }
@@ -99,7 +99,7 @@ export const useCollections = () => {
           const rawMetadata = await api.query.nfts.collectionMetadataOf(collectionId);
 
           if (rawMetadata) {
-            const primitiveMetadata = rawMetadata.toPrimitive() as any; //TODO can't import proper type PalletUniquesCollectionMetadata;
+            const primitiveMetadata = rawMetadata.toPrimitive() as unknown as CollectionMetadataPrimitive;
             if (!primitiveMetadata?.data) {
               return null;
             }
@@ -155,7 +155,7 @@ export const useCollections = () => {
                 });
               }
             });
-        } catch (error: any) {
+        } catch (error) {
           setStatus({ type: ModalStatusTypes.ERROR, message: handleError(error) });
         }
       }
@@ -194,6 +194,17 @@ export const useCollections = () => {
     [api, activeAccount, activeWallet, navigate, openModalStatus, setStatus, setAction],
   );
 
+  const getCollectionConfig = useCallback(
+    async (collectionId: string) => {
+      if (api) {
+        const config = await api.query.nfts.collectionConfigOf(collectionId);
+
+        return config;
+      }
+    },
+    [api],
+  );
+
   return {
     getCollectionsMetadata,
     getCollectionMetadata,
@@ -202,5 +213,6 @@ export const useCollections = () => {
     collectionsMetadata,
     collectionMetadata,
     isCollectionDataLoading,
+    getCollectionConfig,
   };
 };

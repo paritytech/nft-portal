@@ -12,10 +12,10 @@ import ModalStatus from '@common/ModalStatus';
 import { useAccounts } from '@contexts/AccountsContext';
 
 import { MintTypes } from '@helpers/constants';
-import { CollectionConfig } from '@helpers/interfaces';
+import { CollectionConfig, MintType } from '@helpers/interfaces';
 import { routes } from '@helpers/routes';
 import { SSecondaryButton } from '@helpers/styledComponents';
-import { convertToBitFlagValue, getBlockNumber } from '@helpers/utilities';
+import { convertToBitFlagValue, getBlockNumber, pricePattern } from '@helpers/utilities';
 
 import { useCollections } from '@hooks/useCollections';
 
@@ -31,19 +31,31 @@ const NewCollection = () => {
   const unlockedAttributesRef = useRef<HTMLInputElement>(null);
   const unlockedMaxSupplyRef = useRef<HTMLInputElement>(null);
   const maxSupplyRef = useRef<HTMLInputElement>(null);
-  const mintTypeRef = useRef<HTMLSelectElement>(null);
   const priceRef = useRef<HTMLInputElement>(null);
   const transferrableItemRef = useRef<HTMLInputElement>(null);
   const unlockedItemMetadataRef = useRef<HTMLInputElement>(null);
   const unlockedItemAttributesRef = useRef<HTMLInputElement>(null);
+  const holderOfCollectionIdRef = useRef<HTMLInputElement>(null);
   const [startDate, setStartDate] = useState<Date>();
   const [endDate, setEndDate] = useState<Date>();
+  const [mintType, setMintType] = useState<MintTypes>(MintTypes.ISSUER);
 
   const submitMintCollection = useCallback(
     async (event: FormEvent) => {
       event.preventDefault();
 
-      const collectionConfig: CollectionConfig = {};
+      const collectionConfig = {} as CollectionConfig;
+
+      let mintTypeFinalized: MintType = mintType;
+      if (mintType === MintTypes.HOLDER_OF) {
+        if (holderOfCollectionIdRef.current === null) {
+          return;
+        }
+
+        mintTypeFinalized = {
+          [MintTypes.HOLDER_OF]: holderOfCollectionIdRef.current.value,
+        };
+      }
 
       if (
         api !== null &&
@@ -52,7 +64,6 @@ const NewCollection = () => {
         unlockedAttributesRef.current !== null &&
         unlockedMaxSupplyRef.current !== null &&
         maxSupplyRef.current !== null &&
-        mintTypeRef.current !== null &&
         priceRef.current !== null &&
         transferrableItemRef.current !== null &&
         unlockedItemMetadataRef.current !== null &&
@@ -77,7 +88,7 @@ const NewCollection = () => {
         collectionConfig.settings = settings;
         collectionConfig.maxSupply = maxSupplyRef.current.value === '' ? undefined : parseInt(maxSupplyRef.current.value, 10);
         collectionConfig.mintSettings = {
-          mintType: mintTypeRef.current.value as MintTypes,
+          mintType: mintTypeFinalized,
           price: priceRef.current.value === '' ? undefined : parseFloat(priceRef.current.value) * 10 ** api.registry.chainDecimals[0],
           startBlock,
           endBlock,
@@ -87,8 +98,12 @@ const NewCollection = () => {
 
       mintCollection(collectionConfig);
     },
-    [api, mintCollection, startDate, endDate],
+    [api, mintCollection, startDate, endDate, mintType],
   );
+
+  if (!api) {
+    return null;
+  }
 
   return (
     <>
@@ -120,13 +135,19 @@ const NewCollection = () => {
           <SIndentation>
             <Form.Group className='mb-3'>
               <Form.Label>Mint type:</Form.Label>
-              <Form.Select ref={mintTypeRef}>
+              <Form.Select onChange={(event) => setMintType(event.target.value as MintTypes)} defaultValue={mintType}>
                 {Object.entries(MintTypes).map(([key, value]) => (
                   <option key={key} value={value}>
                     {value}
                   </option>
                 ))}
               </Form.Select>
+              {mintType === MintTypes.HOLDER_OF && (
+                <Form.Group className='mt-3'>
+                  <Form.Label>Collection ID (must have a NFT from this collection)</Form.Label>
+                  <Form.Control type='number' ref={holderOfCollectionIdRef} min={0} required />
+                </Form.Group>
+              )}
             </Form.Group>
 
             <Form.Group className='mb-3'>
@@ -136,8 +157,8 @@ const NewCollection = () => {
               <Form.Control
                 type='text'
                 ref={priceRef}
-                pattern={`^(0|[1-9][0-9]*)(\.[0-9]{0,${api?.registry.chainDecimals[0]}})?$`}
-                title={`Please enter a number e.g. 10.25, max precision is ${api?.registry.chainDecimals[0]} decimals after .`}
+                pattern={pricePattern(api.registry.chainDecimals[0])}
+                title={`Please enter a number e.g. 10.25, max precision is ${api.registry.chainDecimals[0]} decimals after .`}
               />
             </Form.Group>
 

@@ -86,6 +86,7 @@ export const AccountsContextProvider = ({ children }: AccountsContextProviderPro
       setupApi();
       setupTheme(storedChain);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [storedChain]);
 
   const contextData = useMemo(

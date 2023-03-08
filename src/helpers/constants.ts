@@ -8,6 +8,11 @@ export enum ChainThemes {
   POLKADOT = 'polkadot',
 }
 
+export enum StatusTypes {
+  NFT_TAKEN = 'NFT_TAKEN',
+  MUST_BE_HOLDER_OF = 'MUST_BE_HOLDER_OF',
+}
+
 export enum ModalStatusTypes {
   INIT_TRANSACTION = 'INIT_TRANSACTION',
   IN_PROGRESS = 'IN_PROGRESS',
