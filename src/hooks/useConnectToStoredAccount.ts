@@ -1,33 +1,40 @@
-import { Account, BaseWallet } from '@polkadot-onboard/core';
 import { useWallets } from '@polkadot-onboard/react';
-import { useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import { useAccounts } from '@contexts/AccountsContext';
 
 export const useConnectToStoredAccount = () => {
   const { wallets } = useWallets();
-
   const { activeAccount, storedActiveAccount, setActiveAccount, setActiveWallet } = useAccounts();
+  const [isConnectionComplete, setIsConnectionComplete] = useState(false);
 
-  useEffect(() => {
-    const autoConnectToStoredAccount = async () => {
-      if (storedActiveAccount !== null && wallets.length > 0) {
-        const foundWallet = wallets.find((wallet) => wallet.metadata.title === storedActiveAccount.wallet);
+  const connectToStoredAccount = useCallback(async () => {
+    if (storedActiveAccount !== null && Array.isArray(wallets) && wallets.length > 0) {
+      const foundWallet = wallets.find((wallet) => wallet.metadata.title === storedActiveAccount.wallet);
 
-        if (foundWallet) {
-          await foundWallet.connect();
-          const accounts = await foundWallet.getAccounts();
-          const foundAccount = accounts.find((account) => account.address === storedActiveAccount.account);
-          if (foundAccount) {
-            setActiveWallet(foundWallet);
-            setActiveAccount(foundAccount);
-          }
+      if (foundWallet) {
+        await foundWallet.connect();
+        const accounts = await foundWallet.getAccounts();
+        const foundAccount = accounts.find((account) => account.address === storedActiveAccount.account);
+        if (foundAccount) {
+          setActiveWallet(foundWallet);
+          setActiveAccount(foundAccount);
         }
       }
-    };
+    }
 
-    autoConnectToStoredAccount();
-  }, [wallets, storedActiveAccount, setActiveAccount, setActiveWallet]);
+    if (Array.isArray(wallets)) {
+      setIsConnectionComplete(true);
+    }
+  }, [storedActiveAccount, wallets, setActiveAccount, setActiveWallet]);
 
-  return [wallets, activeAccount] as [BaseWallet[], Account | null];
+  useEffect(() => {
+    connectToStoredAccount();
+  }, [connectToStoredAccount]);
+
+  return {
+    wallets,
+    activeAccount,
+    isConnectionComplete,
+  };
 };

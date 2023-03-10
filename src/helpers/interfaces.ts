@@ -27,7 +27,7 @@ export interface CollectionConfig {
   maxSupply?: number;
   mintSettings: {
     mintType: MintType;
-    price?: number;
+    price?: string;
     startBlock?: number;
     endBlock?: number;
     defaultItemSettings: number;

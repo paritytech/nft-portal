@@ -15,12 +15,16 @@ import { useConnectToStoredAccount } from '@hooks/useConnectToStoredAccount';
 import Wallet from './Wallet';
 
 const Connect = () => {
-  const [wallets, activeAccount] = useConnectToStoredAccount();
+  const { activeAccount, wallets, isConnectionComplete } = useConnectToStoredAccount();
   const { theme } = useAccounts();
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+
+  if (!Array.isArray(wallets) || isConnectionComplete === false) {
+    return null;
+  }
 
   return (
     <>

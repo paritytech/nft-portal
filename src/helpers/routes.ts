@@ -2,7 +2,7 @@ const COLLECTION_ID_PARAM = ':collectionId';
 const NFT_ID_PARAM = ':nftId';
 
 export const routes = {
-  homepage: '/assets-portal',
+  homepage: '/',
   collections: '/collections',
   collectionMint: '/collections/mint',
   collectionEdit: (collectionId: string = COLLECTION_ID_PARAM) => `/collections/${collectionId}`,

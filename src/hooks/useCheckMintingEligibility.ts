@@ -18,7 +18,7 @@ export const useCheckMintingEligibility = (collectionId: string) => {
   const [isEligibleToMint, setIsEligibleToMint] = useState(false);
   const [ownedNftsFromAnotherCollection, setOwnedNftsFromAnotherCollection] = useState<string[] | null>(null);
 
-  const checkHolderOfRestriction = async () => {
+  const checkHolderOfRestriction = useCallback(async () => {
     try {
       const rawConfig = await getCollectionConfig(collectionId);
       if (rawConfig) {
@@ -31,7 +31,7 @@ export const useCheckMintingEligibility = (collectionId: string) => {
         }
       }
     } catch (error) {}
-  };
+  }, [collectionId, getCollectionConfig]);
 
   const checkEligibilityToMint = useCallback(
     async (holderOfCollectionId: string | null | undefined) => {
@@ -86,14 +86,14 @@ export const useCheckMintingEligibility = (collectionId: string) => {
   );
 
   useEffect(() => {
-    checkHolderOfRestriction();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    if (api) {
+      checkHolderOfRestriction();
+    }
+  }, [api, checkHolderOfRestriction]);
 
   useEffect(() => {
     checkEligibilityToMint(holderOfCollectionId);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [holderOfCollectionId]);
+  }, [holderOfCollectionId, checkEligibilityToMint]);
 
   return {
     holderOfCollectionId,
