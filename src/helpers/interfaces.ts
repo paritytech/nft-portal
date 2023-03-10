@@ -105,9 +105,8 @@ export interface ContextualStatusMessage {
   statusMessage: string;
 }
 
-// TODO ownerOfItem will be changed to 'nftOwned'
 export interface MintAccessNft {
-  ownerOfItem: string;
+  ownedItem: string;
 }
 
 export interface TokenBalance {
