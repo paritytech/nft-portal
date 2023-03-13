@@ -55,10 +55,12 @@ export const useCheckMintingEligibility = (collectionId: string) => {
                 const {
                   args: { 3: attributeKey },
                 } = attribute;
-                // TODO uncomment when @polkadot/api is updated with the enum PalletAttributes
-                // if (attributeKey.isUsedToClaim()) {
-                // hasClaimAttribute = true;
-                // }
+
+                const claimAttribute = api.createType('PalletNftsPalletAttributes', attributeKey);
+
+                if (claimAttribute.isUsedToClaim) {
+                  hasClaimAttribute = true;
+                }
               }
             });
 
