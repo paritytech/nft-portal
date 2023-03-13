@@ -19,7 +19,7 @@
     "@polkadot-onboard/core": "^0.0.8-beta",
     "@polkadot-onboard/injected-wallets": "^0.0.8-beta",
     "@polkadot-onboard/react": "^0.0.8-beta",
-    "@polkadot/api": "^10.0.1",
+    "@polkadot/api": "^10.1.2",
     "@popperjs/core": "^2.11.6",
     "axios": "1.2.1",
     "bootstrap": "^5.2.2",

@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
+import type { PalletNftsPalletAttributes } from '@polkadot/types/lookup'
 
 import { useAccounts } from '@contexts/AccountsContext';
 
@@ -53,12 +54,18 @@ export const useCheckMintingEligibility = (collectionId: string) => {
             attributes.forEach((attribute) => {
               if (attribute) {
                 const {
-                  args: { 3: attributeKey },
+                  args: {3: attributeKey},
                 } = attribute;
-                // TODO uncomment when @polkadot/api is updated with the enum PalletAttributes
-                // if (attributeKey.isUsedToClaim()) {
-                // hasClaimAttribute = true;
-                // }
+
+                // TODO this is a test code, should be changed/fixed/removed
+                const claimAttribute = api.createType('PalletNftsPalletAttributes', attributeKey);
+                console.log('claimAttribute', claimAttribute)
+                console.log('claimAttribute.isUsedToClaim', claimAttribute.isUsedToClaim)
+                console.log('claimAttribute.asUsedToClaim', claimAttribute.asUsedToClaim)
+
+                if (claimAttribute.isUsedToClaim) {
+                  hasClaimAttribute = true;
+                }
               }
             });
 
