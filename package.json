@@ -18,7 +18,7 @@
   "dependencies": {
     "@polkadot-onboard/core": "^0.0.8-beta",
     "@polkadot-onboard/injected-wallets": "^0.0.8-beta",
-    "@polkadot-onboard/react": "^0.0.8-beta",
+    "@polkadot-onboard/react": "^0.0.9-beta",
     "@polkadot/api": "^10.0.1",
     "@popperjs/core": "^2.11.6",
     "axios": "1.2.1",

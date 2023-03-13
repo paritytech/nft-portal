@@ -51,5 +51,5 @@ export const unitToPlanck = (units: string, decimals: number) => {
     decimal = '';
   }
 
-  return `${whole}${decimal.padEnd(decimals, '0')}`;
+  return `${whole}${decimal.padEnd(decimals, '0')}`.replace(/^0+/, '');
 };

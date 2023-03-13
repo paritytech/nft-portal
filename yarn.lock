@@ -1486,10 +1486,10 @@
     "@polkadot-onboard/core" "0.0.8-beta"
     "@polkadot/extension-inject" "0.44.8"
 
-"@polkadot-onboard/react@^0.0.8-beta":
-  version "0.0.8-beta"
-  resolved "https://registry.yarnpkg.com/@polkadot-onboard/react/-/react-0.0.8-beta.tgz#6094d6e678fbdf9ece1f92fe351a8a75ce254fb6"
-  integrity sha512-80N0TyTEhdTV3GfdUU7qZpWZscltjG2KzyK9jHQZ+4mP9gVWRJnAtV44k60KnKb92sG26DFqyMeChZsFraINCQ==
+"@polkadot-onboard/react@^0.0.9-beta":
+  version "0.0.9-beta"
+  resolved "https://registry.yarnpkg.com/@polkadot-onboard/react/-/react-0.0.9-beta.tgz#1823d392493f110a05907bbcbce58cb3713d437f"
+  integrity sha512-zkco4wuOsA/IyoCxA19xFBYnaJbFIoWrZJLQdN0Y7NmKcqYJxCMBydIEQxs+bqxydiOuZreXHLHohFr/OIxIyg==
   dependencies:
     react "18.2.0"
     react-dom "18.2.0"
