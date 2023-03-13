@@ -43,3 +43,13 @@ export const getBlockNumber = async (api: ApiPromise, timestamp?: number) => {
 };
 
 export const pricePattern = (maxPrecision: number) => `^(0|[1-9][0-9]*)([.][0-9]{0,${maxPrecision}})?$`;
+
+export const unitToPlanck = (units: string, decimals: number) => {
+  let [whole, decimal] = units.split('.');
+
+  if (typeof decimal === 'undefined') {
+    decimal = '';
+  }
+
+  return `${whole}${decimal.padEnd(decimals, '0')}`.replace(/^0+/, '');
+};

@@ -1,16 +1,20 @@
 import { memo } from 'react';
 import { Navigate } from 'react-router-dom';
 
-import { useAccounts } from '@contexts/AccountsContext';
-
 import { routes } from '@helpers/routes';
+
+import { useConnectToStoredAccount } from '@hooks/useConnectToStoredAccount';
 
 interface PrivateRouteProps {
   children: JSX.Element;
 }
 
 const PrivateRoute = ({ children }: PrivateRouteProps) => {
-  const { activeAccount } = useAccounts();
+  const { activeAccount, isConnectionComplete } = useConnectToStoredAccount();
+
+  if (isConnectionComplete === false) {
+    return null;
+  }
 
   if (activeAccount === null) {
     return <Navigate to={routes.homepage} replace />;

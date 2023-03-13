@@ -1,5 +1,7 @@
 # assets-portal
 
+currently published @ https://assets-portal.netlify.app
+
 ## Prerequisites to run locally
 install netlify CLI globally
 

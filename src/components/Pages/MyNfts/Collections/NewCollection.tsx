@@ -15,7 +15,7 @@ import { MintTypes } from '@helpers/constants';
 import { CollectionConfig, MintType } from '@helpers/interfaces';
 import { routes } from '@helpers/routes';
 import { SSecondaryButton } from '@helpers/styledComponents';
-import { convertToBitFlagValue, getBlockNumber, pricePattern } from '@helpers/utilities';
+import { convertToBitFlagValue, getBlockNumber, pricePattern, unitToPlanck } from '@helpers/utilities';
 
 import { useCollections } from '@hooks/useCollections';
 
@@ -93,7 +93,7 @@ const NewCollection = () => {
           price:
             priceRef.current.value === ''
               ? undefined
-              : parseFloat(priceRef.current.value) * 10 ** api.registry.chainDecimals[0],
+              : unitToPlanck(priceRef.current.value, api.registry.chainDecimals[0]),
           startBlock,
           endBlock,
           defaultItemSettings,

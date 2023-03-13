@@ -1,13 +1,11 @@
 import { Account, BaseWallet } from '@polkadot-onboard/core';
 import { ApiPromise, WsProvider } from '@polkadot/api';
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 import { chains } from '@helpers/config';
 import { ChainThemes } from '@helpers/constants';
 import { ActiveAccount, Chain, ThemeStyle } from '@helpers/interfaces';
 import { themes } from '@helpers/reusableStyles';
-import { routes } from '@helpers/routes';
 
 import { useLocalStorage } from '@hooks/useLocalStorage';
 

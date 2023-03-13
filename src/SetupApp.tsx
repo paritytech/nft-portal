@@ -11,8 +11,8 @@ import { APP_NAME, extensionConfig } from '@helpers/config';
 
 import App from './App';
 
-let injectedWalletProvider = new InjectedWalletProvider(extensionConfig, APP_NAME);
-let walletAggregator = new WalletAggregator([injectedWalletProvider]);
+const injectedWalletProvider = new InjectedWalletProvider(extensionConfig, APP_NAME);
+const walletAggregator = new WalletAggregator([injectedWalletProvider]);
 
 const SetupApp = () => (
   <BrowserRouter>
