@@ -1473,12 +1473,12 @@
     schema-utils "^3.0.0"
     source-map "^0.7.3"
 
-"@polkadot-onboard/core@0.0.8-beta", "@polkadot-onboard/core@^0.0.8-beta":
+"@polkadot-onboard/core@0.0.8-beta":
   version "0.0.8-beta"
   resolved "https://registry.yarnpkg.com/@polkadot-onboard/core/-/core-0.0.8-beta.tgz#72d89379fc7c2c7bc7fe2ebe865b9c91fb846d7a"
   integrity sha512-JpfeX3Yv6PbaCmnEXHWXf6ZNq87BySPkI/ZV+1L7r2cDwSGlAscrjv2a/3PiEWV0By6eLLB0l/wE1vDWpsRk7A==
 
-"@polkadot-onboard/injected-wallets@^0.0.8-beta":
+"@polkadot-onboard/injected-wallets@0.0.8-beta":
   version "0.0.8-beta"
   resolved "https://registry.yarnpkg.com/@polkadot-onboard/injected-wallets/-/injected-wallets-0.0.8-beta.tgz#2b19ba176ccab33750faf98bd0ec88589fd6dc62"
   integrity sha512-1WigarFp/27OGuLHDX5i8G8OBmpt54c+3YQMWsIdCb74W5tD7M+eLBiEAp7Q1elY3Z1M/qgpeyL2/TgtX7TvTQ==
@@ -1486,7 +1486,7 @@
     "@polkadot-onboard/core" "0.0.8-beta"
     "@polkadot/extension-inject" "0.44.8"
 
-"@polkadot-onboard/react@^0.0.9-beta":
+"@polkadot-onboard/react@0.0.9-beta":
   version "0.0.9-beta"
   resolved "https://registry.yarnpkg.com/@polkadot-onboard/react/-/react-0.0.9-beta.tgz#1823d392493f110a05907bbcbce58cb3713d437f"
   integrity sha512-zkco4wuOsA/IyoCxA19xFBYnaJbFIoWrZJLQdN0Y7NmKcqYJxCMBydIEQxs+bqxydiOuZreXHLHohFr/OIxIyg==
@@ -1534,7 +1534,7 @@
     rxjs "^7.8.0"
     tslib "^2.5.0"
 
-"@polkadot/api@10.1.2", "@polkadot/api@^10.1.2":
+"@polkadot/api@10.1.2":
   version "10.1.2"
   resolved "https://registry.yarnpkg.com/@polkadot/api/-/api-10.1.2.tgz#c0b6ba5a7c5f27b75f4500039b1d806b0166ad4e"
   integrity sha512-JCgU/y8ciF9pA655VeqxqoWZDkKwL/A/uEf7nArjqPLTd7rtkP72JQ6RjEdVMn27MVL5EX2wWrkZd81rb1Tuzg==
