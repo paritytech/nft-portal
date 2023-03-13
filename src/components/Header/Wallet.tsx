@@ -38,7 +38,9 @@ const Wallet = ({ wallet, handleClose }: WalletProps) => {
   const connectToAccount = (event: ChangeEvent<HTMLSelectElement>) => {
     const accountAddress = event.target.value;
 
-    const foundAccount = walletAccounts.find((account) => account.address === accountAddress);
+    const foundAccount = walletAccounts.find(
+      (account) => account.address.toLocaleLowerCase() === accountAddress.toLocaleLowerCase(),
+    );
 
     if (foundAccount) {
       setActiveWallet(wallet);

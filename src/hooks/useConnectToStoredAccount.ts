@@ -15,7 +15,9 @@ export const useConnectToStoredAccount = () => {
       if (foundWallet) {
         await foundWallet.connect();
         const accounts = await foundWallet.getAccounts();
-        const foundAccount = accounts.find((account) => account.address === storedActiveAccount.account);
+        const foundAccount = accounts.find(
+          (account) => account.address.toLocaleLowerCase() === storedActiveAccount.account.toLocaleLowerCase(),
+        );
         if (foundAccount) {
           setActiveWallet(foundWallet);
           setActiveAccount(foundAccount);
