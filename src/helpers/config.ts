@@ -4,6 +4,7 @@ import { Chain } from './interfaces';
 export const APP_NAME = 'assets-portal';
 export const IPFS_URL = 'https://gateway.pinata.cloud/ipfs/';
 
+// TODO once we have design for light/polkadot-like theme then ChainThemes.POLKADOT should be set where appropriate
 // first chain in the list will be default chain
 export const chains: Chain[] = [
   {
@@ -14,7 +15,7 @@ export const chains: Chain[] = [
   {
     url: 'ws://127.0.0.1:9944',
     title: ChainTitles.LOCALHOST,
-    theme: ChainThemes.POLKADOT,
+    theme: ChainThemes.KUSAMA,
   },
 ];
 

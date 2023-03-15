@@ -1,49 +1,43 @@
 import { memo } from 'react';
-import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-
-import Logo from '@assets/logo.svg';
 
 import { useAccounts } from '@contexts/AccountsContext';
 
 import SelectChain from '@header/SelectChain';
 
-import { ThemeStyle } from '@helpers/interfaces';
-import { routes } from '@helpers/routes';
+import { Themeable } from '@helpers/interfaces';
 
 import Connect from './Connect';
+import Navigation from './Navigation';
 
-const SHat = styled.header`
+const SHeader = styled.header<Themeable>`
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  background-color: ${({ activeTheme }) => activeTheme.navigationBackground};
+  border-radius: 32px;
   margin-bottom: 20px;
+  padding: 8px 16px;
 `;
 
 const SConnectionBlock = styled.div`
   display: flex;
+  align-items: center;
   gap: 10px;
 `;
 
-const SLogo = styled(Logo)`
-  path:first-of-type {
-    fill: ${({ activetheme }: { activetheme: ThemeStyle }) => activetheme.logoTextColor};
-  }
-`;
-
-function Header() {
+const Header = () => {
   const { theme } = useAccounts();
 
   return (
-    <SHat>
-      <Link to={routes.homepage}>
-        <SLogo activetheme={theme} />
-      </Link>
+    <SHeader activeTheme={theme}>
+      <Navigation />
       <SConnectionBlock>
-        <Connect />
         <SelectChain />
+        <Connect />
       </SConnectionBlock>
-    </SHat>
+    </SHeader>
   );
-}
+};
 
 export default memo(Header);

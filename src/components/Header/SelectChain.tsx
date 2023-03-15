@@ -1,8 +1,5 @@
-import { memo, useState } from 'react';
+import { createElement, memo, useState } from 'react';
 import styled from 'styled-components';
-
-import Localhost from '@assets/chain-localhost.svg';
-import Westmint from '@assets/chain-westmint.svg';
 
 import { useAccounts } from '@contexts/AccountsContext';
 
@@ -12,23 +9,30 @@ import { styleSettings } from '@helpers/reusableStyles';
 
 import { useOutsideClick } from '@hooks/useOutsideClick';
 
-const chainIcons = {
+import Localhost from '@images/chain-localhost.svg';
+import Westmint from '@images/chain-westmint.svg';
+
+const ChainIcons = {
   localhost: Localhost,
   westmint: Westmint,
 };
 
 const SContainer = styled.div`
   position: relative;
+  height: 40px;
+  line-height: 40px;
 
   svg {
-    width: 34px;
+    width: 24px;
   }
 `;
 
-const SCurrentChain = styled.div`
+const SCurrentChain = styled.div<Themeable>`
   display: flex;
-  align-items: center;
-  height: 100%;
+  padding: 0 16px;
+  background-color: ${({ activeTheme }) => activeTheme.navigationButtonActiveBackgroundColor};
+  border-radius: 32px;
+  gap: 10px;
 
   :hover {
     cursor: pointer;
@@ -40,26 +44,14 @@ const SChainList = styled.div<Themeable>`
   position: absolute;
   top: 100%;
   right: 0;
-  margin-top: 5px;
-  background-color: ${({ activeTheme }) => activeTheme.bodyBackground};
-  border: 2px solid ${({ activeTheme }) => activeTheme.buttonBorderColor};
-  border-radius: 10px;
+  margin-top: 12px;
+  background-color: ${({ activeTheme }) => activeTheme.navigationBackground};
+  border-radius: 16px;
   z-index: 1;
 
   &.showlist {
     display: block;
   }
-`;
-
-const STriangle = styled.span`
-  position: absolute;
-  top: -9px;
-  right: 8px;
-  width: 0;
-  height: 0;
-  border-left: 7px solid transparent;
-  border-right: 7px solid transparent;
-  border-bottom: 7px solid ${styleSettings.colors.cerise};
 `;
 
 const SChainOption = styled.div<Themeable>`
@@ -107,25 +99,19 @@ const SelectChain = () => {
     return null;
   }
 
-  const ChainIcon = chainIcons[storedChain.title];
-
   return (
     <SContainer ref={dropdownRef}>
-      <SCurrentChain onClick={toggleChainList}>
-        <ChainIcon />
+      <SCurrentChain onClick={toggleChainList} activeTheme={theme}>
+        {createElement(ChainIcons[storedChain.title])}
+        <span>{storedChain.title}</span>
       </SCurrentChain>
       <SChainList className={isChainListVisible ? 'showlist' : ''} activeTheme={theme}>
-        <STriangle />
-        {chains.map((chain) => {
-          const ChainIcon = chainIcons[chain.title];
-
-          return (
-            <SChainOption onClick={() => selectChain(chain)} key={chain.title} activeTheme={theme}>
-              <ChainIcon />
-              <span>{chain.title}</span>
-            </SChainOption>
-          );
-        })}
+        {chains.map((chain) => (
+          <SChainOption onClick={() => selectChain(chain)} key={chain.title} activeTheme={theme}>
+            {createElement(ChainIcons[chain.title])}
+            <span>{chain.title}</span>
+          </SChainOption>
+        ))}
       </SChainList>
     </SContainer>
   );

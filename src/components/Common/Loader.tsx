@@ -1,11 +1,11 @@
 import { memo } from 'react';
 import styled from 'styled-components';
 
-import PolkadotIcon from '@assets/polkadot-icon.svg';
-
 import { useModalStatus } from '@contexts/ModalStatusContext';
 
 import { ModalStatusTypes } from '@helpers/constants';
+
+import PolkadotIcon from '@images/polkadot-icon.svg';
 
 const SSpinner = styled.div`
   margin-bottom: 20px;

@@ -3,13 +3,13 @@
     "baseUrl": "./src",
     "paths": {
       "@api/*": ["./api/*"],
-      "@assets/*": ["./assets/*"],
       "@buttons/*": ["./components/Buttons/*"],
       "@common/*": ["./components/Common/*"],
       "@contexts/*": ["./contexts/*"],
       "@header/*": ["./components/Header/*"],
       "@helpers/*": ["./helpers/*"],
       "@hooks/*": ["./hooks/*"],
+      "@images/*": ["./images/*"],
       "@pages/*": ["./components/Pages/*"]
     }
   }
