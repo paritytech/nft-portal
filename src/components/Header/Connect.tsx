@@ -1,18 +1,29 @@
 import { BaseWallet } from '@polkadot-onboard/core';
 import { memo, useState } from 'react';
 import Modal from 'react-bootstrap/esm/Modal';
+import styled from 'styled-components';
 
-import ActionButton from '@buttons/ActionButton';
 import CrossCloseButton from '@buttons/CrossCloseButton';
 
 import { useAccounts } from '@contexts/AccountsContext';
 
+import { Themeable } from '@helpers/interfaces';
 import { SModal } from '@helpers/styledComponents';
 import { ellipseAddress, sizeMatters } from '@helpers/utilities';
 
 import { useConnectToStoredAccount } from '@hooks/useConnectToStoredAccount';
 
 import Wallet from './Wallet';
+
+const SConnectButton = styled.button<Themeable>`
+  height: 40px;
+  line-height: 40px;
+  padding: 0 16px;
+  background-color: ${({ activeTheme }) => activeTheme.navigationButtonActiveBackgroundColor};
+  color: ${({ activeTheme }) => activeTheme.navigationButtonTextColor};
+  border: 0;
+  border-radius: 32px;
+`;
 
 const Connect = () => {
   const { activeAccount, wallets, isConnectionComplete } = useConnectToStoredAccount();
@@ -28,11 +39,11 @@ const Connect = () => {
 
   return (
     <>
-      <ActionButton action={handleShow}>
+      <SConnectButton onClick={handleShow} activeTheme={theme}>
         {activeAccount !== null
           ? sizeMatters(activeAccount.name) || ellipseAddress(activeAccount.address, 4)
           : 'Connect'}
-      </ActionButton>
+      </SConnectButton>
 
       <SModal show={show} onHide={handleClose} activetheme={theme}>
         <Modal.Header>

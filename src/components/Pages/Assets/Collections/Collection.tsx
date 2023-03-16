@@ -2,8 +2,6 @@ import { memo } from 'react';
 import Card from 'react-bootstrap/esm/Card';
 import { Link } from 'react-router-dom';
 
-import EditIcon from '@assets/edit-icon.svg';
-
 import ShowImage from '@common/ShowImage';
 
 import { useAccounts } from '@contexts/AccountsContext';
@@ -12,6 +10,8 @@ import { CollectionMetadata } from '@helpers/interfaces';
 import { SContentBlock } from '@helpers/reusableStyles';
 import { routes } from '@helpers/routes';
 import { SBasicButtonMini, SCard, SCardEdit } from '@helpers/styledComponents';
+
+import EditIcon from '@images/edit-icon.svg';
 
 interface CollectionProps {
   collectionMetadata: CollectionMetadata;
