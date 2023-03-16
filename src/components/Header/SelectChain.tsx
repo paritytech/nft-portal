@@ -29,16 +29,15 @@ const SContainer = styled.div`
   }
 `;
 
-const SCurrentChain = styled.div<Themeable>`
+const SCurrentChain = styled.button<Themeable>`
   display: flex;
+  align-items: center;
   padding: 0 16px;
   background-color: ${({ activeTheme }) => activeTheme.navigationButtonActiveBackgroundColor};
+  color: ${({ activeTheme }) => activeTheme.navigationButtonTextColor};
+  border: 0;
   border-radius: 32px;
   gap: 10px;
-
-  :hover {
-    cursor: pointer;
-  }
 `;
 
 const SChainList = styled.div<Themeable>`

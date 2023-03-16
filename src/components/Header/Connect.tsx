@@ -12,12 +12,17 @@ import { SModal } from '@helpers/styledComponents';
 import { ellipseAddress, sizeMatters } from '@helpers/utilities';
 
 import { useConnectToStoredAccount } from '@hooks/useConnectToStoredAccount';
+import { useOutsideClick } from '@hooks/useOutsideClick';
 
 import Wallet from './Wallet';
 
-const SConnectButton = styled.button<Themeable>`
+const SContainer = styled.div`
+  position: relative;
   height: 40px;
   line-height: 40px;
+`;
+
+const SConnectButton = styled.button<Themeable>`
   padding: 0 16px;
   background-color: ${({ activeTheme }) => activeTheme.navigationButtonActiveBackgroundColor};
   color: ${({ activeTheme }) => activeTheme.navigationButtonTextColor};
@@ -25,27 +30,57 @@ const SConnectButton = styled.button<Themeable>`
   border-radius: 32px;
 `;
 
+const SAccountActions = styled.div<Themeable>`
+  display: none;
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: 12px;
+  background-color: ${({ activeTheme }) => activeTheme.navigationBackground};
+  border-radius: 16px;
+  z-index: 1;
+
+  &.active {
+    display: block;
+  }
+`;
+
 const Connect = () => {
-  const { activeAccount, wallets, isConnectionComplete } = useConnectToStoredAccount();
+  const { activeAccount, wallets, isAutoConnectDone } = useConnectToStoredAccount();
   const { theme } = useAccounts();
-  const [show, setShow] = useState(false);
+  const dropdownRef = useOutsideClick(() => setIsAccountActionsVisible(false));
+  const [showWalletSelection, setShowWalletSelection] = useState(false);
+  const [isAccountActionsVisible, setIsAccountActionsVisible] = useState(false);
 
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  const handleClose = () => setShowWalletSelection(false);
+  const handleShow = () => {
+    if (activeAccount) {
+      setIsAccountActionsVisible(true);
+    } else {
+      setShowWalletSelection(true);
+    }
+  };
 
-  if (!Array.isArray(wallets) || isConnectionComplete === false) {
+  if (!Array.isArray(wallets) || isAutoConnectDone === false) {
     return null;
   }
 
   return (
     <>
-      <SConnectButton onClick={handleShow} activeTheme={theme}>
-        {activeAccount !== null
-          ? sizeMatters(activeAccount.name) || ellipseAddress(activeAccount.address, 4)
-          : 'Connect'}
-      </SConnectButton>
+      <SContainer ref={dropdownRef}>
+        <SConnectButton onClick={handleShow} activeTheme={theme}>
+          {activeAccount !== null
+            ? sizeMatters(activeAccount.name) || ellipseAddress(activeAccount.address, 4)
+            : 'Connect'}
+        </SConnectButton>
 
-      <SModal show={show} onHide={handleClose} activetheme={theme}>
+        <SAccountActions className={isAccountActionsVisible ? 'active' : ''} activeTheme={theme}>
+          {ellipseAddress(activeAccount!.address, 4)}
+          <div>Disconnect wallet</div>
+        </SAccountActions>
+      </SContainer>
+
+      <SModal show={showWalletSelection} onHide={handleClose} activetheme={theme}>
         <Modal.Header>
           <Modal.Title>Available wallets</Modal.Title>
           <CrossCloseButton variant={theme.closeButtonVariant} handleClose={handleClose} />
