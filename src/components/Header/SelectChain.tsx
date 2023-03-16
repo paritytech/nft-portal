@@ -1,4 +1,5 @@
 import { createElement, memo, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { useAccounts } from '@contexts/AccountsContext';
@@ -6,6 +7,7 @@ import { useAccounts } from '@contexts/AccountsContext';
 import { chains } from '@helpers/config';
 import { Chain, Themeable } from '@helpers/interfaces';
 import { styleSettings } from '@helpers/reusableStyles';
+import { routes } from '@helpers/routes';
 
 import { useOutsideClick } from '@hooks/useOutsideClick';
 
@@ -82,6 +84,7 @@ const SChainOption = styled.div<Themeable>`
 `;
 
 const SelectChain = () => {
+  const navigate = useNavigate();
   const { storedChain, setStoredChain, theme } = useAccounts();
   const [isChainListVisible, setIsChainListVisible] = useState(false);
   const dropdownRef = useOutsideClick(() => setIsChainListVisible(false));
@@ -93,6 +96,7 @@ const SelectChain = () => {
   const selectChain = (chain: Chain) => {
     setIsChainListVisible(false);
     setStoredChain(chain);
+    navigate(routes.homepage);
   };
 
   if (storedChain === null) {
