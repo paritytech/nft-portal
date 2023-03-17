@@ -13,11 +13,11 @@ import { Themeable } from '@helpers/interfaces';
 import { styleSettings } from '@helpers/reusableStyles';
 import { routes } from '@helpers/routes';
 
+import Pools from '@pages/Assets/Pools/Pools';
 import Tokens from '@pages/Assets/Tokens/Tokens';
 import Home from '@pages/Home/Home';
 import CollectionEdit from '@pages/MyNfts/Collections/CollectionEdit';
 import Collections from '@pages/MyNfts/Collections/Collections';
-// import Pools from '@pages/Assets/Pools/Pools';
 import NewCollection from '@pages/MyNfts/Collections/NewCollection';
 import NewNft from '@pages/MyNfts/Nfts/NewNft';
 import NftEdit from '@pages/MyNfts/Nfts/NftEdit';
@@ -111,6 +111,7 @@ const App = () => {
                 }
               />
               <Route path={routes.tokens} element={<Tokens />} />
+              <Route path={routes.pools} element={<Pools />} />
               <Route path='*' element={<Navigate to={routes.homepage} replace />} />
             </Routes>
           </SContent>

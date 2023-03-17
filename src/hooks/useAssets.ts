@@ -10,7 +10,15 @@ import { useCallback, useState } from 'react';
 
 import { useAccounts } from '@contexts/AccountsContext';
 
-import type { NativeTokenMetadata, TokenBalance, TokenMetadata } from '@helpers/interfaces';
+import type {
+  NativeTokenMetadata,
+  PalletDexPoolInfo,
+  PoolInfo,
+  TokenBalance,
+  TokenMetadata,
+} from '@helpers/interfaces';
+import type { PalletDexPoolId } from '@helpers/interfaces';
+import { PoolReserves } from '@helpers/interfaces';
 
 export const useAssets = () => {
   const { api, activeAccount } = useAccounts();
@@ -18,6 +26,7 @@ export const useAssets = () => {
   const [nativeMetadata, setNativeMetadata] = useState<NativeTokenMetadata | null>(null);
   const [tokensMetadata, setTokensMetadata] = useState<TokenMetadata[] | null>(null);
   const [tokensBalances, setTokensBalances] = useState<TokenBalance[] | null>(null);
+  const [pools, setPools] = useState<PoolInfo[] | null>(null);
 
   const getNativeBalance = useCallback(async () => {
     if (api && activeAccount) {
@@ -36,6 +45,46 @@ export const useAssets = () => {
         name,
         decimals,
       });
+    }
+  }, [api]);
+
+  const getPools = useCallback(async () => {
+    if (api) {
+      if (api.query.dex) {
+        const results: [StorageKey<[PalletDexPoolId]>, Option<PalletDexPoolInfo>][] =
+          await api.query.dex.pools.entries();
+
+        let promises = results
+          .filter(([, data]) => data.isSome)
+          .map(
+            async ([
+              {
+                args: [poolId],
+              },
+              data,
+            ]) => {
+              const [poolAsset1, poolAsset2] = poolId;
+
+              const lpToken = (data.unwrap() as PalletDexPoolInfo).lpToken;
+              let reserves: PoolReserves = [0, 0];
+
+              if (api.call.dexApi) {
+                const res = await api.call.dexApi.getReserves(poolAsset1, poolAsset2);
+                if (res) {
+                  reserves = res.toJSON() as PoolReserves;
+                }
+              }
+
+              return {
+                poolId,
+                lpToken,
+                reserves,
+              };
+            },
+          );
+        const pools = await Promise.all(promises);
+        setPools(pools);
+      }
     }
   }, [api]);
 
@@ -112,10 +161,12 @@ export const useAssets = () => {
   return {
     getNativeBalance,
     getNativeMetadata,
+    getPools,
     getTokensBalances,
     getTokensMetadata,
     nativeBalance,
     nativeMetadata,
+    pools,
     tokensBalances,
     tokensMetadata,
   };

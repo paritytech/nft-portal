@@ -1,4 +1,7 @@
-import { BN } from '@polkadot/util';
+import type { Enum, Struct } from '@polkadot/types-codec';
+import type { ITuple } from '@polkadot/types-codec/types';
+import type { AssetId } from '@polkadot/types/interfaces';
+import type { BN } from '@polkadot/util';
 
 import { ChainThemes, ChainTitles, MintTypes, ModalStatusTypes, StatusMessages, StatusTypes } from './constants';
 
@@ -126,4 +129,25 @@ export interface TokenMetadataData {
 export interface NativeTokenMetadata {
   name: string | null;
   decimals: number;
+}
+
+export interface PalletDexPoolInfo extends Struct {
+  readonly lpToken: AssetId;
+}
+
+export interface PalletDexMultiAssetId extends Enum {
+  readonly isNative: boolean;
+  readonly isAsset: boolean;
+  readonly asAsset: AssetId;
+  readonly type: 'Native' | 'Asset';
+}
+
+export interface PalletDexPoolId extends ITuple<[PalletDexMultiAssetId, PalletDexMultiAssetId]> {}
+
+export type PoolReserves = [number, number];
+
+export interface PoolInfo {
+  poolId: PalletDexPoolId;
+  lpToken: AssetId;
+  reserves: PoolReserves;
 }

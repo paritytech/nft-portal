@@ -75,3 +75,16 @@ export const SModal = styled(Modal)`
     }
   }
 `;
+
+export const SRow = styled.section`
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  height: 30px;
+`;
+
+export const SColumn = styled.section`
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+`;

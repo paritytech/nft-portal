@@ -48,9 +48,9 @@ const SideMenu = () => {
       <SMenuButton to={routes.tokens} activetheme={theme}>
         Tokens
       </SMenuButton>
-      {/*<SMenuButton to={routes.pools} activetheme={theme}>
+      <SMenuButton to={routes.pools} activetheme={theme}>
         Pools
-      </SMenuButton>*/}
+      </SMenuButton>
     </SNav>
   );
 };
