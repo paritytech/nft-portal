@@ -18,11 +18,11 @@ import Wallet from './Wallet';
 
 const SContainer = styled.div`
   position: relative;
-  height: 40px;
-  line-height: 40px;
 `;
 
 const SConnectButton = styled.button<Themeable>`
+  height: 40px;
+  line-height: 40px;
   padding: 0 16px;
   background-color: ${({ activeTheme }) => activeTheme.navigationButtonActiveBackgroundColor};
   color: ${({ activeTheme }) => activeTheme.navigationButtonTextColor};
@@ -36,21 +36,54 @@ const SAccountActions = styled.div<Themeable>`
   top: 100%;
   right: 0;
   margin-top: 12px;
+  padding-bottom: 15px;
   background-color: ${({ activeTheme }) => activeTheme.navigationBackground};
   border-radius: 16px;
   z-index: 1;
+  white-space: nowrap;
 
   &.active {
     display: block;
+  }
+
+  > div {
+    color: ${({ activeTheme }) => activeTheme.navigationButtonTextColor};
+    margin: 20px 10px 0;
+  }
+`;
+
+const SDividedAction = styled.div<Themeable>`
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+`;
+
+const SSimpleAction = styled.div<Themeable>`
+  :hover {
+    cursor: pointer;
+    color: ${({ activeTheme }) => activeTheme.navigationButtonActiveTextColor};
+  }
+`;
+
+const SSecondary = styled.div`
+  min-width: 80px;
+  text-align: right;
+`;
+
+const SCopyButton = styled.span<Themeable>`
+  :hover {
+    cursor: pointer;
+    color: ${({ activeTheme }) => activeTheme.navigationButtonActiveTextColor};
   }
 `;
 
 const Connect = () => {
   const { activeAccount, wallets, isAutoConnectDone } = useConnectToStoredAccount();
-  const { theme } = useAccounts();
+  const { setActiveAccount, setStoredActiveAccount, theme } = useAccounts();
   const dropdownRef = useOutsideClick(() => setIsAccountActionsVisible(false));
   const [showWalletSelection, setShowWalletSelection] = useState(false);
   const [isAccountActionsVisible, setIsAccountActionsVisible] = useState(false);
+  const copyButtonText = 'copy';
 
   const handleClose = () => setShowWalletSelection(false);
   const handleShow = () => {
@@ -58,6 +91,22 @@ const Connect = () => {
       setIsAccountActionsVisible(true);
     } else {
       setShowWalletSelection(true);
+    }
+  };
+
+  const disconnect = () => {
+    setActiveAccount(null);
+    setStoredActiveAccount(null);
+    setIsAccountActionsVisible(false);
+  };
+
+  const copyToClipboard = (event: any) => {
+    if (activeAccount?.address) {
+      navigator.clipboard.writeText(activeAccount.address);
+      event.target.innerText = 'copied!';
+      setTimeout(() => {
+        event.target.innerText = copyButtonText;
+      }, 1000);
     }
   };
 
@@ -75,8 +124,17 @@ const Connect = () => {
         </SConnectButton>
 
         <SAccountActions className={isAccountActionsVisible ? 'active' : ''} activeTheme={theme}>
-          {ellipseAddress(activeAccount!.address, 4)}
-          <div>Disconnect wallet</div>
+          <SDividedAction activeTheme={theme}>
+            {ellipseAddress(activeAccount?.address, 4)}
+            <SSecondary>
+              <SCopyButton activeTheme={theme} onClick={copyToClipboard}>
+                {copyButtonText}
+              </SCopyButton>
+            </SSecondary>
+          </SDividedAction>
+          <SSimpleAction activeTheme={theme} onClick={disconnect}>
+            Disconnect wallet
+          </SSimpleAction>
         </SAccountActions>
       </SContainer>
 
