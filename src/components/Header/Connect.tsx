@@ -12,7 +12,10 @@ import { SModal } from '@helpers/styledComponents';
 import { ellipseAddress, sizeMatters } from '@helpers/utilities';
 
 import { useConnectToStoredAccount } from '@hooks/useConnectToStoredAccount';
+import { useCopyToClipboard } from '@hooks/useCopyToClipboard';
 import { useOutsideClick } from '@hooks/useOutsideClick';
+
+import DropdownArrow from '@images/dropdown-arrow.svg';
 
 import Wallet from './Wallet';
 
@@ -21,6 +24,9 @@ const SContainer = styled.div`
 `;
 
 const SConnectButton = styled.button<Themeable>`
+  display: flex;
+  align-items: center;
+  gap: 10px;
   height: 40px;
   line-height: 40px;
   padding: 0 16px;
@@ -28,6 +34,10 @@ const SConnectButton = styled.button<Themeable>`
   color: ${({ activeTheme }) => activeTheme.navigationButtonTextColor};
   border: 0;
   border-radius: 32px;
+
+  svg {
+    margin-top: 4px;
+  }
 `;
 
 const SAccountActions = styled.div<Themeable>`
@@ -83,12 +93,12 @@ const Connect = () => {
   const dropdownRef = useOutsideClick(() => setIsAccountActionsVisible(false));
   const [showWalletSelection, setShowWalletSelection] = useState(false);
   const [isAccountActionsVisible, setIsAccountActionsVisible] = useState(false);
-  const copyButtonText = 'copy';
+  const [copyToClipboard, buttonText] = useCopyToClipboard(activeAccount?.address || '', 'copy', 'copied!');
 
   const handleClose = () => setShowWalletSelection(false);
   const handleShow = () => {
     if (activeAccount) {
-      setIsAccountActionsVisible(true);
+      setIsAccountActionsVisible(!isAccountActionsVisible);
     } else {
       setShowWalletSelection(true);
     }
@@ -100,16 +110,6 @@ const Connect = () => {
     setIsAccountActionsVisible(false);
   };
 
-  const copyToClipboard = (event: any) => {
-    if (activeAccount?.address) {
-      navigator.clipboard.writeText(activeAccount.address);
-      event.target.innerText = 'copied!';
-      setTimeout(() => {
-        event.target.innerText = copyButtonText;
-      }, 1000);
-    }
-  };
-
   if (!Array.isArray(wallets) || isAutoConnectDone === false) {
     return null;
   }
@@ -118,9 +118,14 @@ const Connect = () => {
     <>
       <SContainer ref={dropdownRef}>
         <SConnectButton onClick={handleShow} activeTheme={theme}>
-          {activeAccount !== null
-            ? sizeMatters(activeAccount.name) || ellipseAddress(activeAccount.address, 4)
-            : 'Connect'}
+          {activeAccount !== null ? (
+            <>
+              {sizeMatters(activeAccount.name) || ellipseAddress(activeAccount.address, 4)}
+              <DropdownArrow />
+            </>
+          ) : (
+            'Connect'
+          )}
         </SConnectButton>
 
         <SAccountActions className={isAccountActionsVisible ? 'active' : ''} activeTheme={theme}>
@@ -128,7 +133,7 @@ const Connect = () => {
             {ellipseAddress(activeAccount?.address, 4)}
             <SSecondary>
               <SCopyButton activeTheme={theme} onClick={copyToClipboard}>
-                {copyButtonText}
+                {buttonText}
               </SCopyButton>
             </SSecondary>
           </SDividedAction>
