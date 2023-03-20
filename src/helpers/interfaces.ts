@@ -86,13 +86,13 @@ export interface ThemeStyle {
   closeButtonBackgroundColor: string;
   closeButtonVariant: string | undefined;
   defaultTextColor: string;
-  logoTextColor: string;
-  menuButtonBackgroundColor: string;
-  menuButtonTextColor: string;
-  menuButtonBorderColor: string;
-  menuButtonActiveBackgroundColor: string;
-  menuButtonActiveTextColor: string;
-  menuButtonActiveBorderColor: string;
+  navigationBackground: string;
+  navigationButtonBackgroundColor: string;
+  navigationButtonTextColor: string;
+  navigationButtonBorderColor: string;
+  navigationButtonActiveBackgroundColor: string;
+  navigationButtonActiveTextColor: string;
+  navigationButtonActiveBorderColor: string;
   transparentHoverHighlight: string;
 }
 

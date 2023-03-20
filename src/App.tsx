@@ -3,25 +3,24 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 import styled, { createGlobalStyle } from 'styled-components';
 
 import PrivateRoute from '@common/PrivateRoute';
-import SideMenu from '@common/SideMenu';
 
 import { useAccounts } from '@contexts/AccountsContext';
 
-import Hat from '@header/Header';
+import Header from '@header/Header';
 
 import { Themeable } from '@helpers/interfaces';
 import { styleSettings } from '@helpers/reusableStyles';
 import { routes } from '@helpers/routes';
 
+import CollectionEdit from '@pages/Assets/Collections/CollectionEdit';
+import Collections from '@pages/Assets/Collections/Collections';
 import Pools from '@pages/Assets/Pools/Pools';
+import NewCollection from '@pages/Assets/Collections/NewCollection';
+import NewNft from '@pages/Assets/Nfts/NewNft';
+import NftEdit from '@pages/Assets/Nfts/NftEdit';
+import Nfts from '@pages/Assets/Nfts/Nfts';
 import Tokens from '@pages/Assets/Tokens/Tokens';
 import Home from '@pages/Home/Home';
-import CollectionEdit from '@pages/MyNfts/Collections/CollectionEdit';
-import Collections from '@pages/MyNfts/Collections/Collections';
-import NewCollection from '@pages/MyNfts/Collections/NewCollection';
-import NewNft from '@pages/MyNfts/Nfts/NewNft';
-import NftEdit from '@pages/MyNfts/Nfts/NftEdit';
-import Nfts from '@pages/MyNfts/Nfts/Nfts';
 
 const SMainContainer = styled.main<Themeable>`
   padding-top: 20px;
@@ -63,9 +62,8 @@ const App = () => {
     <>
       <GlobalStyle />
       <SMainContainer activeTheme={theme}>
-        <Hat />
+        <Header />
         <SContainer>
-          <SideMenu />
           <SContent>
             <Routes>
               <Route path={routes.homepage} element={<Home />} />

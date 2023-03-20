@@ -17,21 +17,21 @@ export const SBasicButtonMini = styled(BasicButton)`
 `;
 
 export const SSecondaryButton = styled(BasicButton)<Themeable>`
-  color: ${({ activeTheme }) => activeTheme.menuButtonTextColor};
-  background-color: ${({ activeTheme }) => activeTheme.menuButtonBackgroundColor};
+  color: ${({ activeTheme }) => activeTheme.navigationButtonTextColor};
+  background-color: ${({ activeTheme }) => activeTheme.navigationButtonBackgroundColor};
 
   :hover {
-    background-color: ${({ activeTheme }) => activeTheme.menuButtonActiveBackgroundColor};
+    background-color: ${({ activeTheme }) => activeTheme.navigationButtonActiveBackgroundColor};
   }
 
   a {
-    color: ${({ activeTheme }) => activeTheme.menuButtonTextColor};
+    color: ${({ activeTheme }) => activeTheme.navigationButtonTextColor};
   }
 `;
 
 export const SCard = styled(Card)`
   background-color: ${({ activetheme }: { activetheme: ThemeStyle }) => activetheme.bodyBackground};
-  border: 2px solid ${({ activetheme }: { activetheme: ThemeStyle }) => activetheme.menuButtonBorderColor};
+  border: 2px solid ${({ activetheme }: { activetheme: ThemeStyle }) => activetheme.navigationButtonBorderColor};
 
   .card-footer {
     background-color: inherit;

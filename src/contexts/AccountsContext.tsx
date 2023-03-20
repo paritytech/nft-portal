@@ -23,7 +23,6 @@ interface AccountsContextProps {
   api: ApiPromise | null;
   storedActiveAccount: ActiveAccount | null;
   setStoredActiveAccount: (value: ActiveAccount) => void;
-  setupApi: (value: Chain) => void;
   storedChain: Chain | null;
   setStoredChain: (value: Chain | null) => void;
   theme: ThemeStyle;
@@ -37,7 +36,6 @@ const AccountsContext = createContext<AccountsContextProps>({
   api: null,
   storedActiveAccount: null,
   setStoredActiveAccount: () => {},
-  setupApi: () => {},
   storedChain: null,
   setStoredChain: () => {},
   theme: themes.kusama,
@@ -117,19 +115,18 @@ export const AccountsContextProvider = ({ children }: AccountsContextProviderPro
     }
   }, []);
 
-  // TODO when chain is changed there could be issues with data from one chain
-  // showing up as the same data on the just set chain, need to add a reset
-  // or similar, it should be called once a chain change is called
-
-  useEffect(() => {
+  const handleChainChange = useCallback(async () => {
     if (storedChain === null) {
       setStoredChain(chains[0]);
     } else {
-      setupApi();
+      await setupApi();
       setupTheme(storedChain);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [storedChain]);
+  }, [setStoredChain, setupApi, setupTheme, storedChain]);
+
+  useEffect(() => {
+    handleChainChange();
+  }, [handleChainChange, storedChain]);
 
   const contextData = useMemo(
     () => ({
@@ -140,22 +137,11 @@ export const AccountsContextProvider = ({ children }: AccountsContextProviderPro
       api,
       storedActiveAccount,
       setStoredActiveAccount,
-      setupApi,
       storedChain,
       setStoredChain,
       theme,
     }),
-    [
-      activeAccount,
-      activeWallet,
-      api,
-      storedActiveAccount,
-      setStoredActiveAccount,
-      setupApi,
-      storedChain,
-      setStoredChain,
-      theme,
-    ],
+    [activeAccount, activeWallet, api, storedActiveAccount, setStoredActiveAccount, storedChain, setStoredChain, theme],
   );
 
   return <AccountsContext.Provider value={contextData}>{children}</AccountsContext.Provider>;
