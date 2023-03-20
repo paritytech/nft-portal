@@ -2,11 +2,9 @@ import { memo, useCallback, useEffect } from 'react';
 import { useDropzone } from 'react-dropzone';
 import styled from 'styled-components';
 
-import CrossCloseButton from '@buttons/CrossCloseButton';
-
 import { useAccounts } from '@contexts/AccountsContext';
 
-import { ThemeStyle, Themeable } from '@helpers/interfaces';
+import { Themeable } from '@helpers/interfaces';
 import { prefecthCid } from '@helpers/prefetchCid';
 
 import ImagePreview from './ImagePreview';
@@ -36,60 +34,51 @@ const SDropZone = styled.div<Themeable>`
   }
 `;
 
-const SClose = styled(CrossCloseButton)`
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background-color: ${({ activetheme }: { activetheme: ThemeStyle }) => activetheme.closeButtonBackgroundColor};
-  opacity: 0.6;
-`;
-
 interface FileDropZoneProps {
   imageSourceUrl: string | null;
   setImageSourceUrl: (value: string | null) => void;
-  setImageCid: (value?: string) => void;
   imageCid?: string;
+  setImageCid: (value?: string) => void;
 }
 
-const FileDropZone = ({ imageSourceUrl, setImageSourceUrl, setImageCid, imageCid }: FileDropZoneProps) => {
+const FileDropZone = ({ imageSourceUrl, setImageSourceUrl, imageCid, setImageCid }: FileDropZoneProps) => {
   const { theme } = useAccounts();
   const allowedFileTypes = ['.jpg', '.png', '.gif', '.jpeg'];
   const maxSizeInMb = 10;
 
-  useEffect(() => {
+  const cleanup = useCallback(() => {
     if (imageSourceUrl) {
-      return () => {
-        URL.revokeObjectURL(imageSourceUrl);
-        setImageSourceUrl(null);
-      };
+      URL.revokeObjectURL(imageSourceUrl);
+      setImageCid(undefined);
+      setImageSourceUrl(null);
     }
-  }, [imageSourceUrl, setImageSourceUrl]);
+  }, [imageSourceUrl, setImageCid, setImageSourceUrl]);
+
+  useEffect(() => () => cleanup(), [cleanup]);
 
   const onDrop = useCallback(
     async (acceptedFiles: File[]) => {
       if (acceptedFiles.length > 0) {
+        cleanup();
+
         const { cid, url } = await prefecthCid(acceptedFiles[0]);
 
-        setImageSourceUrl(url);
         setImageCid(cid);
+        setImageSourceUrl(url);
       }
     },
-    [setImageSourceUrl, setImageCid],
+    [setImageCid, setImageSourceUrl, cleanup],
   );
 
   const handleClose = useCallback(
     (event: React.MouseEvent<HTMLElement>) => {
       event.stopPropagation();
-      if (imageSourceUrl) {
-        URL.revokeObjectURL(imageSourceUrl);
-        setImageSourceUrl(null);
-      }
-      setImageCid(undefined);
+      cleanup();
     },
-    [imageSourceUrl, setImageCid, setImageSourceUrl],
+    [cleanup],
   );
 
-  const { getRootProps } = useDropzone({
+  const { getRootProps, getInputProps } = useDropzone({
     onDrop,
     accept: { 'image/*': allowedFileTypes },
     maxFiles: 1,
@@ -98,12 +87,11 @@ const FileDropZone = ({ imageSourceUrl, setImageSourceUrl, setImageCid, imageCid
 
   return (
     <SDropZone {...getRootProps({ className: 'dropzone' })} activeTheme={theme}>
-      {imageCid || imageSourceUrl ? (
-        <>
-          <ImagePreview imageCid={imageCid} imageSourceUrl={imageSourceUrl} />
-          <SClose handleClose={handleClose} activetheme={theme}></SClose>
-        </>
-      ) : (
+      <input {...getInputProps()} />
+
+      <ImagePreview imageCid={imageCid} imageSourceUrl={imageSourceUrl} handleClose={handleClose} />
+
+      {!imageCid && !imageSourceUrl && (
         <>
           <p>Drag 'n' drop some file here or click to select file</p>
           <p>Allowed files: {allowedFileTypes.map((type) => type).join(' ')}</p>

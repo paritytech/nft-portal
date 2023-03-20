@@ -12,15 +12,15 @@ import { Themeable } from '@helpers/interfaces';
 import { styleSettings } from '@helpers/reusableStyles';
 import { routes } from '@helpers/routes';
 
+import Pools from '@pages/Assets/Pools/Pools';
+import Tokens from '@pages/Assets/Tokens/Tokens';
+import Home from '@pages/Home/Home';
 import CollectionEdit from '@pages/Nfts/Collections/CollectionEdit';
 import Collections from '@pages/Nfts/Collections/Collections';
-import Pools from '@pages/Assets/Pools/Pools';
 import NewCollection from '@pages/Nfts/Collections/NewCollection';
 import NewNft from '@pages/Nfts/Nfts/NewNft';
 import NftEdit from '@pages/Nfts/Nfts/NftEdit';
 import Nfts from '@pages/Nfts/Nfts/Nfts';
-import Tokens from '@pages/Assets/Tokens/Tokens';
-import Home from '@pages/Home/Home';
 
 const SMainContainer = styled.main<Themeable>`
   padding-top: 20px;
