@@ -1,4 +1,3 @@
-import EditIcon from '@assets/edit-icon.svg';
 import { formatBalance } from '@polkadot/util';
 import { memo } from 'react';
 import Card from 'react-bootstrap/Card';
@@ -11,6 +10,8 @@ import type { NativeTokenMetadata, TokenMetadata } from '@helpers/interfaces';
 import { PoolInfo } from '@helpers/interfaces';
 import { SContentBlock } from '@helpers/reusableStyles';
 import { SCard, SCardEdit, SColumn, SRow } from '@helpers/styledComponents';
+
+import EditIcon from '@images/edit-icon.svg';
 
 interface PoolsViewProps {
   pools: PoolInfo[] | null;
