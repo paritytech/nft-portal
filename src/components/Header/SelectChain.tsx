@@ -13,6 +13,7 @@ import { useOutsideClick } from '@hooks/useOutsideClick';
 
 import Localhost from '@images/chain-localhost.svg';
 import Westmint from '@images/chain-westmint.svg';
+import DropdownArrow from '@images/dropdown-arrow.svg';
 
 const ChainIcons = {
   localhost: Localhost,
@@ -29,15 +30,18 @@ const SContainer = styled.div`
   }
 `;
 
-const SCurrentChain = styled.div<Themeable>`
+const SCurrentChain = styled.button<Themeable>`
   display: flex;
+  align-items: center;
   padding: 0 16px;
   background-color: ${({ activeTheme }) => activeTheme.navigationButtonActiveBackgroundColor};
+  color: ${({ activeTheme }) => activeTheme.navigationButtonTextColor};
+  border: 0;
   border-radius: 32px;
   gap: 10px;
 
-  :hover {
-    cursor: pointer;
+  svg {
+    margin-top: 4px;
   }
 `;
 
@@ -108,6 +112,7 @@ const SelectChain = () => {
       <SCurrentChain onClick={toggleChainList} activeTheme={theme}>
         {createElement(ChainIcons[storedChain.title])}
         <span>{storedChain.title}</span>
+        <DropdownArrow />
       </SCurrentChain>
       <SChainList className={isChainListVisible ? 'showlist' : ''} activeTheme={theme}>
         {chains.map((chain) => (

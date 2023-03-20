@@ -10,9 +10,9 @@ interface PrivateRouteProps {
 }
 
 const PrivateRoute = ({ children }: PrivateRouteProps) => {
-  const { activeAccount, isConnectionComplete } = useConnectToStoredAccount();
+  const { activeAccount, isAutoConnectDone } = useConnectToStoredAccount();
 
-  if (isConnectionComplete === false) {
+  if (isAutoConnectDone === false) {
     return null;
   }
 
