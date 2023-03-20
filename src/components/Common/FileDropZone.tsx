@@ -49,10 +49,13 @@ const FileDropZone = ({ imageSourceUrl, setImageSourceUrl, imageCid, setImageCid
   const cleanup = useCallback(() => {
     if (imageSourceUrl) {
       URL.revokeObjectURL(imageSourceUrl);
-      setImageCid(undefined);
       setImageSourceUrl(null);
     }
-  }, [imageSourceUrl, setImageCid, setImageSourceUrl]);
+
+    if (imageCid) {
+      setImageCid(undefined);
+    }
+  }, [imageSourceUrl, imageCid, setImageSourceUrl, setImageCid]);
 
   useEffect(() => () => cleanup(), [cleanup]);
 
