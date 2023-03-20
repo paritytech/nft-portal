@@ -12,13 +12,13 @@ import { Themeable } from '@helpers/interfaces';
 import { styleSettings } from '@helpers/reusableStyles';
 import { routes } from '@helpers/routes';
 
-import CollectionEdit from '@pages/Assets/Collections/CollectionEdit';
-import Collections from '@pages/Assets/Collections/Collections';
+import CollectionEdit from '@pages/Nfts/Collections/CollectionEdit';
+import Collections from '@pages/Nfts/Collections/Collections';
 import Pools from '@pages/Assets/Pools/Pools';
-import NewCollection from '@pages/Assets/Collections/NewCollection';
-import NewNft from '@pages/Assets/Nfts/NewNft';
-import NftEdit from '@pages/Assets/Nfts/NftEdit';
-import Nfts from '@pages/Assets/Nfts/Nfts';
+import NewCollection from '@pages/Nfts/Collections/NewCollection';
+import NewNft from '@pages/Nfts/Nfts/NewNft';
+import NftEdit from '@pages/Nfts/Nfts/NftEdit';
+import Nfts from '@pages/Nfts/Nfts/Nfts';
 import Tokens from '@pages/Assets/Tokens/Tokens';
 import Home from '@pages/Home/Home';
 

@@ -16,11 +16,11 @@ interface AccountsContextProviderProps {
 interface AccountsContextProps {
   activeAccount: Account | null;
   activeWallet: BaseWallet | null;
-  setActiveAccount: (value: Account) => void;
+  setActiveAccount: (value: Account | null) => void;
   setActiveWallet: (value: BaseWallet) => void;
   api: ApiPromise | null;
   storedActiveAccount: ActiveAccount | null;
-  setStoredActiveAccount: (value: ActiveAccount) => void;
+  setStoredActiveAccount: (value: ActiveAccount | null) => void;
   storedChain: Chain | null;
   setStoredChain: (value: Chain | null) => void;
   theme: ThemeStyle;

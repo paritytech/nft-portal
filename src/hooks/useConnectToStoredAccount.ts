@@ -6,7 +6,7 @@ import { useAccounts } from '@contexts/AccountsContext';
 export const useConnectToStoredAccount = () => {
   const { wallets } = useWallets();
   const { activeAccount, storedActiveAccount, setActiveAccount, setActiveWallet } = useAccounts();
-  const [isConnectionComplete, setIsConnectionComplete] = useState(false);
+  const [isAutoConnectDone, setIsAutoConnectDone] = useState(false);
 
   const connectToStoredAccount = useCallback(async () => {
     if (storedActiveAccount !== null && Array.isArray(wallets) && wallets.length > 0) {
@@ -26,7 +26,7 @@ export const useConnectToStoredAccount = () => {
     }
 
     if (Array.isArray(wallets)) {
-      setIsConnectionComplete(true);
+      setIsAutoConnectDone(true);
     }
   }, [storedActiveAccount, wallets, setActiveAccount, setActiveWallet]);
 
@@ -37,6 +37,6 @@ export const useConnectToStoredAccount = () => {
   return {
     wallets,
     activeAccount,
-    isConnectionComplete,
+    isAutoConnectDone,
   };
 };
