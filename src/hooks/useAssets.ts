@@ -12,12 +12,12 @@ import { useAccounts } from '@contexts/AccountsContext';
 
 import type {
   NativeTokenMetadata,
+  PalletDexPoolId,
   PalletDexPoolInfo,
   PoolInfo,
   TokenBalance,
   TokenMetadata,
 } from '@helpers/interfaces';
-import type { PalletDexPoolId } from '@helpers/interfaces';
 import { PoolReserves } from '@helpers/interfaces';
 
 export const useAssets = () => {
