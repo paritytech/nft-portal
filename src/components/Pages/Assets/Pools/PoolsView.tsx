@@ -1,19 +1,15 @@
-import { BN, formatBalance } from '@polkadot/util';
+import EditIcon from '@assets/edit-icon.svg';
+import { formatBalance } from '@polkadot/util';
 import { memo } from 'react';
 import Card from 'react-bootstrap/Card';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
-import EditIcon from '@assets/edit-icon.svg';
-
-import ShowImage from '@common/ShowImage';
-
 import { useAccounts } from '@contexts/AccountsContext';
 
-import type { NativeTokenMetadata, TokenBalance, TokenMetadata } from '@helpers/interfaces';
+import type { NativeTokenMetadata, TokenMetadata } from '@helpers/interfaces';
 import { PoolInfo } from '@helpers/interfaces';
 import { SContentBlock } from '@helpers/reusableStyles';
-import { routes } from '@helpers/routes';
 import { SCard, SCardEdit, SColumn, SRow } from '@helpers/styledComponents';
 
 interface PoolsViewProps {
@@ -57,11 +53,9 @@ const PoolsView = ({ pools, nativeMetadata, tokensMetadata }: PoolsViewProps) =>
 
             if (asset.isAsset) {
               const tokenInfo = tokensMetadata.find(({ id }) => id === asset.asAsset.toPrimitive());
-              // TODO: shall we throw in case we can't find token's metadata
-              if (tokenInfo) {
-                symbol = tokenInfo.symbol;
-                decimals = tokenInfo.decimals;
-              }
+              if (!tokenInfo) return null;
+              symbol = tokenInfo.symbol;
+              decimals = tokenInfo.decimals;
             }
 
             const formattedReserve = formatBalance(reserve, {
@@ -77,6 +71,8 @@ const PoolsView = ({ pools, nativeMetadata, tokensMetadata }: PoolsViewProps) =>
               formattedReserve,
             };
           });
+          if (poolInfo[0] === null || poolInfo[1] === null) return <></>;
+
           return (
             <SPoolBlock key={pools.lpToken.toPrimitive()}>
               <SCard activetheme={theme}>

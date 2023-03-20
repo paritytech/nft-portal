@@ -50,6 +50,7 @@ export const useAssets = () => {
 
   const getPools = useCallback(async () => {
     if (api) {
+      let pools: PoolInfo[] = [];
       if (api.query.dex) {
         const results: [StorageKey<[PalletDexPoolId]>, Option<PalletDexPoolInfo>][] =
           await api.query.dex.pools.entries();
@@ -82,9 +83,9 @@ export const useAssets = () => {
               };
             },
           );
-        const pools = await Promise.all(promises);
-        setPools(pools);
+        pools = await Promise.all(promises);
       }
+      setPools(pools);
     }
   }, [api]);
 
