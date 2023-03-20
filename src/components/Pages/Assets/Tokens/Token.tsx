@@ -27,14 +27,14 @@ const SBalance = styled.span`
 `;
 
 const Token = ({ tokenMetadata, balance }: TokenProps) => {
-  const { id, name, symbol, decimals } = tokenMetadata;
+  const { name, symbol, decimals } = tokenMetadata;
   const formattedSymbol = (symbol || '').toUpperCase();
   const formattedBalance = balance
     ? formatBalance(balance, { decimals, forceUnit: '-', withSi: true, withUnit: formattedSymbol, withZero: false })
     : '0';
 
   return (
-    <SRow key={id}>
+    <SRow>
       <SColumn>
         <span>{name || ''}</span>
       </SColumn>

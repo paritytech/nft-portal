@@ -58,9 +58,9 @@ const Navigation = () => {
       <SNavigationButton to={routes.tokens} activetheme={theme}>
         Tokens
       </SNavigationButton>
-      {/*<SNavigationButton to={routes.pools} activetheme={theme}>
+      <SNavigationButton to={routes.pools} activetheme={theme}>
         Pools
-      </SNavigationButton>*/}
+      </SNavigationButton>
     </SNav>
   );
 };

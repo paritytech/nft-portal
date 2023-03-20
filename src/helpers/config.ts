@@ -1,3 +1,6 @@
+import type { RegistryTypes } from '@polkadot/types-codec/types';
+import type { OverrideBundleType } from '@polkadot/types/types/registry';
+
 import { ChainThemes, ChainTitles } from './constants';
 import { Chain } from './interfaces';
 
@@ -49,4 +52,43 @@ export const extensionConfig = {
       },
     },
   ],
+};
+
+export const apiConfigRuntime: OverrideBundleType = {
+  spec: {
+    node: {
+      runtime: {
+        DexApi: [
+          {
+            methods: {
+              get_reserves: {
+                description: 'Get pool reserves',
+                params: [
+                  {
+                    name: 'asset1',
+                    type: 'PalletDexMultiAssetId',
+                  },
+                  {
+                    name: 'asset2',
+                    type: 'PalletDexMultiAssetId',
+                  },
+                ],
+                type: 'Option<(Balance,Balance)>',
+              },
+            },
+            version: 1,
+          },
+        ],
+      },
+    },
+  },
+};
+
+export const apiConfigTypes: RegistryTypes = {
+  PalletDexMultiAssetId: {
+    _enum: {
+      Native: null,
+      Asset: 'AssetId',
+    },
+  },
 };

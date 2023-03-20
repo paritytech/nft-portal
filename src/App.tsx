@@ -14,7 +14,7 @@ import { routes } from '@helpers/routes';
 
 import CollectionEdit from '@pages/Nfts/Collections/CollectionEdit';
 import Collections from '@pages/Nfts/Collections/Collections';
-// import Pools from '@pages/Assets/Pools/Pools';
+import Pools from '@pages/Assets/Pools/Pools';
 import NewCollection from '@pages/Nfts/Collections/NewCollection';
 import NewNft from '@pages/Nfts/Nfts/NewNft';
 import NftEdit from '@pages/Nfts/Nfts/NftEdit';
@@ -109,6 +109,7 @@ const App = () => {
                 }
               />
               <Route path={routes.tokens} element={<Tokens />} />
+              <Route path={routes.pools} element={<Pools />} />
               <Route path='*' element={<Navigate to={routes.homepage} replace />} />
             </Routes>
           </SContent>

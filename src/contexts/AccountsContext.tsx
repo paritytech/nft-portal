@@ -2,7 +2,7 @@ import { Account, BaseWallet } from '@polkadot-onboard/core';
 import { ApiPromise, WsProvider } from '@polkadot/api';
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 
-import { chains } from '@helpers/config';
+import { apiConfigRuntime, apiConfigTypes, chains } from '@helpers/config';
 import { ChainThemes } from '@helpers/constants';
 import { ActiveAccount, Chain, ThemeStyle } from '@helpers/interfaces';
 import { themes } from '@helpers/reusableStyles';
@@ -50,13 +50,13 @@ export const AccountsContextProvider = ({ children }: AccountsContextProviderPro
   const [storedChain, setStoredChain] = useLocalStorage<Chain | null>('chain', null);
 
   const setupApi = useCallback(async () => {
-    const provider = new WsProvider(storedChain?.url || chains[0].url);
+    const chain = storedChain || chains[0];
+    const provider = new WsProvider(chain.url);
     const unsub = provider.on('error', () => {
       provider.disconnect();
       unsub();
     });
-    const api = await ApiPromise.create({ provider });
-
+    const api = await ApiPromise.create({ provider, typesBundle: apiConfigRuntime, types: apiConfigTypes });
     setApi(api);
   }, [storedChain]);
 
