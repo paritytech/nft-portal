@@ -1,10 +1,8 @@
 import { Account, BaseWallet } from '@polkadot-onboard/core';
 import { ApiPromise, WsProvider } from '@polkadot/api';
-import type { RegistryTypes } from '@polkadot/types-codec/types';
-import type { OverrideBundleType } from '@polkadot/types/types/registry';
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 
-import { chains } from '@helpers/config';
+import { apiConfigRuntime, apiConfigTypes, chains } from '@helpers/config';
 import { ChainThemes } from '@helpers/constants';
 import { ActiveAccount, Chain, ThemeStyle } from '@helpers/interfaces';
 import { themes } from '@helpers/reusableStyles';
@@ -43,46 +41,6 @@ const AccountsContext = createContext<AccountsContextProps>({
 
 export const useAccounts = () => useContext(AccountsContext);
 
-// TODO: move to config
-const customRuntimeApi: OverrideBundleType = {
-  spec: {
-    node: {
-      runtime: {
-        DexApi: [
-          {
-            methods: {
-              get_reserves: {
-                description: 'Get pool reserves',
-                params: [
-                  {
-                    name: 'asset1',
-                    type: 'PalletDexMultiAssetId',
-                  },
-                  {
-                    name: 'asset2',
-                    type: 'PalletDexMultiAssetId',
-                  },
-                ],
-                type: 'Option<(Balance,Balance)>',
-              },
-            },
-            version: 1,
-          },
-        ],
-      },
-    },
-  },
-};
-
-const customApiTypes: RegistryTypes = {
-  PalletDexMultiAssetId: {
-    _enum: {
-      Native: null,
-      Asset: 'AssetId',
-    },
-  },
-};
-
 export const AccountsContextProvider = ({ children }: AccountsContextProviderProps) => {
   const [activeAccount, setActiveAccount] = useState<Account | null>(null);
   const [activeWallet, setActiveWallet] = useState<BaseWallet | null>(null);
@@ -98,7 +56,7 @@ export const AccountsContextProvider = ({ children }: AccountsContextProviderPro
       provider.disconnect();
       unsub();
     });
-    const api = await ApiPromise.create({ provider, typesBundle: customRuntimeApi, types: customApiTypes });
+    const api = await ApiPromise.create({ provider, typesBundle: apiConfigRuntime, types: apiConfigTypes });
     setApi(api);
   }, [storedChain]);
 
