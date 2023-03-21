@@ -3,7 +3,7 @@ import type { ITuple } from '@polkadot/types-codec/types';
 import type { AssetId } from '@polkadot/types/interfaces';
 import type { BN } from '@polkadot/util';
 
-import { ChainThemes, ChainTitles, MintTypes, ModalStatusTypes, StatusMessages, StatusTypes } from './constants';
+import { ChainThemes, ChainTitles, MintTypes, ModalStatusTypes, RestrictionTypes, StatusMessages } from './constants';
 
 export interface CommonStyleProps {
   className?: string;
@@ -103,9 +103,9 @@ export interface StatusEntry {
 
 export type MintType = MintTypes | { [MintTypes.HOLDER_OF]: string };
 
-export interface ContextualStatusMessage {
-  statusType: StatusTypes;
-  statusMessage: string;
+export interface RestrictionMessage {
+  type: RestrictionTypes;
+  message: string;
 }
 
 export interface MintAccessNft {
