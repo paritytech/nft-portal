@@ -122,6 +122,10 @@ const NewNft = () => {
           restrictionsMessages={restrictionMessages}
           restrictionType={RestrictionTypes.ALL_NFTS_MINTED}
         />
+        <ShowRestrictionMessage
+          restrictionsMessages={restrictionMessages}
+          restrictionType={RestrictionTypes.NFT_TAKEN}
+        />
 
         <Stack direction='horizontal' gap={2} className='justify-content-end'>
           <BasicButton type='submit' isDisabled={!isEligibleToMint}>

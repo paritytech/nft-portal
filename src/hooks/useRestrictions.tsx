@@ -15,7 +15,7 @@ export const useRestrictions = () => {
       ...restrictionMessages,
       {
         type: RestrictionTypes.NFT_TAKEN,
-        message: `NFT with ID ${id} is already taken, try a different ID`,
+        message: `NFT with ID ${id} is already taken, please retry in a couple of seconds`,
       },
     ]);
   };
