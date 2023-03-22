@@ -43,6 +43,10 @@ const SCurrentChain = styled.button<Themeable>`
   svg {
     margin-top: 4px;
   }
+
+  .arrow-down {
+    width: 15px;
+  }
 `;
 
 const SChainList = styled.div<Themeable>`
@@ -112,7 +116,7 @@ const SelectChain = () => {
       <SCurrentChain onClick={toggleChainList} activeTheme={theme}>
         {createElement(ChainIcons[storedChain.title])}
         <span>{storedChain.title}</span>
-        <DropdownArrow />
+        <DropdownArrow className='arrow-down' />
       </SCurrentChain>
       <SChainList className={isChainListVisible ? 'showlist' : ''} activeTheme={theme}>
         {chains.map((chain) => (
