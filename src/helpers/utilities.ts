@@ -53,3 +53,7 @@ export const unitToPlanck = (units: string, decimals: number) => {
 
   return `${whole}${decimal.padEnd(decimals, '0')}`.replace(/^0+/, '');
 };
+
+export const generateAssetId = () => {
+  return Math.floor(Date.now() / 1000);
+};

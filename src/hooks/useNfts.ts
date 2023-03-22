@@ -142,15 +142,21 @@ export const useNfts = (collectionId: string) => {
   );
 
   const mintNft = useCallback(
-    async (nftId: string, nftReceiver: string, mintAccessNft: MintAccessNft | null) => {
+    async (nftId: string, nftReceiver: string, mintAccessNft: MintAccessNft | null, nftMetadata: NftMetadataData) => {
       if (api && activeAccount && activeWallet && collectionId) {
         setStatus({ type: ModalStatusTypes.INIT_TRANSACTION, message: StatusMessages.TRANSACTION_CONFIRM });
         openModalStatus();
 
         try {
-          const unsub = await api.tx.nfts
-            .mint(collectionId, nftId, nftReceiver, mintAccessNft)
-            .signAndSend(activeAccount.address, { signer: activeWallet.signer }, ({ status, events }) => {
+          const metadataCid = await saveDataToIpfs(nftMetadata);
+          const mintTx = api.tx.nfts.mint(collectionId, nftId, nftReceiver, mintAccessNft);
+          const setMetadataTx = api.tx.nfts.setMetadata(collectionId, nftId, metadataCid);
+          const txBatch = api.tx.utility.batchAll([mintTx, setMetadataTx]);
+
+          const unsub = await txBatch.signAndSend(
+            activeAccount.address,
+            { signer: activeWallet.signer },
+            ({ status, events }) => {
               if (status.isReady) {
                 setStatus({ type: ModalStatusTypes.IN_PROGRESS, message: StatusMessages.NFT_MINTING });
               }
@@ -162,10 +168,6 @@ export const useNfts = (collectionId: string) => {
                 events.some(({ event: { data, method } }) => {
                   if (method === 'ExtrinsicSuccess') {
                     setAction(() => () => {
-                      if (nftReceiver === activeAccount.address) {
-                        navigate(routes.nftEdit(collectionId, nftId));
-                      }
-
                       navigate(routes.nfts(collectionId));
                     });
 
@@ -181,7 +183,8 @@ export const useNfts = (collectionId: string) => {
                   return false;
                 });
               }
-            });
+            },
+          );
         } catch (error) {
           setStatus({ type: ModalStatusTypes.ERROR, message: handleError(error) });
         }
