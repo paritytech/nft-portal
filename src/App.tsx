@@ -1,5 +1,5 @@
 import '@polkadot/api-augment';
-import { Navigate, Route, Routes } from 'react-router-dom';
+import { Navigate, Outlet, Route, Routes } from 'react-router-dom';
 import styled, { createGlobalStyle } from 'styled-components';
 
 import PrivateRoute from '@common/PrivateRoute';
@@ -14,13 +14,15 @@ import { routes } from '@helpers/routes';
 
 import Pools from '@pages/Assets/Pools/Pools';
 import Tokens from '@pages/Assets/Tokens/Tokens';
-import Home from '@pages/Home/Home';
+import Discover from '@pages/Discover/Discover';
+import MyAssets from '@pages/MyAssets/MyAssets';
 import CollectionEdit from '@pages/Nfts/Collections/CollectionEdit';
+import CollectionMint from '@pages/Nfts/Collections/CollectionMint';
 import Collections from '@pages/Nfts/Collections/Collections';
-import NewCollection from '@pages/Nfts/Collections/NewCollection';
-import NewNft from '@pages/Nfts/Nfts/NewNft';
 import NftEdit from '@pages/Nfts/Nfts/NftEdit';
+import NftMint from '@pages/Nfts/Nfts/NftMint';
 import Nfts from '@pages/Nfts/Nfts/Nfts';
+import Swap from '@pages/Swap/Swap';
 
 const SMainContainer = styled.main<Themeable>`
   padding-top: 20px;
@@ -66,50 +68,79 @@ const App = () => {
         <SContainer>
           <SContent>
             <Routes>
-              <Route path={routes.homepage} element={<Home />} />
-              <Route path={routes.collections} element={<Collections />} />
-              <Route
-                path={routes.collectionMint}
-                element={
-                  <PrivateRoute>
-                    <NewCollection />
-                  </PrivateRoute>
-                }
-              />
-              <Route
-                path={routes.collectionEdit()}
-                element={
-                  <PrivateRoute>
-                    <CollectionEdit />
-                  </PrivateRoute>
-                }
-              />
-              <Route
-                path={routes.nfts()}
-                element={
-                  <PrivateRoute>
-                    <Nfts />
-                  </PrivateRoute>
-                }
-              />
-              <Route
-                path={routes.nftMint()}
-                element={
-                  <PrivateRoute>
-                    <NewNft />
-                  </PrivateRoute>
-                }
-              />
-              <Route
-                path={routes.nftEdit()}
-                element={
-                  <PrivateRoute>
-                    <NftEdit />
-                  </PrivateRoute>
-                }
-              />
-              <Route path={routes.tokens} element={<Tokens />} />
-              <Route path={routes.pools} element={<Pools />} />
+              <Route path={routes.myAssets.index} element={<Outlet />}>
+                <Route
+                  index
+                  element={
+                    <PrivateRoute>
+                      <MyAssets />
+                    </PrivateRoute>
+                  }
+                />
+                <Route path={routes.myAssets.collections.index} element={<Outlet />}>
+                  <Route
+                    index
+                    element={
+                      <PrivateRoute>
+                        <Collections />
+                      </PrivateRoute>
+                    }
+                  />
+                  <Route
+                    path={routes.myAssets.collections.mint}
+                    element={
+                      <PrivateRoute>
+                        <CollectionMint />
+                      </PrivateRoute>
+                    }
+                  />
+                  <Route
+                    path={routes.myAssets.collections.edit()}
+                    element={
+                      <PrivateRoute>
+                        <CollectionEdit />
+                      </PrivateRoute>
+                    }
+                  />
+                  <Route path={routes.myAssets.collections.nfts.index()} element={<Outlet />}>
+                    <Route
+                      index
+                      element={
+                        <PrivateRoute>
+                          <Nfts />
+                        </PrivateRoute>
+                      }
+                    />
+                    <Route
+                      path={routes.myAssets.collections.nfts.mint}
+                      element={
+                        <PrivateRoute>
+                          <NftMint />
+                        </PrivateRoute>
+                      }
+                    />
+                    <Route
+                      path={routes.myAssets.collections.nfts.edit()}
+                      element={
+                        <PrivateRoute>
+                          <NftEdit />
+                        </PrivateRoute>
+                      }
+                    />
+                  </Route>
+                </Route>
+              </Route>
+
+              <Route path={routes.discover.index} element={<Outlet />}>
+                <Route index element={<Discover />} />
+                <Route path={routes.discover.tokens} element={<Tokens />} />
+                <Route path={routes.discover.pools} element={<Pools />} />
+              </Route>
+
+              <Route path={routes.swap.index} element={<Outlet />}>
+                <Route index element={<Swap />} />
+              </Route>
+
               <Route path='*' element={<Navigate to={routes.homepage} replace />} />
             </Routes>
           </SContent>

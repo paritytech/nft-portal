@@ -11,14 +11,13 @@ import { useAccounts } from '@contexts/AccountsContext';
 
 import { StatusTypes } from '@helpers/constants';
 import { MintAccessNft } from '@helpers/interfaces';
-import { routes } from '@helpers/routes';
 import { SSecondaryButton } from '@helpers/styledComponents';
 
 import { useCheckMintingEligibility } from '@hooks/useCheckMintingEligibility';
 import { useNfts } from '@hooks/useNfts';
 import { useStatus } from '@hooks/useStatus';
 
-const NewNft = () => {
+const NftMint = () => {
   const { collectionId } = useParams();
   const { mintNft, getNft } = useNfts(collectionId || '');
   const { activeAccount, theme } = useAccounts();
@@ -96,7 +95,7 @@ const NewNft = () => {
           <BasicButton type='submit' isDisabled={!isEligibleToMint}>
             Mint NFT
           </BasicButton>
-          <Link to={routes.nfts(collectionId)}>
+          <Link to='..'>
             <SSecondaryButton type='button' activeTheme={theme}>
               Back
             </SSecondaryButton>
@@ -107,4 +106,4 @@ const NewNft = () => {
   );
 };
 
-export default memo(NewNft);
+export default memo(NftMint);
