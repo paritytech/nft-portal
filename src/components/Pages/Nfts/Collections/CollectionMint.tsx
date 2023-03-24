@@ -13,7 +13,6 @@ import { useAccounts } from '@contexts/AccountsContext';
 
 import { MintTypes } from '@helpers/constants';
 import { CollectionConfig, MintType } from '@helpers/interfaces';
-import { routes } from '@helpers/routes';
 import { SSecondaryButton } from '@helpers/styledComponents';
 import { convertToBitFlagValue, getBlockNumber, pricePattern, unitToPlanck } from '@helpers/utilities';
 
@@ -23,7 +22,7 @@ const SIndentation = styled.section`
   margin-left: 15px;
 `;
 
-const NewCollection = () => {
+const CollectionMint = () => {
   const { api, theme } = useAccounts();
   const { mintCollection } = useCollections();
   const transferrableItemsRef = useRef<HTMLInputElement>(null);
@@ -186,7 +185,7 @@ const NewCollection = () => {
 
         <Stack direction='horizontal' gap={2} className='justify-content-end'>
           <BasicButton type='submit'>Mint collection</BasicButton>
-          <Link to={routes.collections}>
+          <Link to='..'>
             <SSecondaryButton type='button' activeTheme={theme}>
               Back
             </SSecondaryButton>
@@ -197,4 +196,4 @@ const NewCollection = () => {
   );
 };
 
-export default memo(NewCollection);
+export default memo(CollectionMint);

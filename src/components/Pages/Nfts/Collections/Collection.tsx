@@ -28,7 +28,7 @@ const Collection = ({ collectionMetadata }: CollectionProps) => {
         <Card.Body>
           <SCardEdit className='text-muted'>
             <span>Collection ID #{id}</span>
-            <Link to={id}>
+            <Link to={routes.myAssets.collections.edit(id)}>
               Edit
               <EditIcon />
             </Link>
@@ -37,7 +37,7 @@ const Collection = ({ collectionMetadata }: CollectionProps) => {
           <Card.Text>{description}</Card.Text>
         </Card.Body>
         <Card.Footer className='text-center'>
-          <Link to={routes.nfts(id)}>
+          <Link to={routes.myAssets.collections.nfts.index(id)}>
             <SBasicButtonMini>Show NFTs</SBasicButtonMini>
           </Link>
         </Card.Footer>
