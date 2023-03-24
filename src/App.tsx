@@ -10,7 +10,7 @@ import Header from '@header/Header';
 
 import { Themeable } from '@helpers/interfaces';
 import { styleSettings } from '@helpers/reusableStyles';
-import { routes } from '@helpers/routes';
+import { absoluteRoutes, routes } from '@helpers/routes';
 
 import Pools from '@pages/Assets/Pools/Pools';
 import Tokens from '@pages/Assets/Tokens/Tokens';
@@ -89,7 +89,7 @@ const App = () => {
                   <Route
                     path={routes.myAssets.collections.mint}
                     element={
-                      <PrivateRoute>
+                      <PrivateRoute redirectTo={absoluteRoutes.collections}>
                         <CollectionMint />
                       </PrivateRoute>
                     }
@@ -97,7 +97,7 @@ const App = () => {
                   <Route
                     path={routes.myAssets.collections.edit()}
                     element={
-                      <PrivateRoute>
+                      <PrivateRoute redirectTo={absoluteRoutes.collections}>
                         <CollectionEdit />
                       </PrivateRoute>
                     }
@@ -106,7 +106,7 @@ const App = () => {
                     <Route
                       index
                       element={
-                        <PrivateRoute>
+                        <PrivateRoute redirectTo={absoluteRoutes.collections}>
                           <Nfts />
                         </PrivateRoute>
                       }
@@ -114,7 +114,7 @@ const App = () => {
                     <Route
                       path={routes.myAssets.collections.nfts.mint}
                       element={
-                        <PrivateRoute>
+                        <PrivateRoute redirectTo={absoluteRoutes.collections}>
                           <NftMint />
                         </PrivateRoute>
                       }
@@ -122,7 +122,7 @@ const App = () => {
                     <Route
                       path={routes.myAssets.collections.nfts.edit()}
                       element={
-                        <PrivateRoute>
+                        <PrivateRoute redirectTo={absoluteRoutes.collections}>
                           <NftEdit />
                         </PrivateRoute>
                       }
@@ -141,7 +141,7 @@ const App = () => {
                 <Route index element={<Swap />} />
               </Route>
 
-              <Route path='*' element={<Navigate to={routes.homepage} replace />} />
+              <Route path='*' element={<Navigate to={routes.homepage.index} replace />} />
             </Routes>
           </SContent>
         </SContainer>

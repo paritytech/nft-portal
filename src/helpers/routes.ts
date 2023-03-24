@@ -1,5 +1,5 @@
 export const routes = {
-  homepage: 'discover',
+  homepage: { index: 'discover' },
   myAssets: {
     index: 'my-assets',
     collections: {
@@ -21,4 +21,21 @@ export const routes = {
   swap: {
     index: 'swap',
   },
+};
+
+// absolute routes are used when it is unknown from which page exactly will navigation/redirect happen
+// therefore the whole path must be constructed
+export const absoluteRoutes = {
+  homepage: `/${routes.homepage.index}`,
+  collections: `/${routes.myAssets.index}/${routes.myAssets.collections.index}`,
+  collectionsEdit: (collectionId: string = ':collectionId') =>
+    `/${routes.myAssets.index}/${routes.myAssets.collections.index}/${routes.myAssets.collections.edit(collectionId)}`,
+  nfts: (collectionId: string = ':collectionId') =>
+    `/${routes.myAssets.index}/${routes.myAssets.collections.index}/${routes.myAssets.collections.nfts.index(
+      collectionId,
+    )}`,
+  nftsEdit: (collectionId: string = ':collectionId', nftId: string = ':nftId') =>
+    `/${routes.myAssets.index}/${routes.myAssets.collections.index}/${routes.myAssets.collections.nfts.index(
+      collectionId,
+    )}/${routes.myAssets.collections.nfts.edit(nftId)}`,
 };
