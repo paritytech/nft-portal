@@ -90,7 +90,7 @@ const NftEdit = () => {
 
         <Stack direction='horizontal' gap={2} className='justify-content-end'>
           <BasicButton type='submit'>Submit metadata</BasicButton>
-          <Link to='..' relative='path'>
+          <Link to='..'>
             <SSecondaryButton type='button' activeTheme={theme}>
               Back
             </SSecondaryButton>

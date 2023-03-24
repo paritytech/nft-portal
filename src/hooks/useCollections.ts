@@ -147,7 +147,7 @@ export const useCollections = () => {
                 events.some(({ event: { data, method } }) => {
                   if (method === 'Created') {
                     const mintedCollectionId = data[0].toString();
-                    setAction(() => () => navigate(routes.collectionEdit(mintedCollectionId)));
+                    setAction(() => () => navigate(routes.myAssets.collections.edit(mintedCollectionId)));
 
                     return true;
                   }
@@ -190,7 +190,7 @@ export const useCollections = () => {
                 setStatus({ type: ModalStatusTypes.COMPLETE, message: StatusMessages.METADATA_UPDATED });
                 unsub();
 
-                setAction(() => () => navigate(routes.collections));
+                setAction(() => () => navigate(routes.myAssets.collections.index));
               }
             });
         } catch (error) {

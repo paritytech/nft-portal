@@ -49,17 +49,14 @@ const Navigation = () => {
       <SLogoButton to={routes.homepage} activetheme={theme}>
         <Logo />
       </SLogoButton>
-      <SNavigationButton to={routes.collections} activetheme={theme}>
-        NFTs
+      <SNavigationButton to={routes.myAssets.index} activetheme={theme}>
+        My Assets
       </SNavigationButton>
-      {/*<SNavigationButton to={routes.allAssets} activetheme={theme}>
-        All Assets
-      </SNavigationButton>*/}
-      <SNavigationButton to={routes.tokens} activetheme={theme}>
-        Tokens
+      <SNavigationButton to={routes.discover.index} activetheme={theme}>
+        Discover
       </SNavigationButton>
-      <SNavigationButton to={routes.pools} activetheme={theme}>
-        Pools
+      <SNavigationButton to={routes.swap.index} activetheme={theme}>
+        Swap
       </SNavigationButton>
     </SNav>
   );

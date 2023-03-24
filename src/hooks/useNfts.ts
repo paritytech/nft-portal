@@ -168,7 +168,7 @@ export const useNfts = (collectionId: string) => {
                 events.some(({ event: { data, method } }) => {
                   if (method === 'ExtrinsicSuccess') {
                     setAction(() => () => {
-                      navigate(routes.nfts(collectionId));
+                      navigate(routes.myAssets.collections.nfts.index(collectionId));
                     });
 
                     return true;
@@ -213,7 +213,7 @@ export const useNfts = (collectionId: string) => {
                 setStatus({ type: ModalStatusTypes.COMPLETE, message: StatusMessages.METADATA_UPDATED });
                 unsub();
 
-                setAction(() => () => navigate(routes.nfts(collectionId)));
+                setAction(() => () => navigate(routes.myAssets.collections.nfts.index(collectionId)));
               }
             });
         } catch (error) {
