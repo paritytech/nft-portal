@@ -46,7 +46,7 @@ const Navigation = () => {
 
   return (
     <SNav>
-      <SLogoButton to={routes.homepage.index} activetheme={theme}>
+      <SLogoButton to={routes.homepage} activetheme={theme}>
         <Logo />
       </SLogoButton>
       <SNavigationButton to={routes.myAssets.index} activetheme={theme}>

@@ -17,7 +17,7 @@ import {
   CollectionMetadataData,
   CollectionMetadataPrimitive,
 } from '@helpers/interfaces';
-import { absoluteRoutes } from '@helpers/routes';
+import { routes } from '@helpers/routes';
 
 export const useCollections = () => {
   const { api, activeAccount, activeWallet } = useAccounts();
@@ -148,7 +148,7 @@ export const useCollections = () => {
                     setStatus({ type: ModalStatusTypes.COMPLETE, message: StatusMessages.COLLECTION_MINTED });
 
                     const mintedCollectionId = data[0].toString();
-                    setAction(() => () => navigate(absoluteRoutes.collectionsEdit(mintedCollectionId)));
+                    setAction(() => () => navigate(routes.myAssets.collectionEdit(mintedCollectionId)));
 
                     return true;
                   }
@@ -194,7 +194,7 @@ export const useCollections = () => {
                   if (method === 'ExtrinsicSuccess') {
                     setStatus({ type: ModalStatusTypes.COMPLETE, message: StatusMessages.METADATA_UPDATED });
 
-                    setAction(() => () => navigate(absoluteRoutes.collections));
+                    setAction(() => () => navigate(routes.myAssets.collections));
 
                     return true;
                   }

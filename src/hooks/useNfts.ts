@@ -12,7 +12,7 @@ import { IPFS_URL } from '@helpers/config';
 import { ModalStatusTypes, StatusMessages } from '@helpers/constants';
 import { handleError } from '@helpers/handleError';
 import { MintAccessNft, NftMetadata, NftMetadataData } from '@helpers/interfaces';
-import { absoluteRoutes } from '@helpers/routes';
+import { routes } from '@helpers/routes';
 
 export const useNfts = (collectionId: string) => {
   const { api, activeAccount, activeWallet } = useAccounts();
@@ -151,11 +151,11 @@ export const useNfts = (collectionId: string) => {
 
                     setAction(() => () => {
                       if (nftReceiver === activeAccount.address) {
-                        navigate(absoluteRoutes.nftsEdit(collectionId, nftId));
+                        navigate(routes.myAssets.nftEdit(collectionId, nftId));
                         return;
                       }
 
-                      navigate(absoluteRoutes.nfts(collectionId));
+                      navigate(routes.myAssets.nfts(collectionId));
                     });
 
                     return true;
@@ -202,7 +202,7 @@ export const useNfts = (collectionId: string) => {
                   if (method === 'ExtrinsicSuccess') {
                     setStatus({ type: ModalStatusTypes.COMPLETE, message: StatusMessages.METADATA_UPDATED });
 
-                    setAction(() => () => navigate(absoluteRoutes.nfts(collectionId)));
+                    setAction(() => () => navigate(routes.myAssets.nfts(collectionId)));
 
                     return true;
                   }

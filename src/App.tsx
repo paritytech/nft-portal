@@ -10,7 +10,7 @@ import Header from '@header/Header';
 
 import { Themeable } from '@helpers/interfaces';
 import { styleSettings } from '@helpers/reusableStyles';
-import { absoluteRoutes, routes } from '@helpers/routes';
+import { routes } from '@helpers/routes';
 
 import Pools from '@pages/Assets/Pools/Pools';
 import Tokens from '@pages/Assets/Tokens/Tokens';
@@ -77,7 +77,7 @@ const App = () => {
                     </PrivateRoute>
                   }
                 />
-                <Route path={routes.myAssets.collections.index} element={<Outlet />}>
+                <Route path={routes.myAssets.collections} element={<Outlet />}>
                   <Route
                     index
                     element={
@@ -87,42 +87,42 @@ const App = () => {
                     }
                   />
                   <Route
-                    path={routes.myAssets.collections.mint}
+                    path={routes.myAssets.collectionMint}
                     element={
-                      <PrivateRoute redirectTo={absoluteRoutes.collections}>
+                      <PrivateRoute redirectTo={routes.myAssets.collections}>
                         <CollectionMint />
                       </PrivateRoute>
                     }
                   />
                   <Route
-                    path={routes.myAssets.collections.edit()}
+                    path={routes.myAssets.collectionEdit()}
                     element={
-                      <PrivateRoute redirectTo={absoluteRoutes.collections}>
+                      <PrivateRoute redirectTo={routes.myAssets.collections}>
                         <CollectionEdit />
                       </PrivateRoute>
                     }
                   />
-                  <Route path={routes.myAssets.collections.nfts.index()} element={<Outlet />}>
+                  <Route path={routes.myAssets.nfts()} element={<Outlet />}>
                     <Route
                       index
                       element={
-                        <PrivateRoute redirectTo={absoluteRoutes.collections}>
+                        <PrivateRoute redirectTo={routes.myAssets.collections}>
                           <Nfts />
                         </PrivateRoute>
                       }
                     />
                     <Route
-                      path={routes.myAssets.collections.nfts.mint}
+                      path={routes.myAssets.nftMint()}
                       element={
-                        <PrivateRoute redirectTo={absoluteRoutes.collections}>
+                        <PrivateRoute redirectTo={routes.myAssets.collections}>
                           <NftMint />
                         </PrivateRoute>
                       }
                     />
                     <Route
-                      path={routes.myAssets.collections.nfts.edit()}
+                      path={routes.myAssets.nftEdit()}
                       element={
-                        <PrivateRoute redirectTo={absoluteRoutes.collections}>
+                        <PrivateRoute redirectTo={routes.myAssets.collections}>
                           <NftEdit />
                         </PrivateRoute>
                       }
@@ -141,7 +141,7 @@ const App = () => {
                 <Route index element={<Swap />} />
               </Route>
 
-              <Route path='*' element={<Navigate to={routes.homepage.index} replace />} />
+              <Route path='*' element={<Navigate to={routes.homepage} replace />} />
             </Routes>
           </SContent>
         </SContainer>

@@ -7,7 +7,7 @@ import { useAccounts } from '@contexts/AccountsContext';
 import { chains } from '@helpers/config';
 import { Chain, Themeable } from '@helpers/interfaces';
 import { styleSettings } from '@helpers/reusableStyles';
-import { absoluteRoutes } from '@helpers/routes';
+import { routes } from '@helpers/routes';
 
 import { useOutsideClick } from '@hooks/useOutsideClick';
 
@@ -100,7 +100,7 @@ const SelectChain = () => {
   const selectChain = (chain: Chain) => {
     setIsChainListVisible(false);
     setStoredChain(chain);
-    navigate(absoluteRoutes.homepage);
+    navigate(routes.homepage);
   };
 
   if (storedChain === null) {
