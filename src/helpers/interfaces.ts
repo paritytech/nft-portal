@@ -81,6 +81,10 @@ export interface ThemeStyle {
   buttonBackgroundColor: string;
   buttonBorderColor: string;
   buttonBorderColorHover: string;
+  buttonMainBackgroundColor: string;
+  buttonMainColor: string;
+  buttonSecondaryBackgroundColor: string;
+  buttonSecondaryColor: string;
   buttonTextColor: string;
   buttonTextColorHover: string;
   closeButtonBackgroundColor: string;

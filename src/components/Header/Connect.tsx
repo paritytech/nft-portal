@@ -8,6 +8,7 @@ import CrossCloseButton from '@buttons/CrossCloseButton';
 import { useAccounts } from '@contexts/AccountsContext';
 
 import { Themeable } from '@helpers/interfaces';
+import { SConnectButton } from '@helpers/reusableStyles';
 import { SModal } from '@helpers/styledComponents';
 import { ellipseAddress, sizeMatters } from '@helpers/utilities';
 
@@ -21,23 +22,6 @@ import Wallet from './Wallet';
 
 const SContainer = styled.div`
   position: relative;
-`;
-
-const SConnectButton = styled.button<Themeable>`
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  height: 40px;
-  line-height: 40px;
-  padding: 0 16px;
-  background-color: ${({ activeTheme }) => activeTheme.navigationButtonActiveBackgroundColor};
-  color: ${({ activeTheme }) => activeTheme.navigationButtonTextColor};
-  border: 0;
-  border-radius: 32px;
-
-  svg {
-    margin-top: 4px;
-  }
 `;
 
 const SAccountActions = styled.div<Themeable>`
@@ -117,14 +101,19 @@ const Connect = () => {
   return (
     <>
       <SContainer ref={dropdownRef}>
-        <SConnectButton onClick={handleShow} activeTheme={theme}>
+        <SConnectButton
+          id='connect'
+          className={activeAccount !== null ? 'active' : ''}
+          onClick={handleShow}
+          activeTheme={theme}
+        >
           {activeAccount !== null ? (
             <>
               {sizeMatters(activeAccount.name) || ellipseAddress(activeAccount.address, 4)}
               <DropdownArrow />
             </>
           ) : (
-            'Connect'
+            'Connect Wallet'
           )}
         </SConnectButton>
 

@@ -36,6 +36,7 @@ export const styleSettings = {
   },
 };
 
+// TODO refactor the whole color scheme, once the figma design is finished
 export const themes: Record<ChainThemes, ThemeStyle> = {
   [ChainThemes.KUSAMA]: {
     blockBackgroundColorHover: styleSettings.colors.rose,
@@ -44,6 +45,10 @@ export const themes: Record<ChainThemes, ThemeStyle> = {
     buttonBackgroundColor: 'transparent',
     buttonBorderColor: styleSettings.colors.rose,
     buttonBorderColorHover: styleSettings.colors.aqua,
+    buttonMainBackgroundColor: styleSettings.colors.white,
+    buttonMainColor: styleSettings.colors.black,
+    buttonSecondaryBackgroundColor: 'rgba(255, 255, 255, 0.06)',
+    buttonSecondaryColor: 'rgba(255, 255, 255, 0.69)',
     buttonTextColor: styleSettings.colors.rose,
     buttonTextColorHover: styleSettings.colors.aqua,
     closeButtonBackgroundColor: styleSettings.colors.white,
@@ -65,6 +70,10 @@ export const themes: Record<ChainThemes, ThemeStyle> = {
     buttonBackgroundColor: styleSettings.colors.cerise,
     buttonBorderColor: styleSettings.colors.cerise,
     buttonBorderColorHover: styleSettings.colors.cerise,
+    buttonMainBackgroundColor: styleSettings.colors.white,
+    buttonMainColor: styleSettings.colors.black,
+    buttonSecondaryBackgroundColor: 'rgba(255, 255, 255, 0.06)',
+    buttonSecondaryColor: 'rgba(255, 255, 255, 0.69)',
     buttonTextColor: styleSettings.colors.white,
     buttonTextColorHover: styleSettings.colors.white,
     closeButtonBackgroundColor: styleSettings.colors.blackHaze,
@@ -124,5 +133,27 @@ export const CommonButtonStyles = css<CommonStyleProps & Themeable>`
   a {
     text-decoration: none;
     color: ${({ activeTheme }) => activeTheme.buttonTextColor};
+  }
+`;
+
+export const SConnectButton = styled.button<Themeable>`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 40px;
+  line-height: 40px;
+  padding: 0 16px;
+  background-color: ${({ activeTheme }) => activeTheme.buttonMainBackgroundColor};
+  color: ${({ activeTheme }) => activeTheme.buttonMainColor};
+  border: 0;
+  border-radius: 32px;
+
+  svg {
+    margin-top: 4px;
+  }
+
+  &.active {
+    background-color: ${({ activeTheme }) => activeTheme.buttonSecondaryBackgroundColor};
+    color: ${({ activeTheme }) => activeTheme.buttonSecondaryColor};
   }
 `;

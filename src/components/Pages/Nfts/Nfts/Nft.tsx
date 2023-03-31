@@ -1,6 +1,6 @@
 import { memo } from 'react';
 import Card from 'react-bootstrap/esm/Card';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
 import ShowImage from '@common/ShowImage';
 
@@ -19,6 +19,7 @@ interface NftProps {
 
 const Nft = ({ nftMetadata }: NftProps) => {
   const { theme } = useAccounts();
+  const { collectionId } = useParams();
   const { id, name, description, image } = nftMetadata;
 
   return (
@@ -28,7 +29,7 @@ const Nft = ({ nftMetadata }: NftProps) => {
         <Card.Body>
           <SCardEdit className='text-muted'>
             <span>NFT ID #{id}</span>
-            <Link to={routes.myAssets.collections.nfts.edit(id)}>
+            <Link to={routes.myAssets.nftEdit(collectionId, id)}>
               Edit
               <EditIcon />
             </Link>

@@ -141,13 +141,14 @@ export const useCollections = () => {
               }
 
               if (status.isFinalized) {
-                setStatus({ type: ModalStatusTypes.COMPLETE, message: StatusMessages.COLLECTION_MINTED });
                 unsub();
 
                 events.some(({ event: { data, method } }) => {
                   if (method === 'Created') {
+                    setStatus({ type: ModalStatusTypes.COMPLETE, message: StatusMessages.COLLECTION_MINTED });
+
                     const mintedCollectionId = data[0].toString();
-                    setAction(() => () => navigate(routes.myAssets.collections.edit(mintedCollectionId)));
+                    setAction(() => () => navigate(routes.myAssets.collectionEdit(mintedCollectionId)));
 
                     return true;
                   }
@@ -181,16 +182,31 @@ export const useCollections = () => {
 
           const unsub = await api.tx.nfts
             .setCollectionMetadata(collectionId, metadataCid)
-            .signAndSend(activeAccount.address, { signer: activeWallet.signer }, ({ status }) => {
+            .signAndSend(activeAccount.address, { signer: activeWallet.signer }, ({ events, status }) => {
               if (status.isReady) {
                 setStatus({ type: ModalStatusTypes.IN_PROGRESS, message: StatusMessages.METADATA_UPDATING });
               }
 
               if (status.isFinalized) {
-                setStatus({ type: ModalStatusTypes.COMPLETE, message: StatusMessages.METADATA_UPDATED });
                 unsub();
 
-                setAction(() => () => navigate(routes.myAssets.collections.index));
+                events.some(({ event: { method } }) => {
+                  if (method === 'ExtrinsicSuccess') {
+                    setStatus({ type: ModalStatusTypes.COMPLETE, message: StatusMessages.METADATA_UPDATED });
+
+                    setAction(() => () => navigate(routes.myAssets.collections));
+
+                    return true;
+                  }
+
+                  if (method === 'ExtrinsicFailed') {
+                    setStatus({ type: ModalStatusTypes.ERROR, message: StatusMessages.ACTION_FAILED });
+
+                    return true;
+                  }
+
+                  return false;
+                });
               }
             });
         } catch (error) {
