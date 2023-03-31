@@ -31,7 +31,7 @@ const Nfts = () => {
         <NftsView nftsMetadata={nftsMetadata} />
       </SContentBlockContainer>
       <Stack direction='horizontal' gap={2} className='justify-content-end'>
-        <Link to={routes.myAssets.collections.nfts.mint}>
+        <Link to={routes.myAssets.nftMint(collectionId)}>
           <BasicButton>Mint NFT</BasicButton>
         </Link>
         <Link to='..'>

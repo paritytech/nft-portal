@@ -24,7 +24,7 @@ const Collections = () => {
         <CollectionsView collectionsMetadata={collectionsMetadata} />
       </SContentBlockContainer>
       <Stack direction='horizontal' gap={2} className='justify-content-end'>
-        <Link to={routes.myAssets.collections.mint}>
+        <Link to={routes.myAssets.collectionMint}>
           <BasicButton>Mint Collection</BasicButton>
         </Link>
       </Stack>
