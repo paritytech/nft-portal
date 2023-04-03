@@ -57,9 +57,9 @@ export const useCheckMintingEligibility = (collectionId: string) => {
           const availableForClaimingNfts: string[] = [];
 
           // filter out nfts that were already used to claim
-          if (Array.isArray(ownedNftIds) && ownedNftIds.length > 0) {
+          if (api && Array.isArray(ownedNftIds) && ownedNftIds.length > 0) {
             const calls = ownedNftIds.map((ownedNftId) => {
-              return api!.query.nfts.attribute.keys(holderOfCollectionId, ownedNftId, 'Pallet');
+              return api.query.nfts.attribute.keys(holderOfCollectionId, ownedNftId, 'Pallet');
             });
 
             const results = await Promise.all(calls);
@@ -73,7 +73,7 @@ export const useCheckMintingEligibility = (collectionId: string) => {
                     args: { 3: attributeKey },
                   } = attribute;
 
-                  const claimAttribute = api!.createType('PalletNftsPalletAttributes', attributeKey);
+                  const claimAttribute = api.createType('PalletNftsPalletAttributes', attributeKey);
 
                   if (claimAttribute.isUsedToClaim) {
                     hasClaimAttribute = true;
