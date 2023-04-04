@@ -1,10 +1,10 @@
 import { ApiPromise } from '@polkadot/api';
 
-export const ellipseAddress = (address: string = '', width: number = 10): string => {
+export const ellipseAddress = (address = '', width = 10): string => {
   return `${address.slice(0, width)}...${address.slice(-width)}`;
 };
 
-export const sizeMatters = (yourThing: string | undefined | null, size: number = 16) => {
+export const sizeMatters = (yourThing: string | undefined | null, size = 16) => {
   if (typeof yourThing === 'string') {
     if (yourThing.length > size) {
       return `${yourThing.slice(0, size)}...`;
@@ -45,7 +45,9 @@ export const getBlockNumber = async (api: ApiPromise, timestamp?: number) => {
 export const pricePattern = (maxPrecision: number) => `^(0|[1-9][0-9]*)([.][0-9]{0,${maxPrecision}})?$`;
 
 export const unitToPlanck = (units: string, decimals: number) => {
-  let [whole, decimal] = units.split('.');
+  const separated = units.split('.');
+  const [whole] = separated;
+  let [, decimal] = separated;
 
   if (typeof decimal === 'undefined') {
     decimal = '';

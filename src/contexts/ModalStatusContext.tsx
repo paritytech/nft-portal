@@ -1,9 +1,9 @@
-import { createContext, useCallback, useContext, useMemo, useState } from 'react';
+import { ReactElement, createContext, useCallback, useContext, useMemo, useState } from 'react';
 
 import { StatusEntry } from '@helpers/interfaces';
 
 interface ModalStatusContextProviderProps {
-  children: any;
+  children: ReactElement;
 }
 
 interface ModalStatusContextProps {
@@ -16,6 +16,7 @@ interface ModalStatusContextProps {
   setAction: (value: (() => void) | undefined) => void;
 }
 
+/* eslint-disable @typescript-eslint/no-empty-function */
 const ModalStatusContext = createContext<ModalStatusContextProps>({
   openModalStatus: () => {},
   isModalVisible: false,
@@ -25,6 +26,7 @@ const ModalStatusContext = createContext<ModalStatusContextProps>({
   concludeModalStatus: () => {},
   setAction: () => {},
 });
+/* eslint-enable @typescript-eslint/no-empty-function */
 
 export const useModalStatus = () => useContext(ModalStatusContext);
 

@@ -1,4 +1,4 @@
-import { memo } from 'react';
+import { ReactElement, memo } from 'react';
 import styled from 'styled-components';
 
 const STitle = styled.h1`
@@ -7,7 +7,7 @@ const STitle = styled.h1`
 `;
 
 interface TitleProps {
-  children: any;
+  children: ReactElement | string;
 }
 
 const Title = ({ children }: TitleProps) => {

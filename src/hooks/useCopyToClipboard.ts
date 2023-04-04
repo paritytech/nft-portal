@@ -5,7 +5,7 @@ export const useCopyToClipboard = (
   copyTarget: string,
   initialValue: string,
   activeValue: string = initialValue,
-  timeout: number = 1000,
+  timeout = 1000,
 ): [() => void, string] => {
   const [value, setValue] = useState<string>(initialValue);
 
