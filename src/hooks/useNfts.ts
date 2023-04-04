@@ -22,7 +22,20 @@ export const useNfts = (collectionId: string) => {
   const [nftMetadata, setNftMetadata] = useState<NftMetadata | null>(null);
   const [isNftDataLoading, setIsNftDataLoading] = useState(false);
 
-  const getNftIds = useCallback(
+  const getNftIds = useCallback(async () => {
+    if (api) {
+      const results: StorageKey<[u32, u32]>[] = await api.query.nfts.item.keys(collectionId);
+
+      const nftIds = results
+        .map(({ args: { 1: nftId } }) => nftId)
+        .sort((a, b) => a.cmp(b))
+        .map((nftId) => nftId.toString());
+
+      return nftIds;
+    }
+  }, [api, collectionId]);
+
+  const getOwnedNftIds = useCallback(
     async (specifiedCollectionId = '') => {
       if (api && activeAccount && collectionId) {
         const collectionIdParam = specifiedCollectionId || collectionId;
@@ -53,7 +66,7 @@ export const useNfts = (collectionId: string) => {
       try {
         let metadata: NftMetadata[] = [];
 
-        const ownedNftIds = await getNftIds();
+        const ownedNftIds = await getOwnedNftIds();
         if (!ownedNftIds) {
           setNftsMetadata(metadata);
           return;
@@ -89,7 +102,7 @@ export const useNfts = (collectionId: string) => {
         setIsNftDataLoading(false);
       }
     }
-  }, [api, activeAccount, collectionId, getNftIds]);
+  }, [api, activeAccount, collectionId, getOwnedNftIds]);
 
   const getNftMetadata = useCallback(
     async (nftId: string) => {
@@ -99,7 +112,7 @@ export const useNfts = (collectionId: string) => {
         try {
           let metadata: NftMetadata | null = null;
 
-          const ownedNftIds = await getNftIds();
+          const ownedNftIds = await getOwnedNftIds();
           if (!ownedNftIds || !ownedNftIds.includes(nftId)) {
             setNftMetadata(metadata);
             return;
@@ -125,19 +138,25 @@ export const useNfts = (collectionId: string) => {
         }
       }
     },
-    [api, collectionId, getNftIds],
+    [api, collectionId, getOwnedNftIds],
   );
 
   const mintNft = useCallback(
-    async (nftId: string, nftReceiver: string, mintAccessNft: MintAccessNft | null) => {
+    async (nftId: string, nftReceiver: string, mintAccessNft: MintAccessNft | null, nftMetadata: NftMetadataData) => {
       if (api && activeAccount && activeWallet && collectionId) {
         setStatus({ type: ModalStatusTypes.INIT_TRANSACTION, message: StatusMessages.TRANSACTION_CONFIRM });
         openModalStatus();
 
         try {
-          const unsub = await api.tx.nfts
-            .mint(collectionId, nftId, nftReceiver, mintAccessNft)
-            .signAndSend(activeAccount.address, { signer: activeWallet.signer }, ({ status, events }) => {
+          const metadataCid = await saveDataToIpfs(nftMetadata);
+          const mintTx = api.tx.nfts.mint(collectionId, nftId, nftReceiver, mintAccessNft);
+          const setMetadataTx = api.tx.nfts.setMetadata(collectionId, nftId, metadataCid);
+          const txBatch = api.tx.utility.batchAll([mintTx, setMetadataTx]);
+
+          const unsub = await txBatch.signAndSend(
+            activeAccount.address,
+            { signer: activeWallet.signer },
+            ({ status, events }) => {
               if (status.isReady) {
                 setStatus({ type: ModalStatusTypes.IN_PROGRESS, message: StatusMessages.NFT_MINTING });
               }
@@ -150,11 +169,6 @@ export const useNfts = (collectionId: string) => {
                     setStatus({ type: ModalStatusTypes.COMPLETE, message: StatusMessages.NFT_MINTED });
 
                     setAction(() => () => {
-                      if (nftReceiver === activeAccount.address) {
-                        navigate(routes.myAssets.nftEdit(collectionId, nftId));
-                        return;
-                      }
-
                       navigate(routes.myAssets.nfts(collectionId));
                     });
 
@@ -170,7 +184,8 @@ export const useNfts = (collectionId: string) => {
                   return false;
                 });
               }
-            });
+            },
+          );
         } catch (error) {
           setStatus({ type: ModalStatusTypes.ERROR, message: handleError(error) });
         }
@@ -239,6 +254,7 @@ export const useNfts = (collectionId: string) => {
 
   return {
     getNftIds,
+    getOwnedNftIds,
     nftsMetadata,
     nftMetadata,
     mintNft,

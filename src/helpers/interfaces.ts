@@ -3,7 +3,7 @@ import type { ITuple } from '@polkadot/types-codec/types';
 import type { AssetId } from '@polkadot/types/interfaces';
 import type { BN } from '@polkadot/util';
 
-import { ChainThemes, ChainTitles, MintTypes, ModalStatusTypes, StatusMessages, StatusTypes } from './constants';
+import { ChainThemes, ChainTitles, MintTypes, ModalStatusTypes, RestrictionTypes, StatusMessages } from './constants';
 
 export interface CommonStyleProps {
   className?: string;
@@ -37,15 +37,15 @@ export interface CollectionConfig {
   };
 }
 
-export interface CollectionConfigHuman {
-  settings: string;
-  maxSupply: string | null;
+export interface CollectionConfigJson {
+  settings: number;
+  maxSupply: number | null;
   mintSettings: {
-    mintType: MintType;
+    mintType: MintTypeJson;
     price: string | null;
-    startBlock: string | null;
-    endBlock: string | null;
-    defaultItemSettings: string;
+    startBlock: number | null;
+    endBlock: number | null;
+    defaultItemSettings: number;
   };
 }
 
@@ -107,9 +107,11 @@ export interface StatusEntry {
 
 export type MintType = MintTypes | { [MintTypes.HOLDER_OF]: string };
 
-export interface ContextualStatusMessage {
-  statusType: StatusTypes;
-  statusMessage: string;
+export type MintTypeJson = Record<'public' | 'issuer' | 'holderOf', null | number>;
+
+export interface RestrictionMessage {
+  type: RestrictionTypes;
+  message: string;
 }
 
 export interface MintAccessNft {

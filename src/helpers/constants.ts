@@ -8,8 +8,9 @@ export enum ChainThemes {
   POLKADOT = 'polkadot',
 }
 
-export enum StatusTypes {
+export enum RestrictionTypes {
   NFT_TAKEN = 'NFT_TAKEN',
+  ALL_NFTS_MINTED = 'ALL_NFTS_MINTED',
   MUST_BE_HOLDER_OF = 'MUST_BE_HOLDER_OF',
 }
 

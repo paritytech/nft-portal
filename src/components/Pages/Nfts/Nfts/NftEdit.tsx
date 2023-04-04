@@ -37,7 +37,8 @@ const NftEdit = () => {
           image: imageCid,
         };
 
-        Promise.all([saveImageToIpfs(imageSourceUrl), saveNftMetadata(nftId, updatedMetadata)]);
+        saveImageToIpfs(imageSourceUrl);
+        saveNftMetadata(nftId, updatedMetadata);
       }
     },
     [collectionId, nftId, saveNftMetadata, imageSourceUrl, imageCid],
@@ -67,12 +68,18 @@ const NftEdit = () => {
           <Form.Label>NFT name:</Form.Label>
           <Form.Control type='text' defaultValue={nftMetadata?.name} ref={nftNameRef} required />
         </Form.Group>
+
         <Form.Group className='mb-3'>
-          <Form.Label>Description:</Form.Label>
+          <Form.Label>
+            Description <i>(optional)</i>:
+          </Form.Label>
           <Form.Control as='textarea' rows={3} defaultValue={nftMetadata?.description} ref={nftDescriptionRef} />
         </Form.Group>
+
         <Form.Group className='mb-3'>
-          <Form.Label>Image:</Form.Label>
+          <Form.Label>
+            Image <i>(optional)</i>:
+          </Form.Label>
           <FileDropZone
             imageSourceUrl={imageSourceUrl}
             setImageSourceUrl={setImageSourceUrl}
@@ -80,6 +87,7 @@ const NftEdit = () => {
             setImageCid={setImageCid}
           />
         </Form.Group>
+
         <Stack direction='horizontal' gap={2} className='justify-content-end'>
           <BasicButton type='submit'>Submit metadata</BasicButton>
           <Link to='..'>

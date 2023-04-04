@@ -3,49 +3,64 @@ import Form from 'react-bootstrap/esm/Form';
 import Stack from 'react-bootstrap/esm/Stack';
 import { Link, useParams } from 'react-router-dom';
 
+import { saveImageToIpfs } from '@api/pinata';
+
 import BasicButton from '@buttons/BasicButton';
 
+import FileDropZone from '@common/FileDropZone';
 import ModalStatus from '@common/ModalStatus';
+import ShowRestrictionMessage from '@common/ShowRestrictionMessage';
 
 import { useAccounts } from '@contexts/AccountsContext';
 
-import { StatusTypes } from '@helpers/constants';
-import { MintAccessNft } from '@helpers/interfaces';
+import { RestrictionTypes } from '@helpers/constants';
+import { CollectionMetadataData, MintAccessNft } from '@helpers/interfaces';
 import { SSecondaryButton } from '@helpers/styledComponents';
+import { generateAssetId } from '@helpers/utilities';
 
 import { useCheckMintingEligibility } from '@hooks/useCheckMintingEligibility';
 import { useNfts } from '@hooks/useNfts';
-import { useStatus } from '@hooks/useStatus';
 
 const NftMint = () => {
   const { collectionId } = useParams();
-  const { mintNft, getNft } = useNfts(collectionId || '');
+  const { mintNft } = useNfts(collectionId || '');
   const { activeAccount, theme } = useAccounts();
-  const { nftTaken, contextualStatusMessage, clearStatus } = useStatus();
-  const { holderOfStatusMessage, isEligibleToMint, ownedNftsFromAnotherCollection } = useCheckMintingEligibility(
-    collectionId || '',
-  );
+  const {
+    restrictionMessages,
+    checkAvailabilityRestriction,
+    isEligibleToMint,
+    ownedNftsFromAnotherCollection,
+    clearRestrictions,
+  } = useCheckMintingEligibility(collectionId || '');
   const [mintAccessNft, setMintAccessNft] = useState<MintAccessNft | null>(null);
-  const nftIdRef = useRef<HTMLInputElement>(null);
+  const nftNameRef = useRef<HTMLInputElement>(null);
+  const nftDescriptionRef = useRef<HTMLTextAreaElement>(null);
   const nftReceiverRef = useRef<HTMLInputElement>(null);
+  const [imageCid, setImageCid] = useState<string | undefined>();
+  const [imageSourceUrl, setImageSourceUrl] = useState<string | null>(null);
 
   const submitMintNft = useCallback(
     async (event: FormEvent) => {
       event.preventDefault();
-      clearStatus();
+      clearRestrictions();
 
-      if (collectionId && nftIdRef.current !== null && nftReceiverRef.current !== null) {
-        const nftId = nftIdRef.current.value;
-        const nft = await getNft(nftId);
+      if (collectionId && nftNameRef.current !== null && nftReceiverRef.current !== null) {
+        const nftId = generateAssetId().toString();
+        const isAvailable = await checkAvailabilityRestriction(nftId);
 
-        if (nft === null) {
-          mintNft(nftId, nftReceiverRef.current.value, mintAccessNft);
-        } else {
-          nftTaken(nftId);
+        const metadata: CollectionMetadataData = {
+          name: nftNameRef.current.value,
+          description: nftDescriptionRef.current ? nftDescriptionRef.current.value : undefined,
+          image: imageCid,
+        };
+
+        if (isAvailable) {
+          saveImageToIpfs(imageSourceUrl);
+          mintNft(nftId, nftReceiverRef.current.value, mintAccessNft, metadata);
         }
       }
     },
-    [collectionId, mintNft, getNft, nftTaken, clearStatus, mintAccessNft],
+    [clearRestrictions, collectionId, checkAvailabilityRestriction, imageCid, imageSourceUrl, mintNft, mintAccessNft],
   );
 
   if (activeAccount === null) {
@@ -57,21 +72,32 @@ const NftMint = () => {
       <ModalStatus />
       <Form onSubmit={submitMintNft}>
         <Form.Group className='mb-3'>
-          <Form.Label>Collection ID:</Form.Label>
-          <Form.Control type='text' defaultValue={collectionId} disabled />
-        </Form.Group>
-
-        <Form.Group className='mb-3'>
-          <Form.Label>NFT ID:</Form.Label>
-          <Form.Control type='number' ref={nftIdRef} required />
-          {contextualStatusMessage && contextualStatusMessage.statusType === StatusTypes.NFT_TAKEN && (
-            <p className='text-danger mt-1'>{contextualStatusMessage.statusMessage}</p>
-          )}
+          <Form.Label>NFT name:</Form.Label>
+          <Form.Control type='text' ref={nftNameRef} required />
         </Form.Group>
 
         <Form.Group className='mb-3'>
           <Form.Label>NFT receiver:</Form.Label>
           <Form.Control ref={nftReceiverRef} defaultValue={activeAccount.address} />
+        </Form.Group>
+
+        <Form.Group className='mb-3'>
+          <Form.Label>
+            Description <i>(optional)</i>:
+          </Form.Label>
+          <Form.Control as='textarea' rows={3} ref={nftDescriptionRef} />
+        </Form.Group>
+
+        <Form.Group className='mb-3'>
+          <Form.Label>
+            Image <i>(optional)</i>:
+          </Form.Label>
+          <FileDropZone
+            imageSourceUrl={imageSourceUrl}
+            setImageSourceUrl={setImageSourceUrl}
+            imageCid={imageCid}
+            setImageCid={setImageCid}
+          />
         </Form.Group>
 
         {Array.isArray(ownedNftsFromAnotherCollection) && ownedNftsFromAnotherCollection.length > 0 && (
@@ -87,9 +113,18 @@ const NftMint = () => {
             </Form.Select>
           </Form.Group>
         )}
-        {holderOfStatusMessage && holderOfStatusMessage.statusType === StatusTypes.MUST_BE_HOLDER_OF && (
-          <p className='text-danger mb-3'>{holderOfStatusMessage.statusMessage}</p>
-        )}
+        <ShowRestrictionMessage
+          restrictionsMessages={restrictionMessages}
+          restrictionType={RestrictionTypes.MUST_BE_HOLDER_OF}
+        />
+        <ShowRestrictionMessage
+          restrictionsMessages={restrictionMessages}
+          restrictionType={RestrictionTypes.ALL_NFTS_MINTED}
+        />
+        <ShowRestrictionMessage
+          restrictionsMessages={restrictionMessages}
+          restrictionType={RestrictionTypes.NFT_TAKEN}
+        />
 
         <Stack direction='horizontal' gap={2} className='justify-content-end'>
           <BasicButton type='submit' isDisabled={!isEligibleToMint}>
