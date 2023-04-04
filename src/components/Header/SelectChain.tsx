@@ -6,14 +6,14 @@ import { useAccounts } from '@contexts/AccountsContext';
 
 import { chains } from '@helpers/config';
 import { Chain, Themeable } from '@helpers/interfaces';
-import { styleSettings } from '@helpers/reusableStyles';
 import { routes } from '@helpers/routes';
 
 import { useOutsideClick } from '@hooks/useOutsideClick';
 
-import Localhost from '@images/chain-localhost.svg';
-import Westmint from '@images/chain-westmint.svg';
+import Localhost from '@images/icons/chain-localhost.svg';
+import Westmint from '@images/icons/chain-westmint.svg';
 import DropdownArrow from '@images/dropdown-arrow.svg';
+import { CssInterRegularL } from '@helpers/reusableStyles';
 
 const ChainIcons = {
   localhost: Localhost,
@@ -22,29 +22,29 @@ const ChainIcons = {
 
 const SContainer = styled.div`
   position: relative;
-  height: 40px;
-  line-height: 40px;
 
   svg {
-    width: 24px;
+    width: 32px;
   }
 `;
 
 const SCurrentChain = styled.button<Themeable>`
   display: flex;
+  height: 48px;
   align-items: center;
-  padding: 0 16px;
-  background-color: ${({ activeTheme }) => activeTheme.navigationButtonActiveBackgroundColor};
-  color: ${({ activeTheme }) => activeTheme.navigationButtonTextColor};
+  padding: 0 8px;
+  background-color: ${({ activeTheme }) => activeTheme.fill6};
+  color: ${({ activeTheme }) => activeTheme.textAndIconsPrimary};
   border: 0;
   border-radius: 32px;
   gap: 10px;
 
-  svg {
-    margin-top: 4px;
+  span {
+    ${CssInterRegularL}
   }
 
   .arrow-down {
+    margin: 4px 12px 0 2px;
     width: 15px;
   }
 `;
@@ -55,7 +55,9 @@ const SChainList = styled.div<Themeable>`
   top: 100%;
   right: 0;
   margin-top: 12px;
-  background-color: ${({ activeTheme }) => activeTheme.navigationBackground};
+  padding: 16px;
+  background-color: ${({ activeTheme }) => activeTheme.backgroundTertiary};
+  color: ${({ activeTheme }) => activeTheme.textAndIconsPrimary};
   border-radius: 16px;
   z-index: 1;
 
@@ -65,25 +67,18 @@ const SChainList = styled.div<Themeable>`
 `;
 
 const SChainOption = styled.div<Themeable>`
+  ${CssInterRegularL}
   display: flex;
+  min-width: 184px;
   align-items: center;
-  gap: 10px;
-  padding: 5px 10px;
+  height: 48px;
+  padding: 0 8px;
+  gap: 8px;
 
   :hover {
-    background-color: ${({ activeTheme }) => activeTheme.blockBackgroundColorHover};
-    color: ${styleSettings.colors.white};
+    background-color: ${({ activeTheme }) => activeTheme.fill6};
+    border-radius: 32px;
     cursor: pointer;
-  }
-
-  :first-of-type {
-    border-top-left-radius: 7px;
-    border-top-right-radius: 7px;
-  }
-
-  :last-of-type {
-    border-bottom-left-radius: 7px;
-    border-bottom-right-radius: 7px;
   }
 
   span {

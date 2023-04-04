@@ -4,10 +4,10 @@ import styled from 'styled-components';
 import { useAccounts } from '@contexts/AccountsContext';
 
 import { CommonStyleProps } from '@helpers/interfaces';
-import { CommonButtonStyles } from '@helpers/reusableStyles';
+import { CssCommonButtonStyles } from '@helpers/reusableStyles';
 
 const SButton = styled.button`
-  ${CommonButtonStyles}
+  ${CssCommonButtonStyles}
 `;
 
 interface BasicButtonProps extends CommonStyleProps {

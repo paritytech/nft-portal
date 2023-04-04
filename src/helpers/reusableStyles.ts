@@ -27,18 +27,46 @@ export const styleSettings = {
     tablet: `(min-width: ${deviceScreenSize.tablet})`,
     desktop: `(min-width: ${deviceScreenSize.desktop})`,
   },
-  sizes: {
-    largeText: '36px',
-    majorText: '30px',
-    emphasizedText: '20px',
-    mediumText: '16px',
-    smallText: '12px',
-  },
 };
 
-// TODO refactor the whole color scheme, once the figma design is finished
+
+// ============
+// THEME STYLES
+// ============
+// TODO replace old styles with new
 export const themes: Record<ChainThemes, ThemeStyle> = {
   [ChainThemes.KUSAMA]: {
+    backgroundSystem: '#101015',
+    backgroundPrimary: '#101015',
+    backgroundSecondary: '#1E1E23',
+    backgroundTertiary: '#2C2C30',
+
+    textAndIconsPrimary: '#FFFFFF',
+    textAndIconsSecondary: 'rgba(255, 255, 255, 0.69)',
+    textAndIconsTertiary: 'rgba(255, 255, 255, 0.48)',
+    textAndIconsDisabled: 'rgba(255, 255, 255, 0.27)',
+
+    fill30: 'rgba(255, 255, 255, 0.3)',
+    fill24: 'rgba(255, 255, 255, 0.24)',
+    fill18: 'rgba(255, 255, 255, 0.18)',
+    fill12: 'rgba(255, 255, 255, 0.12)',
+    fill6: 'rgba(255, 255, 255, 0.06)',
+
+    appliedOverlay: 'rgba(0, 0, 0, 0.7)',
+    appliedHover: 'rgba(255, 255, 255, 0.05)',
+    appliedStroke: 'rgba(255, 255, 255, 0.12)',
+    appliedSeparator: 'rgba(255, 255, 255, 0.08)',
+  
+    accentsPink: '#F272B6',
+    accentsRed: '#FE8D81',
+    accentsGreen: '#56F39A',
+  
+    forcedWhite: '#FFFFFF',
+    forcedBlack: '#000000',
+
+
+
+    // deprecated
     blockBackgroundColorHover: styleSettings.colors.rose,
     bodyBackground: styleSettings.colors.black,
     borderRadius: '0',
@@ -64,6 +92,38 @@ export const themes: Record<ChainThemes, ThemeStyle> = {
     transparentHoverHighlight: 'rgba(255, 255, 255, 0.3)',
   },
   [ChainThemes.POLKADOT]: {
+    backgroundSystem: '#F3F3F2',
+    backgroundPrimary: '#FFFFFF',
+    backgroundSecondary: '#FFFFFF',
+    backgroundTertiary: '#FFFFFF',
+  
+    textAndIconsPrimary: '#000000',
+    textAndIconsSecondary: 'rgba(0, 0, 0, 0.66)',
+    textAndIconsTertiary: 'rgba(0, 0, 0, 0.45)',
+    textAndIconsDisabled: 'rgba(0, 0, 0, 0.25)',
+  
+    fill30: 'rgba(0, 0, 0, 0.3)',
+    fill24: 'rgba(0, 0, 0, 0.24)',
+    fill18: 'rgba(0, 0, 0, 0.18)',
+    fill12: 'rgba(0, 0, 0, 0.12)',
+    fill6: 'rgba(0, 0, 0, 0.06)',
+  
+    appliedOverlay: 'rgba(0, 0, 0, 0.4)',
+    appliedHover: 'rgba(0, 0, 0, 0.05)',
+    appliedStroke: 'rgba(0, 0, 0, 0.12)',
+    appliedSeparator: 'rgba(0, 0, 0, 0.08)',
+  
+    accentsPink: '#E6007A',
+    accentsRed: '#FD4935',
+    accentsGreen: '#48CC81',
+  
+    forcedWhite: '#FFFFFF',
+    forcedBlack: '#000000',
+
+
+
+
+    // deprecated
     blockBackgroundColorHover: styleSettings.colors.cerise,
     bodyBackground: styleSettings.colors.blackHaze,
     borderRadius: '10px',
@@ -90,30 +150,22 @@ export const themes: Record<ChainThemes, ThemeStyle> = {
   },
 };
 
-export const SContentBlockContainer = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  gap: 14px;
-  margin-bottom: 20px;
-  padding-bottom: 20px;
-  border-bottom: 1px dashed ${styleSettings.colors.cerise};
-`;
 
-export const SContentBlock = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  width: 250px;
-  word-break: break-word;
-  align-items: center;
-`;
+// ============
+// CSS SNIPPETS
+// ============
+export const CssInterRegularL = css`
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 22px;
+`
 
-export const ButtonMini = css`
+export const CssButtonMini = css`
   line-height: 30px;
   padding: 0 25px;
 `;
 
-export const CommonButtonStyles = css<CommonStyleProps & Themeable>`
+export const CssCommonButtonStyles = css<CommonStyleProps & Themeable>`
   height: 50px;
   padding: 0 50px;
   color: ${({ activeTheme }) => activeTheme.buttonTextColor};
@@ -136,24 +188,55 @@ export const CommonButtonStyles = css<CommonStyleProps & Themeable>`
   }
 `;
 
+
+// =================
+// STYLED COMPONENTS
+// =================
+export const SContentBlockContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+  border-bottom: 1px dashed ${styleSettings.colors.cerise};
+`;
+
+export const SContentBlock = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  width: 250px;
+  word-break: break-word;
+  align-items: center;
+`;
+
 export const SConnectButton = styled.button<Themeable>`
   display: flex;
   align-items: center;
   gap: 10px;
-  height: 40px;
-  line-height: 40px;
-  padding: 0 16px;
-  background-color: ${({ activeTheme }) => activeTheme.buttonMainBackgroundColor};
-  color: ${({ activeTheme }) => activeTheme.buttonMainColor};
+  height: 48px;
+  line-height: 48px;
+  padding: 0 8px;
+  background-color: ${({ activeTheme }) => activeTheme.fill6};
+  color: ${({ activeTheme }) => activeTheme.textAndIconsSecondary};
   border: 0;
   border-radius: 32px;
 
-  svg {
-    margin-top: 4px;
+  span {
+    ${CssInterRegularL}
   }
 
   &.active {
     background-color: ${({ activeTheme }) => activeTheme.buttonSecondaryBackgroundColor};
     color: ${({ activeTheme }) => activeTheme.buttonSecondaryColor};
+  }
+
+  .identicon {
+    width: 32px;
+  }
+
+  .arrow-down {
+    margin: 4px 12px 0 2px;
+    width: 15px;
   }
 `;

@@ -11,6 +11,11 @@ const MyAssets = () => {
           <Link to={routes.myAssets.collections}>My collections</Link>
         </h4>
       </section>
+      <section>
+        <h4>
+          <Link to={routes.myAssets.pools}>My liquidity pools</Link>
+        </h4>
+      </section>
     </>
   );
 };

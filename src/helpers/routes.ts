@@ -1,11 +1,16 @@
 const COLLECTION_ID_PARAM = ':collectionId';
 const NFT_ID_PARAM = ':collectionId';
 
+// TODO rename newNftMint to nftMint later, get rid of old route
 export const routes = {
   homepage: '/discover',
 
   myAssets: {
     index: '/my-assets',
+
+    newNftMint: '/my-assets/nft-mint',
+    selectCollection: '/my-assets/nft-mint/select-collection',
+
     collections: '/my-assets/collections',
     collectionMint: '/my-assets/collections/mint',
     collectionEdit: (collectionId: string = COLLECTION_ID_PARAM) => `/my-assets/collections/edit/${collectionId}`,
@@ -13,6 +18,9 @@ export const routes = {
     nftMint: (collectionId: string = COLLECTION_ID_PARAM) => `/my-assets/collections/${collectionId}/nfts/mint`,
     nftEdit: (collectionId: string = COLLECTION_ID_PARAM, nftId: string = NFT_ID_PARAM) =>
       `/my-assets/collections/${collectionId}/nfts/edit/${nftId}`,
+
+    pools: '/my-assets/pools',
+    poolCreate: '/my-assets/pools/create',
   },
 
   discover: {
