@@ -3,7 +3,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { useAccounts } from '@contexts/AccountsContext';
 
 import { MintTypes } from '@helpers/constants';
-import { CollectionConfigHuman } from '@helpers/interfaces';
+import { CollectionConfigJson } from '@helpers/interfaces';
 
 import { useCollections } from './useCollections';
 import { useNfts } from './useNfts';
@@ -32,11 +32,11 @@ export const useCheckMintingEligibility = (collectionId: string) => {
   );
 
   const checkSupplyRestriction = useCallback(
-    async (config: CollectionConfigHuman) => {
+    async (config: CollectionConfigJson) => {
       if (config.maxSupply) {
         const nftIds = await getNftIds();
 
-        if (Array.isArray(nftIds) && config.maxSupply === nftIds.length.toString()) {
+        if (Array.isArray(nftIds) && config.maxSupply === nftIds.length) {
           allNftsMinted();
           return false;
         }
@@ -48,10 +48,10 @@ export const useCheckMintingEligibility = (collectionId: string) => {
   );
 
   const checkHolderOfRestriction = useCallback(
-    async (config: CollectionConfigHuman) => {
+    async (config: CollectionConfigJson) => {
       try {
-        if (config.mintSettings && typeof config.mintSettings.mintType === 'object') {
-          const holderOfCollectionId = config.mintSettings.mintType[MintTypes.HOLDER_OF];
+        if (config.mintSettings && Object.keys(config.mintSettings.mintType)[0].toLowerCase() === (MintTypes.HOLDER_OF).toLowerCase()) {
+          const holderOfCollectionId = config.mintSettings.mintType.holderOf!.toString();
 
           const ownedNftIds = await getOwnedNftIds(holderOfCollectionId);
           const availableForClaimingNfts: string[] = [];
@@ -110,7 +110,7 @@ export const useCheckMintingEligibility = (collectionId: string) => {
       if (api && collectionId) {
         const rawConfig = await getCollectionConfig(collectionId);
         if (rawConfig) {
-          const config = rawConfig.toHuman() as unknown as CollectionConfigHuman;
+          const config = rawConfig.toJSON() as unknown as CollectionConfigJson;
 
           const checkHolderOf = checkHolderOfRestriction(config);
           const checkSupply = checkSupplyRestriction(config);

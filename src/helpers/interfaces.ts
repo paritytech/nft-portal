@@ -37,15 +37,15 @@ export interface CollectionConfig {
   };
 }
 
-export interface CollectionConfigHuman {
-  settings: string;
-  maxSupply: string | null;
+export interface CollectionConfigJson {
+  settings: number;
+  maxSupply: number | null;
   mintSettings: {
-    mintType: MintType;
+    mintType: MintTypeJson;
     price: string | null;
-    startBlock: string | null;
-    endBlock: string | null;
-    defaultItemSettings: string;
+    startBlock: number | null;
+    endBlock: number | null;
+    defaultItemSettings: number;
   };
 }
 
@@ -106,6 +106,8 @@ export interface StatusEntry {
 }
 
 export type MintType = MintTypes | { [MintTypes.HOLDER_OF]: string };
+
+export type MintTypeJson = Record<'public' | 'issuer' | 'holderOf', null|number>;
 
 export interface RestrictionMessage {
   type: RestrictionTypes;
