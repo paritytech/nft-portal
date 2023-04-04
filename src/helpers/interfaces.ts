@@ -107,7 +107,7 @@ export interface StatusEntry {
 
 export type MintType = MintTypes | { [MintTypes.HOLDER_OF]: string };
 
-export type MintTypeJson = Record<'public' | 'issuer' | 'holderOf', null|number>;
+export type MintTypeJson = Record<'public' | 'issuer' | 'holderOf', null | number>;
 
 export interface RestrictionMessage {
   type: RestrictionTypes;

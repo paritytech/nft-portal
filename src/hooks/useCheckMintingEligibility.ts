@@ -50,7 +50,10 @@ export const useCheckMintingEligibility = (collectionId: string) => {
   const checkHolderOfRestriction = useCallback(
     async (config: CollectionConfigJson) => {
       try {
-        if (config.mintSettings && Object.keys(config.mintSettings.mintType)[0].toLowerCase() === (MintTypes.HOLDER_OF).toLowerCase()) {
+        if (
+          config.mintSettings &&
+          Object.keys(config.mintSettings.mintType)[0].toLowerCase() === MintTypes.HOLDER_OF.toLowerCase()
+        ) {
           const holderOfCollectionId = config.mintSettings.mintType.holderOf!.toString();
 
           const ownedNftIds = await getOwnedNftIds(holderOfCollectionId);
