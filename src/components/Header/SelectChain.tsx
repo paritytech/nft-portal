@@ -56,7 +56,7 @@ const SChainList = styled.div<Themeable>`
   right: 0;
   margin-top: 12px;
   padding: 16px;
-  
+
   background-color: ${({ activeTheme }) => activeTheme.backgroundTertiary};
   color: ${({ activeTheme }) => activeTheme.textAndIconsPrimary};
   border-radius: 16px;

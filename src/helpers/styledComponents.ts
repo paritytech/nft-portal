@@ -1,7 +1,6 @@
 // Styled components are separated from reusableStyles to prevent circular dependencies
 // for example BasicButton uses import { CssCommonButtonStyles } from '@helpers/reusableStyles';
 // if we put SActionButtonMini inside of reusableStyles, we will have a circular dependency
-
 import Card from 'react-bootstrap/esm/Card';
 import Modal from 'react-bootstrap/esm/Modal';
 import styled from 'styled-components';
