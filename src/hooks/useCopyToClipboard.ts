@@ -1,21 +1,23 @@
 import { useCallback, useState } from 'react';
 
+// the value can be used as some contextual text or a class name
 export const useCopyToClipboard = (
   copyTarget: string,
-  initialText: string,
-  activeText: string = initialText,
+  initialValue: string,
+  activeValue: string = initialValue,
+  timeout: number = 1000,
 ): [() => void, string] => {
-  const [text, setText] = useState<string>(initialText);
+  const [value, setValue] = useState<string>(initialValue);
 
   const copyToClipboard = useCallback(() => {
     if (copyTarget) {
       navigator.clipboard.writeText(copyTarget);
-      setText(activeText);
+      setValue(activeValue);
       setTimeout(() => {
-        setText(initialText);
-      }, 1000);
+        setValue(initialValue);
+      }, timeout);
     }
-  }, [activeText, copyTarget, initialText]);
+  }, [activeValue, copyTarget, initialValue, timeout]);
 
-  return [copyToClipboard, text];
+  return [copyToClipboard, value];
 };

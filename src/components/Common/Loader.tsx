@@ -5,7 +5,7 @@ import { useModalStatus } from '@contexts/ModalStatusContext';
 
 import { ModalStatusTypes } from '@helpers/constants';
 
-import PolkadotIcon from '@images/polkadot-icon.svg';
+import PolkadotIcon from '@images/icons/polkadot.svg';
 
 const SSpinner = styled.div`
   margin-bottom: 20px;

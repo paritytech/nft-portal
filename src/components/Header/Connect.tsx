@@ -1,6 +1,7 @@
 import { BaseWallet } from '@polkadot-onboard/core';
 import { memo, useState } from 'react';
 import Modal from 'react-bootstrap/esm/Modal';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 import CrossCloseButton from '@buttons/CrossCloseButton';
@@ -9,6 +10,7 @@ import { useAccounts } from '@contexts/AccountsContext';
 
 import { Themeable } from '@helpers/interfaces';
 import { SConnectButton } from '@helpers/reusableStyles';
+import { routes } from '@helpers/routes';
 import { SModal } from '@helpers/styledComponents';
 import { ellipseAddress, sizeMatters } from '@helpers/utilities';
 
@@ -17,6 +19,11 @@ import { useCopyToClipboard } from '@hooks/useCopyToClipboard';
 import { useOutsideClick } from '@hooks/useOutsideClick';
 
 import DropdownArrow from '@images/dropdown-arrow.svg';
+import CopyIcon from '@images/icons/copy.svg';
+import IdenticonIcon from '@images/icons/identicon.svg';
+import NftIcon from '@images/icons/nft.svg';
+import PlusIcon from '@images/icons/plus.svg';
+import PoolIcon from '@images/icons/pool.svg';
 
 import Wallet from './Wallet';
 
@@ -30,7 +37,7 @@ const SAccountActions = styled.div<Themeable>`
   top: 100%;
   right: 0;
   margin-top: 12px;
-  padding-bottom: 15px;
+  padding: 24px;
   background-color: ${({ activeTheme }) => activeTheme.navigationBackground};
   border-radius: 16px;
   z-index: 1;
@@ -40,34 +47,62 @@ const SAccountActions = styled.div<Themeable>`
     display: block;
   }
 
-  > div {
-    color: ${({ activeTheme }) => activeTheme.navigationButtonTextColor};
-    margin: 20px 10px 0;
+  > div,
+  a {
+    color: ${({ activeTheme }) => activeTheme.textAndIconsSecondary};
+  }
+
+  a {
+    text-decoration: none;
   }
 `;
 
-const SDividedAction = styled.div<Themeable>`
+const SSeparator = styled.div<Themeable>`
+  border-bottom: 1px solid ${({ activeTheme }) => activeTheme.appliedSeparator};
+  margin: 24px 0;
+`;
+
+const SActionBlock = styled.div<Themeable>`
   display: flex;
-  justify-content: space-between;
-  gap: 20px;
+  flex-direction: column;
+  gap: 12px;
+
+  a {
+    color: ${({ activeTheme }) => activeTheme.textAndIconsPrimary};
+  }
 `;
 
 const SSimpleAction = styled.div<Themeable>`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+
+  span {
+    min-width: 190px;
+  }
+
   :hover {
     cursor: pointer;
-    color: ${({ activeTheme }) => activeTheme.navigationButtonActiveTextColor};
+    text-decoration: underline;
   }
 `;
 
-const SSecondary = styled.div`
-  min-width: 80px;
-  text-align: right;
-`;
+const SIcon = styled.div<Themeable>`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 40px;
+  height: 40px;
+  background-color: ${({ activeTheme }) => activeTheme.fill6};
+  border-radius: 20px;
 
-const SCopyButton = styled.span<Themeable>`
-  :hover {
-    cursor: pointer;
-    color: ${({ activeTheme }) => activeTheme.navigationButtonActiveTextColor};
+  svg {
+    width: 24px;
+  }
+
+  &.copied {
+    background-color: ${({ activeTheme }) => activeTheme.fill30};
   }
 `;
 
@@ -77,7 +112,7 @@ const Connect = () => {
   const dropdownRef = useOutsideClick(() => setIsAccountActionsVisible(false));
   const [showWalletSelection, setShowWalletSelection] = useState(false);
   const [isAccountActionsVisible, setIsAccountActionsVisible] = useState(false);
-  const [copyToClipboard, buttonText] = useCopyToClipboard(activeAccount?.address || '', 'copy', 'copied!');
+  const [copyToClipboard, buttonText] = useCopyToClipboard(activeAccount?.address || '', '', 'copied', 350);
 
   const handleClose = () => setShowWalletSelection(false);
   const handleShow = () => {
@@ -109,8 +144,9 @@ const Connect = () => {
         >
           {activeAccount !== null ? (
             <>
-              {sizeMatters(activeAccount.name) || ellipseAddress(activeAccount.address, 4)}
-              <DropdownArrow />
+              <IdenticonIcon className='identicon' />
+              <span>{sizeMatters(activeAccount.name) || ellipseAddress(activeAccount.address, 4)}</span>
+              <DropdownArrow className='arrow-down' />
             </>
           ) : (
             'Connect Wallet'
@@ -118,17 +154,46 @@ const Connect = () => {
         </SConnectButton>
 
         <SAccountActions className={isAccountActionsVisible ? 'active' : ''} activeTheme={theme}>
-          <SDividedAction activeTheme={theme}>
-            {ellipseAddress(activeAccount?.address, 4)}
-            <SSecondary>
-              <SCopyButton activeTheme={theme} onClick={copyToClipboard}>
-                {buttonText}
-              </SCopyButton>
-            </SSecondary>
-          </SDividedAction>
-          <SSimpleAction activeTheme={theme} onClick={disconnect}>
-            Disconnect wallet
+          {activeAccount !== null && activeAccount.name && <span>{sizeMatters(activeAccount.name)}</span>}
+          <SSimpleAction activeTheme={theme} onClick={copyToClipboard}>
+            <span>{ellipseAddress(activeAccount?.address, 4)}</span>
+            <SIcon activeTheme={theme} className={buttonText || ''}>
+              <CopyIcon />
+            </SIcon>
           </SSimpleAction>
+          <SSeparator activeTheme={theme} />
+          <SActionBlock activeTheme={theme} onClick={() => setIsAccountActionsVisible(false)}>
+            <Link to={routes.myAssets.newNftMint}>
+              <SSimpleAction activeTheme={theme}>
+                <span>Mint NFT</span>
+                <SIcon activeTheme={theme}>
+                  <PlusIcon />
+                </SIcon>
+              </SSimpleAction>
+            </Link>
+
+            <Link to={routes.myAssets.poolCreate}>
+              <SSimpleAction activeTheme={theme}>
+                <span>Create Liquidity Pool</span>
+                <SIcon activeTheme={theme}>
+                  <PoolIcon />
+                </SIcon>
+              </SSimpleAction>
+            </Link>
+
+            <Link to={routes.myAssets.collections}>
+              <SSimpleAction activeTheme={theme}>
+                <span>My Collections</span>
+                <SIcon activeTheme={theme}>
+                  <NftIcon />
+                </SIcon>
+              </SSimpleAction>
+            </Link>
+
+            <SSimpleAction activeTheme={theme} onClick={disconnect}>
+              Disconnect wallet
+            </SSimpleAction>
+          </SActionBlock>
         </SAccountActions>
       </SContainer>
 

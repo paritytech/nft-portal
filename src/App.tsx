@@ -16,6 +16,9 @@ import Pools from '@pages/Assets/Pools/Pools';
 import Tokens from '@pages/Assets/Tokens/Tokens';
 import Discover from '@pages/Discover/Discover';
 import MyAssets from '@pages/MyAssets/MyAssets';
+import NewNftMint from '@pages/MyAssets/NftMint/NewNftMint';
+import MyPools from '@pages/MyAssets/Pools/MyPools';
+import PoolCreate from '@pages/MyAssets/Pools/PoolCreate';
 import CollectionEdit from '@pages/Nfts/Collections/CollectionEdit';
 import CollectionMint from '@pages/Nfts/Collections/CollectionMint';
 import Collections from '@pages/Nfts/Collections/Collections';
@@ -27,7 +30,7 @@ import Swap from '@pages/Swap/Swap';
 const SMainContainer = styled.main<Themeable>`
   padding-top: 20px;
   margin: 0 20px;
-  color: ${({ activeTheme }) => activeTheme.defaultTextColor};
+  color: ${({ activeTheme }) => activeTheme.textAndIconsPrimary};
 
   @media ${styleSettings.mediaQueries.tablet} {
     width: 728px;
@@ -77,6 +80,18 @@ const App = () => {
                     </PrivateRoute>
                   }
                 />
+
+                <Route path={routes.myAssets.newNftMint} element={<NewNftMint />}>
+                  <Route
+                    path={routes.myAssets.selectCollection}
+                    element={
+                      <PrivateRoute>
+                        <div>under construction</div>
+                      </PrivateRoute>
+                    }
+                  />
+                </Route>
+
                 <Route path={routes.myAssets.collections} element={<Outlet />}>
                   <Route
                     index
@@ -86,6 +101,7 @@ const App = () => {
                       </PrivateRoute>
                     }
                   />
+
                   <Route
                     path={routes.myAssets.collectionMint}
                     element={
@@ -94,6 +110,7 @@ const App = () => {
                       </PrivateRoute>
                     }
                   />
+
                   <Route
                     path={routes.myAssets.collectionEdit()}
                     element={
@@ -102,6 +119,7 @@ const App = () => {
                       </PrivateRoute>
                     }
                   />
+
                   <Route path={routes.myAssets.nfts()} element={<Outlet />}>
                     <Route
                       index
@@ -111,6 +129,7 @@ const App = () => {
                         </PrivateRoute>
                       }
                     />
+
                     <Route
                       path={routes.myAssets.nftMint()}
                       element={
@@ -119,6 +138,7 @@ const App = () => {
                         </PrivateRoute>
                       }
                     />
+
                     <Route
                       path={routes.myAssets.nftEdit()}
                       element={
@@ -128,6 +148,26 @@ const App = () => {
                       }
                     />
                   </Route>
+                </Route>
+
+                <Route path={routes.myAssets.pools} element={<Outlet />}>
+                  <Route
+                    index
+                    element={
+                      <PrivateRoute>
+                        <MyPools />
+                      </PrivateRoute>
+                    }
+                  />
+
+                  <Route
+                    path={routes.myAssets.poolCreate}
+                    element={
+                      <PrivateRoute redirectTo={routes.myAssets.pools}>
+                        <PoolCreate />
+                      </PrivateRoute>
+                    }
+                  />
                 </Route>
               </Route>
 

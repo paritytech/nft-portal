@@ -77,6 +77,36 @@ export interface Themeable {
 }
 
 export interface ThemeStyle {
+  backgroundSystem: string;
+  backgroundPrimary: string;
+  backgroundSecondary: string;
+  backgroundTertiary: string;
+
+  textAndIconsPrimary: string;
+  textAndIconsSecondary: string;
+  textAndIconsTertiary: string;
+  textAndIconsDisabled: string;
+
+  fill30: string;
+  fill24: string;
+  fill18: string;
+  fill12: string;
+  fill6: string;
+
+  appliedOverlay: string;
+  appliedHover: string;
+  appliedStroke: string;
+  appliedSeparator: string;
+
+  accentsPink: string;
+  accentsRed: string;
+  accentsGreen: string;
+
+  forcedWhite: string;
+  forcedBlack: string;
+
+  // TODO remove once migrated to new styles
+  // deprecated
   blockBackgroundColorHover: string;
   bodyBackground: string;
   borderRadius: string;

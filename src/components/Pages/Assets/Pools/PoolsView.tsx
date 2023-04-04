@@ -11,7 +11,7 @@ import { PoolInfo } from '@helpers/interfaces';
 import { SContentBlock } from '@helpers/reusableStyles';
 import { SCard, SCardEdit, SColumn, SRow } from '@helpers/styledComponents';
 
-import EditIcon from '@images/edit-icon.svg';
+import EditIcon from '@images/icons/edit.svg';
 
 interface PoolsViewProps {
   pools: PoolInfo[] | null;

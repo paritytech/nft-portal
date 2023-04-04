@@ -6,14 +6,14 @@ import ActionButton from '@buttons/ActionButton';
 import BasicButton from '@buttons/BasicButton';
 
 import { ThemeStyle, Themeable } from './interfaces';
-import { ButtonMini, styleSettings } from './reusableStyles';
+import { CssButtonMini, styleSettings } from './reusableStyles';
 
 export const SActionButtonMini = styled(ActionButton)`
-  ${ButtonMini}
+  ${CssButtonMini}
 `;
 
 export const SBasicButtonMini = styled(BasicButton)`
-  ${ButtonMini}
+  ${CssButtonMini}
 `;
 
 export const SSecondaryButton = styled(BasicButton)<Themeable>`
