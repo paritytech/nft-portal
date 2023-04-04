@@ -141,9 +141,12 @@ export const useAssets = () => {
         const tokens = await getTokenIds();
         if (!tokens) return;
 
-        const metadataRecords: [StorageKey<[AssetId]>, PalletAssetsAssetMetadata][] =
-          await api.query.assets.metadata.entries();
-        const detailsRecords: Option<PalletAssetsAssetDetails>[] = await api.query.assets.asset.multi(tokens);
+        type MetadataRecords = [StorageKey<[AssetId]>, PalletAssetsAssetMetadata][];
+        type DetailsRecords = Option<PalletAssetsAssetDetails>[];
+        const [metadataRecords, detailsRecords]: [MetadataRecords, DetailsRecords] = await Promise.all([
+          api.query.assets.metadata.entries(),
+          api.query.assets.asset.multi(tokens),
+        ]);
 
         let details = new Map<number, PalletAssetsAssetDetails | null>();
         if (Array.isArray(detailsRecords) && detailsRecords.length > 0) {
