@@ -66,11 +66,11 @@ export const apiConfigRuntime: OverrideBundleType = {
                 params: [
                   {
                     name: 'asset1',
-                    type: 'PalletDexMultiAssetId',
+                    type: 'PalletAssetConversionMultiAssetId',
                   },
                   {
                     name: 'asset2',
-                    type: 'PalletDexMultiAssetId',
+                    type: 'PalletAssetConversionMultiAssetId',
                   },
                 ],
                 type: 'Option<(Balance,Balance)>',
@@ -85,7 +85,7 @@ export const apiConfigRuntime: OverrideBundleType = {
 };
 
 export const apiConfigTypes: RegistryTypes = {
-  PalletDexMultiAssetId: {
+  PalletAssetConversionMultiAssetId: {
     _enum: {
       Native: null,
       Asset: 'AssetId',
