@@ -1,6 +1,8 @@
 import type { Enum, Struct } from '@polkadot/types-codec';
+import type { u128 } from '@polkadot/types-codec';
 import type { ITuple } from '@polkadot/types-codec/types';
 import type { AssetId } from '@polkadot/types/interfaces';
+import type { PalletAssetsAssetDetails } from '@polkadot/types/lookup';
 import type { BN } from '@polkadot/util';
 
 import { ChainThemes, ChainTitles, MintTypes, ModalStatusTypes, RestrictionTypes, StatusMessages } from './constants';
@@ -131,29 +133,33 @@ export interface TokenMetadataData {
   name: string | null;
   symbol: string | null;
   decimals: number;
+  details: PalletAssetsAssetDetails | null;
 }
+
 export interface NativeTokenMetadata {
   name: string | null;
   decimals: number;
+  issuance: u128 | null;
 }
 
-export interface PalletDexPoolInfo extends Struct {
+export interface PalletAssetConversionPoolInfo extends Struct {
   readonly lpToken: AssetId;
 }
 
-export interface PalletDexMultiAssetId extends Enum {
+export interface PalletAssetConversionMultiAssetId extends Enum {
   readonly isNative: boolean;
   readonly isAsset: boolean;
   readonly asAsset: AssetId;
   readonly type: 'Native' | 'Asset';
 }
 
-export interface PalletDexPoolId extends ITuple<[PalletDexMultiAssetId, PalletDexMultiAssetId]> {}
+export interface PalletAssetConversionPoolId
+  extends ITuple<[PalletAssetConversionMultiAssetId, PalletAssetConversionMultiAssetId]> {}
 
 export type PoolReserves = [number, number];
 
 export interface PoolInfo {
-  poolId: PalletDexPoolId;
+  poolId: PalletAssetConversionPoolId;
   lpToken: AssetId;
   reserves: PoolReserves;
 }

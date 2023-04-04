@@ -1,7 +1,9 @@
 import type { Option, StorageKey } from '@polkadot/types';
+import type { u128 } from '@polkadot/types-codec';
 import type { AssetId } from '@polkadot/types/interfaces';
 import type {
   PalletAssetsAssetAccount,
+  PalletAssetsAssetDetails,
   PalletAssetsAssetMetadata,
   PalletBalancesAccountData,
 } from '@polkadot/types/lookup';
@@ -12,8 +14,8 @@ import { useAccounts } from '@contexts/AccountsContext';
 
 import type {
   NativeTokenMetadata,
-  PalletDexPoolId,
-  PalletDexPoolInfo,
+  PalletAssetConversionPoolId,
+  PalletAssetConversionPoolInfo,
   PoolInfo,
   TokenBalance,
   TokenMetadata,
@@ -41,9 +43,11 @@ export const useAssets = () => {
     if (api) {
       const decimals = api.registry.chainDecimals[0];
       const name = api.registry.chainTokens[0];
+      const issuance: u128 = (await api.query.balances?.totalIssuance()) || null;
       setNativeMetadata({
         name,
         decimals,
+        issuance,
       });
     }
   }, [api]);
@@ -51,9 +55,9 @@ export const useAssets = () => {
   const getPools = useCallback(async () => {
     if (api) {
       let pools: PoolInfo[] = [];
-      if (api.query.dex) {
-        const results: [StorageKey<[PalletDexPoolId]>, Option<PalletDexPoolInfo>][] =
-          await api.query.dex.pools.entries();
+      if (api.query.assetConversion) {
+        const results: [StorageKey<[PalletAssetConversionPoolId]>, Option<PalletAssetConversionPoolInfo>][] =
+          await api.query.assetConversion.pools.entries();
 
         let promises = results
           .filter(([, data]) => data.isSome)
@@ -66,11 +70,11 @@ export const useAssets = () => {
             ]) => {
               const [poolAsset1, poolAsset2] = poolId;
 
-              const lpToken = (data.unwrap() as PalletDexPoolInfo).lpToken;
+              const lpToken = (data.unwrap() as PalletAssetConversionPoolInfo).lpToken;
               let reserves: PoolReserves = [0, 0];
 
-              if (api.call.dexApi) {
-                const res = await api.call.dexApi.getReserves(poolAsset1, poolAsset2);
+              if (api.call.assetConversionApi) {
+                const res = await api.call.assetConversionApi.getReserves(poolAsset1, poolAsset2);
                 if (res) {
                   reserves = res.toJSON() as PoolReserves;
                 }
@@ -134,11 +138,23 @@ export const useAssets = () => {
     if (api) {
       try {
         let metadata: TokenMetadata[] = [];
+        const tokens = await getTokenIds();
+        if (!tokens) return;
 
-        const results: [StorageKey<[AssetId]>, PalletAssetsAssetMetadata][] = await api.query.assets.metadata.entries();
+        const metadataRecords: [StorageKey<[AssetId]>, PalletAssetsAssetMetadata][] =
+          await api.query.assets.metadata.entries();
+        const detailsRecords: Option<PalletAssetsAssetDetails>[] = await api.query.assets.asset.multi(tokens);
 
-        if (Array.isArray(results) && results.length > 0) {
-          metadata = results.map(
+        let details = new Map<number, PalletAssetsAssetDetails | null>();
+        if (Array.isArray(detailsRecords) && detailsRecords.length > 0) {
+          detailsRecords.forEach((record, index) => {
+            const id = tokens[index].toNumber();
+            details.set(id, record.unwrapOr(null));
+          });
+        }
+
+        if (Array.isArray(metadataRecords) && metadataRecords.length > 0) {
+          metadata = metadataRecords.map(
             ([
               {
                 args: [id],
@@ -149,6 +165,7 @@ export const useAssets = () => {
               name: data.name?.toUtf8() || null,
               symbol: data.symbol?.toUtf8() || null,
               decimals: data.decimals?.toNumber() || 0,
+              details: details.get(id.toNumber()) || null,
             }),
           );
         }
@@ -157,7 +174,7 @@ export const useAssets = () => {
         setTokensMetadata(metadata);
       } catch (error) {}
     }
-  }, [api]);
+  }, [api, getTokenIds]);
 
   return {
     getNativeBalance,
