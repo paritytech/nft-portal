@@ -29,7 +29,7 @@ const NativeToken = ({ metadata }: NativeTokenProps) => {
   const { name, decimals, issuance } = metadata;
   const formattedName = (name || '').toUpperCase();
   const formattedBalance = issuance
-    ? formatBalance(issuance, { decimals, forceUnit: '-', withSi: true, withUnit: formattedName, withZero: false })
+    ? formatBalance(issuance, { decimals, withSi: true, withUnit: formattedName, withZero: false })
     : '0';
 
   return (

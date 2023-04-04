@@ -29,9 +29,8 @@ const Token = ({ tokenMetadata }: TokenProps) => {
   const { name, symbol, decimals, details } = tokenMetadata;
   const formattedSymbol = (symbol || '').toUpperCase();
   const formattedBalance = details?.supply
-    ? formatBalance(details?.supply, {
+    ? formatBalance(details.supply, {
         decimals,
-        forceUnit: '-',
         withSi: true,
         withUnit: formattedSymbol,
         withZero: false,
