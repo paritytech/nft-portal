@@ -1,5 +1,5 @@
-import { memo } from "react";
-import styled from "styled-components"
+import { memo } from 'react';
+import styled from 'styled-components';
 
 const STitle = styled.h1`
   font-family: 'Unbounded', cursive;
@@ -10,13 +10,8 @@ interface TitleProps {
   children: any;
 }
 
-
 const Title = ({ children }: TitleProps) => {
-
-
-  return (
-    <STitle>{children}</STitle>
-  )
-}
+  return <STitle>{children}</STitle>;
+};
 
 export default memo(Title);

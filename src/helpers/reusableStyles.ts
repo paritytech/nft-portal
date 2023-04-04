@@ -29,7 +29,6 @@ export const styleSettings = {
   },
 };
 
-
 // ============
 // THEME STYLES
 // ============
@@ -56,15 +55,13 @@ export const themes: Record<ChainThemes, ThemeStyle> = {
     appliedHover: 'rgba(255, 255, 255, 0.05)',
     appliedStroke: 'rgba(255, 255, 255, 0.12)',
     appliedSeparator: 'rgba(255, 255, 255, 0.08)',
-  
+
     accentsPink: '#F272B6',
     accentsRed: '#FE8D81',
     accentsGreen: '#56F39A',
-  
+
     forcedWhite: '#FFFFFF',
     forcedBlack: '#000000',
-
-
 
     // deprecated
     blockBackgroundColorHover: styleSettings.colors.rose,
@@ -96,32 +93,29 @@ export const themes: Record<ChainThemes, ThemeStyle> = {
     backgroundPrimary: '#FFFFFF',
     backgroundSecondary: '#FFFFFF',
     backgroundTertiary: '#FFFFFF',
-  
+
     textAndIconsPrimary: '#000000',
     textAndIconsSecondary: 'rgba(0, 0, 0, 0.66)',
     textAndIconsTertiary: 'rgba(0, 0, 0, 0.45)',
     textAndIconsDisabled: 'rgba(0, 0, 0, 0.25)',
-  
+
     fill30: 'rgba(0, 0, 0, 0.3)',
     fill24: 'rgba(0, 0, 0, 0.24)',
     fill18: 'rgba(0, 0, 0, 0.18)',
     fill12: 'rgba(0, 0, 0, 0.12)',
     fill6: 'rgba(0, 0, 0, 0.06)',
-  
+
     appliedOverlay: 'rgba(0, 0, 0, 0.4)',
     appliedHover: 'rgba(0, 0, 0, 0.05)',
     appliedStroke: 'rgba(0, 0, 0, 0.12)',
     appliedSeparator: 'rgba(0, 0, 0, 0.08)',
-  
+
     accentsPink: '#E6007A',
     accentsRed: '#FD4935',
     accentsGreen: '#48CC81',
-  
+
     forcedWhite: '#FFFFFF',
     forcedBlack: '#000000',
-
-
-
 
     // deprecated
     blockBackgroundColorHover: styleSettings.colors.cerise,
@@ -150,7 +144,6 @@ export const themes: Record<ChainThemes, ThemeStyle> = {
   },
 };
 
-
 // ============
 // CSS SNIPPETS
 // ============
@@ -158,7 +151,7 @@ export const CssInterRegularL = css`
   font-weight: 400;
   font-size: 18px;
   line-height: 22px;
-`
+`;
 
 export const CssButtonMini = css`
   line-height: 30px;
@@ -187,7 +180,6 @@ export const CssCommonButtonStyles = css<CommonStyleProps & Themeable>`
     color: ${({ activeTheme }) => activeTheme.buttonTextColor};
   }
 `;
-
 
 // =================
 // STYLED COMPONENTS

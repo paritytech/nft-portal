@@ -103,7 +103,6 @@ export interface ThemeStyle {
   forcedWhite: string;
   forcedBlack: string;
 
-
   // TODO remove once migrated to new styles
   // deprecated
   blockBackgroundColorHover: string;

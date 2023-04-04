@@ -6,14 +6,14 @@ import { useAccounts } from '@contexts/AccountsContext';
 
 import { chains } from '@helpers/config';
 import { Chain, Themeable } from '@helpers/interfaces';
+import { CssInterRegularL } from '@helpers/reusableStyles';
 import { routes } from '@helpers/routes';
 
 import { useOutsideClick } from '@hooks/useOutsideClick';
 
+import DropdownArrow from '@images/dropdown-arrow.svg';
 import Localhost from '@images/icons/chain-localhost.svg';
 import Westmint from '@images/icons/chain-westmint.svg';
-import DropdownArrow from '@images/dropdown-arrow.svg';
-import { CssInterRegularL } from '@helpers/reusableStyles';
 
 const ChainIcons = {
   localhost: Localhost,

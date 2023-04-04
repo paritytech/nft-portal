@@ -18,6 +18,7 @@ import Discover from '@pages/Discover/Discover';
 import MyAssets from '@pages/MyAssets/MyAssets';
 import NewNftMint from '@pages/MyAssets/NftMint/NewNftMint';
 import MyPools from '@pages/MyAssets/Pools/MyPools';
+import PoolCreate from '@pages/MyAssets/Pools/PoolCreate';
 import CollectionEdit from '@pages/Nfts/Collections/CollectionEdit';
 import CollectionMint from '@pages/Nfts/Collections/CollectionMint';
 import Collections from '@pages/Nfts/Collections/Collections';
@@ -25,7 +26,6 @@ import NftEdit from '@pages/Nfts/Nfts/NftEdit';
 import NftMint from '@pages/Nfts/Nfts/NftMint';
 import Nfts from '@pages/Nfts/Nfts/Nfts';
 import Swap from '@pages/Swap/Swap';
-import PoolCreate from '@pages/MyAssets/Pools/PoolCreate';
 
 const SMainContainer = styled.main<Themeable>`
   padding-top: 20px;
@@ -86,7 +86,7 @@ const App = () => {
                     path={routes.myAssets.selectCollection}
                     element={
                       <PrivateRoute>
-                        <div>za za</div>
+                        <div>under construction</div>
                       </PrivateRoute>
                     }
                   />
