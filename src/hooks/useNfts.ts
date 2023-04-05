@@ -249,7 +249,7 @@ export const useNfts = (collectionId: string) => {
           const response = await api.query.nfts.item(collectionId, nftId);
           return response.toHuman();
         } catch (error) {
-          
+          //
         }
       }
     },
