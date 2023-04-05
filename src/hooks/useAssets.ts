@@ -36,7 +36,9 @@ export const useAssets = () => {
       try {
         const { data: balance } = await api.query.system.account(activeAccount.address);
         setNativeBalance((balance as PalletBalancesAccountData).free.toBn());
-      } catch (error) {}
+      } catch (error) {
+        //
+      }
     }
   }, [api, activeAccount]);
 
@@ -131,7 +133,9 @@ export const useAssets = () => {
         }
 
         setTokensBalances(balances);
-      } catch (error) {}
+      } catch (error) {
+        //
+      }
     }
   }, [api, activeAccount, getTokenIds]);
 
@@ -174,7 +178,9 @@ export const useAssets = () => {
         metadata = metadata.sort((a, b) => a.id - b.id);
 
         setTokensMetadata(metadata);
-      } catch (error) {}
+      } catch (error) {
+        //
+      }
     }
   }, [api, getTokenIds]);
 

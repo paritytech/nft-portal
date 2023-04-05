@@ -153,7 +153,9 @@ const Connect = () => {
         </SConnectButton>
 
         <SAccountActions className={isAccountActionsVisible ? 'active' : ''} activeTheme={theme}>
-          {activeAccount !== null && activeAccount.name && <span className='highlighted'>{sizeMatters(activeAccount.name)}</span>}
+          {activeAccount !== null && activeAccount.name && (
+            <span className='highlighted'>{sizeMatters(activeAccount.name)}</span>
+          )}
           <SSimpleAction activeTheme={theme} onClick={copyToClipboard}>
             <span>{ellipseAddress(activeAccount?.address, 4)}</span>
             <SIcon activeTheme={theme} className={buttonText || ''}>

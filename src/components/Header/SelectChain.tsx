@@ -6,7 +6,7 @@ import { useAccounts } from '@contexts/AccountsContext';
 
 import { chains } from '@helpers/config';
 import { Chain, Themeable } from '@helpers/interfaces';
-import { CssRegularM, CssSemiBoldM, CssSemiBoldS } from '@helpers/reusableStyles';
+import { CssSemiBoldS } from '@helpers/reusableStyles';
 import { routes } from '@helpers/routes';
 
 import { useOutsideClick } from '@hooks/useOutsideClick';

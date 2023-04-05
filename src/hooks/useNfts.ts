@@ -98,6 +98,7 @@ export const useNfts = (collectionId: string) => {
 
         setNftsMetadata(metadata);
       } catch (error) {
+        //
       } finally {
         setIsNftDataLoading(false);
       }
@@ -133,6 +134,7 @@ export const useNfts = (collectionId: string) => {
 
           setNftMetadata(metadata);
         } catch (error) {
+          //
         } finally {
           setIsNftDataLoading(false);
         }
@@ -246,7 +248,9 @@ export const useNfts = (collectionId: string) => {
         try {
           const response = await api.query.nfts.item(collectionId, nftId);
           return response.toHuman();
-        } catch (error) {}
+        } catch (error) {
+          //
+        }
       }
     },
     [api, collectionId],
