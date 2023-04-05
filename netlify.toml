@@ -4,7 +4,7 @@
   port=8888
 
 [build]
-  command="yarn build"
+  command="yarn lint && yarn build"
   publish="build"
 
 [[redirects]]
