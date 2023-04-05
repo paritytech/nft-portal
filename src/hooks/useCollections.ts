@@ -84,6 +84,7 @@ export const useCollections = () => {
 
         setCollectionsMetadata(metadata);
       } catch (error) {
+        //
       } finally {
         setIsCollectionDataLoading(false);
       }
@@ -118,6 +119,7 @@ export const useCollections = () => {
 
           setCollectionMetadata(metadata);
         } catch (error) {
+          //
         } finally {
           setIsCollectionDataLoading(false);
         }
