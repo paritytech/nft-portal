@@ -6,7 +6,7 @@ import { useAccounts } from '@contexts/AccountsContext';
 
 import { chains } from '@helpers/config';
 import { Chain, Themeable } from '@helpers/interfaces';
-import { CssInterRegularL } from '@helpers/reusableStyles';
+import { CssRegularM, CssSemiBoldM, CssSemiBoldS } from '@helpers/reusableStyles';
 import { routes } from '@helpers/routes';
 
 import { useOutsideClick } from '@hooks/useOutsideClick';
@@ -40,7 +40,8 @@ const SCurrentChain = styled.button<Themeable>`
   gap: 10px;
 
   span {
-    ${CssInterRegularL}
+    ${CssSemiBoldS}
+    text-transform: capitalize;
   }
 
   .arrow-down {
@@ -70,7 +71,7 @@ const SChainList = styled.div<Themeable>`
 `;
 
 const SChainOption = styled.div<Themeable>`
-  ${CssInterRegularL}
+  ${CssSemiBoldS}
   display: flex;
   min-width: 184px;
   align-items: center;
@@ -85,6 +86,7 @@ const SChainOption = styled.div<Themeable>`
   }
 
   span {
+    text-transform: capitalize;
     white-space: nowrap;
   }
 `;

@@ -6,7 +6,7 @@ import { CommonStyleProps, ThemeStyle, Themeable } from './interfaces';
 export const deviceScreenSize = {
   mobile: '480px',
   tablet: '768px',
-  desktop: '1024px',
+  desktop: '1250px',
 };
 
 export const styleSettings = {
@@ -39,11 +39,13 @@ export const themes: Record<ChainThemes, ThemeStyle> = {
     backgroundPrimary: '#101015',
     backgroundSecondary: '#1E1E23',
     backgroundTertiary: '#2C2C30',
+    backgroundInverse: '#FFFFFF',
 
     textAndIconsPrimary: '#FFFFFF',
     textAndIconsSecondary: 'rgba(255, 255, 255, 0.69)',
     textAndIconsTertiary: 'rgba(255, 255, 255, 0.48)',
     textAndIconsDisabled: 'rgba(255, 255, 255, 0.27)',
+    textAndIconsInverse: '#000000',
 
     fill30: 'rgba(255, 255, 255, 0.3)',
     fill24: 'rgba(255, 255, 255, 0.24)',
@@ -93,11 +95,13 @@ export const themes: Record<ChainThemes, ThemeStyle> = {
     backgroundPrimary: '#FFFFFF',
     backgroundSecondary: '#FFFFFF',
     backgroundTertiary: '#FFFFFF',
+    backgroundInverse: '#000000',
 
     textAndIconsPrimary: '#000000',
     textAndIconsSecondary: 'rgba(0, 0, 0, 0.66)',
     textAndIconsTertiary: 'rgba(0, 0, 0, 0.45)',
     textAndIconsDisabled: 'rgba(0, 0, 0, 0.25)',
+    textAndIconsInverse: '#FFFFFF',
 
     fill30: 'rgba(0, 0, 0, 0.3)',
     fill24: 'rgba(0, 0, 0, 0.24)',
@@ -147,10 +151,87 @@ export const themes: Record<ChainThemes, ThemeStyle> = {
 // ============
 // CSS SNIPPETS
 // ============
-export const CssInterRegularL = css`
-  font-weight: 400;
+export const CssBoldXXL = css`
+  font-family: 'Unbounded', cursive;
+  font-size: 40px;
+  font-weight: 700;
+`;
+
+export const CssBoldXL = css`
+  font-family: 'Unbounded', cursive;
+  font-size: 32px;
+  line-height: 40px;
+  font-weight: 700;
+`;
+
+export const CssBoldL = css`
+  font-family: 'Unbounded', cursive;
+  font-size: 24px;
+  line-height: 32px;
+  font-weight: 700;
+`;
+
+export const CssBoldM = css`
+  font-family: 'Unbounded', cursive;
+  font-size: 16px;
+  line-height: 20px;
+  font-weight: 700;
+`;
+
+export const CssSemiBoldXL = css`
+  font-family: 'Inter', sans-serif;
+  font-size: 32px;
+  line-height: 40px;
+  font-weight: 600;
+`;
+
+export const CssSemiBoldL = css`
+  font-family: 'Inter', sans-serif;
+  font-size: 24px;
+  line-height: 32px;
+  font-weight: 600;
+`;
+
+export const CssSemiBoldM = css`
+  font-family: 'Inter', sans-serif;
   font-size: 18px;
-  line-height: 22px;
+  line-height: 24px;
+  font-weight: 600;
+`;
+
+export const CssSemiBoldS = css`
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 600;
+`;
+
+export const CssSemiBoldXS = css`
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 600;
+`;
+
+export const CssRegularL = css`
+  font-family: 'Inter', sans-serif;
+  font-size: 24px;
+  line-height: 32px;
+  font-weight: 400;
+`;
+
+export const CssRegularM = css`
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 400;
+`;
+
+export const CssRegularS = css`
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 400;
 `;
 
 export const CssButtonMini = css`
@@ -203,20 +284,17 @@ export const SContentBlock = styled.div`
 `;
 
 export const SConnectButton = styled.button<Themeable>`
+  ${CssSemiBoldS}
   display: flex;
   align-items: center;
   gap: 10px;
   height: 48px;
   line-height: 48px;
   padding: 0 8px;
-  background-color: ${({ activeTheme }) => activeTheme.fill6};
-  color: ${({ activeTheme }) => activeTheme.textAndIconsSecondary};
+  background-color: ${({ activeTheme }) => activeTheme.backgroundInverse};
+  color: ${({ activeTheme }) => activeTheme.textAndIconsInverse};
   border: 0;
   border-radius: 32px;
-
-  span {
-    ${CssInterRegularL}
-  }
 
   &.active {
     background-color: ${({ activeTheme }) => activeTheme.buttonSecondaryBackgroundColor};

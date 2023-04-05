@@ -47,9 +47,8 @@ const SAccountActions = styled.div<Themeable>`
     display: block;
   }
 
-  > div,
-  a {
-    color: ${({ activeTheme }) => activeTheme.textAndIconsSecondary};
+  .highlighted {
+    color: ${({ activeTheme }) => activeTheme.textAndIconsPrimary};
   }
 
   a {
@@ -154,7 +153,7 @@ const Connect = () => {
         </SConnectButton>
 
         <SAccountActions className={isAccountActionsVisible ? 'active' : ''} activeTheme={theme}>
-          {activeAccount !== null && activeAccount.name && <span>{sizeMatters(activeAccount.name)}</span>}
+          {activeAccount !== null && activeAccount.name && <span className='highlighted'>{sizeMatters(activeAccount.name)}</span>}
           <SSimpleAction activeTheme={theme} onClick={copyToClipboard}>
             <span>{ellipseAddress(activeAccount?.address, 4)}</span>
             <SIcon activeTheme={theme} className={buttonText || ''}>
@@ -191,7 +190,7 @@ const Connect = () => {
             </Link>
 
             <SSimpleAction activeTheme={theme} onClick={disconnect}>
-              Disconnect wallet
+              <span>Disconnect wallet</span>
             </SSimpleAction>
           </SActionBlock>
         </SAccountActions>
