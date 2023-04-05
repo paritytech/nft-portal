@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { useAccounts } from '@contexts/AccountsContext';
 
 import { ThemeStyle } from '@helpers/interfaces';
+import { CssBoldL, CssSemiBoldS } from '@helpers/reusableStyles';
 import { routes } from '@helpers/routes';
 
 import Logo from '@images/logo.svg';
@@ -15,14 +16,31 @@ const SNav = styled.nav`
 `;
 
 const SLogoButton = styled(NavLink)`
-  width: 40px;
-  height: 40px;
-  color: ${({ activetheme: activeTheme }: { activetheme: ThemeStyle }) => activeTheme.navigationButtonTextColor};
+  display: flex;
+  align-items: center;
+  margin-right: 32px;
+  color: ${({ activetheme: activeTheme }: { activetheme: ThemeStyle }) => activeTheme.textAndIconsPrimary};
+  text-decoration: none;
+
+  :hover {
+    color: ${({ activetheme: activeTheme }: { activetheme: ThemeStyle }) => activeTheme.textAndIconsPrimary};
+  }
+
+  svg {
+    width: 40px;
+    height: 40px;
+  }
+
+  span {
+    ${CssBoldL}
+    padding-left: 12px;
+  }
 `;
 
 const SNavigationButton = styled(NavLink)`
-  height: 40px;
-  line-height: 40px;
+  ${CssSemiBoldS}
+  height: 48px;
+  line-height: 48px;
   padding: 0 16px;
   text-decoration: none;
   text-align: center;
@@ -48,6 +66,7 @@ const Navigation = () => {
     <SNav>
       <SLogoButton to={routes.homepage} activetheme={theme}>
         <Logo />
+        <span>Assets Portal</span>
       </SLogoButton>
       <SNavigationButton to={routes.myAssets.index} activetheme={theme}>
         My Assets

@@ -85,11 +85,13 @@ export interface ThemeStyle {
   backgroundPrimary: string;
   backgroundSecondary: string;
   backgroundTertiary: string;
+  backgroundInverse: string
 
   textAndIconsPrimary: string;
   textAndIconsSecondary: string;
   textAndIconsTertiary: string;
   textAndIconsDisabled: string;
+  textAndIconsInverse: string;
 
   fill30: string;
   fill24: string;
