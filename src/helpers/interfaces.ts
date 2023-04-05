@@ -1,12 +1,16 @@
+import type { Option, StorageKey } from '@polkadot/types';
 import type { Enum, Struct } from '@polkadot/types-codec';
 import type { u128 } from '@polkadot/types-codec';
 import type { ITuple } from '@polkadot/types-codec/types';
 import type { AssetId } from '@polkadot/types/interfaces';
-import type { PalletAssetsAssetDetails } from '@polkadot/types/lookup';
+import type { PalletAssetsAssetDetails, PalletAssetsAssetMetadata } from '@polkadot/types/lookup';
 import type { BN } from '@polkadot/util';
 
 import { ChainThemes, ChainTitles, MintTypes, ModalStatusTypes, RestrictionTypes, StatusMessages } from './constants';
 
+// ==========
+// INTERFACES
+// ==========
 export interface CommonStyleProps {
   className?: string;
   isDisabled?: boolean;
@@ -137,10 +141,6 @@ export interface StatusEntry {
   message: StatusMessages;
 }
 
-export type MintType = MintTypes | { [MintTypes.HOLDER_OF]: string };
-
-export type MintTypeJson = Record<'public' | 'issuer' | 'holderOf', null | number>;
-
 export interface RestrictionMessage {
   type: RestrictionTypes;
   message: string;
@@ -183,13 +183,25 @@ export interface PalletAssetConversionMultiAssetId extends Enum {
   readonly type: 'Native' | 'Asset';
 }
 
-export interface PalletAssetConversionPoolId
-  extends ITuple<[PalletAssetConversionMultiAssetId, PalletAssetConversionMultiAssetId]> {}
-
-export type PoolReserves = [number, number];
-
 export interface PoolInfo {
   poolId: PalletAssetConversionPoolId;
   lpToken: AssetId;
   reserves: PoolReserves;
 }
+
+// =====
+// TYPES
+// =====
+export type MintType = MintTypes | { [MintTypes.HOLDER_OF]: string };
+
+export type MintTypeJson = Record<'public' | 'issuer' | 'holderOf', null | number>;
+
+export type PoolReserves = [number, number];
+
+export type PalletAssetConversionPoolId = ITuple<
+  [PalletAssetConversionMultiAssetId, PalletAssetConversionMultiAssetId]
+>;
+
+export type MetadataRecords = [StorageKey<[AssetId]>, PalletAssetsAssetMetadata][];
+
+export type DetailsRecords = Option<PalletAssetsAssetDetails>[];

@@ -52,9 +52,10 @@ export const useCheckMintingEligibility = (collectionId: string) => {
       try {
         if (
           config.mintSettings &&
-          Object.keys(config.mintSettings.mintType)[0].toLowerCase() === MintTypes.HOLDER_OF.toLowerCase()
+          Object.keys(config.mintSettings.mintType)[0].toLowerCase() === MintTypes.HOLDER_OF.toLowerCase() &&
+          config.mintSettings.mintType.holderOf !== null
         ) {
-          const holderOfCollectionId = config.mintSettings.mintType.holderOf!.toString();
+          const holderOfCollectionId = config.mintSettings.mintType.holderOf.toString();
 
           const ownedNftIds = await getOwnedNftIds(holderOfCollectionId);
           const availableForClaimingNfts: string[] = [];

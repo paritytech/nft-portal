@@ -1,5 +1,6 @@
 import { StatusMessages } from './constants';
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const handleError = (error: any) => {
   if (error.toString() === 'Error: Cancelled') {
     return StatusMessages.TRANSACTION_CANCELED;

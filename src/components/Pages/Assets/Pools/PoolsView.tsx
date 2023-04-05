@@ -8,8 +8,8 @@ import { useAccounts } from '@contexts/AccountsContext';
 
 import type { NativeTokenMetadata, TokenMetadata } from '@helpers/interfaces';
 import { PoolInfo } from '@helpers/interfaces';
-import { SContentBlock } from '@helpers/reusableStyles';
-import { SCard, SCardEdit, SColumn, SRow } from '@helpers/styledComponents';
+import { SColumn, SContentBlock, SRow } from '@helpers/reusableStyles';
+import { SCard, SCardEdit } from '@helpers/styledComponents';
 
 import EditIcon from '@images/icons/edit.svg';
 

@@ -1,5 +1,5 @@
 const COLLECTION_ID_PARAM = ':collectionId';
-const NFT_ID_PARAM = ':collectionId';
+const NFT_ID_PARAM = ':nftId';
 
 // TODO rename newNftMint to nftMint later, get rid of old route
 export const routes = {

@@ -4,7 +4,6 @@ import type { AssetId } from '@polkadot/types/interfaces';
 import type {
   PalletAssetsAssetAccount,
   PalletAssetsAssetDetails,
-  PalletAssetsAssetMetadata,
   PalletBalancesAccountData,
 } from '@polkadot/types/lookup';
 import { BN } from '@polkadot/util';
@@ -13,6 +12,8 @@ import { useCallback, useState } from 'react';
 import { useAccounts } from '@contexts/AccountsContext';
 
 import type {
+  DetailsRecords,
+  MetadataRecords,
   NativeTokenMetadata,
   PalletAssetConversionPoolId,
   PalletAssetConversionPoolInfo,
@@ -59,7 +60,7 @@ export const useAssets = () => {
         const results: [StorageKey<[PalletAssetConversionPoolId]>, Option<PalletAssetConversionPoolInfo>][] =
           await api.query.assetConversion.pools.entries();
 
-        let promises = results
+        const promises = results
           .filter(([, data]) => data.isSome)
           .map(
             async ([
@@ -141,14 +142,12 @@ export const useAssets = () => {
         const tokens = await getTokenIds();
         if (!tokens) return;
 
-        type MetadataRecords = [StorageKey<[AssetId]>, PalletAssetsAssetMetadata][];
-        type DetailsRecords = Option<PalletAssetsAssetDetails>[];
         const [metadataRecords, detailsRecords]: [MetadataRecords, DetailsRecords] = await Promise.all([
           api.query.assets.metadata.entries(),
           api.query.assets.asset.multi(tokens),
         ]);
 
-        let details = new Map<number, PalletAssetsAssetDetails | null>();
+        const details = new Map<number, PalletAssetsAssetDetails | null>();
         if (Array.isArray(detailsRecords) && detailsRecords.length > 0) {
           detailsRecords.forEach((record, index) => {
             const id = tokens[index].toNumber();

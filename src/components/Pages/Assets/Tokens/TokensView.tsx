@@ -1,4 +1,3 @@
-import { BN } from '@polkadot/util';
 import { memo } from 'react';
 
 import type { NativeTokenMetadata, TokenMetadata } from '@helpers/interfaces';

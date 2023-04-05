@@ -1,6 +1,6 @@
 import { Account, BaseWallet } from '@polkadot-onboard/core';
 import { ApiPromise, WsProvider } from '@polkadot/api';
-import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import { ReactElement, createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 
 import { apiConfigRuntime, apiConfigTypes, chains } from '@helpers/config';
 import { ChainThemes } from '@helpers/constants';
@@ -10,7 +10,7 @@ import { themes } from '@helpers/reusableStyles';
 import { useLocalStorage } from '@hooks/useLocalStorage';
 
 interface AccountsContextProviderProps {
-  children: any;
+  children: ReactElement;
 }
 
 interface AccountsContextProps {
@@ -26,6 +26,7 @@ interface AccountsContextProps {
   theme: ThemeStyle;
 }
 
+/* eslint-disable @typescript-eslint/no-empty-function */
 const AccountsContext = createContext<AccountsContextProps>({
   activeAccount: null,
   activeWallet: null,
@@ -38,6 +39,7 @@ const AccountsContext = createContext<AccountsContextProps>({
   setStoredChain: () => {},
   theme: themes.kusama,
 });
+/* eslint-enable @typescript-eslint/no-empty-function */
 
 export const useAccounts = () => useContext(AccountsContext);
 

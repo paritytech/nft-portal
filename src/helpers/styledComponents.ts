@@ -1,3 +1,6 @@
+// Styled components are separated from reusableStyles to prevent circular dependencies
+// for example BasicButton uses import { CssCommonButtonStyles } from '@helpers/reusableStyles';
+// if we put SActionButtonMini inside of reusableStyles, we will have a circular dependency
 import Card from 'react-bootstrap/esm/Card';
 import Modal from 'react-bootstrap/esm/Modal';
 import styled from 'styled-components';
@@ -74,17 +77,4 @@ export const SModal = styled(Modal)`
         ${({ activetheme: activeTheme }: { activetheme: ThemeStyle }) => activeTheme.buttonBorderColor};
     }
   }
-`;
-
-export const SRow = styled.section`
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  height: 30px;
-`;
-
-export const SColumn = styled.section`
-  display: flex;
-  flex-direction: column;
-  flex: 1;
 `;

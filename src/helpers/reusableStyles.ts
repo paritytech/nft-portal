@@ -181,9 +181,9 @@ export const CssCommonButtonStyles = css<CommonStyleProps & Themeable>`
   }
 `;
 
-// =================
-// STYLED COMPONENTS
-// =================
+// ==========================
+// STYLED BASIC HTML ELEMENTS
+// ==========================
 export const SContentBlockContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
@@ -231,4 +231,17 @@ export const SConnectButton = styled.button<Themeable>`
     margin: 4px 12px 0 2px;
     width: 15px;
   }
+`;
+
+export const SRow = styled.section`
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  height: 30px;
+`;
+
+export const SColumn = styled.section`
+  display: flex;
+  flex-direction: column;
+  flex: 1;
 `;

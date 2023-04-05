@@ -1,4 +1,4 @@
-import { FormEvent, memo } from 'react';
+import { FormEvent, ReactElement, memo } from 'react';
 import styled from 'styled-components';
 
 import { useAccounts } from '@contexts/AccountsContext';
@@ -11,7 +11,7 @@ const SButton = styled.button`
 `;
 
 interface BasicButtonProps extends CommonStyleProps {
-  children: any;
+  children: ReactElement | string;
 }
 
 const BasicButton = ({ children, type, className, isDisabled }: BasicButtonProps) => {
