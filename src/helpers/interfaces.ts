@@ -1,12 +1,20 @@
 import type { Option, StorageKey } from '@polkadot/types';
 import type { Enum, Struct } from '@polkadot/types-codec';
-import type { u128 } from '@polkadot/types-codec';
 import type { ITuple } from '@polkadot/types-codec/types';
 import type { AssetId } from '@polkadot/types/interfaces';
 import type { PalletAssetsAssetDetails, PalletAssetsAssetMetadata } from '@polkadot/types/lookup';
 import type { BN } from '@polkadot/util';
 
-import { ChainThemes, ChainTitles, MintTypes, ModalStatusTypes, RestrictionTypes, StatusMessages } from './constants';
+import {
+  ChainThemes,
+  ChainTitles,
+  MintTypes,
+  ModalStatusTypes,
+  MultiAssetId,
+  MultiAssets,
+  RestrictionTypes,
+  StatusMessages,
+} from './constants';
 
 // ==========
 // INTERFACES
@@ -153,12 +161,12 @@ export interface MintAccessNft {
 }
 
 export interface TokenBalance {
-  id: number;
+  id: AssetId;
   balance: BN;
 }
 
 export interface TokenMetadata extends TokenMetadataData {
-  id: number;
+  id: AssetId;
 }
 
 export interface TokenMetadataData {
@@ -171,7 +179,7 @@ export interface TokenMetadataData {
 export interface NativeTokenMetadata {
   name: string | null;
   decimals: number;
-  issuance: u128 | null;
+  issuance: BN | null;
 }
 
 export interface PalletAssetConversionPoolInfo extends Struct {
@@ -182,7 +190,7 @@ export interface PalletAssetConversionMultiAssetId extends Enum {
   readonly isNative: boolean;
   readonly isAsset: boolean;
   readonly asAsset: AssetId;
-  readonly type: 'Native' | 'Asset';
+  readonly type: MultiAssets;
 }
 
 export interface PoolInfo {
@@ -207,3 +215,5 @@ export type PalletAssetConversionPoolId = ITuple<
 export type MetadataRecords = [StorageKey<[AssetId]>, PalletAssetsAssetMetadata][];
 
 export type DetailsRecords = Option<PalletAssetsAssetDetails>[];
+
+export type MultiAsset = MultiAssets | { [MultiAssets.ASSET]: AssetId };

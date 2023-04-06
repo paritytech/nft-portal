@@ -1,4 +1,5 @@
 import { formatBalance } from '@polkadot/util';
+import { ToBn } from '@polkadot/util/types';
 import { memo } from 'react';
 import styled from 'styled-components';
 
@@ -29,7 +30,7 @@ const Token = ({ tokenMetadata }: TokenProps) => {
   const { name, symbol, decimals, details } = tokenMetadata;
   const formattedSymbol = (symbol || '').toUpperCase();
   const formattedBalance = details?.supply
-    ? formatBalance(details.supply, {
+    ? formatBalance(details.supply as ToBn, {
         decimals,
         withSi: true,
         withUnit: formattedSymbol,
