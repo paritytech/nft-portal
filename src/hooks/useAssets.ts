@@ -33,7 +33,7 @@ export const useAssets = () => {
   const navigate = useNavigate();
   const { api, activeAccount, activeWallet } = useAccounts();
   const { openModalStatus, setStatus, setAction } = useModalStatus();
-  const [freePoolTokens, setFreePoolTokens] = useState<TokenMetadata[] | null>(null);
+  const [availablePoolTokens, setAvailablePoolTokens] = useState<TokenMetadata[] | null>(null);
   const [nativeBalance, setNativeBalance] = useState<BN | null>(null);
   const [nativeMetadata, setNativeMetadata] = useState<NativeTokenMetadata | null>(null);
   const [tokensMetadata, setTokensMetadata] = useState<TokenMetadata[] | null>(null);
@@ -89,9 +89,9 @@ export const useAssets = () => {
     [api, activeAccount, activeWallet, navigate, openModalStatus, setStatus, setAction],
   );
 
-  const getFreePoolTokens = useCallback(async () => {
+  const getAvailablePoolTokens = useCallback(async () => {
     if (api && api.query.assetConversion) {
-      let freePoolTokens: TokenMetadata[] = [];
+      let availablePoolTokens: TokenMetadata[] = [];
       try {
         // load all tokens
         const allTokens: MetadataRecords = await api.query.assets.metadata.entries();
@@ -101,7 +101,7 @@ export const useAssets = () => {
         const pools = poolRecords.map(({ args: [id] }) => id[1].asAsset.toNumber());
 
         // subtract one from another
-        freePoolTokens = allTokens
+        availablePoolTokens = allTokens
           .map(
             ([
               {
@@ -122,7 +122,7 @@ export const useAssets = () => {
         //
       }
 
-      setFreePoolTokens(freePoolTokens);
+      setAvailablePoolTokens(availablePoolTokens);
     }
   }, [api]);
 
@@ -281,9 +281,9 @@ export const useAssets = () => {
   }, [api, getTokenIds]);
 
   return {
+    availablePoolTokens,
     createPool,
-    freePoolTokens,
-    getFreePoolTokens,
+    getAvailablePoolTokens,
     getNativeBalance,
     getNativeMetadata,
     getPools,

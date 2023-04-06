@@ -18,32 +18,32 @@ import { useAssets } from '@hooks/useAssets';
 
 const PoolCreate = () => {
   const { api, theme } = useAccounts();
-  const { createPool, getNativeMetadata, getFreePoolTokens, nativeMetadata, freePoolTokens } = useAssets();
+  const { createPool, getNativeMetadata, getAvailablePoolTokens, nativeMetadata, availablePoolTokens } = useAssets();
   const [newPoolToken, setNewPoolToken] = useState<string>('-1');
 
   const submitCreatePool = useCallback(
     async (event: FormEvent) => {
       event.preventDefault();
-      const selectedPoolToken = freePoolTokens?.[Number(newPoolToken)];
+      const selectedPoolToken = availablePoolTokens?.[Number(newPoolToken)];
       if (selectedPoolToken) createPool(selectedPoolToken.id);
     },
-    [createPool, freePoolTokens, newPoolToken],
+    [createPool, availablePoolTokens, newPoolToken],
   );
 
   useEffect(() => {
     getNativeMetadata();
-    getFreePoolTokens();
-  }, [getNativeMetadata, getFreePoolTokens]);
+    getAvailablePoolTokens();
+  }, [getNativeMetadata, getAvailablePoolTokens]);
 
   if (!api) {
     return null;
   }
 
-  if (freePoolTokens === null || nativeMetadata === null) {
+  if (availablePoolTokens === null || nativeMetadata === null) {
     return <>Loading data... please wait</>;
   }
 
-  const freeTokensLeft = Array.isArray(freePoolTokens) && freePoolTokens.length > 0;
+  const availableTokensLeft = Array.isArray(availablePoolTokens) && availablePoolTokens.length > 0;
   const poolSetupFee = api.consts.assetConversion?.poolSetupFee ?? null;
   const decimals = api.registry.chainDecimals[0];
 
@@ -57,7 +57,7 @@ const PoolCreate = () => {
           Create a pool for {nativeMetadata?.name?.toUpperCase()} and{' '}
           <select onChange={(event) => setNewPoolToken(event.target.value)} defaultValue={newPoolToken?.toString()}>
             <option value='-1'> - select token - </option>
-            {freePoolTokens.map((token, index) => (
+            {availablePoolTokens.map((token, index) => (
               <option key={token.id.toString()} value={index.toString()}>
                 {token.symbol?.toUpperCase()}
               </option>
@@ -72,7 +72,7 @@ const PoolCreate = () => {
           )}
           <br />
           <br />
-          {!freeTokensLeft && (
+          {!availableTokensLeft && (
             <>
               <i>Every token already has a pool created</i>
               <br />
@@ -85,7 +85,7 @@ const PoolCreate = () => {
                 Back
               </SSecondaryButton>
             </Link>
-            {freeTokensLeft && <BasicButton type='submit'>Create</BasicButton>}
+            {availableTokensLeft && <BasicButton type='submit'>Create</BasicButton>}
           </Stack>
         </section>
       </Form>
