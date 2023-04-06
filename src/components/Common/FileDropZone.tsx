@@ -17,12 +17,12 @@ const SDropZone = styled.div<Themeable>`
   align-items: center;
   max-width: 500px;
   min-height: 300px;
-  border: 4px dashed ${({ activeTheme }) => activeTheme.buttonBorderColor};
-  border-radius: 10px;
+  border: 1px solid ${({ activeTheme }) => activeTheme.appliedStroke};
+  border-radius: 16px;
   outline: none;
 
   :hover {
-    background-color: ${({ activeTheme }) => activeTheme.transparentHoverHighlight};
+    background-color: ${({ activeTheme }) => activeTheme.appliedHover};
 
     img {
       z-index: -1;

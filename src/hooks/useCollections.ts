@@ -34,7 +34,7 @@ export const useCollections = () => {
       );
 
       const collectionIds = results
-        .map(({ args: { 1: collectionId } }) => collectionId)
+        .map(({ args: [, collectionId] }) => collectionId)
         .sort((a, b) => a.cmp(b))
         .map((collectionId) => collectionId.toString());
 

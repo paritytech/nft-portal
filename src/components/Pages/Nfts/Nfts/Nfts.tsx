@@ -6,7 +6,6 @@ import BasicButton from '@buttons/BasicButton';
 
 import { useAccounts } from '@contexts/AccountsContext';
 
-import { SContentBlockContainer } from '@helpers/reusableStyles';
 import { routes } from '@helpers/routes';
 import { SSecondaryButton } from '@helpers/styledComponents';
 
@@ -27,9 +26,7 @@ const Nfts = () => {
 
   return (
     <>
-      <SContentBlockContainer>
-        <NftsView nftsMetadata={nftsMetadata} />
-      </SContentBlockContainer>
+      <NftsView nftsMetadata={nftsMetadata} />
       <Stack direction='horizontal' gap={2} className='justify-content-end'>
         <Link to={routes.myAssets.nftMint(collectionId)}>
           <BasicButton>Mint NFT</BasicButton>

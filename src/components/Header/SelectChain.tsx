@@ -80,7 +80,7 @@ const SChainOption = styled.div<Themeable>`
   gap: 8px;
 
   :hover {
-    background-color: ${({ activeTheme }) => activeTheme.fill6};
+    background-color: ${({ activeTheme }) => activeTheme.appliedHover};
     border-radius: 32px;
     cursor: pointer;
   }

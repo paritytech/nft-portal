@@ -20,26 +20,21 @@ export const SBasicButtonMini = styled(BasicButton)`
 `;
 
 export const SSecondaryButton = styled(BasicButton)<Themeable>`
-  color: ${({ activeTheme }) => activeTheme.navigationButtonTextColor};
-  background-color: ${({ activeTheme }) => activeTheme.navigationButtonBackgroundColor};
+  color: ${({ activeTheme }) => activeTheme.buttonSecondaryText};
+  background-color: ${({ activeTheme }) => activeTheme.buttonSecondaryBackground};
 
   :hover {
-    background-color: ${({ activeTheme }) => activeTheme.navigationButtonActiveBackgroundColor};
+    color: ${({ activeTheme }) => activeTheme.buttonSecondaryText};
+    background-color: ${({ activeTheme }) => activeTheme.buttonSecondaryBackgroundHovered};
   }
 
   a {
-    color: ${({ activeTheme }) => activeTheme.navigationButtonTextColor};
+    color: ${({ activeTheme }) => activeTheme.buttonSecondaryText};
   }
 `;
 
 export const SCard = styled(Card)`
-  background-color: ${({ activetheme }: { activetheme: ThemeStyle }) => activetheme.bodyBackground};
-  border: 2px solid ${({ activetheme }: { activetheme: ThemeStyle }) => activetheme.navigationButtonBorderColor};
-
-  .card-footer {
-    background-color: inherit;
-    border-top: 1px solid ${({ activetheme }: { activetheme: ThemeStyle }) => activetheme.buttonBorderColor};
-  }
+  background-color: ${({ activetheme }: { activetheme: ThemeStyle }) => activetheme.fill6};
 `;
 
 export const SCardEdit = styled(Card.Subtitle)`
@@ -66,15 +61,14 @@ export const SCardEdit = styled(Card.Subtitle)`
 `;
 
 export const SModal = styled(Modal)`
-  .modal-content,
-  select {
-    background-color: ${({ activetheme: activeTheme }: { activetheme: ThemeStyle }) => activeTheme.bodyBackground};
-    color: ${({ activetheme: activeTheme }: { activetheme: ThemeStyle }) => activeTheme.defaultTextColor};
-    border: 2px solid ${({ activetheme: activeTheme }: { activetheme: ThemeStyle }) => activeTheme.buttonBorderColor};
+  .modal-content {
+    background-color: ${({ activetheme: activeTheme }: { activetheme: ThemeStyle }) => activeTheme.backgroundTertiary};
+    border: 1px solid ${({ activetheme: activeTheme }: { activetheme: ThemeStyle }) => activeTheme.appliedStroke};
+  }
 
-    .modal-header {
-      border-bottom: 1px solid
-        ${({ activetheme: activeTheme }: { activetheme: ThemeStyle }) => activeTheme.buttonBorderColor};
-    }
+  select {
+    background-color: ${({ activetheme: activeTheme }: { activetheme: ThemeStyle }) =>
+      activeTheme.buttonMainBackground};
+    color: ${({ activetheme: activeTheme }: { activetheme: ThemeStyle }) => activeTheme.buttonMainText};
   }
 `;

@@ -7,7 +7,6 @@ import ShowImage from '@common/ShowImage';
 import { useAccounts } from '@contexts/AccountsContext';
 
 import { NftMetadata } from '@helpers/interfaces';
-import { SContentBlock } from '@helpers/reusableStyles';
 import { routes } from '@helpers/routes';
 import { SCard, SCardEdit } from '@helpers/styledComponents';
 
@@ -23,22 +22,20 @@ const Nft = ({ nftMetadata }: NftProps) => {
   const { id, name, description, image } = nftMetadata;
 
   return (
-    <SContentBlock key={id}>
-      <SCard activetheme={theme}>
-        <ShowImage imageCid={image} altText={description} />
-        <Card.Body>
-          <SCardEdit className='text-muted'>
-            <span>NFT ID #{id}</span>
-            <Link to={routes.myAssets.nftEdit(collectionId, id)}>
-              Edit
-              <EditIcon />
-            </Link>
-          </SCardEdit>
-          <Card.Title>{name}</Card.Title>
-          <Card.Text>{description}</Card.Text>
-        </Card.Body>
-      </SCard>
-    </SContentBlock>
+    <SCard activetheme={theme}>
+      <ShowImage imageCid={image} altText={description} />
+      <Card.Body>
+        <SCardEdit className='text-muted'>
+          <span>NFT ID #{id}</span>
+          <Link to={routes.myAssets.nftEdit(collectionId, id)}>
+            Edit
+            <EditIcon />
+          </Link>
+        </SCardEdit>
+        <Card.Title>{name}</Card.Title>
+        <Card.Text>{description}</Card.Text>
+      </Card.Body>
+    </SCard>
   );
 };
 
