@@ -1,4 +1,5 @@
 import { formatBalance } from '@polkadot/util';
+import { ToBn } from '@polkadot/util/types';
 import { memo } from 'react';
 import styled from 'styled-components';
 
@@ -29,7 +30,7 @@ const NativeToken = ({ metadata }: NativeTokenProps) => {
   const { name, decimals, issuance } = metadata;
   const formattedName = (name || '').toUpperCase();
   const formattedBalance = issuance
-    ? formatBalance(issuance, { decimals, withSi: true, withUnit: formattedName, withZero: false })
+    ? formatBalance(issuance as ToBn, { decimals, withSi: true, withUnit: formattedName, withZero: false })
     : '0';
 
   return (

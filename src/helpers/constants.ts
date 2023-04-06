@@ -31,10 +31,17 @@ export enum StatusMessages {
   NFT_MINTING = 'Minting NFT, please wait',
   TRANSACTION_CANCELED = 'Transaction was canceled',
   TRANSACTION_CONFIRM = 'Please confirm transaction in your wallet',
+  POOL_CREATION = 'Creating pool, please wait',
+  POOL_CREATED = 'Pool created!',
 }
 
 export enum MintTypes {
   ISSUER = 'Issuer',
   PUBLIC = 'Public',
   HOLDER_OF = 'HolderOf',
+}
+
+export enum MultiAssets {
+  NATIVE = 'Native',
+  ASSET = 'Asset',
 }

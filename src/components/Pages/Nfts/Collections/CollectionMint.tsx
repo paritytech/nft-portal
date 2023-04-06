@@ -25,16 +25,16 @@ const SIndentation = styled.section`
 const CollectionMint = () => {
   const { api, theme } = useAccounts();
   const { mintCollection } = useCollections();
-  const transferrableItemsRef = useRef<HTMLInputElement>(null);
-  const unlockedMetadataRef = useRef<HTMLInputElement>(null);
-  const unlockedAttributesRef = useRef<HTMLInputElement>(null);
-  const unlockedMaxSupplyRef = useRef<HTMLInputElement>(null);
-  const maxSupplyRef = useRef<HTMLInputElement>(null);
-  const priceRef = useRef<HTMLInputElement>(null);
-  const transferrableItemRef = useRef<HTMLInputElement>(null);
-  const unlockedItemMetadataRef = useRef<HTMLInputElement>(null);
-  const unlockedItemAttributesRef = useRef<HTMLInputElement>(null);
-  const holderOfCollectionIdRef = useRef<HTMLInputElement>(null);
+  const transferrableItemsRef = useRef<HTMLInputElement | null>(null);
+  const unlockedMetadataRef = useRef<HTMLInputElement | null>(null);
+  const unlockedAttributesRef = useRef<HTMLInputElement | null>(null);
+  const unlockedMaxSupplyRef = useRef<HTMLInputElement | null>(null);
+  const maxSupplyRef = useRef<HTMLInputElement | null>(null);
+  const priceRef = useRef<HTMLInputElement | null>(null);
+  const transferrableItemRef = useRef<HTMLInputElement | null>(null);
+  const unlockedItemMetadataRef = useRef<HTMLInputElement | null>(null);
+  const unlockedItemAttributesRef = useRef<HTMLInputElement | null>(null);
+  const holderOfCollectionIdRef = useRef<HTMLInputElement | null>(null);
   const [startDate, setStartDate] = useState<Date>();
   const [endDate, setEndDate] = useState<Date>();
   const [mintType, setMintType] = useState<MintTypes>(MintTypes.ISSUER);
@@ -108,6 +108,8 @@ const CollectionMint = () => {
     return null;
   }
 
+  const chainDecimals = api.registry.chainDecimals[0];
+
   return (
     <>
       <ModalStatus />
@@ -160,8 +162,8 @@ const CollectionMint = () => {
               <Form.Control
                 type='text'
                 ref={priceRef}
-                pattern={pricePattern(api.registry.chainDecimals[0])}
-                title={`Please enter a number e.g. 10.25, max precision is ${api.registry.chainDecimals[0]} decimals after .`}
+                pattern={pricePattern(chainDecimals)}
+                title={`Please enter a number e.g. 10.25, max precision is ${chainDecimals} decimals after .`}
               />
             </Form.Group>
 
