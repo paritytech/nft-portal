@@ -57,7 +57,7 @@ export const useAssets = () => {
                 setStatus({ type: ModalStatusTypes.IN_PROGRESS, message: StatusMessages.POOL_CREATION });
               }
 
-              if (status.isFinalized) {
+              if (status.isInBlock) {
                 unsub();
 
                 events.some(({ event: { data, method } }) => {
@@ -73,7 +73,6 @@ export const useAssets = () => {
 
                   if (method === 'ExtrinsicFailed') {
                     setStatus({ type: ModalStatusTypes.ERROR, message: StatusMessages.ACTION_FAILED });
-
                     return true;
                   }
 

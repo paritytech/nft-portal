@@ -163,7 +163,7 @@ export const useNfts = (collectionId: string) => {
                 setStatus({ type: ModalStatusTypes.IN_PROGRESS, message: StatusMessages.NFT_MINTING });
               }
 
-              if (status.isFinalized) {
+              if (status.isInBlock) {
                 unsub();
 
                 events.some(({ event: { method } }) => {
@@ -212,7 +212,7 @@ export const useNfts = (collectionId: string) => {
                 setStatus({ type: ModalStatusTypes.IN_PROGRESS, message: StatusMessages.METADATA_UPDATING });
               }
 
-              if (status.isFinalized) {
+              if (status.isInBlock) {
                 unsub();
 
                 events.some(({ event: { method } }) => {

@@ -142,7 +142,7 @@ export const useCollections = () => {
                 setStatus({ type: ModalStatusTypes.IN_PROGRESS, message: StatusMessages.COLLECTION_MINTING });
               }
 
-              if (status.isFinalized) {
+              if (status.isInBlock) {
                 unsub();
 
                 events.some(({ event: { data, method } }) => {
@@ -189,7 +189,7 @@ export const useCollections = () => {
                 setStatus({ type: ModalStatusTypes.IN_PROGRESS, message: StatusMessages.METADATA_UPDATING });
               }
 
-              if (status.isFinalized) {
+              if (status.isInBlock) {
                 unsub();
 
                 events.some(({ event: { method } }) => {
