@@ -10,6 +10,7 @@ import type { NativeTokenMetadata, TokenMetadata } from '@helpers/interfaces';
 import { PoolInfo } from '@helpers/interfaces';
 import { SColumn, SContentBlock, SRow } from '@helpers/reusableStyles';
 import { SCard, SCardEdit } from '@helpers/styledComponents';
+import { sortStrings } from '@helpers/utilities';
 
 import EditIcon from '@images/icons/edit.svg';
 
@@ -56,10 +57,11 @@ const PoolsView = ({ pools, nativeMetadata, tokensMetadata }: PoolsViewProps) =>
           symbol = tokenInfo.symbol;
           decimals = tokenInfo.decimals;
         }
+        symbol = symbol || '';
 
         const formattedReserve = formatBalance(reserve, {
           decimals,
-          withUnit: (symbol || '').toUpperCase(),
+          withUnit: symbol.toUpperCase(),
           withSi: true,
           withZero: false,
         });
@@ -71,12 +73,13 @@ const PoolsView = ({ pools, nativeMetadata, tokensMetadata }: PoolsViewProps) =>
         };
       });
     })
-    .filter((poolInfo) => poolInfo[0] !== null && poolInfo[1] !== null);
+    .filter((poolInfo) => poolInfo[0] && poolInfo[1])
+    .sort((poolInfo1, poolInfo2) => sortStrings(poolInfo1[1].symbol, poolInfo2[1].symbol));
 
   return (
     <>
       {poolsWithInfo.map((poolInfo) => (
-        <SPoolBlock key={`${poolInfo[0]?.symbol}-${poolInfo[1]?.symbol}`}>
+        <SPoolBlock key={`${poolInfo[0].symbol}-${poolInfo[1].symbol}`}>
           <SCard activetheme={theme}>
             <Card.Body>
               <SCardEdit className='text-muted'>
@@ -89,7 +92,7 @@ const PoolsView = ({ pools, nativeMetadata, tokensMetadata }: PoolsViewProps) =>
               <SPoolInfo>
                 <SRow>
                   <SColumn>
-                    <span>{(poolInfo[0].symbol || '').toUpperCase()}</span>
+                    <span>{poolInfo[0].symbol.toUpperCase()}</span>
                   </SColumn>
                   <SColumn>
                     <SReserve>{poolInfo[0].formattedReserve}</SReserve>
@@ -97,7 +100,7 @@ const PoolsView = ({ pools, nativeMetadata, tokensMetadata }: PoolsViewProps) =>
                 </SRow>
                 <SRow>
                   <SColumn>
-                    <span>{(poolInfo[1].symbol || '').toUpperCase()}</span>
+                    <span>{poolInfo[1].symbol.toUpperCase()}</span>
                   </SColumn>
                   <SColumn>
                     <SReserve>{poolInfo[1].formattedReserve}</SReserve>

@@ -19,7 +19,7 @@ export const sizeMatters = (yourThing: string | undefined | null, size = 16) => 
 // the values are flipped to opposite because in the nfts pallet we use bitflags
 // where we select what to disable, so in pallet true = disabled, false = enabled
 // in order to not confuse users, in UI we use normal logic and then flip values here
-export const convertToBitFlagValue = (values: boolean[]) => {
+export const convertToBitFlagValue = (values: boolean[]): number => {
   const bitFlag = values
     .map((value) => +!value)
     .reverse()
@@ -28,7 +28,7 @@ export const convertToBitFlagValue = (values: boolean[]) => {
   return parseInt(bitFlag, 2);
 };
 
-export const getBlockNumber = async (api: ApiPromise, timestamp?: number) => {
+export const getBlockNumber = async (api: ApiPromise, timestamp?: number): Promise<number | undefined> => {
   if (typeof timestamp === 'undefined') {
     return timestamp;
   }
@@ -42,9 +42,9 @@ export const getBlockNumber = async (api: ApiPromise, timestamp?: number) => {
   return Math.floor((laterDate - currentDate) / blockTime + activeBlockNumber);
 };
 
-export const pricePattern = (maxPrecision: number) => `^(0|[1-9][0-9]*)([.][0-9]{0,${maxPrecision}})?$`;
+export const pricePattern = (maxPrecision: number): string => `^(0|[1-9][0-9]*)([.][0-9]{0,${maxPrecision}})?$`;
 
-export const unitToPlanck = (units: string, decimals: number) => {
+export const unitToPlanck = (units: string, decimals: number): string => {
   const separated = units.split('.');
   const [whole] = separated;
   let [, decimal] = separated;
@@ -56,6 +56,18 @@ export const unitToPlanck = (units: string, decimals: number) => {
   return `${whole}${decimal.padEnd(decimals, '0')}`.replace(/^0+/, '');
 };
 
-export const generateAssetId = () => {
+export const generateAssetId = (): number => {
   return Math.floor(Date.now() / 1000);
+};
+
+export const sortStrings = (string1: string | null, string2: string | null): number => {
+  string1 = string1?.toUpperCase();
+  string2 = string2?.toUpperCase();
+  if (string1 < string2) {
+    return -1;
+  }
+  if (string1 > string2) {
+    return 1;
+  }
+  return 0;
 };
