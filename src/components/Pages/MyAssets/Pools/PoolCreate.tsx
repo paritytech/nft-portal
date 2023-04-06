@@ -12,6 +12,7 @@ import Title from '@common/Title';
 
 import { useAccounts } from '@contexts/AccountsContext';
 
+import { routes } from '@helpers/routes';
 import { SSecondaryButton } from '@helpers/styledComponents';
 
 import { useAssets } from '@hooks/useAssets';
@@ -80,7 +81,7 @@ const PoolCreate = () => {
             </>
           )}
           <Stack direction='horizontal' gap={2} className='justify-content-end'>
-            <Link to='..'>
+            <Link to={routes.discover.pools}>
               <SSecondaryButton type='button' activeTheme={theme}>
                 Back
               </SSecondaryButton>

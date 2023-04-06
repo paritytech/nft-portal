@@ -28,6 +28,7 @@ import type {
   TokenMetadata,
 } from '@helpers/interfaces';
 import { routes } from '@helpers/routes';
+import { sortStrings } from '@helpers/utilities';
 
 export const useAssets = () => {
   const navigate = useNavigate();
@@ -116,7 +117,7 @@ export const useAssets = () => {
             }),
           )
           .filter((item) => !pools.includes(item.id.toNumber()))
-          .sort((a, b) => a.id - b.id);
+          .sort((a, b) => sortStrings(a.name, b.name));
       } catch (error) {
         //
       }
@@ -269,7 +270,7 @@ export const useAssets = () => {
                 details: details.get(id.toNumber()) || null,
               }),
             )
-            .sort((a, b) => a.id.toNumber() - b.id.toNumber());
+            .sort((a, b) => sortStrings(a.name, b.name));
         }
 
         setTokensMetadata(metadata);
