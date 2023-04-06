@@ -1,35 +1,130 @@
 import type { Option, StorageKey } from '@polkadot/types';
-import type { u128 } from '@polkadot/types-codec';
 import type { AssetId } from '@polkadot/types/interfaces';
 import type {
   PalletAssetsAssetAccount,
   PalletAssetsAssetDetails,
   PalletBalancesAccountData,
 } from '@polkadot/types/lookup';
-import { BN } from '@polkadot/util';
+import type { BN } from '@polkadot/util';
+import { ToBn } from '@polkadot/util/types';
 import { useCallback, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import { useAccounts } from '@contexts/AccountsContext';
+import { useModalStatus } from '@contexts/ModalStatusContext';
 
+import { ModalStatusTypes, MultiAssets, StatusMessages } from '@helpers/constants';
+import { handleError } from '@helpers/handleError';
 import type {
   DetailsRecords,
   MetadataRecords,
+  MultiAsset,
   NativeTokenMetadata,
   PalletAssetConversionPoolId,
   PalletAssetConversionPoolInfo,
   PoolInfo,
+  PoolReserves,
   TokenBalance,
   TokenMetadata,
 } from '@helpers/interfaces';
-import { PoolReserves } from '@helpers/interfaces';
+import { routes } from '@helpers/routes';
 
 export const useAssets = () => {
-  const { api, activeAccount } = useAccounts();
+  const navigate = useNavigate();
+  const { api, activeAccount, activeWallet } = useAccounts();
+  const { openModalStatus, setStatus, setAction } = useModalStatus();
+  const [freePoolTokens, setFreePoolTokens] = useState<TokenMetadata[] | null>(null);
   const [nativeBalance, setNativeBalance] = useState<BN | null>(null);
   const [nativeMetadata, setNativeMetadata] = useState<NativeTokenMetadata | null>(null);
   const [tokensMetadata, setTokensMetadata] = useState<TokenMetadata[] | null>(null);
   const [tokensBalances, setTokensBalances] = useState<TokenBalance[] | null>(null);
   const [pools, setPools] = useState<PoolInfo[] | null>(null);
+
+  const createPool = useCallback(
+    async (tokenId: AssetId) => {
+      if (api && activeAccount && activeWallet) {
+        setStatus({ type: ModalStatusTypes.INIT_TRANSACTION, message: StatusMessages.TRANSACTION_CONFIRM });
+        openModalStatus();
+
+        try {
+          const token1: MultiAsset = MultiAssets.NATIVE;
+          const token2: MultiAsset = { [MultiAssets.ASSET]: tokenId };
+
+          const unsub = await api.tx.assetConversion
+            .createPool(token1, token2)
+            .signAndSend(activeAccount.address, { signer: activeWallet.signer }, ({ events, status }) => {
+              if (status.isReady) {
+                setStatus({ type: ModalStatusTypes.IN_PROGRESS, message: StatusMessages.POOL_CREATION });
+              }
+
+              if (status.isFinalized) {
+                unsub();
+
+                events.some(({ event: { data, method } }) => {
+                  if (method === 'PoolCreated') {
+                    const createdPoolId = data.poolId as PalletAssetConversionPoolId;
+
+                    if (createdPoolId && createdPoolId[1].isAsset && createdPoolId[1].asAsset.eq(tokenId)) {
+                      setStatus({ type: ModalStatusTypes.COMPLETE, message: StatusMessages.POOL_CREATED });
+                      setAction(() => () => navigate(routes.discover.pools));
+                      return true;
+                    }
+                  }
+
+                  if (method === 'ExtrinsicFailed') {
+                    setStatus({ type: ModalStatusTypes.ERROR, message: StatusMessages.ACTION_FAILED });
+
+                    return true;
+                  }
+
+                  return false;
+                });
+              }
+            });
+        } catch (error) {
+          setStatus({ type: ModalStatusTypes.ERROR, message: handleError(error) });
+        }
+      }
+    },
+    [api, activeAccount, activeWallet, navigate, openModalStatus, setStatus, setAction],
+  );
+
+  const getFreePoolTokens = useCallback(async () => {
+    if (api && api.query.assetConversion) {
+      let freePoolTokens: TokenMetadata[] = [];
+      try {
+        // load all tokens
+        const allTokens: MetadataRecords = await api.query.assets.metadata.entries();
+
+        // load all pools
+        const poolRecords: StorageKey<[PalletAssetConversionPoolId]>[] = await api.query.assetConversion.pools.keys();
+        const pools = poolRecords.map(({ args: [id] }) => id[1].asAsset.toNumber());
+
+        // subtract one from another
+        freePoolTokens = allTokens
+          .map(
+            ([
+              {
+                args: [id],
+              },
+              data,
+            ]) => ({
+              id,
+              name: data.name?.toUtf8() || null,
+              symbol: data.symbol?.toUtf8() || null,
+              decimals: data.decimals?.toNumber() || 0,
+              details: null,
+            }),
+          )
+          .filter((item) => !pools.includes(item.id.toNumber()))
+          .sort((a, b) => a.id - b.id);
+      } catch (error) {
+        //
+      }
+
+      setFreePoolTokens(freePoolTokens);
+    }
+  }, [api]);
 
   const getNativeBalance = useCallback(async () => {
     if (api && activeAccount) {
@@ -46,7 +141,7 @@ export const useAssets = () => {
     if (api) {
       const decimals = api.registry.chainDecimals[0];
       const name = api.registry.chainTokens[0];
-      const issuance: u128 = (await api.query.balances?.totalIssuance()) || null;
+      const issuance = (await api.query.balances?.totalIssuance?.()) ?? null;
       setNativeMetadata({
         name,
         decimals,
@@ -128,7 +223,7 @@ export const useAssets = () => {
             .filter(({ record }) => record.isSome)
             .map(({ id, record }) => ({
               id,
-              balance: record.unwrap()?.balance.toBn(),
+              balance: record.unwrap()?.balance as ToBn,
             }));
         }
 
@@ -160,22 +255,23 @@ export const useAssets = () => {
         }
 
         if (Array.isArray(metadataRecords) && metadataRecords.length > 0) {
-          metadata = metadataRecords.map(
-            ([
-              {
-                args: [id],
-              },
-              data,
-            ]) => ({
-              id: id.toNumber(),
-              name: data.name?.toUtf8() || null,
-              symbol: data.symbol?.toUtf8() || null,
-              decimals: data.decimals?.toNumber() || 0,
-              details: details.get(id.toNumber()) || null,
-            }),
-          );
+          metadata = metadataRecords
+            .map(
+              ([
+                {
+                  args: [id],
+                },
+                data,
+              ]) => ({
+                id,
+                name: data.name?.toUtf8() || null,
+                symbol: data.symbol?.toUtf8() || null,
+                decimals: data.decimals?.toNumber() || 0,
+                details: details.get(id.toNumber()) || null,
+              }),
+            )
+            .sort((a, b) => a.id.toNumber() - b.id.toNumber());
         }
-        metadata = metadata.sort((a, b) => a.id - b.id);
 
         setTokensMetadata(metadata);
       } catch (error) {
@@ -185,6 +281,9 @@ export const useAssets = () => {
   }, [api, getTokenIds]);
 
   return {
+    createPool,
+    freePoolTokens,
+    getFreePoolTokens,
     getNativeBalance,
     getNativeMetadata,
     getPools,

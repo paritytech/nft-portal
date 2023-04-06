@@ -39,75 +39,75 @@ const PoolsView = ({ pools, nativeMetadata, tokensMetadata }: PoolsViewProps) =>
     return <>Gathering data... please wait</>;
   }
 
-  if (Array.isArray(pools) && pools.length === 0) {
+  if (!Array.isArray(pools) || pools.length === 0) {
     return <>No pools found</>;
   }
 
+  const poolsWithInfo = pools
+    .map((pool) => {
+      return pool.poolId.map((asset, index) => {
+        const reserve = pool.reserves[index];
+        let symbol = nativeMetadata.name;
+        let decimals = nativeMetadata.decimals;
+
+        if (asset.isAsset) {
+          const tokenInfo = tokensMetadata.find(({ id }) => id.eq(asset.asAsset));
+          if (!tokenInfo) return null;
+          symbol = tokenInfo.symbol;
+          decimals = tokenInfo.decimals;
+        }
+
+        const formattedReserve = formatBalance(reserve, {
+          decimals,
+          withUnit: (symbol || '').toUpperCase(),
+          withSi: true,
+          withZero: false,
+        });
+
+        return {
+          symbol,
+          decimals,
+          formattedReserve,
+        };
+      });
+    })
+    .filter((poolInfo) => poolInfo[0] !== null && poolInfo[1] !== null);
+
   return (
     <>
-      {Array.isArray(pools) &&
-        pools.map((pools) => {
-          const poolInfo = pools.poolId.map((asset, index) => {
-            const reserve = pools.reserves[index];
-            let symbol = nativeMetadata.name;
-            let decimals = nativeMetadata.decimals;
+      {poolsWithInfo.map((poolInfo) => (
+        <SPoolBlock key={`${poolInfo[0]?.symbol}-${poolInfo[1]?.symbol}`}>
+          <SCard activetheme={theme}>
+            <Card.Body>
+              <SCardEdit className='text-muted'>
+                <span>Tokens Locked</span>
+                <Link to='1'>
+                  <EditIcon />
+                </Link>
+              </SCardEdit>
 
-            if (asset.isAsset) {
-              const tokenInfo = tokensMetadata.find(({ id }) => id === asset.asAsset.toPrimitive());
-              if (!tokenInfo) return null;
-              symbol = tokenInfo.symbol;
-              decimals = tokenInfo.decimals;
-            }
-
-            const formattedReserve = formatBalance(reserve, {
-              decimals,
-              withUnit: (symbol || '').toUpperCase(),
-              withSi: true,
-              withZero: false,
-            });
-
-            return {
-              symbol,
-              decimals,
-              formattedReserve,
-            };
-          });
-          if (poolInfo[0] === null || poolInfo[1] === null) return <></>;
-
-          return (
-            <SPoolBlock key={pools.lpToken.toPrimitive()}>
-              <SCard activetheme={theme}>
-                <Card.Body>
-                  <SCardEdit className='text-muted'>
-                    <span>Tokens Locked</span>
-                    <Link to='1'>
-                      <EditIcon />
-                    </Link>
-                  </SCardEdit>
-
-                  <SPoolInfo>
-                    <SRow>
-                      <SColumn>
-                        <span>{(poolInfo[0].symbol || '').toUpperCase()}</span>
-                      </SColumn>
-                      <SColumn>
-                        <SReserve>{poolInfo[0].formattedReserve}</SReserve>
-                      </SColumn>
-                    </SRow>
-                    <SRow>
-                      <SColumn>
-                        <span>{(poolInfo[1].symbol || '').toUpperCase()}</span>
-                      </SColumn>
-                      <SColumn>
-                        <SReserve>{poolInfo[1].formattedReserve}</SReserve>
-                      </SColumn>
-                    </SRow>
-                  </SPoolInfo>
-                </Card.Body>
-              </SCard>
-            </SPoolBlock>
-          );
-        })}
+              <SPoolInfo>
+                <SRow>
+                  <SColumn>
+                    <span>{(poolInfo[0].symbol || '').toUpperCase()}</span>
+                  </SColumn>
+                  <SColumn>
+                    <SReserve>{poolInfo[0].formattedReserve}</SReserve>
+                  </SColumn>
+                </SRow>
+                <SRow>
+                  <SColumn>
+                    <span>{(poolInfo[1].symbol || '').toUpperCase()}</span>
+                  </SColumn>
+                  <SColumn>
+                    <SReserve>{poolInfo[1].formattedReserve}</SReserve>
+                  </SColumn>
+                </SRow>
+              </SPoolInfo>
+            </Card.Body>
+          </SCard>
+        </SPoolBlock>
+      ))}
     </>
   );
 };
