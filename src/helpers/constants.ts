@@ -33,6 +33,7 @@ export enum StatusMessages {
   TRANSACTION_CONFIRM = 'Please confirm transaction in your wallet',
   POOL_CREATION = 'Creating pool, please wait',
   POOL_CREATED = 'Pool created!',
+  POOL_INSUFFICIENT_BALANCE_FOR_DEPOSIT = 'Your account`s balance is bellow the required pool creation fee',
 }
 
 export enum MintTypes {

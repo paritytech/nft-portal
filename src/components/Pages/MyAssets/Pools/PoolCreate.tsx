@@ -11,7 +11,9 @@ import ModalStatus from '@common/ModalStatus';
 import Title from '@common/Title';
 
 import { useAccounts } from '@contexts/AccountsContext';
+import { useModalStatus } from '@contexts/ModalStatusContext';
 
+import { ModalStatusTypes, StatusMessages } from '@helpers/constants';
 import { routes } from '@helpers/routes';
 import { SSecondaryButton } from '@helpers/styledComponents';
 
@@ -19,28 +21,48 @@ import { useAssets } from '@hooks/useAssets';
 
 const PoolCreate = () => {
   const { api, theme } = useAccounts();
-  const { createPool, getNativeMetadata, getAvailablePoolTokens, nativeMetadata, availablePoolTokens } = useAssets();
+  const {
+    createPool,
+    getAvailablePoolTokens,
+    getNativeMetadata,
+    getNativeBalance,
+    nativeMetadata,
+    nativeBalance,
+    availablePoolTokens,
+  } = useAssets();
+  const { openModalStatus, setStatus } = useModalStatus();
   const [newPoolToken, setNewPoolToken] = useState<string>('-1');
 
   const submitCreatePool = useCallback(
     async (event: FormEvent) => {
       event.preventDefault();
       const selectedPoolToken = availablePoolTokens?.[Number(newPoolToken)];
-      if (selectedPoolToken) createPool(selectedPoolToken.id);
+      if (selectedPoolToken) {
+        // validate user has enough funds to cover the setup fee
+        const poolSetupFee = api.consts.assetConversion?.poolSetupFee ?? null;
+        const existentialDeposit = api.consts.balances.existentialDeposit;
+        if (poolSetupFee && !poolSetupFee.isZero() && nativeBalance.lt(poolSetupFee.add(existentialDeposit))) {
+          setStatus({ type: ModalStatusTypes.ERROR, message: StatusMessages.POOL_INSUFFICIENT_BALANCE_FOR_DEPOSIT });
+          openModalStatus();
+          return;
+        }
+        createPool(selectedPoolToken.id);
+      }
     },
-    [createPool, availablePoolTokens, newPoolToken],
+    [api, availablePoolTokens, createPool, nativeBalance, newPoolToken, openModalStatus, setStatus],
   );
 
   useEffect(() => {
     getNativeMetadata();
     getAvailablePoolTokens();
-  }, [getNativeMetadata, getAvailablePoolTokens]);
+    getNativeBalance();
+  }, [getNativeMetadata, getAvailablePoolTokens, getNativeBalance]);
 
   if (!api) {
     return null;
   }
 
-  if (availablePoolTokens === null || nativeMetadata === null) {
+  if (availablePoolTokens === null || nativeMetadata === null || nativeBalance === null) {
     return <>Loading data... please wait</>;
   }
 
@@ -68,7 +90,7 @@ const PoolCreate = () => {
             <>
               <br />
               <br />
-              Pool creation price: {formatBalance(poolSetupFee as ToBn, { decimals, withZero: false })}
+              Pool creation fee: {formatBalance(poolSetupFee as ToBn, { decimals, withZero: false })}
             </>
           )}
           <br />
