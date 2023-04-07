@@ -9,7 +9,7 @@ import { useAccounts } from '@contexts/AccountsContext';
 import Header from '@header/Header';
 
 import { Themeable } from '@helpers/interfaces';
-import { styleSettings } from '@helpers/reusableStyles';
+import { mediaQueries } from '@helpers/reusableStyles';
 import { routes } from '@helpers/routes';
 
 import Pools from '@pages/Assets/Pools/Pools';
@@ -31,12 +31,12 @@ const SMainContainer = styled.main<Themeable>`
   color: ${({ activeTheme }) => activeTheme.textAndIconsPrimary};
   margin: 0 auto;
 
-  @media ${styleSettings.mediaQueries.tablet} {
+  @media ${mediaQueries.tablet} {
     width: 728px;
   }
 
-  @media ${styleSettings.mediaQueries.desktop} {
-    width: 1250px;
+  @media ${mediaQueries.desktop} {
+    width: 1050px;
   }
 `;
 

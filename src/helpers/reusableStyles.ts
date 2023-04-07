@@ -9,24 +9,10 @@ export const deviceScreenSize = {
   desktop: '1250px',
 };
 
-export const styleSettings = {
-  colors: {
-    alto: '#D9D9D9',
-    aqua: '#00FFE1',
-    black: '#000000',
-    blackHaze: '#F4F5F5',
-    cerise: '#D33079',
-    gallery: '#EEEEEE',
-    jaffa: '#F19135',
-    rose: '#E6007A',
-    shark: '#2C2C30',
-    white: '#FFFFFF',
-  },
-  mediaQueries: {
-    mobile: `(min-width: ${deviceScreenSize.mobile})`,
-    tablet: `(min-width: ${deviceScreenSize.tablet})`,
-    desktop: `(min-width: ${deviceScreenSize.desktop})`,
-  },
+export const mediaQueries = {
+  mobile: `(min-width: ${deviceScreenSize.mobile})`,
+  tablet: `(min-width: ${deviceScreenSize.tablet})`,
+  desktop: `(min-width: ${deviceScreenSize.desktop})`,
 };
 
 // ============
@@ -46,11 +32,15 @@ export const themes: Record<ChainThemes, ThemeStyle> = {
 
     buttonMainBackground: '#FFFFFF',
     buttonMainText: '#000000',
-    buttonMainBackgroundHovered: 'rgba(0, 0, 0, 0.8)',
+    buttonMainBackgroundHovered: 'rgba(255, 255, 255, 0.8)',
+    buttonMainBackgroundDisabled: 'rgba(255, 255, 255, 0.08)',
+    buttonMainTextDisabled: 'rgba(0, 0, 0, 0.25)',
 
     buttonSecondaryBackground: '#000000',
     buttonSecondaryText: '#FFFFFF',
     buttonSecondaryBackgroundHovered: 'rgba(255, 255, 255, 0.24)',
+    buttonSecondaryBackgroundDisabled: 'rgba(255, 255, 255, 0.24)',
+    buttonSecondaryTextDisabled: 'rgba(255, 255, 255, 0.25)',
 
     fill30: 'rgba(255, 255, 255, 0.3)',
     fill24: 'rgba(255, 255, 255, 0.24)',
@@ -83,11 +73,15 @@ export const themes: Record<ChainThemes, ThemeStyle> = {
 
     buttonMainBackground: '#000000',
     buttonMainText: '#FFFFFF',
-    buttonMainBackgroundHovered: 'rgba(255, 255, 255, 0.8)',
+    buttonMainBackgroundHovered: 'rgba(0, 0, 0, 0.8)',
+    buttonMainBackgroundDisabled: 'rgba(0, 0, 0, 0.08)',
+    buttonMainTextDisabled: 'rgba(0, 0, 0, 0.25)',
 
     buttonSecondaryBackground: '#FFFFFF',
     buttonSecondaryText: '#000000',
     buttonSecondaryBackgroundHovered: 'rgba(0, 0, 0, 0.24)',
+    buttonSecondaryBackgroundDisabled: 'rgba(0, 0, 0, 0.24)',
+    buttonSecondaryTextDisabled: 'rgba(255, 255, 255, 0.25)',
 
     fill30: 'rgba(0, 0, 0, 0.3)',
     fill24: 'rgba(0, 0, 0, 0.24)',
@@ -112,6 +106,8 @@ export const themes: Record<ChainThemes, ThemeStyle> = {
 // ============
 // CSS SNIPPETS
 // ============
+
+// CSS SNIPPETS - FONTS
 export const CssBoldXXL = css`
   font-family: 'Unbounded', cursive;
   font-size: 40px;
@@ -195,11 +191,79 @@ export const CssRegularS = css`
   font-weight: 400;
 `;
 
-export const CssButtonMini = css`
-  line-height: 30px;
-  padding: 0 25px;
+// CSS SNIPPETS - BUTTONS
+const commonSizes = css`
+  &.XL {
+    ${CssSemiBoldL}
+    height: 64px;
+  }
+
+  &.L {
+    ${CssSemiBoldS}
+    height: 72px;
+    border-radius: 40px;
+  }
+
+  &.M {
+    ${CssSemiBoldS}
+    height: 56px;
+  }
+
+  &.S {
+    ${CssSemiBoldM}
+    height: 48px;
+  }
 `;
 
+export const CssButtonMainStyles = css<CommonStyleProps & Themeable>`
+  padding: 0px 50px;
+  color: ${({ activeTheme, isDisabled }) =>
+    isDisabled ? activeTheme.buttonMainTextDisabled : activeTheme.buttonMainText};
+  background-color: ${({ activeTheme, isDisabled }) =>
+    isDisabled ? activeTheme.buttonMainBackgroundDisabled : activeTheme.buttonMainBackground};
+  border-radius: 32px;
+  border: none;
+
+  :hover {
+    cursor: ${({ isDisabled }) => (isDisabled ? 'not-allowed' : 'pointer')};
+    background-color: ${({ activeTheme, isDisabled }) =>
+      isDisabled ? activeTheme.buttonMainBackgroundDisabled : activeTheme.buttonMainBackgroundHovered};
+  }
+
+  a {
+    text-decoration: none;
+    color: ${({ activeTheme }) => activeTheme.buttonMainText};
+  }
+
+  ${commonSizes}
+`;
+
+export const CssButtonSecondaryStyles = css<CommonStyleProps & Themeable>`
+  ${CssSemiBoldS}
+  height: 56px;
+  padding: 0px 50px;
+  color: ${({ activeTheme, isDisabled }) =>
+    isDisabled ? activeTheme.buttonSecondaryTextDisabled : activeTheme.buttonSecondaryText};
+  background-color: ${({ activeTheme, isDisabled }) =>
+    isDisabled ? activeTheme.buttonSecondaryBackgroundDisabled : activeTheme.buttonSecondaryBackground};
+  border-radius: 32px;
+  border: none;
+
+  :hover {
+    cursor: ${({ isDisabled }) => (isDisabled ? 'not-allowed' : 'pointer')};
+    background-color: ${({ activeTheme, isDisabled }) =>
+      isDisabled ? activeTheme.buttonSecondaryBackgroundDisabled : activeTheme.buttonSecondaryBackgroundHovered};
+  }
+
+  a {
+    text-decoration: none;
+    color: ${({ activeTheme }) => activeTheme.buttonSecondaryText};
+  }
+
+  ${commonSizes}
+`;
+
+// TODO deprecated, need to replace with button styles above
 export const CssCommonButtonStyles = css<CommonStyleProps & Themeable>`
   height: 50px;
   padding: 0 50px;
@@ -231,7 +295,6 @@ export const SContentBlockContainer = styled.div`
   gap: 14px;
   margin-bottom: 20px;
   padding-bottom: 20px;
-  border-bottom: 1px dashed ${styleSettings.colors.cerise};
 `;
 
 export const SContentBlock = styled.div`

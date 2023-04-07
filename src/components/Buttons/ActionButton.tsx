@@ -4,32 +4,40 @@ import styled from 'styled-components';
 import { useAccounts } from '@contexts/AccountsContext';
 
 import { CommonStyleProps } from '@helpers/interfaces';
-import { CssCommonButtonStyles } from '@helpers/reusableStyles';
+import { CssButtonMainStyles, CssButtonSecondaryStyles } from '@helpers/reusableStyles';
 
 const SButton = styled.button`
-  ${CssCommonButtonStyles}
+  &.main {
+    ${CssButtonMainStyles}
+  }
+
+  &.secondary {
+    ${CssButtonSecondaryStyles}
+  }
 `;
 
 interface ActionButtonProps extends CommonStyleProps {
   children: ReactElement | string;
-  action: () => void;
+  action?: () => void;
 }
 
-const ActionButton = ({ children, action, className, isDisabled }: ActionButtonProps) => {
+const ActionButton = ({ children, type = 'button', action, className, isDisabled }: ActionButtonProps) => {
   const { theme } = useAccounts();
 
   const handleClick = (event: FormEvent) => {
-    event.preventDefault();
-
     if (isDisabled) {
+      event.preventDefault();
       return;
     }
 
-    action();
+    if (typeof action !== 'undefined') {
+      event.preventDefault();
+      action();
+    }
   };
 
   return (
-    <SButton className={className} isDisabled={isDisabled} activeTheme={theme} onClick={handleClick}>
+    <SButton type={type} className={className} isDisabled={isDisabled} activeTheme={theme} onClick={handleClick}>
       {children}
     </SButton>
   );

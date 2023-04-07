@@ -25,7 +25,7 @@ const Nft = ({ nftMetadata }: NftProps) => {
     <SCard activetheme={theme}>
       <ShowImage imageCid={image} altText={description} />
       <Card.Body>
-        <SCardEdit className='text-muted'>
+        <SCardEdit className='text-muted' activetheme={theme}>
           <span>NFT ID #{id}</span>
           <Link to={routes.myAssets.nftEdit(collectionId, id)}>
             Edit

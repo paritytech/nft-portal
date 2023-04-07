@@ -10,7 +10,6 @@ import {
   ChainTitles,
   MintTypes,
   ModalStatusTypes,
-  MultiAssetId,
   MultiAssets,
   RestrictionTypes,
   StatusMessages,
@@ -102,10 +101,14 @@ export interface ThemeStyle {
   buttonMainBackground: string;
   buttonMainText: string;
   buttonMainBackgroundHovered: string;
+  buttonMainBackgroundDisabled: string;
+  buttonMainTextDisabled: string;
 
   buttonSecondaryBackground: string;
   buttonSecondaryText: string;
   buttonSecondaryBackgroundHovered: string;
+  buttonSecondaryBackgroundDisabled: string;
+  buttonSecondaryTextDisabled: string;
 
   fill30: string;
   fill24: string;
