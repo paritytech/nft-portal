@@ -1,6 +1,7 @@
 import { memo } from 'react';
 
 import { NftMetadata } from '@helpers/interfaces';
+import { SContentBlockContainer } from '@helpers/reusableStyles';
 
 import Nft from './Nft';
 
@@ -18,11 +19,11 @@ const NftsView = ({ nftsMetadata }: NftsViewProps) => {
   }
 
   return (
-    <>
+    <SContentBlockContainer>
       {nftsMetadata.map((nftMetadata) => (
         <Nft key={nftMetadata.id} nftMetadata={nftMetadata} />
       ))}
-    </>
+    </SContentBlockContainer>
   );
 };
 

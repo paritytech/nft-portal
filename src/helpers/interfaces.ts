@@ -93,13 +93,19 @@ export interface ThemeStyle {
   backgroundPrimary: string;
   backgroundSecondary: string;
   backgroundTertiary: string;
-  backgroundInverse: string;
 
   textAndIconsPrimary: string;
   textAndIconsSecondary: string;
   textAndIconsTertiary: string;
   textAndIconsDisabled: string;
-  textAndIconsInverse: string;
+
+  buttonMainBackground: string;
+  buttonMainText: string;
+  buttonMainBackgroundHovered: string;
+
+  buttonSecondaryBackground: string;
+  buttonSecondaryText: string;
+  buttonSecondaryBackgroundHovered: string;
 
   fill30: string;
   fill24: string;
@@ -118,32 +124,6 @@ export interface ThemeStyle {
 
   forcedWhite: string;
   forcedBlack: string;
-
-  // TODO remove once migrated to new styles
-  // deprecated
-  blockBackgroundColorHover: string;
-  bodyBackground: string;
-  borderRadius: string;
-  buttonBackgroundColor: string;
-  buttonBorderColor: string;
-  buttonBorderColorHover: string;
-  buttonMainBackgroundColor: string;
-  buttonMainColor: string;
-  buttonSecondaryBackgroundColor: string;
-  buttonSecondaryColor: string;
-  buttonTextColor: string;
-  buttonTextColorHover: string;
-  closeButtonBackgroundColor: string;
-  closeButtonVariant: string | undefined;
-  defaultTextColor: string;
-  navigationBackground: string;
-  navigationButtonBackgroundColor: string;
-  navigationButtonTextColor: string;
-  navigationButtonBorderColor: string;
-  navigationButtonActiveBackgroundColor: string;
-  navigationButtonActiveTextColor: string;
-  navigationButtonActiveBorderColor: string;
-  transparentHoverHighlight: string;
 }
 
 export interface StatusEntry {
