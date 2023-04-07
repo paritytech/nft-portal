@@ -44,18 +44,16 @@ const SNavigationButton = styled(NavLink)`
   padding: 0 16px;
   text-decoration: none;
   text-align: center;
-  color: ${({ activetheme: activeTheme }: { activetheme: ThemeStyle }) => activeTheme.navigationButtonTextColor};
+  color: ${({ activetheme: activeTheme }: { activetheme: ThemeStyle }) => activeTheme.textAndIconsTertiary};
   border-radius: 32px;
 
   &.active,
   :hover {
-    color: ${({ activetheme: activeTheme }: { activetheme: ThemeStyle }) =>
-      activeTheme.navigationButtonActiveTextColor};
+    color: ${({ activetheme: activeTheme }: { activetheme: ThemeStyle }) => activeTheme.textAndIconsPrimary};
   }
 
   &.active {
-    background-color: ${({ activetheme: activeTheme }: { activetheme: ThemeStyle }) =>
-      activeTheme.navigationButtonActiveBackgroundColor};
+    background-color: ${({ activetheme: activeTheme }: { activetheme: ThemeStyle }) => activeTheme.fill6};
   }
 `;
 

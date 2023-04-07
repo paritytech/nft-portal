@@ -38,7 +38,7 @@ const SAccountActions = styled.div<Themeable>`
   right: 0;
   margin-top: 12px;
   padding: 24px;
-  background-color: ${({ activeTheme }) => activeTheme.navigationBackground};
+  background-color: ${({ activeTheme }) => activeTheme.backgroundTertiary};
   border-radius: 16px;
   z-index: 1;
   white-space: nowrap;
@@ -201,7 +201,7 @@ const Connect = () => {
       <SModal show={showWalletSelection} onHide={handleClose} activetheme={theme}>
         <Modal.Header>
           <Modal.Title>Available wallets</Modal.Title>
-          <CrossCloseButton variant={theme.closeButtonVariant} handleClose={handleClose} />
+          <CrossCloseButton handleClose={handleClose} />
         </Modal.Header>
         <Modal.Body>
           {wallets.map((wallet: BaseWallet, index) => (

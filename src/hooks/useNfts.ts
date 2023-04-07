@@ -27,7 +27,7 @@ export const useNfts = (collectionId: string) => {
       const results: StorageKey<[u32, u32]>[] = await api.query.nfts.item.keys(collectionId);
 
       const nftIds = results
-        .map(({ args: { 1: nftId } }) => nftId)
+        .map(({ args: [, nftId] }) => nftId)
         .sort((a, b) => a.cmp(b))
         .map((nftId) => nftId.toString());
 
@@ -45,7 +45,7 @@ export const useNfts = (collectionId: string) => {
         );
 
         const nftIds = results
-          .map(({ args: { 2: nftId } }) => nftId)
+          .map(({ args: [, , nftId] }) => nftId)
           .sort((a, b) => a.cmp(b))
           .map((nftId) => nftId.toString());
 

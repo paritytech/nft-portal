@@ -17,8 +17,7 @@ const SClose = styled(CrossCloseButton)`
   position: absolute;
   top: 10px;
   right: 10px;
-  background-color: ${({ activetheme }: { activetheme: ThemeStyle }) => activetheme.closeButtonBackgroundColor};
-  opacity: 0.6;
+  background-color: ${({ activetheme }: { activetheme: ThemeStyle }) => activetheme.appliedOverlay};
 `;
 
 interface ImagePreviewProps {

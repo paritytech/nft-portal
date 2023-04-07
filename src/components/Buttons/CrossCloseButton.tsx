@@ -1,8 +1,6 @@
 import { memo } from 'react';
 import CloseButton, { CloseButtonProps } from 'react-bootstrap/esm/CloseButton';
 
-import { useAccounts } from '@contexts/AccountsContext';
-
 import { CommonStyleProps } from '@helpers/interfaces';
 
 interface CrossCloseButtonProps extends CloseButtonProps, CommonStyleProps {
@@ -10,9 +8,8 @@ interface CrossCloseButtonProps extends CloseButtonProps, CommonStyleProps {
 }
 
 const CrossCloseButton = ({ handleClose, className }: CrossCloseButtonProps) => {
-  const { theme } = useAccounts();
-
-  return <CloseButton variant={theme.closeButtonVariant} className={className} onClick={handleClose} />;
+  // TODO use custom icon based button, would be easier to control
+  return <CloseButton className={className} onClick={handleClose} />;
 };
 
 export default memo(CrossCloseButton);

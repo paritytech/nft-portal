@@ -1,6 +1,7 @@
 import { memo } from 'react';
 
 import { CollectionMetadata } from '@helpers/interfaces';
+import { SContentBlockContainer } from '@helpers/reusableStyles';
 
 import Collection from './Collection';
 
@@ -18,11 +19,11 @@ const CollectionsView = ({ collectionsMetadata }: CollectionsViewProps) => {
   }
 
   return (
-    <>
+    <SContentBlockContainer>
       {collectionsMetadata.map((collectionMetadata) => (
         <Collection key={collectionMetadata.id} collectionMetadata={collectionMetadata} />
       ))}
-    </>
+    </SContentBlockContainer>
   );
 };
 

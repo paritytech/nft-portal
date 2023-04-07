@@ -8,17 +8,9 @@ import { useAccounts } from '@contexts/AccountsContext';
 import { useModalStatus } from '@contexts/ModalStatusContext';
 
 import { ModalStatusTypes } from '@helpers/constants';
-import { ThemeStyle } from '@helpers/interfaces';
+import { SModal } from '@helpers/styledComponents';
 
 import Loader from './Loader';
-
-const SModal = styled(Modal)`
-  .modal-content {
-    background-color: ${({ activetheme }: { activetheme: ThemeStyle }) => activetheme.bodyBackground};
-    border: 2px solid ${({ activetheme }: { activetheme: ThemeStyle }) => activetheme.buttonBorderColor};
-    color: ${({ activetheme }: { activetheme: ThemeStyle }) => activetheme.defaultTextColor};
-  }
-`;
 
 const SStatusMessage = styled.p`
   font-size: 24px;

@@ -74,7 +74,7 @@ export const useCheckMintingEligibility = (collectionId: string) => {
               attributes.forEach((attribute) => {
                 if (attribute) {
                   const {
-                    args: { 3: attributeKey },
+                    args: [, , , attributeKey],
                   } = attribute;
 
                   const claimAttribute = api.createType('PalletNftsPalletAttributes', attributeKey);
