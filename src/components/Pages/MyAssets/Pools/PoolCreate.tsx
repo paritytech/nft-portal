@@ -40,7 +40,8 @@ const PoolCreate = () => {
       if (selectedPoolToken) {
         // validate user has enough funds to cover the setup fee
         const poolSetupFee = api.consts.assetConversion?.poolSetupFee ?? null;
-        if (poolSetupFee && !poolSetupFee.isZero() && nativeBalance <= poolSetupFee) {
+        const existentialDeposit = api.consts.balances.existentialDeposit;
+        if (poolSetupFee && !poolSetupFee.isZero() && nativeBalance.lt(poolSetupFee.add(existentialDeposit))) {
           setStatus({ type: ModalStatusTypes.ERROR, message: StatusMessages.POOL_INSUFFICIENT_BALANCE_FOR_DEPOSIT });
           openModalStatus();
           return;
