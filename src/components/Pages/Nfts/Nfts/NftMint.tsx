@@ -5,7 +5,7 @@ import { Link, useParams } from 'react-router-dom';
 
 import { saveImageToIpfs } from '@api/pinata';
 
-import BasicButton from '@buttons/BasicButton';
+import ActionButton from '@buttons/ActionButton';
 
 import FileDropZone from '@common/FileDropZone';
 import ModalStatus from '@common/ModalStatus';
@@ -15,7 +15,6 @@ import { useAccounts } from '@contexts/AccountsContext';
 
 import { RestrictionTypes } from '@helpers/constants';
 import { CollectionMetadataData, MintAccessNft } from '@helpers/interfaces';
-import { SSecondaryButton } from '@helpers/styledComponents';
 import { generateAssetId } from '@helpers/utilities';
 
 import { useCheckMintingEligibility } from '@hooks/useCheckMintingEligibility';
@@ -24,7 +23,7 @@ import { useNfts } from '@hooks/useNfts';
 const NftMint = () => {
   const { collectionId } = useParams();
   const { mintNft } = useNfts(collectionId || '');
-  const { activeAccount, theme } = useAccounts();
+  const { activeAccount } = useAccounts();
   const {
     restrictionMessages,
     checkAvailabilityRestriction,
@@ -127,13 +126,14 @@ const NftMint = () => {
         />
 
         <Stack direction='horizontal' gap={2} className='justify-content-end'>
-          <BasicButton type='submit' isDisabled={!isEligibleToMint}>
+          <ActionButton type='submit' isDisabled={!isEligibleToMint} className='main S'>
             Mint NFT
-          </BasicButton>
+          </ActionButton>
+
           <Link to='..'>
-            <SSecondaryButton type='button' activeTheme={theme}>
+            <ActionButton type='button' className='secondary S'>
               Back
-            </SSecondaryButton>
+            </ActionButton>
           </Link>
         </Stack>
       </Form>

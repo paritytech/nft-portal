@@ -4,7 +4,13 @@ import styled from 'styled-components';
 import { useAccounts } from '@contexts/AccountsContext';
 
 import { CommonStyleProps } from '@helpers/interfaces';
-import { CssButtonMainStyles, CssButtonSecondaryStyles } from '@helpers/reusableStyles';
+import {
+  CssButtonMainStyles,
+  CssButtonRoundedStyles,
+  CssButtonSecondaryStyles,
+  CssButtonStrokeStyles,
+  CssButtonTransparentStyles,
+} from '@helpers/reusableStyles';
 
 const SButton = styled.button`
   &.main {
@@ -13,6 +19,18 @@ const SButton = styled.button`
 
   &.secondary {
     ${CssButtonSecondaryStyles}
+  }
+
+  &.rounded {
+    ${CssButtonRoundedStyles}
+  }
+
+  &.transparent {
+    ${CssButtonTransparentStyles}
+  }
+
+  &.stroke {
+    ${CssButtonStrokeStyles}
   }
 `;
 

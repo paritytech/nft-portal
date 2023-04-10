@@ -98,28 +98,20 @@ export interface ThemeStyle {
   textAndIconsTertiary: string;
   textAndIconsDisabled: string;
 
-  buttonMainBackground: string;
-  buttonMainText: string;
-  buttonMainBackgroundHovered: string;
-  buttonMainBackgroundDisabled: string;
-  buttonMainTextDisabled: string;
-
-  buttonSecondaryBackground: string;
-  buttonSecondaryText: string;
-  buttonSecondaryBackgroundHovered: string;
-  buttonSecondaryBackgroundDisabled: string;
-  buttonSecondaryTextDisabled: string;
-
+  fill80: string;
   fill30: string;
+  fill25: string;
   fill24: string;
   fill18: string;
   fill12: string;
+  fill8: string;
   fill6: string;
 
   appliedOverlay: string;
   appliedHover: string;
   appliedStroke: string;
   appliedSeparator: string;
+  appliedButtonMain: string;
 
   accentsPink: string;
   accentsRed: string;
