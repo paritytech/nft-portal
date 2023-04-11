@@ -10,7 +10,6 @@ import {
   ChainTitles,
   MintTypes,
   ModalStatusTypes,
-  MultiAssetId,
   MultiAssets,
   RestrictionTypes,
   StatusMessages,
@@ -186,7 +185,7 @@ export type MintType = MintTypes | { [MintTypes.HOLDER_OF]: string };
 
 export type MintTypeJson = Record<'public' | 'issuer' | 'holderOf', null | number>;
 
-export type PoolReserves = [number, number];
+export type PoolReserves = [BN, BN];
 
 export type PalletAssetConversionPoolId = ITuple<
   [PalletAssetConversionMultiAssetId, PalletAssetConversionMultiAssetId]

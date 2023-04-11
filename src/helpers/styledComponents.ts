@@ -9,10 +9,14 @@ import ActionButton from '@buttons/ActionButton';
 import BasicButton from '@buttons/BasicButton';
 
 import { ThemeStyle, Themeable } from './interfaces';
-import { CssButtonMini, styleSettings } from './reusableStyles';
+import { CssButtonMini, CssButtonXMini, styleSettings } from './reusableStyles';
 
 export const SActionButtonMini = styled(ActionButton)`
   ${CssButtonMini}
+`;
+
+export const SActionButtonXMini = styled(ActionButton)`
+  ${CssButtonXMini}
 `;
 
 export const SBasicButtonMini = styled(BasicButton)`

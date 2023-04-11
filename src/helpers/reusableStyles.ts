@@ -200,6 +200,13 @@ export const CssButtonMini = css`
   padding: 0 25px;
 `;
 
+export const CssButtonXMini = css`
+  line-height: 30px;
+  height: 30px;
+  padding: 0 15px;
+  font-size: 16px;
+`;
+
 export const CssCommonButtonStyles = css<CommonStyleProps & Themeable>`
   height: 50px;
   padding: 0 50px;

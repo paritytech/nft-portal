@@ -5,7 +5,9 @@ import type {
   PalletAssetsAssetDetails,
   PalletBalancesAccountData,
 } from '@polkadot/types/lookup';
+import { PalletAssetsAssetMetadata } from '@polkadot/types/lookup';
 import type { BN } from '@polkadot/util';
+import { BN_ZERO } from '@polkadot/util';
 import { ToBn } from '@polkadot/util/types';
 import { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -20,6 +22,7 @@ import type {
   MetadataRecords,
   MultiAsset,
   NativeTokenMetadata,
+  PalletAssetConversionMultiAssetId,
   PalletAssetConversionPoolId,
   PalletAssetConversionPoolInfo,
   PoolInfo,
@@ -40,6 +43,60 @@ export const useAssets = () => {
   const [tokensMetadata, setTokensMetadata] = useState<TokenMetadata[] | null>(null);
   const [tokensBalances, setTokensBalances] = useState<TokenBalance[] | null>(null);
   const [pools, setPools] = useState<PoolInfo[] | null>(null);
+
+  const addLiquidity = useCallback(
+    async (
+      asset1: PalletAssetConversionMultiAssetId,
+      asset2: PalletAssetConversionMultiAssetId,
+      amount1: BN,
+      amount2: BN,
+    ) => {
+      // TODO: support 5% slippage
+      if (api && activeAccount && activeWallet) {
+        setStatus({ type: ModalStatusTypes.INIT_TRANSACTION, message: StatusMessages.TRANSACTION_CONFIRM });
+        openModalStatus();
+
+        try {
+          const token1: MultiAsset = MultiAssets.NATIVE;
+          const token2: MultiAsset = { [MultiAssets.ASSET]: tokenId };
+
+          const unsub = await api.tx.assetConversion
+            .createPool(token1, token2)
+            .signAndSend(activeAccount.address, { signer: activeWallet.signer }, ({ events, status }) => {
+              if (status.isReady) {
+                setStatus({ type: ModalStatusTypes.IN_PROGRESS, message: StatusMessages.POOL_CREATION });
+              }
+
+              if (status.isInBlock) {
+                unsub();
+
+                events.some(({ event: { data, method } }) => {
+                  if (method === 'PoolCreated') {
+                    const createdPoolId = data.poolId as PalletAssetConversionPoolId;
+
+                    if (createdPoolId && createdPoolId[1].isAsset && createdPoolId[1].asAsset.eq(tokenId)) {
+                      setStatus({ type: ModalStatusTypes.COMPLETE, message: StatusMessages.POOL_CREATED });
+                      setAction(() => () => navigate(routes.discover.pools));
+                      return true;
+                    }
+                  }
+
+                  if (method === 'ExtrinsicFailed') {
+                    setStatus({ type: ModalStatusTypes.ERROR, message: StatusMessages.ACTION_FAILED });
+                    return true;
+                  }
+
+                  return false;
+                });
+              }
+            });
+        } catch (error) {
+          setStatus({ type: ModalStatusTypes.ERROR, message: handleError(error) });
+        }
+      }
+    },
+    [api, activeAccount, activeWallet, navigate, openModalStatus, setStatus, setAction],
+  );
 
   const createPool = useCallback(
     async (tokenId: AssetId) => {
@@ -67,6 +124,7 @@ export const useAssets = () => {
 
                     if (createdPoolId && createdPoolId[1].isAsset && createdPoolId[1].asAsset.eq(tokenId)) {
                       setStatus({ type: ModalStatusTypes.COMPLETE, message: StatusMessages.POOL_CREATED });
+                      // TODO: change to add liquidity
                       setAction(() => () => navigate(routes.discover.pools));
                       return true;
                     }
@@ -126,6 +184,35 @@ export const useAssets = () => {
     }
   }, [api]);
 
+  const getAssetBalance = useCallback(
+    async (assetId: AssetId): Promise<BN> => {
+      if (api && activeAccount) {
+        try {
+          const result: Option<PalletAssetsAssetAccount> = await api.query.assets.account(
+            assetId,
+            activeAccount.address,
+          );
+          return result.unwrapOr(null)?.balance.toBn();
+        } catch (error) {
+          //
+        }
+      }
+    },
+    [api, activeAccount],
+  );
+
+  const getAssetMetadata = useCallback(
+    async (assetId: AssetId): Promise<[PalletAssetsAssetMetadata, PalletAssetsAssetDetails | null]> => {
+      if (api) {
+        const [metadataRecord, detailsRecord]: [PalletAssetsAssetMetadata, Option<PalletAssetsAssetDetails>] =
+          await Promise.all([api.query.assets.metadata(assetId), api.query.assets.asset(assetId)]);
+
+        return [metadataRecord, detailsRecord.unwrapOr(null)];
+      }
+    },
+    [api],
+  );
+
   const getNativeBalance = useCallback(async () => {
     if (api && activeAccount) {
       try {
@@ -150,6 +237,26 @@ export const useAssets = () => {
     }
   }, [api]);
 
+  const getPoolReserves = useCallback(
+    async (
+      asset1: PalletAssetConversionMultiAssetId,
+      asset2: PalletAssetConversionMultiAssetId,
+    ): Promise<PoolReserves> => {
+      let reserves: PoolReserves = [BN_ZERO, BN_ZERO];
+      if (api && api.call.assetConversionApi) {
+        const res = await api.call.assetConversionApi.getReserves(asset1, asset2);
+        if (res && !res.isEmpty) {
+          console.log('res', res.toJSON());
+          // TODO:
+          // reserves = res.toJSON() as PoolReserves;
+        }
+      }
+
+      return reserves;
+    },
+    [api],
+  );
+
   const getPools = useCallback(async () => {
     if (api) {
       let pools: PoolInfo[] = [];
@@ -169,14 +276,7 @@ export const useAssets = () => {
               const [poolAsset1, poolAsset2] = poolId;
 
               const lpToken = (data.unwrap() as PalletAssetConversionPoolInfo).lpToken;
-              let reserves: PoolReserves = [0, 0];
-
-              if (api.call.assetConversionApi) {
-                const res = await api.call.assetConversionApi.getReserves(poolAsset1, poolAsset2);
-                if (res) {
-                  reserves = res.toJSON() as PoolReserves;
-                }
-              }
+              const reserves = await getPoolReserves(poolAsset1, poolAsset2);
 
               return {
                 poolId,
@@ -189,7 +289,7 @@ export const useAssets = () => {
       }
       setPools(pools);
     }
-  }, [api]);
+  }, [api, getPoolReserves]);
 
   const getTokenIds = useCallback(async () => {
     if (api) {
@@ -281,12 +381,16 @@ export const useAssets = () => {
   }, [api, getTokenIds]);
 
   return {
+    addLiquidity,
     availablePoolTokens,
     createPool,
     getAvailablePoolTokens,
+    getAssetBalance,
+    getAssetMetadata,
     getNativeBalance,
     getNativeMetadata,
     getPools,
+    getPoolReserves,
     getTokensBalances,
     getTokensMetadata,
     nativeBalance,

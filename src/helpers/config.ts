@@ -58,7 +58,7 @@ export const apiConfigRuntime: OverrideBundleType = {
   spec: {
     node: {
       runtime: {
-        DexApi: [
+        AssetConversionApi: [
           {
             methods: {
               get_reserves: {

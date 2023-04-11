@@ -1,5 +1,7 @@
 const COLLECTION_ID_PARAM = ':collectionId';
 const NFT_ID_PARAM = ':nftId';
+const ASSET_ID_PARAM1 = ':assetId1';
+const ASSET_ID_PARAM2 = ':assetId2';
 
 // TODO rename newNftMint to nftMint later, get rid of old route
 export const routes = {
@@ -27,6 +29,8 @@ export const routes = {
     index: '/discover',
     tokens: '/discover/tokens',
     pools: '/discover/pools',
+    addLiquidity: (asset1: string = ASSET_ID_PARAM1, asset2: string = ASSET_ID_PARAM2) =>
+      `/discover/pools/add-liquidity/${asset1}/${asset2}`,
   },
 
   swap: {

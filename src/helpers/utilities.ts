@@ -1,4 +1,10 @@
 import { ApiPromise } from '@polkadot/api';
+import { PalletAssetsAssetMetadata } from '@polkadot/types/lookup';
+import { BN_ZERO } from '@polkadot/util';
+import { Decimal } from 'decimal.js';
+
+import { MultiAssets } from '@helpers/constants';
+import { MultiAsset, PalletAssetConversionMultiAssetId, PoolReserves } from '@helpers/interfaces';
 
 export const ellipseAddress = (address = '', width = 10): string => {
   return `${address.slice(0, width)}...${address.slice(-width)}`;
@@ -70,4 +76,42 @@ export const sortStrings = (string1: string | null, string2: string | null): num
     return 1;
   }
   return 0;
+};
+
+export const isUnsignedNumber = (check: string): boolean => {
+  const asNumber = +check;
+  return Number.isInteger(asNumber) && asNumber >= 0 && check === asNumber.toString();
+};
+
+export const constructMultiAsset = (assetId: string, api: ApiPromise): PalletAssetConversionMultiAssetId | null => {
+  if (assetId === 'native') {
+    return api.createType('PalletAssetConversionMultiAssetId', MultiAssets.NATIVE);
+  } else if (isUnsignedNumber(assetId)) {
+    return api.createType('PalletAssetConversionMultiAssetId', {
+      [MultiAssets.ASSET]: api.createType('AssetId', assetId),
+    });
+  }
+  return null;
+};
+
+export const isPoolEmpty = (poolReserves: PoolReserves | undefined): boolean => {
+  return poolReserves?.[0] === BN_ZERO && poolReserves?.[1] === BN_ZERO;
+};
+
+export const calcExchangeRate = (amount1: number, amount2: number): number | null => {
+  if (amount1 === 0 || amount2 === 0) return null;
+  const result = new Decimal(amount2).div(new Decimal(amount1)).toNumber();
+  return !Number.isNaN(result) ? result : null;
+};
+
+export const getAssetDecimals = (metadata: PalletAssetsAssetMetadata): number => {
+  return metadata.decimals?.toNumber() || 0;
+};
+
+export const getAssetName = (metadata: PalletAssetsAssetMetadata): string => {
+  return metadata.name?.toUtf8() || '';
+};
+
+export const getAssetSymbol = (metadata: PalletAssetsAssetMetadata): string => {
+  return metadata.symbol?.toUtf8() || '';
 };

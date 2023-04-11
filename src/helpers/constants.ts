@@ -34,6 +34,8 @@ export enum StatusMessages {
   POOL_CREATION = 'Creating pool, please wait',
   POOL_CREATED = 'Pool created!',
   POOL_INSUFFICIENT_BALANCE_FOR_DEPOSIT = 'Your account`s balance is bellow the required pool creation fee',
+  POOL_MIN_LIQUIDITY_ERROR = 'You need to provide at least {amount} for empty pool',
+  POOL_ADD_LIQUIDITY_AMOUNT_TOO_HIGH = 'The amount you entered is higher than your balance',
 }
 
 export enum MintTypes {

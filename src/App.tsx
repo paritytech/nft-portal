@@ -13,6 +13,7 @@ import { styleSettings } from '@helpers/reusableStyles';
 import { routes } from '@helpers/routes';
 
 import Pools from '@pages/Assets/Pools/Pools';
+import ValidateAddLiquidity from '@pages/Assets/Pools/ValidateAddLiquidity';
 import Tokens from '@pages/Assets/Tokens/Tokens';
 import Discover from '@pages/Discover/Discover';
 import MyAssets from '@pages/MyAssets/MyAssets';
@@ -152,7 +153,7 @@ const App = () => {
               <Route
                 path={routes.myAssets.poolCreate}
                 element={
-                  <PrivateRoute redirectTo={routes.myAssets.pools}>
+                  <PrivateRoute redirectTo={routes.discover.pools}>
                     <PoolCreate />
                   </PrivateRoute>
                 }
@@ -163,7 +164,10 @@ const App = () => {
           <Route path={routes.discover.index} element={<Outlet />}>
             <Route index element={<Discover />} />
             <Route path={routes.discover.tokens} element={<Tokens />} />
-            <Route path={routes.discover.pools} element={<Pools />} />
+            <Route path={routes.discover.pools} element={<Outlet />}>
+              <Route index element={<Pools />} />
+              <Route path={routes.discover.addLiquidity()} element={<ValidateAddLiquidity />} />
+            </Route>
           </Route>
 
           <Route path={routes.swap.index} element={<Outlet />}>
