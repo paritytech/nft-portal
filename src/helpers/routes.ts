@@ -3,7 +3,7 @@ const NFT_ID_PARAM = ':nftId';
 
 // TODO rename newNftMint to nftMint later, get rid of old route
 export const routes = {
-  homepage: '/discover',
+  homepage: '/discover/nfts',
 
   myAssets: {
     index: '/my-assets',
