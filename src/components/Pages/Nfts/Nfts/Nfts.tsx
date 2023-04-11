@@ -2,12 +2,9 @@ import { memo, useEffect } from 'react';
 import Stack from 'react-bootstrap/esm/Stack';
 import { Link, useParams } from 'react-router-dom';
 
-import BasicButton from '@buttons/BasicButton';
-
-import { useAccounts } from '@contexts/AccountsContext';
+import ActionButton from '@buttons/ActionButton';
 
 import { routes } from '@helpers/routes';
-import { SSecondaryButton } from '@helpers/styledComponents';
 
 import { useNfts } from '@hooks/useNfts';
 
@@ -16,7 +13,6 @@ import NftsView from './NftsView';
 const Nfts = () => {
   const { collectionId } = useParams();
   const { getNftsMetadata, nftsMetadata } = useNfts(collectionId || '');
-  const { theme } = useAccounts();
 
   useEffect(() => {
     if (collectionId) {
@@ -29,12 +25,12 @@ const Nfts = () => {
       <NftsView nftsMetadata={nftsMetadata} />
       <Stack direction='horizontal' gap={2} className='justify-content-end'>
         <Link to={routes.myAssets.nftMint(collectionId)}>
-          <BasicButton>Mint NFT</BasicButton>
+          <ActionButton className='main S'>Mint NFT</ActionButton>
         </Link>
         <Link to='..'>
-          <SSecondaryButton type='button' activeTheme={theme}>
+          <ActionButton type='button' className='secondary S'>
             Back
-          </SSecondaryButton>
+          </ActionButton>
         </Link>
       </Stack>
     </>

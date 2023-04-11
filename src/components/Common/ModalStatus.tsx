@@ -35,7 +35,11 @@ const ModalStatus = () => {
       <Modal.Body className='text-center'>
         <Loader />
         <SStatusMessage>{status.message}</SStatusMessage>
-        {showButton && <ActionButton action={concludeModalStatus}>OK</ActionButton>}
+        {showButton && (
+          <ActionButton action={concludeModalStatus} className='main S'>
+            OK
+          </ActionButton>
+        )}
       </Modal.Body>
     </SModal>
   );

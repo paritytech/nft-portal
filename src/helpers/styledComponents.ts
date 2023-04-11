@@ -1,37 +1,9 @@
 // Styled components are separated from reusableStyles to prevent circular dependencies
-// for example BasicButton uses import { CssCommonButtonStyles } from '@helpers/reusableStyles';
-// if we put SActionButtonMini inside of reusableStyles, we will have a circular dependency
 import Card from 'react-bootstrap/esm/Card';
 import Modal from 'react-bootstrap/esm/Modal';
 import styled from 'styled-components';
 
-import ActionButton from '@buttons/ActionButton';
-import BasicButton from '@buttons/BasicButton';
-
-import { ThemeStyle, Themeable } from './interfaces';
-import { CssButtonMini, styleSettings } from './reusableStyles';
-
-export const SActionButtonMini = styled(ActionButton)`
-  ${CssButtonMini}
-`;
-
-export const SBasicButtonMini = styled(BasicButton)`
-  ${CssButtonMini}
-`;
-
-export const SSecondaryButton = styled(BasicButton)<Themeable>`
-  color: ${({ activeTheme }) => activeTheme.buttonSecondaryText};
-  background-color: ${({ activeTheme }) => activeTheme.buttonSecondaryBackground};
-
-  :hover {
-    color: ${({ activeTheme }) => activeTheme.buttonSecondaryText};
-    background-color: ${({ activeTheme }) => activeTheme.buttonSecondaryBackgroundHovered};
-  }
-
-  a {
-    color: ${({ activeTheme }) => activeTheme.buttonSecondaryText};
-  }
-`;
+import { ThemeStyle } from './interfaces';
 
 export const SCard = styled(Card)`
   background-color: ${({ activetheme }: { activetheme: ThemeStyle }) => activetheme.fill6};
@@ -44,7 +16,7 @@ export const SCardEdit = styled(Card.Subtitle)`
   a {
     position: relative;
     padding-right: 6px;
-    color: ${styleSettings.colors.cerise};
+    color: ${({ activetheme }: { activetheme: ThemeStyle }) => activetheme.textAndIconsPrimary};
     text-decoration: none;
 
     :hover {
@@ -67,8 +39,7 @@ export const SModal = styled(Modal)`
   }
 
   select {
-    background-color: ${({ activetheme: activeTheme }: { activetheme: ThemeStyle }) =>
-      activeTheme.buttonMainBackground};
-    color: ${({ activetheme: activeTheme }: { activetheme: ThemeStyle }) => activeTheme.buttonMainText};
+    background-color: ${({ activetheme: activeTheme }: { activetheme: ThemeStyle }) => activeTheme.appliedButtonMain};
+    color: ${({ activetheme: activeTheme }: { activetheme: ThemeStyle }) => activeTheme.forcedBlack};
   }
 `;

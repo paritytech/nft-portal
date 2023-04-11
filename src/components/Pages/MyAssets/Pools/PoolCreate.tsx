@@ -5,7 +5,7 @@ import Stack from 'react-bootstrap/Stack';
 import Form from 'react-bootstrap/esm/Form';
 import { Link } from 'react-router-dom';
 
-import BasicButton from '@buttons/BasicButton';
+import ActionButton from '@buttons/ActionButton';
 
 import ModalStatus from '@common/ModalStatus';
 import Title from '@common/Title';
@@ -15,12 +15,11 @@ import { useModalStatus } from '@contexts/ModalStatusContext';
 
 import { ModalStatusTypes, StatusMessages } from '@helpers/constants';
 import { routes } from '@helpers/routes';
-import { SSecondaryButton } from '@helpers/styledComponents';
 
 import { useAssets } from '@hooks/useAssets';
 
 const PoolCreate = () => {
-  const { api, theme } = useAccounts();
+  const { api } = useAccounts();
   const {
     createPool,
     getAvailablePoolTokens,
@@ -37,7 +36,7 @@ const PoolCreate = () => {
     async (event: FormEvent) => {
       event.preventDefault();
       const selectedPoolToken = availablePoolTokens?.[Number(newPoolToken)];
-      if (selectedPoolToken) {
+      if (api && selectedPoolToken) {
         // validate user has enough funds to cover the setup fee
         const poolSetupFee = api.consts.assetConversion?.poolSetupFee ?? null;
         const existentialDeposit = api.consts.balances.existentialDeposit;
@@ -104,11 +103,15 @@ const PoolCreate = () => {
           )}
           <Stack direction='horizontal' gap={2} className='justify-content-end'>
             <Link to={routes.discover.pools}>
-              <SSecondaryButton type='button' activeTheme={theme}>
+              <ActionButton type='button' className='secondary S'>
                 Back
-              </SSecondaryButton>
+              </ActionButton>
             </Link>
-            {availableTokensLeft && <BasicButton type='submit'>Create</BasicButton>}
+            {availableTokensLeft && (
+              <ActionButton type='submit' className='main S'>
+                Create
+              </ActionButton>
+            )}
           </Stack>
         </section>
       </Form>
