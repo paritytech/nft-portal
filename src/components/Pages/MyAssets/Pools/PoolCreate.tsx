@@ -71,7 +71,7 @@ const PoolCreate = () => {
 
   return (
     <>
-      <Title>Create Liquidity Pool</Title>
+      <Title className='XXL'>Create Liquidity Pool</Title>
       <ModalStatus />
       <Form onSubmit={submitCreatePool}>
         <section>

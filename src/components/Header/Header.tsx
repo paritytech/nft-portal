@@ -16,7 +16,7 @@ const SHeader = styled.header<Themeable>`
   align-items: center;
   background-color: ${({ activeTheme }) => activeTheme.fill6};
   border-radius: 32px;
-  margin: 16px;
+  margin: 0 16px 16px;
   padding: 8px 16px;
 `;
 

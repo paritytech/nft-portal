@@ -1,38 +1,9 @@
 import { FormEvent, ReactElement, memo } from 'react';
-import styled from 'styled-components';
 
 import { useAccounts } from '@contexts/AccountsContext';
 
 import { CommonStyleProps } from '@helpers/interfaces';
-import {
-  CssButtonMainStyles,
-  CssButtonRoundedStyles,
-  CssButtonSecondaryStyles,
-  CssButtonStrokeStyles,
-  CssButtonTransparentStyles,
-} from '@helpers/reusableStyles';
-
-const SButton = styled.button`
-  &.main {
-    ${CssButtonMainStyles}
-  }
-
-  &.secondary {
-    ${CssButtonSecondaryStyles}
-  }
-
-  &.rounded {
-    ${CssButtonRoundedStyles}
-  }
-
-  &.transparent {
-    ${CssButtonTransparentStyles}
-  }
-
-  &.stroke {
-    ${CssButtonStrokeStyles}
-  }
-`;
+import { SActionButton } from '@helpers/reusableStyles';
 
 interface ActionButtonProps extends CommonStyleProps {
   children: ReactElement | string;
@@ -55,9 +26,9 @@ const ActionButton = ({ children, type = 'button', action, className, isDisabled
   };
 
   return (
-    <SButton type={type} className={className} isDisabled={isDisabled} activeTheme={theme} onClick={handleClick}>
+    <SActionButton type={type} className={className} isDisabled={isDisabled} activeTheme={theme} onClick={handleClick}>
       {children}
-    </SButton>
+    </SActionButton>
   );
 };
 

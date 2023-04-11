@@ -25,6 +25,8 @@ export const routes = {
 
   discover: {
     index: '/discover',
+    nfts: '/discover/nfts',
+    drops: '/discover/drops',
     tokens: '/discover/tokens',
     pools: '/discover/pools',
   },
