@@ -90,85 +90,91 @@ export const themes: Record<ChainThemes, ThemeStyle> = {
 // ============
 // CSS SNIPPETS
 // ============
+export const CssArrowDown = css`
+  width: 30px;
+  height: 30px;
+  rotate: 90deg;
+  margin-top: 3px;
+`;
 
 // CSS SNIPPETS - FONTS
-export const CssBoldXXL = css`
+export const CssFontBoldXXL = css`
   font-family: 'Unbounded', cursive;
   font-size: 40px;
   font-weight: 700;
 `;
 
-export const CssBoldXL = css`
+export const CssFontBoldXL = css`
   font-family: 'Unbounded', cursive;
   font-size: 32px;
   line-height: 40px;
   font-weight: 700;
 `;
 
-export const CssBoldL = css`
+export const CssFontBoldL = css`
   font-family: 'Unbounded', cursive;
   font-size: 24px;
   line-height: 32px;
   font-weight: 700;
 `;
 
-export const CssBoldM = css`
+export const CssFontBoldM = css`
   font-family: 'Unbounded', cursive;
   font-size: 16px;
   line-height: 20px;
   font-weight: 700;
 `;
 
-export const CssSemiBoldXL = css`
+export const CssFontSemiBoldXL = css`
   font-family: 'Inter', sans-serif;
   font-size: 32px;
   line-height: 40px;
   font-weight: 600;
 `;
 
-export const CssSemiBoldL = css`
+export const CssFontSemiBoldL = css`
   font-family: 'Inter', sans-serif;
   font-size: 24px;
   line-height: 32px;
   font-weight: 600;
 `;
 
-export const CssSemiBoldM = css`
+export const CssFontSemiBoldM = css`
   font-family: 'Inter', sans-serif;
   font-size: 18px;
   line-height: 24px;
   font-weight: 600;
 `;
 
-export const CssSemiBoldS = css`
+export const CssFontSemiBoldS = css`
   font-family: 'Inter', sans-serif;
   font-size: 16px;
   line-height: 24px;
   font-weight: 600;
 `;
 
-export const CssSemiBoldXS = css`
+export const CssFontSemiBoldXS = css`
   font-family: 'Inter', sans-serif;
   font-size: 14px;
   line-height: 20px;
   font-weight: 600;
 `;
 
-export const CssRegularL = css`
+export const CssFontRegularL = css`
   font-family: 'Inter', sans-serif;
   font-size: 24px;
   line-height: 32px;
   font-weight: 400;
 `;
 
-export const CssRegularM = css`
+export const CssFontRegularM = css`
   font-family: 'Inter', sans-serif;
   font-size: 16px;
   line-height: 24px;
   font-weight: 400;
 `;
 
-export const CssRegularS = css`
+export const CssFontRegularS = css`
   font-family: 'Inter', sans-serif;
   font-size: 14px;
   line-height: 20px;
@@ -176,25 +182,25 @@ export const CssRegularS = css`
 `;
 
 // CSS SNIPPETS - BUTTONS
-const commonSizes = css`
+const CssCommonSizes = css`
   &.XL {
-    ${CssSemiBoldL}
+    ${CssFontSemiBoldL}
     height: 64px;
   }
 
   &.L {
-    ${CssSemiBoldS}
+    ${CssFontSemiBoldS}
     height: 72px;
     border-radius: 40px;
   }
 
   &.M {
-    ${CssSemiBoldS}
+    ${CssFontSemiBoldS}
     height: 56px;
   }
 
   &.S {
-    ${CssSemiBoldM}
+    ${CssFontSemiBoldM}
     height: 48px;
   }
 `;
@@ -215,11 +221,11 @@ export const CssButtonMainStyles = css<CommonStyleProps & Themeable>`
       isDisabled ? activeTheme.textAndIconsDisabled : activeTheme.forcedBlack};
   }
 
-  ${commonSizes}
+  ${CssCommonSizes}
 `;
 
 export const CssButtonSecondaryStyles = css<CommonStyleProps & Themeable>`
-  ${CssSemiBoldS}
+  ${CssFontSemiBoldS}
   color: ${({ activeTheme, isDisabled }) => (isDisabled ? activeTheme.fill25 : activeTheme.textAndIconsPrimary)};
   background-color: ${({ activeTheme, isDisabled }) => (isDisabled ? activeTheme.fill24 : activeTheme.forcedBlack)};
 
@@ -233,7 +239,7 @@ export const CssButtonSecondaryStyles = css<CommonStyleProps & Themeable>`
     color: ${({ activeTheme, isDisabled }) => (isDisabled ? activeTheme.fill25 : activeTheme.textAndIconsPrimary)};
   }
 
-  ${commonSizes}
+  ${CssCommonSizes}
 `;
 
 export const CssButtonRoundedStyles = css<CommonStyleProps & Themeable>`
@@ -241,7 +247,7 @@ export const CssButtonRoundedStyles = css<CommonStyleProps & Themeable>`
 
   border-radius: 12px;
 
-  ${commonSizes}
+  ${CssCommonSizes}
 `;
 
 export const CssButtonTransparentStyles = css<CommonStyleProps & Themeable>`
@@ -260,12 +266,12 @@ export const CssButtonTransparentStyles = css<CommonStyleProps & Themeable>`
   }
 
   &.L {
-    ${CssSemiBoldS}
+    ${CssFontSemiBoldS}
     height: 64px;
   }
 
   &.S {
-    ${CssRegularS}
+    ${CssFontRegularS}
     height: 36px;
     color: ${({ activeTheme, isDisabled }) =>
       isDisabled ? activeTheme.textAndIconsDisabled : activeTheme.textAndIconsSecondary};
@@ -273,7 +279,7 @@ export const CssButtonTransparentStyles = css<CommonStyleProps & Themeable>`
 `;
 
 export const CssButtonStrokeStyles = css<CommonStyleProps & Themeable>`
-  ${CssSemiBoldM}
+  ${CssFontSemiBoldM}
   height: 64px;
   color: ${({ activeTheme, isDisabled }) =>
     isDisabled ? activeTheme.textAndIconsDisabled : activeTheme.textAndIconsSecondary};
@@ -314,19 +320,20 @@ export const SContentBlock = styled.div`
 `;
 
 export const SConnectButton = styled.button<Themeable>`
-  ${CssSemiBoldS}
+  ${CssFontSemiBoldS}
   display: flex;
   align-items: center;
   gap: 10px;
   height: 48px;
   line-height: 48px;
-  padding: 0 8px;
+  padding: 0 24px;
   background-color: ${({ activeTheme }) => activeTheme.appliedButtonMain};
   color: ${({ activeTheme }) => activeTheme.forcedBlack};
   border: 0;
   border-radius: 32px;
 
   &.active {
+    padding: 0 8px;
     background-color: ${({ activeTheme }) => activeTheme.fill6};
     color: ${({ activeTheme }) => activeTheme.textAndIconsSecondary};
   }
@@ -336,8 +343,7 @@ export const SConnectButton = styled.button<Themeable>`
   }
 
   .arrow-down {
-    margin: 4px 12px 0 2px;
-    width: 15px;
+    ${CssArrowDown}
   }
 `;
 

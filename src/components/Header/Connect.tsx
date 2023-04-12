@@ -4,7 +4,9 @@ import Modal from 'react-bootstrap/esm/Modal';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
-import CrossCloseButton from '@buttons/CrossCloseButton';
+import CloseButton from '@buttons/CloseButton';
+
+import Title from '@common/Title';
 
 import { useAccounts } from '@contexts/AccountsContext';
 
@@ -18,7 +20,7 @@ import { useConnectToStoredAccount } from '@hooks/useConnectToStoredAccount';
 import { useCopyToClipboard } from '@hooks/useCopyToClipboard';
 import { useOutsideClick } from '@hooks/useOutsideClick';
 
-import DropdownArrow from '@images/dropdown-arrow.svg';
+import ArrowIcon from '@images/icons/arrow.svg';
 import CopyIcon from '@images/icons/copy.svg';
 import IdenticonIcon from '@images/icons/identicon.svg';
 import NftIcon from '@images/icons/nft.svg';
@@ -105,6 +107,14 @@ const SIcon = styled.div<Themeable>`
   }
 `;
 
+const STitle = styled(Title)<Themeable>`
+  color: ${({ activeTheme }) => activeTheme.textAndIconsPrimary};
+`;
+
+const SConnectModal = styled(SModal)`
+  margin-top: 150px;
+`;
+
 const Connect = () => {
   const { activeAccount, wallets, isAutoConnectDone } = useConnectToStoredAccount();
   const { setActiveAccount, setStoredActiveAccount, theme } = useAccounts();
@@ -145,7 +155,7 @@ const Connect = () => {
             <>
               <IdenticonIcon className='identicon' />
               <span>{sizeMatters(activeAccount.name) || ellipseAddress(activeAccount.address, 4)}</span>
-              <DropdownArrow className='arrow-down' />
+              <ArrowIcon className='arrow-down' />
             </>
           ) : (
             'Connect Wallet'
@@ -198,17 +208,21 @@ const Connect = () => {
         </SAccountActions>
       </SContainer>
 
-      <SModal show={showWalletSelection} onHide={handleClose} activetheme={theme}>
-        <Modal.Header>
-          <Modal.Title>Available wallets</Modal.Title>
-          <CrossCloseButton handleClose={handleClose} />
+      <SConnectModal show={showWalletSelection} onHide={handleClose} activetheme={theme}>
+        <Modal.Header className='border-0'>
+          <Modal.Title>
+            <STitle className='L' activeTheme={theme}>
+              Connect Wallet
+            </STitle>
+          </Modal.Title>
+          <CloseButton handleClose={handleClose} />
         </Modal.Header>
         <Modal.Body>
           {wallets.map((wallet: BaseWallet, index) => (
             <Wallet key={index} wallet={wallet} handleClose={handleClose} />
           ))}
         </Modal.Body>
-      </SModal>
+      </SConnectModal>
     </>
   );
 };

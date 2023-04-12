@@ -87,7 +87,7 @@ const CollectionEdit = () => {
             Submit metadata
           </ActionButton>
           <Link to='..'>
-            <ActionButton type='button' className='secondary'>
+            <ActionButton type='button' className='secondary S'>
               Back
             </ActionButton>
           </Link>

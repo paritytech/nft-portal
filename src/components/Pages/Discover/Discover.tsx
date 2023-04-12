@@ -5,11 +5,11 @@ import styled from 'styled-components';
 import { useAccounts } from '@contexts/AccountsContext';
 
 import { ThemeStyle, Themeable } from '@helpers/interfaces';
-import { CssBoldXXL } from '@helpers/reusableStyles';
+import { CssFontBoldXXL } from '@helpers/reusableStyles';
 import { routes } from '@helpers/routes';
 
 const SContentNavigation = styled.div<Themeable>`
-  ${CssBoldXXL}
+  ${CssFontBoldXXL}
   display: flex;
   gap: 40px;
   justify-content: center;

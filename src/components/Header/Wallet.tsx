@@ -3,6 +3,7 @@ import { ChangeEvent, memo } from 'react';
 import styled from 'styled-components';
 
 import ActionButton from '@buttons/ActionButton';
+import ArrowButton from '@buttons/ArrowButton';
 
 import { useAccounts } from '@contexts/AccountsContext';
 
@@ -19,7 +20,6 @@ const SWalletContainer = styled.div`
 const SWalletConnectButton = styled(ActionButton)`
   line-height: 30px;
   padding: 4px 25px;
-  width: 200px;
   min-width: 200px;
 `;
 
@@ -52,8 +52,8 @@ const Wallet = ({ wallet, handleClose }: WalletProps) => {
   };
 
   return (
-    <SWalletContainer>
-      <SWalletConnectButton action={() => connectToWallet(wallet)}>{wallet.metadata.title}</SWalletConnectButton>
+    <>
+      <ArrowButton action={() => connectToWallet(wallet)}>{wallet.metadata.title}</ArrowButton>
       {walletAccounts.length > 0 && (
         <SSelectAccount className='form-select' onChange={connectToAccount} defaultValue={storedActiveAccount?.account}>
           <option value=''>Select account</option>
@@ -64,7 +64,7 @@ const Wallet = ({ wallet, handleClose }: WalletProps) => {
           ))}
         </SSelectAccount>
       )}
-    </SWalletContainer>
+    </>
   );
 };
 

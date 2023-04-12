@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { useAccounts } from '@contexts/AccountsContext';
 
 import { ThemeStyle } from '@helpers/interfaces';
-import { CssBoldL, CssSemiBoldS } from '@helpers/reusableStyles';
+import { CssFontBoldL, CssFontSemiBoldS } from '@helpers/reusableStyles';
 import { routes } from '@helpers/routes';
 
 import Logo from '@images/logo.svg';
@@ -32,13 +32,13 @@ const SLogoButton = styled(NavLink)`
   }
 
   span {
-    ${CssBoldL}
+    ${CssFontBoldL}
     padding-left: 12px;
   }
 `;
 
 const SNavigationButton = styled(NavLink)`
-  ${CssSemiBoldS}
+  ${CssFontSemiBoldS}
   height: 48px;
   line-height: 48px;
   padding: 0 16px;

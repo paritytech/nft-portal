@@ -60,6 +60,14 @@ const App = () => {
       background: radial-gradient(50% 50% at 50% 50%, #D43079 0%, rgba(212, 48, 121, 0.24) 0.01%, rgba(16, 16, 21, 0) 100%) ${theme.backgroundSystem};
       color: ${theme.textAndIconsSecondary};
     }
+
+    .modal-backdrop {
+      background-color: ${theme.appliedOverlay};
+
+      &.show {
+        opacity: 1;
+      }
+    }
   `;
 
   return (

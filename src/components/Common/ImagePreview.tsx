@@ -1,7 +1,7 @@
 import { memo } from 'react';
 import styled from 'styled-components';
 
-import CrossCloseButton from '@buttons/CrossCloseButton';
+import CloseButton from '@buttons/CloseButton';
 
 import { useAccounts } from '@contexts/AccountsContext';
 
@@ -13,7 +13,7 @@ const SImg = styled.img`
   max-width: 100%;
 `;
 
-const SClose = styled(CrossCloseButton)`
+const SClose = styled(CloseButton)`
   position: absolute;
   top: 10px;
   right: 10px;

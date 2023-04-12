@@ -34,12 +34,16 @@ export const SCardEdit = styled(Card.Subtitle)`
 
 export const SModal = styled(Modal)`
   .modal-content {
-    background-color: ${({ activetheme: activeTheme }: { activetheme: ThemeStyle }) => activeTheme.backgroundTertiary};
-    border: 1px solid ${({ activetheme: activeTheme }: { activetheme: ThemeStyle }) => activeTheme.appliedStroke};
+    border-radius: 16px;
+    background-color: ${({ activetheme }: { activetheme: ThemeStyle }) => activetheme.backgroundTertiary};
+    border: 1px solid ${({ activetheme }: { activetheme: ThemeStyle }) => activetheme.appliedStroke};
   }
 
-  select {
-    background-color: ${({ activetheme: activeTheme }: { activetheme: ThemeStyle }) => activeTheme.appliedButtonMain};
-    color: ${({ activetheme: activeTheme }: { activetheme: ThemeStyle }) => activeTheme.forcedBlack};
+  .modal-header {
+    padding: 24px 24px 32px;
+  }
+
+  modal-body {
+    padding: 0 24px 24px;
   }
 `;

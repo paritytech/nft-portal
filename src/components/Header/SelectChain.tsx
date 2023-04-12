@@ -6,12 +6,12 @@ import { useAccounts } from '@contexts/AccountsContext';
 
 import { chains } from '@helpers/config';
 import { Chain, Themeable } from '@helpers/interfaces';
-import { CssSemiBoldS } from '@helpers/reusableStyles';
+import { CssArrowDown, CssFontSemiBoldS } from '@helpers/reusableStyles';
 import { routes } from '@helpers/routes';
 
 import { useOutsideClick } from '@hooks/useOutsideClick';
 
-import DropdownArrow from '@images/dropdown-arrow.svg';
+import ArrowIcon from '@images/icons/arrow.svg';
 import Localhost from '@images/icons/chain-localhost.svg';
 import Westmint from '@images/icons/chain-westmint.svg';
 
@@ -40,13 +40,12 @@ const SCurrentChain = styled.button<Themeable>`
   gap: 10px;
 
   span {
-    ${CssSemiBoldS}
+    ${CssFontSemiBoldS}
     text-transform: capitalize;
   }
 
   .arrow-down {
-    margin: 4px 12px 0 2px;
-    width: 15px;
+    ${CssArrowDown}
   }
 `;
 
@@ -71,7 +70,7 @@ const SChainList = styled.div<Themeable>`
 `;
 
 const SChainOption = styled.div<Themeable>`
-  ${CssSemiBoldS}
+  ${CssFontSemiBoldS}
   display: flex;
   min-width: 184px;
   align-items: center;
@@ -116,7 +115,7 @@ const SelectChain = () => {
       <SCurrentChain onClick={toggleChainList} activeTheme={theme}>
         {createElement(ChainIcons[storedChain.title])}
         <span>{storedChain.title}</span>
-        <DropdownArrow className='arrow-down' />
+        <ArrowIcon className='arrow-down' />
       </SCurrentChain>
       <SChainList className={isChainListVisible ? 'showlist' : ''} activeTheme={theme}>
         {chains.map((chain) => (

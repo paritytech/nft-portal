@@ -1,4 +1,4 @@
-import { memo } from 'react';
+import { ReactElement, memo } from 'react';
 import { Navigate } from 'react-router-dom';
 
 import { useAccounts } from '@contexts/AccountsContext';
@@ -8,7 +8,7 @@ import { SConnectButton } from '@helpers/reusableStyles';
 import { useConnectToStoredAccount } from '@hooks/useConnectToStoredAccount';
 
 interface PrivateRouteProps {
-  children: JSX.Element;
+  children: ReactElement;
   redirectTo?: string;
 }
 
