@@ -242,7 +242,7 @@ const AddLiquidity = ({
                 className='main XS'
                 type='button'
                 activeTheme={theme}
-                action={() => onInput2Changed(getCleanFormattedBalance(assetBalance, assetDecimals))}
+                action={() => onInput2Changed(getCleanFormattedBalance(assetBalance as BN, assetDecimals))}
               >
                 Max
               </ActionButton>
