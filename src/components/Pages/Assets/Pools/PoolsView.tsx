@@ -56,7 +56,7 @@ const PoolsView = ({ pools, nativeMetadata, tokensMetadata }: PoolsViewProps) =>
         if (asset.isAsset) {
           const tokenInfo = tokensMetadata.find(({ id }) => id.eq(asset.asAsset));
           if (!tokenInfo) return null;
-          id = asset.asAsset.toNumber();
+          id = asset.asAsset.toString();
           symbol = tokenInfo.symbol;
           decimals = tokenInfo.decimals;
         }

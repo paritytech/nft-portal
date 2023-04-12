@@ -50,32 +50,31 @@ export const useAssets = () => {
       asset2: PalletAssetConversionMultiAssetId,
       amount1: BN,
       amount2: BN,
+      amount1Min: BN,
+      amount2Min: BN,
     ) => {
-      // TODO: support 5% slippage
       if (api && activeAccount && activeWallet) {
         setStatus({ type: ModalStatusTypes.INIT_TRANSACTION, message: StatusMessages.TRANSACTION_CONFIRM });
         openModalStatus();
 
         try {
-          const token1: MultiAsset = MultiAssets.NATIVE;
-          const token2: MultiAsset = { [MultiAssets.ASSET]: tokenId };
-
           const unsub = await api.tx.assetConversion
-            .createPool(token1, token2)
+            .addLiquidity(asset1, asset2, amount1, amount2, amount1Min, amount2Min, activeAccount.address)
             .signAndSend(activeAccount.address, { signer: activeWallet.signer }, ({ events, status }) => {
               if (status.isReady) {
-                setStatus({ type: ModalStatusTypes.IN_PROGRESS, message: StatusMessages.POOL_CREATION });
+                setStatus({ type: ModalStatusTypes.IN_PROGRESS, message: StatusMessages.POOL_ADDING_LIQUIDITY });
               }
 
               if (status.isInBlock) {
                 unsub();
 
                 events.some(({ event: { data, method } }) => {
-                  if (method === 'PoolCreated') {
-                    const createdPoolId = data.poolId as PalletAssetConversionPoolId;
+                  if (method === 'LiquidityAdded') {
+                    const poolId = data.poolId as PalletAssetConversionPoolId;
 
-                    if (createdPoolId && createdPoolId[1].isAsset && createdPoolId[1].asAsset.eq(tokenId)) {
-                      setStatus({ type: ModalStatusTypes.COMPLETE, message: StatusMessages.POOL_CREATED });
+                    if (poolId && poolId[0].eq(asset1) && poolId[1].eq(asset2)) {
+                      setStatus({ type: ModalStatusTypes.COMPLETE, message: StatusMessages.POOL_LIQUIDITY_ADDED });
+                      // TODO: send to swap page when it's ready
                       setAction(() => () => navigate(routes.discover.pools));
                       return true;
                     }
@@ -124,8 +123,7 @@ export const useAssets = () => {
 
                     if (createdPoolId && createdPoolId[1].isAsset && createdPoolId[1].asAsset.eq(tokenId)) {
                       setStatus({ type: ModalStatusTypes.COMPLETE, message: StatusMessages.POOL_CREATED });
-                      // TODO: change to add liquidity
-                      setAction(() => () => navigate(routes.discover.pools));
+                      setAction(() => () => navigate(routes.discover.addLiquidity('native', tokenId.toString())));
                       return true;
                     }
                   }
@@ -243,12 +241,12 @@ export const useAssets = () => {
       asset2: PalletAssetConversionMultiAssetId,
     ): Promise<PoolReserves> => {
       let reserves: PoolReserves = [BN_ZERO, BN_ZERO];
+
       if (api && api.call.assetConversionApi) {
         const res = await api.call.assetConversionApi.getReserves(asset1, asset2);
         if (res && !res.isEmpty) {
-          console.log('res', res.toJSON());
-          // TODO:
-          // reserves = res.toJSON() as PoolReserves;
+          const [reserve1, reserve2] = res.unwrap();
+          reserves = [reserve1.toBn(), reserve2.toBn()];
         }
       }
 

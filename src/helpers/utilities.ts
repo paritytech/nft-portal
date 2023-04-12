@@ -4,7 +4,7 @@ import { BN_ZERO } from '@polkadot/util';
 import { Decimal } from 'decimal.js';
 
 import { MultiAssets } from '@helpers/constants';
-import { MultiAsset, PalletAssetConversionMultiAssetId, PoolReserves } from '@helpers/interfaces';
+import { PalletAssetConversionMultiAssetId, PoolReserves } from '@helpers/interfaces';
 
 export const ellipseAddress = (address = '', width = 10): string => {
   return `${address.slice(0, width)}...${address.slice(-width)}`;
@@ -62,6 +62,10 @@ export const unitToPlanck = (units: string, decimals: number): string => {
   return `${whole}${decimal.padEnd(decimals, '0')}`.replace(/^0+/, '');
 };
 
+export const addSlippage = (value: string, slippage: number): string => {
+  return new Decimal(100).minus(slippage).mul(value).toString();
+};
+
 export const generateAssetId = (): number => {
   return Math.floor(Date.now() / 1000);
 };
@@ -98,10 +102,13 @@ export const isPoolEmpty = (poolReserves: PoolReserves | undefined): boolean => 
   return poolReserves?.[0] === BN_ZERO && poolReserves?.[1] === BN_ZERO;
 };
 
-export const calcExchangeRate = (amount1: number, amount2: number): number | null => {
+export const calcExchangeRate = (amount1: number, amount2: number): Decimal | null => {
   if (amount1 === 0 || amount2 === 0) return null;
-  const result = new Decimal(amount2).div(new Decimal(amount1)).toNumber();
-  return !Number.isNaN(result) ? result : null;
+  return new Decimal(amount2).div(new Decimal(amount1));
+};
+
+export const formatDecimals = (value: Decimal): string => {
+  return value.toSignificantDigits(6, Decimal.ROUND_UP).toString();
 };
 
 export const getAssetDecimals = (metadata: PalletAssetsAssetMetadata): number => {
