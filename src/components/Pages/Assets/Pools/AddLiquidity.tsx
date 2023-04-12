@@ -1,14 +1,12 @@
-import { PalletAssetsAssetDetails, PalletAssetsAssetMetadata } from '@polkadot/types/lookup';
-import { BN, BN_ZERO, formatBalance } from '@polkadot/util';
+import { BN, formatBalance } from '@polkadot/util';
 import type { ToBn } from '@polkadot/util/types';
 import { Decimal } from 'decimal.js';
-import { FormEvent, memo, useCallback, useEffect, useRef, useState } from 'react';
+import { FormEvent, memo, useCallback, useEffect, useState } from 'react';
 import Stack from 'react-bootstrap/Stack';
 import Form from 'react-bootstrap/esm/Form';
 import { Link } from 'react-router-dom';
 
 import ActionButton from '@buttons/ActionButton';
-import BasicButton from '@buttons/BasicButton';
 
 import ModalStatus from '@common/ModalStatus';
 import Title from '@common/Title';
@@ -17,16 +15,18 @@ import { useAccounts } from '@contexts/AccountsContext';
 import { useModalStatus } from '@contexts/ModalStatusContext';
 
 import { ModalStatusTypes, StatusMessages } from '@helpers/constants';
-import { PalletAssetConversionMultiAssetId, PoolReserves } from '@helpers/interfaces';
+import {
+  NativeTokenMetadata,
+  PalletAssetConversionMultiAssetId,
+  PoolReserves,
+  TokenMetadata,
+} from '@helpers/interfaces';
 import { routes } from '@helpers/routes';
-import { SActionButtonXMini, SSecondaryButton } from '@helpers/styledComponents';
 import {
   addSlippage,
   calcExchangeRate,
   formatDecimals,
-  getAssetDecimals,
-  getAssetName,
-  getAssetSymbol,
+  getCleanFormattedBalance,
   isPoolEmpty,
   pricePattern,
   unitToPlanck,
@@ -37,53 +37,46 @@ import { useAssets } from '@hooks/useAssets';
 interface AddLiquidityProps {
   asset1: PalletAssetConversionMultiAssetId;
   asset2: PalletAssetConversionMultiAssetId;
+  nativeMetadata: NativeTokenMetadata;
+  assetMetadata: TokenMetadata;
+  minAmount1: BN;
+  minAmount2: BN;
+  poolReserves: PoolReserves;
+  isNewPool: boolean;
+  nativeBalance: BN | null;
+  assetBalance: BN | null;
 }
 
-const getCleanFormattedBalance = (planck: BN, decimals: number): string => {
-  return formatBalance(planck as ToBn, {
-    forceUnit: '-',
-    decimals,
-    withSi: false,
-    withZero: false,
-  }).replaceAll(',', '');
-};
-
-const AddLiquidity = ({ asset1, asset2 }: AddLiquidityProps) => {
-  const { activeAccount, api, theme } = useAccounts();
-  const {
-    addLiquidity,
-    getAssetBalance,
-    getAssetMetadata,
-    getNativeBalance,
-    getNativeMetadata,
-    getPoolReserves,
-    nativeMetadata,
-    nativeBalance,
-  } = useAssets();
+const AddLiquidity = ({
+  asset1,
+  asset2,
+  nativeMetadata,
+  assetMetadata,
+  minAmount1,
+  minAmount2,
+  poolReserves,
+  isNewPool,
+  nativeBalance,
+  assetBalance,
+}: AddLiquidityProps) => {
+  const { activeAccount, theme } = useAccounts();
+  const { addLiquidity } = useAssets();
   const { openModalStatus, setStatus } = useModalStatus();
   const [asset1Amount, setAsset1Amount] = useState<string>('');
   const [asset2Amount, setAsset2Amount] = useState<string>('');
-  const [assetBalance, setAssetBalance] = useState<BN>(BN_ZERO);
-  const [assetMetadata, setAssetMetadata] = useState<[PalletAssetsAssetMetadata, PalletAssetsAssetDetails | null]>();
-  const [poolReserves, setPoolReserves] = useState<PoolReserves>();
   const [exchangeRate, setExchangeRate] = useState<Decimal | null>(null);
 
   const submitAddLiquidity = useCallback(
     async (event: FormEvent) => {
       event.preventDefault();
-      if (!activeAccount || !assetMetadata || !nativeMetadata || !nativeBalance || !asset1Amount || !asset2Amount)
-        return;
+      if (!activeAccount || !assetBalance || !nativeBalance || !asset1Amount || !asset2Amount) return;
 
       const amount1 = new BN(unitToPlanck(asset1Amount, nativeMetadata.decimals));
-      const amount2 = new BN(unitToPlanck(asset2Amount, getAssetDecimals(assetMetadata[0])));
-      const isNewPool = isPoolEmpty(poolReserves);
+      const amount2 = new BN(unitToPlanck(asset2Amount, assetMetadata.decimals));
       let formError = null;
 
       if (isNewPool) {
         // validate min balances
-        const minAmount1 = api.consts.balances.existentialDeposit;
-        const minAmount2 = assetMetadata[1]?.minBalance.toBn() || BN_ZERO;
-
         if (amount1.lt(minAmount1)) {
           const minAmountFormatted = formatBalance(minAmount1, {
             withUnit: nativeMetadata.name?.toUpperCase(),
@@ -96,8 +89,8 @@ const AddLiquidity = ({ asset1, asset2 }: AddLiquidityProps) => {
 
         if (!formError && amount2.lt(minAmount2)) {
           const minAmountFormatted = formatBalance(minAmount2, {
-            withUnit: getAssetSymbol(assetMetadata[0]).toUpperCase(),
-            decimals: getAssetDecimals(assetMetadata[0]),
+            withUnit: assetMetadata.symbol.toUpperCase(),
+            decimals: assetMetadata.decimals,
             withSi: true,
             withZero: false,
           });
@@ -122,30 +115,30 @@ const AddLiquidity = ({ asset1, asset2 }: AddLiquidityProps) => {
       // add slippage tolerance to min amounts
       const slippage = 0.5; // 0.5%
       const amount1Min = new BN(unitToPlanck(addSlippage(asset1Amount, slippage), nativeMetadata.decimals));
-      const amount2Min = new BN(unitToPlanck(addSlippage(asset2Amount, slippage), getAssetDecimals(assetMetadata[0])));
+      const amount2Min = new BN(unitToPlanck(addSlippage(asset2Amount, slippage), assetMetadata.decimals));
 
       addLiquidity(asset1, asset2, amount1, amount2, amount1Min, amount2Min);
     },
     [
-      api,
       asset1,
       asset2,
       asset1Amount,
       asset2Amount,
+      minAmount1,
+      minAmount2,
       activeAccount,
       assetBalance,
       assetMetadata,
       addLiquidity,
       nativeBalance,
       nativeMetadata,
+      isNewPool,
       openModalStatus,
-      poolReserves,
       setStatus,
     ],
   );
 
   const onInput1Changed = (amount1: string) => {
-    if (!nativeMetadata) return;
     if (amount1 !== '' && !amount1.match(pricePattern(nativeMetadata.decimals))) return;
 
     setAsset1Amount(amount1);
@@ -162,8 +155,7 @@ const AddLiquidity = ({ asset1, asset2 }: AddLiquidityProps) => {
   };
 
   const onInput2Changed = (amount2: string) => {
-    if (!assetMetadata) return;
-    if (amount2 !== '' && !amount2.match(pricePattern(getAssetDecimals(assetMetadata[0])))) return;
+    if (amount2 !== '' && !amount2.match(pricePattern(assetMetadata.decimals))) return;
 
     setAsset2Amount(amount2);
     const isNewPool = isPoolEmpty(poolReserves);
@@ -179,45 +171,18 @@ const AddLiquidity = ({ asset1, asset2 }: AddLiquidityProps) => {
   };
 
   useEffect(() => {
-    if (api) {
-      if (asset1 && asset2) {
-        getAssetMetadata(asset2.asAsset).then(setAssetMetadata);
-        getPoolReserves(asset1, asset2).then(setPoolReserves);
-      }
-      if (activeAccount && asset2) {
-        getAssetBalance(asset2.asAsset).then((balance) => setAssetBalance(balance || BN_ZERO));
-        getNativeBalance();
-      }
-    }
-  }, [api, activeAccount, asset1, asset2, getAssetBalance, getAssetMetadata, getNativeBalance, getPoolReserves]);
-
-  useEffect(() => {
-    if (api && !nativeMetadata) {
-      getNativeMetadata();
-    }
-  }, [api, getNativeMetadata, nativeMetadata]);
-
-  useEffect(() => {
-    if (poolReserves && !isPoolEmpty(poolReserves) && assetMetadata && nativeMetadata) {
+    if (!isNewPool) {
       const asset1Reserve = getCleanFormattedBalance(poolReserves[0], nativeMetadata.decimals);
-      const asset2Reserve = getCleanFormattedBalance(poolReserves[1], getAssetDecimals(assetMetadata[0]));
+      const asset2Reserve = getCleanFormattedBalance(poolReserves[1], assetMetadata.decimals);
       setExchangeRate(calcExchangeRate(+asset1Reserve, +asset2Reserve));
     }
-  }, [poolReserves, assetMetadata, nativeMetadata]);
-
-  if (!api) {
-    return null;
-  }
-
-  if (!nativeMetadata || !assetMetadata) {
-    return <>Loading data... please wait</>;
-  }
+  }, [isNewPool, poolReserves, assetMetadata, nativeMetadata]);
 
   const nativeDecimals = nativeMetadata.decimals;
-  const assetDecimals = getAssetDecimals(assetMetadata[0]);
+  const assetDecimals = assetMetadata.decimals;
   const nativeName = nativeMetadata.name?.toUpperCase();
-  const assetName = getAssetName(assetMetadata[0]).toUpperCase();
-  const assetSymbol = getAssetSymbol(assetMetadata[0]).toUpperCase();
+  const assetName = assetMetadata.name.toUpperCase();
+  const assetSymbol = assetMetadata.symbol.toUpperCase();
 
   return (
     <>

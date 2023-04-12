@@ -81,6 +81,19 @@ export const useAssets = () => {
                   }
 
                   if (method === 'ExtrinsicFailed') {
+                    const [error]: any = data;
+                    if (error.isModule) {
+                      const decoded = api.registry.findMetaError(error.asModule);
+                      console.log('----');
+                      console.log(decoded);
+                      const { docs, method, section } = decoded;
+
+                      console.log(`${section}.${method}: ${docs.join(' ')}`);
+                    } else {
+                      // Other, CannotLookup, BadOrigin, no extra info
+                      console.log(data[0].toString());
+                    }
+
                     setStatus({ type: ModalStatusTypes.ERROR, message: StatusMessages.ACTION_FAILED });
                     return true;
                   }
@@ -200,12 +213,20 @@ export const useAssets = () => {
   );
 
   const getAssetMetadata = useCallback(
-    async (assetId: AssetId): Promise<[PalletAssetsAssetMetadata, PalletAssetsAssetDetails | null]> => {
+    async (assetId: AssetId): Promise<TokenMetadata> => {
       if (api) {
-        const [metadataRecord, detailsRecord]: [PalletAssetsAssetMetadata, Option<PalletAssetsAssetDetails>] =
-          await Promise.all([api.query.assets.metadata(assetId), api.query.assets.asset(assetId)]);
+        const [metadata, details]: [PalletAssetsAssetMetadata, Option<PalletAssetsAssetDetails>] = await Promise.all([
+          api.query.assets.metadata(assetId),
+          api.query.assets.asset(assetId),
+        ]);
 
-        return [metadataRecord, detailsRecord.unwrapOr(null)];
+        return {
+          id: assetId,
+          name: metadata.name?.toUtf8() || null,
+          symbol: metadata.symbol?.toUtf8() || null,
+          decimals: metadata.decimals?.toNumber() || 0,
+          details: details.unwrapOr(null),
+        };
       }
     },
     [api],

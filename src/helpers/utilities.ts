@@ -1,6 +1,7 @@
 import { ApiPromise } from '@polkadot/api';
 import { PalletAssetsAssetMetadata } from '@polkadot/types/lookup';
-import { BN_ZERO } from '@polkadot/util';
+import { BN, BN_ZERO, formatBalance } from '@polkadot/util';
+import { ToBn } from '@polkadot/util/types';
 import { Decimal } from 'decimal.js';
 
 import { MultiAssets } from '@helpers/constants';
@@ -111,14 +112,11 @@ export const formatDecimals = (value: Decimal): string => {
   return value.toSignificantDigits(6, Decimal.ROUND_UP).toString();
 };
 
-export const getAssetDecimals = (metadata: PalletAssetsAssetMetadata): number => {
-  return metadata.decimals?.toNumber() || 0;
-};
-
-export const getAssetName = (metadata: PalletAssetsAssetMetadata): string => {
-  return metadata.name?.toUtf8() || '';
-};
-
-export const getAssetSymbol = (metadata: PalletAssetsAssetMetadata): string => {
-  return metadata.symbol?.toUtf8() || '';
+export const getCleanFormattedBalance = (planck: BN, decimals: number): string => {
+  return formatBalance(planck as ToBn, {
+    forceUnit: '-',
+    decimals,
+    withSi: false,
+    withZero: false,
+  }).replaceAll(',', '');
 };

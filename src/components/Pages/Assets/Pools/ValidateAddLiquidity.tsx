@@ -8,7 +8,7 @@ import { useAccounts } from '@contexts/AccountsContext';
 import { PalletAssetConversionMultiAssetId } from '@helpers/interfaces';
 import { constructMultiAsset } from '@helpers/utilities';
 
-import AddLiquidity from '@pages/Assets/Pools/AddLiquidity';
+import LoadAddLiquidityData from '@pages/Assets/Pools/LoadAddLiquidityData';
 
 const ValidateAddLiquidity = () => {
   const [paramsValid, setParamsValid] = useState<boolean | null>(null);
@@ -43,7 +43,7 @@ const ValidateAddLiquidity = () => {
     return <NotFound />;
   }
 
-  return <AddLiquidity asset1={poolId[0]} asset2={poolId[1]} />;
+  return <LoadAddLiquidityData asset1={poolId[0]} asset2={poolId[1]} />;
 };
 
 export default memo(ValidateAddLiquidity);
