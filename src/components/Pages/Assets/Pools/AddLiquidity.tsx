@@ -145,6 +145,7 @@ const AddLiquidity = ({ asset1, asset2 }: AddLiquidityProps) => {
   );
 
   const onInput1Changed = (amount1: string) => {
+    if (!nativeMetadata) return;
     if (amount1 !== '' && !amount1.match(pricePattern(nativeMetadata.decimals))) return;
 
     setAsset1Amount(amount1);
@@ -161,6 +162,7 @@ const AddLiquidity = ({ asset1, asset2 }: AddLiquidityProps) => {
   };
 
   const onInput2Changed = (amount2: string) => {
+    if (!assetMetadata) return;
     if (amount2 !== '' && !amount2.match(pricePattern(getAssetDecimals(assetMetadata[0])))) return;
 
     setAsset2Amount(amount2);
