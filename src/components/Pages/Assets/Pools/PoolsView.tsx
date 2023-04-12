@@ -86,7 +86,7 @@ const PoolsView = ({ pools, nativeMetadata, tokensMetadata }: PoolsViewProps) =>
         <SPoolBlock key={`${poolInfo[0].symbol}-${poolInfo[1].symbol}`}>
           <SCard activetheme={theme}>
             <Card.Body>
-              <SCardEdit className='text-muted'>
+              <SCardEdit className='text-muted' activetheme={theme}>
                 <span>Tokens Locked</span>
                 <Link to={routes.discover.addLiquidity(poolInfo[0].id, poolInfo[1].id)}>
                   <PlusIcon />

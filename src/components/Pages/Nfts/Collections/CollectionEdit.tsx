@@ -5,21 +5,17 @@ import { Link, useParams } from 'react-router-dom';
 
 import { saveImageToIpfs } from '@api/pinata';
 
-import BasicButton from '@buttons/BasicButton';
+import ActionButton from '@buttons/ActionButton';
 
 import FileDropZone from '@common/FileDropZone';
 import ModalStatus from '@common/ModalStatus';
 
-import { useAccounts } from '@contexts/AccountsContext';
-
 import { CollectionMetadataData } from '@helpers/interfaces';
-import { SSecondaryButton } from '@helpers/styledComponents';
 
 import { useCollections } from '@hooks/useCollections';
 
 const CollectionEdit = () => {
   const { collectionId } = useParams();
-  const { theme } = useAccounts();
   const { getCollectionMetadata, saveCollectionMetadata, collectionMetadata, isCollectionDataLoading } =
     useCollections();
   const collectionNameRef = useRef<HTMLInputElement>(null);
@@ -87,11 +83,13 @@ const CollectionEdit = () => {
           />
         </Form.Group>
         <Stack direction='horizontal' gap={2} className='justify-content-end'>
-          <BasicButton type='submit'>Submit metadata</BasicButton>
+          <ActionButton type='submit' className='main S'>
+            Submit metadata
+          </ActionButton>
           <Link to='..'>
-            <SSecondaryButton type='button' activeTheme={theme}>
+            <ActionButton type='button' className='secondary'>
               Back
-            </SSecondaryButton>
+            </ActionButton>
           </Link>
         </Stack>
       </Form>

@@ -69,7 +69,7 @@ const Navigation = () => {
       <SNavigationButton to={routes.myAssets.index} activetheme={theme}>
         My Assets
       </SNavigationButton>
-      <SNavigationButton to={routes.discover.index} activetheme={theme}>
+      <SNavigationButton to={routes.discover.nfts} activetheme={theme}>
         Discover
       </SNavigationButton>
       <SNavigationButton to={routes.swap.index} activetheme={theme}>

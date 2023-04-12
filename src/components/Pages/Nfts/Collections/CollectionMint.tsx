@@ -4,7 +4,7 @@ import Stack from 'react-bootstrap/esm/Stack';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
-import BasicButton from '@buttons/BasicButton';
+import ActionButton from '@buttons/ActionButton';
 import DateRangeButton from '@buttons/DateRangeButton';
 
 import ModalStatus from '@common/ModalStatus';
@@ -13,7 +13,6 @@ import { useAccounts } from '@contexts/AccountsContext';
 
 import { MintTypes } from '@helpers/constants';
 import { CollectionConfig, MintType } from '@helpers/interfaces';
-import { SSecondaryButton } from '@helpers/styledComponents';
 import { convertToBitFlagValue, getBlockNumber, pricePattern, unitToPlanck } from '@helpers/utilities';
 
 import { useCollections } from '@hooks/useCollections';
@@ -23,7 +22,7 @@ const SIndentation = styled.section`
 `;
 
 const CollectionMint = () => {
-  const { api, theme } = useAccounts();
+  const { api } = useAccounts();
   const { mintCollection } = useCollections();
   const transferrableItemsRef = useRef<HTMLInputElement | null>(null);
   const unlockedMetadataRef = useRef<HTMLInputElement | null>(null);
@@ -186,11 +185,13 @@ const CollectionMint = () => {
         </Form.Group>
 
         <Stack direction='horizontal' gap={2} className='justify-content-end'>
-          <BasicButton type='submit'>Mint collection</BasicButton>
+          <ActionButton type='submit' className='main S'>
+            Mint collection
+          </ActionButton>
           <Link to='..'>
-            <SSecondaryButton type='button' activeTheme={theme}>
+            <ActionButton type='button' className='secondary S'>
               Back
-            </SSecondaryButton>
+            </ActionButton>
           </Link>
         </Stack>
       </Form>

@@ -7,7 +7,7 @@ import Title from '@common/Title';
 const NftMint = () => {
   return (
     <>
-      <Title>Mint NFT</Title>
+      <Title className='XXL'>Mint NFT</Title>
       <Outlet />
     </>
   );

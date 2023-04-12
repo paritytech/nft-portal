@@ -2,13 +2,15 @@ import { memo } from 'react';
 import Card from 'react-bootstrap/esm/Card';
 import { Link } from 'react-router-dom';
 
+import ActionButton from '@buttons/ActionButton';
+
 import ShowImage from '@common/ShowImage';
 
 import { useAccounts } from '@contexts/AccountsContext';
 
 import { CollectionMetadata } from '@helpers/interfaces';
 import { routes } from '@helpers/routes';
-import { SBasicButtonMini, SCard, SCardEdit } from '@helpers/styledComponents';
+import { SCard, SCardEdit } from '@helpers/styledComponents';
 
 import EditIcon from '@images/icons/edit.svg';
 
@@ -24,7 +26,7 @@ const Collection = ({ collectionMetadata }: CollectionProps) => {
     <SCard activetheme={theme}>
       <ShowImage imageCid={image} altText={description} />
       <Card.Body>
-        <SCardEdit className='text-muted'>
+        <SCardEdit className='text-muted' activetheme={theme}>
           <span>Collection ID #{id}</span>
           <Link to={routes.myAssets.collectionEdit(id)}>
             Edit
@@ -36,7 +38,7 @@ const Collection = ({ collectionMetadata }: CollectionProps) => {
       </Card.Body>
       <Card.Footer className='text-center'>
         <Link to={routes.myAssets.nfts(id)}>
-          <SBasicButtonMini>Show NFTs</SBasicButtonMini>
+          <ActionButton className='main S'>Show NFTs</ActionButton>
         </Link>
       </Card.Footer>
     </SCard>

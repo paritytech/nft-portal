@@ -7,6 +7,7 @@ import Stack from 'react-bootstrap/Stack';
 import Form from 'react-bootstrap/esm/Form';
 import { Link } from 'react-router-dom';
 
+import ActionButton from '@buttons/ActionButton';
 import BasicButton from '@buttons/BasicButton';
 
 import ModalStatus from '@common/ModalStatus';
@@ -218,7 +219,7 @@ const AddLiquidity = ({ asset1, asset2 }: AddLiquidityProps) => {
 
   return (
     <>
-      <Title>Add Liquidity</Title>
+      <Title className='XXL'>Add Liquidity</Title>
       <ModalStatus />
       <Form onSubmit={submitAddLiquidity}>
         <Form.Group className='mb-3'>
@@ -240,14 +241,14 @@ const AddLiquidity = ({ asset1, asset2 }: AddLiquidityProps) => {
                 withSi: false,
                 withZero: false,
               })}{' '}
-              <SActionButtonXMini
+              <ActionButton
+                className='main XS'
                 type='button'
-                isDisabled={false}
                 activeTheme={theme}
                 action={() => onInput1Changed(getCleanFormattedBalance(nativeBalance as BN, nativeDecimals))}
               >
                 Max
-              </SActionButtonXMini>
+              </ActionButton>
             </div>
           )}
         </Form.Group>
@@ -270,14 +271,14 @@ const AddLiquidity = ({ asset1, asset2 }: AddLiquidityProps) => {
                 withSi: false,
                 withZero: false,
               })}{' '}
-              <SActionButtonXMini
+              <ActionButton
+                className='main XS'
                 type='button'
-                isDisabled={false}
                 activeTheme={theme}
                 action={() => onInput2Changed(getCleanFormattedBalance(assetBalance, assetDecimals))}
               >
                 Max
-              </SActionButtonXMini>
+              </ActionButton>
             </div>
           )}
         </Form.Group>
@@ -289,12 +290,20 @@ const AddLiquidity = ({ asset1, asset2 }: AddLiquidityProps) => {
 
         <Stack direction='horizontal' gap={2} className='justify-content-end'>
           <Link to={routes.discover.pools}>
-            <SSecondaryButton type='button' activeTheme={theme}>
+            <ActionButton type='button' className='secondary S'>
               Back
-            </SSecondaryButton>
+            </ActionButton>
           </Link>
-          {activeAccount && <BasicButton type='submit'>Add</BasicButton>}
-          {!activeAccount && <BasicButton>Please login</BasicButton>}
+          {activeAccount && (
+            <ActionButton type='submit' className='main S'>
+              Add
+            </ActionButton>
+          )}
+          {!activeAccount && (
+            <ActionButton className='main S' isDisabled={true}>
+              Please login
+            </ActionButton>
+          )}
         </Stack>
       </Form>
     </>

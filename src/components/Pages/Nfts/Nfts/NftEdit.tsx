@@ -5,22 +5,18 @@ import { Link, useParams } from 'react-router-dom';
 
 import { saveImageToIpfs } from '@api/pinata';
 
-import BasicButton from '@buttons/BasicButton';
+import ActionButton from '@buttons/ActionButton';
 
 import FileDropZone from '@common/FileDropZone';
 import ModalStatus from '@common/ModalStatus';
 
-import { useAccounts } from '@contexts/AccountsContext';
-
 import { CollectionMetadataData } from '@helpers/interfaces';
-import { SSecondaryButton } from '@helpers/styledComponents';
 
 import { useNfts } from '@hooks/useNfts';
 
 const NftEdit = () => {
   const { collectionId, nftId } = useParams();
   const { getNftMetadata, saveNftMetadata, nftMetadata, isNftDataLoading } = useNfts(collectionId || '');
-  const { theme } = useAccounts();
   const nftNameRef = useRef<HTMLInputElement>(null);
   const nftDescriptionRef = useRef<HTMLTextAreaElement>(null);
   const [imageCid, setImageCid] = useState<string | undefined>();
@@ -89,11 +85,13 @@ const NftEdit = () => {
         </Form.Group>
 
         <Stack direction='horizontal' gap={2} className='justify-content-end'>
-          <BasicButton type='submit'>Submit metadata</BasicButton>
+          <ActionButton type='submit' className='main S'>
+            Submit metadata
+          </ActionButton>
           <Link to='..'>
-            <SSecondaryButton type='button' activeTheme={theme}>
+            <ActionButton type='button' className='secondary S'>
               Back
-            </SSecondaryButton>
+            </ActionButton>
           </Link>
         </Stack>
       </Form>

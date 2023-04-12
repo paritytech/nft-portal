@@ -15,6 +15,7 @@ const SWalletContainer = styled.div`
   gap: 10px;
 `;
 
+// TODO will change with connection process refactoring
 const SWalletConnectButton = styled(ActionButton)`
   line-height: 30px;
   padding: 4px 25px;

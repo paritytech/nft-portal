@@ -5,7 +5,7 @@ const ASSET_ID_PARAM2 = ':assetId2';
 
 // TODO rename newNftMint to nftMint later, get rid of old route
 export const routes = {
-  homepage: '/discover',
+  homepage: '/discover/nfts',
 
   myAssets: {
     index: '/my-assets',
@@ -27,6 +27,8 @@ export const routes = {
 
   discover: {
     index: '/discover',
+    nfts: '/discover/nfts',
+    drops: '/discover/drops',
     tokens: '/discover/tokens',
     pools: '/discover/pools',
     addLiquidity: (asset1: string = ASSET_ID_PARAM1, asset2: string = ASSET_ID_PARAM2) =>

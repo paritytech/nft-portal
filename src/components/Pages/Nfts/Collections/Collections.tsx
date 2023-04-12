@@ -2,7 +2,7 @@ import { memo, useEffect } from 'react';
 import Stack from 'react-bootstrap/esm/Stack';
 import { Link } from 'react-router-dom';
 
-import BasicButton from '@buttons/BasicButton';
+import ActionButton from '@buttons/ActionButton';
 
 import { routes } from '@helpers/routes';
 
@@ -22,7 +22,7 @@ const Collections = () => {
       <CollectionsView collectionsMetadata={collectionsMetadata} />
       <Stack direction='horizontal' gap={2} className='justify-content-end'>
         <Link to={routes.myAssets.collectionMint}>
-          <BasicButton>Mint Collection</BasicButton>
+          <ActionButton className='main S'>Mint Collection</ActionButton>
         </Link>
       </Stack>
     </>

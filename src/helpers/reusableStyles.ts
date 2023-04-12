@@ -9,24 +9,10 @@ export const deviceScreenSize = {
   desktop: '1250px',
 };
 
-export const styleSettings = {
-  colors: {
-    alto: '#D9D9D9',
-    aqua: '#00FFE1',
-    black: '#000000',
-    blackHaze: '#F4F5F5',
-    cerise: '#D33079',
-    gallery: '#EEEEEE',
-    jaffa: '#F19135',
-    rose: '#E6007A',
-    shark: '#2C2C30',
-    white: '#FFFFFF',
-  },
-  mediaQueries: {
-    mobile: `(min-width: ${deviceScreenSize.mobile})`,
-    tablet: `(min-width: ${deviceScreenSize.tablet})`,
-    desktop: `(min-width: ${deviceScreenSize.desktop})`,
-  },
+export const mediaQueries = {
+  mobile: `(min-width: ${deviceScreenSize.mobile})`,
+  tablet: `(min-width: ${deviceScreenSize.tablet})`,
+  desktop: `(min-width: ${deviceScreenSize.desktop})`,
 };
 
 // ============
@@ -44,24 +30,20 @@ export const themes: Record<ChainThemes, ThemeStyle> = {
     textAndIconsTertiary: 'rgba(255, 255, 255, 0.48)',
     textAndIconsDisabled: 'rgba(255, 255, 255, 0.27)',
 
-    buttonMainBackground: '#FFFFFF',
-    buttonMainText: '#000000',
-    buttonMainBackgroundHovered: 'rgba(0, 0, 0, 0.8)',
-
-    buttonSecondaryBackground: '#000000',
-    buttonSecondaryText: '#FFFFFF',
-    buttonSecondaryBackgroundHovered: 'rgba(255, 255, 255, 0.24)',
-
+    fill80: 'rgba(255, 255, 255, 0.8)',
     fill30: 'rgba(255, 255, 255, 0.3)',
+    fill25: 'rgba(255, 255, 255, 0.25)',
     fill24: 'rgba(255, 255, 255, 0.24)',
     fill18: 'rgba(255, 255, 255, 0.18)',
     fill12: 'rgba(255, 255, 255, 0.12)',
+    fill8: 'rgba(255, 255, 255, 0.08)',
     fill6: 'rgba(255, 255, 255, 0.06)',
 
     appliedOverlay: 'rgba(0, 0, 0, 0.7)',
     appliedHover: 'rgba(255, 255, 255, 0.05)',
     appliedStroke: 'rgba(255, 255, 255, 0.12)',
     appliedSeparator: 'rgba(255, 255, 255, 0.08)',
+    appliedButtonMain: '#FFFFFF',
 
     accentsPink: '#F272B6',
     accentsRed: '#FE8D81',
@@ -81,24 +63,20 @@ export const themes: Record<ChainThemes, ThemeStyle> = {
     textAndIconsTertiary: 'rgba(0, 0, 0, 0.45)',
     textAndIconsDisabled: 'rgba(0, 0, 0, 0.25)',
 
-    buttonMainBackground: '#000000',
-    buttonMainText: '#FFFFFF',
-    buttonMainBackgroundHovered: 'rgba(255, 255, 255, 0.8)',
-
-    buttonSecondaryBackground: '#FFFFFF',
-    buttonSecondaryText: '#000000',
-    buttonSecondaryBackgroundHovered: 'rgba(0, 0, 0, 0.24)',
-
+    fill80: 'rgba(0, 0, 0, 0.8)',
     fill30: 'rgba(0, 0, 0, 0.3)',
+    fill25: 'rgba(0, 0, 0, 0.25)',
     fill24: 'rgba(0, 0, 0, 0.24)',
     fill18: 'rgba(0, 0, 0, 0.18)',
     fill12: 'rgba(0, 0, 0, 0.12)',
+    fill8: 'rgba(0, 0, 0, 0.08)',
     fill6: 'rgba(0, 0, 0, 0.06)',
 
     appliedOverlay: 'rgba(0, 0, 0, 0.4)',
     appliedHover: 'rgba(0, 0, 0, 0.05)',
     appliedStroke: 'rgba(0, 0, 0, 0.12)',
     appliedSeparator: 'rgba(0, 0, 0, 0.08)',
+    appliedButtonMain: '#000000',
 
     accentsPink: '#E6007A',
     accentsRed: '#FD4935',
@@ -112,6 +90,8 @@ export const themes: Record<ChainThemes, ThemeStyle> = {
 // ============
 // CSS SNIPPETS
 // ============
+
+// CSS SNIPPETS - FONTS
 export const CssBoldXXL = css`
   font-family: 'Unbounded', cursive;
   font-size: 40px;
@@ -195,37 +175,126 @@ export const CssRegularS = css`
   font-weight: 400;
 `;
 
-export const CssButtonMini = css`
-  line-height: 30px;
-  padding: 0 25px;
+// CSS SNIPPETS - BUTTONS
+const commonSizes = css`
+  &.XL {
+    ${CssSemiBoldL}
+    height: 64px;
+  }
+
+  &.L {
+    ${CssSemiBoldS}
+    height: 72px;
+    border-radius: 40px;
+  }
+
+  &.M {
+    ${CssSemiBoldS}
+    height: 56px;
+  }
+
+  &.S {
+    ${CssSemiBoldM}
+    height: 48px;
+  }
+
+  &.XS {
+    ${CssSemiBoldXS}
+    height: 24px;
+  }
 `;
 
-export const CssButtonXMini = css`
-  line-height: 30px;
-  height: 30px;
-  padding: 0 15px;
-  font-size: 16px;
-`;
-
-export const CssCommonButtonStyles = css<CommonStyleProps & Themeable>`
-  height: 50px;
-  padding: 0 50px;
-  color: ${({ activeTheme }) => activeTheme.buttonMainText};
-  background-color: ${({ activeTheme }) => activeTheme.buttonMainBackground};
-  font-size: 20px;
-  border-radius: 32px;
-  border: none;
-  opacity: ${({ isDisabled }) => (isDisabled ? 0.5 : 1)};
-  box-sizing: border-box;
+export const CssButtonMainStyles = css<CommonStyleProps & Themeable>`
+  color: ${({ activeTheme, isDisabled }) => (isDisabled ? activeTheme.textAndIconsDisabled : activeTheme.forcedBlack)};
+  background-color: ${({ activeTheme, isDisabled }) =>
+    isDisabled ? activeTheme.fill8 : activeTheme.appliedButtonMain};
 
   :hover {
     cursor: ${({ isDisabled }) => (isDisabled ? 'not-allowed' : 'pointer')};
-    color: ${({ activeTheme }) => activeTheme.buttonMainBackgroundHovered};
+    background-color: ${({ activeTheme, isDisabled }) => (isDisabled ? activeTheme.fill8 : activeTheme.fill80)};
   }
 
   a {
     text-decoration: none;
-    color: ${({ activeTheme }) => activeTheme.buttonMainText};
+    color: ${({ activeTheme, isDisabled }) =>
+      isDisabled ? activeTheme.textAndIconsDisabled : activeTheme.forcedBlack};
+  }
+
+  ${commonSizes}
+`;
+
+export const CssButtonSecondaryStyles = css<CommonStyleProps & Themeable>`
+  ${CssSemiBoldS}
+  color: ${({ activeTheme, isDisabled }) => (isDisabled ? activeTheme.fill25 : activeTheme.textAndIconsPrimary)};
+  background-color: ${({ activeTheme, isDisabled }) => (isDisabled ? activeTheme.fill24 : activeTheme.forcedBlack)};
+
+  :hover {
+    cursor: ${({ isDisabled }) => (isDisabled ? 'not-allowed' : 'pointer')};
+    background-color: ${({ activeTheme }) => activeTheme.fill24};
+  }
+
+  a {
+    text-decoration: none;
+    color: ${({ activeTheme, isDisabled }) => (isDisabled ? activeTheme.fill25 : activeTheme.textAndIconsPrimary)};
+  }
+
+  ${commonSizes}
+`;
+
+export const CssButtonRoundedStyles = css<CommonStyleProps & Themeable>`
+  ${CssButtonMainStyles}
+
+  border-radius: 12px;
+
+  ${commonSizes}
+`;
+
+export const CssButtonTransparentStyles = css<CommonStyleProps & Themeable>`
+  color: ${({ activeTheme, isDisabled }) => (isDisabled ? activeTheme.textAndIconsDisabled : activeTheme.forcedWhite)};
+  background-color: ${({ activeTheme }) => activeTheme.fill6};
+
+  :hover {
+    cursor: ${({ isDisabled }) => (isDisabled ? 'not-allowed' : 'pointer')};
+    background-color: ${({ activeTheme, isDisabled }) => (isDisabled ? activeTheme.fill6 : activeTheme.fill12)};
+  }
+
+  a {
+    text-decoration: none;
+    color: ${({ activeTheme, isDisabled }) =>
+      isDisabled ? activeTheme.textAndIconsDisabled : activeTheme.forcedWhite};
+  }
+
+  &.L {
+    ${CssSemiBoldS}
+    height: 64px;
+  }
+
+  &.S {
+    ${CssRegularS}
+    height: 36px;
+    color: ${({ activeTheme, isDisabled }) =>
+      isDisabled ? activeTheme.textAndIconsDisabled : activeTheme.textAndIconsSecondary};
+  }
+`;
+
+export const CssButtonStrokeStyles = css<CommonStyleProps & Themeable>`
+  ${CssSemiBoldM}
+  height: 64px;
+  color: ${({ activeTheme, isDisabled }) =>
+    isDisabled ? activeTheme.textAndIconsDisabled : activeTheme.textAndIconsSecondary};
+  background-color: transparent;
+  border: 1px solid ${({ activeTheme }) => activeTheme.appliedStroke};
+  box-sizing: border-box;
+
+  :hover {
+    cursor: ${({ isDisabled }) => (isDisabled ? 'not-allowed' : 'pointer')};
+    background-color: ${({ activeTheme, isDisabled }) => (isDisabled ? 'transparent' : activeTheme.fill6)};
+  }
+
+  a {
+    text-decoration: none;
+    color: ${({ activeTheme, isDisabled }) =>
+      isDisabled ? activeTheme.textAndIconsDisabled : activeTheme.textAndIconsSecondary};
   }
 `;
 
@@ -238,7 +307,6 @@ export const SContentBlockContainer = styled.div`
   gap: 14px;
   margin-bottom: 20px;
   padding-bottom: 20px;
-  border-bottom: 1px dashed ${styleSettings.colors.cerise};
 `;
 
 export const SContentBlock = styled.div`
@@ -258,8 +326,8 @@ export const SConnectButton = styled.button<Themeable>`
   height: 48px;
   line-height: 48px;
   padding: 0 8px;
-  background-color: ${({ activeTheme }) => activeTheme.buttonMainBackground};
-  color: ${({ activeTheme }) => activeTheme.buttonMainText};
+  background-color: ${({ activeTheme }) => activeTheme.appliedButtonMain};
+  color: ${({ activeTheme }) => activeTheme.forcedBlack};
   border: 0;
   border-radius: 32px;
 
@@ -289,4 +357,39 @@ export const SColumn = styled.section`
   display: flex;
   flex-direction: column;
   flex: 1;
+`;
+
+export const SActionButton = styled.button`
+  padding: 0 16px;
+  border-radius: 32px;
+  border: none;
+
+  &.main {
+    ${CssButtonMainStyles}
+  }
+
+  &.secondary {
+    ${CssButtonSecondaryStyles}
+  }
+
+  &.rounded {
+    ${CssButtonRoundedStyles}
+  }
+
+  &.transparent {
+    ${CssButtonTransparentStyles}
+  }
+
+  &.stroke {
+    ${CssButtonStrokeStyles}
+  }
+
+  &.padding32 {
+    padding: 0 32px;
+  }
+
+  &.full-width {
+    width: 100%;
+    box-sizing: border-box;
+  }
 `;

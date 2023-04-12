@@ -2,7 +2,7 @@ import { memo, useEffect } from 'react';
 import Stack from 'react-bootstrap/Stack';
 import { Link } from 'react-router-dom';
 
-import BasicButton from '@buttons/BasicButton';
+import ActionButton from '@buttons/ActionButton';
 
 import { useAccounts } from '@contexts/AccountsContext';
 
@@ -31,7 +31,7 @@ const Pools = () => {
       {activeAccount && (
         <Stack direction='horizontal' gap={2} className='justify-content-end'>
           <Link to={routes.myAssets.poolCreate}>
-            <BasicButton>Create Pool</BasicButton>
+            <ActionButton>Create Pool</ActionButton>
           </Link>
         </Stack>
       )}
