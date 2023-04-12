@@ -200,12 +200,9 @@ const commonSizes = css`
 `;
 
 export const CssButtonMainStyles = css<CommonStyleProps & Themeable>`
-  padding: 0px 50px;
   color: ${({ activeTheme, isDisabled }) => (isDisabled ? activeTheme.textAndIconsDisabled : activeTheme.forcedBlack)};
   background-color: ${({ activeTheme, isDisabled }) =>
     isDisabled ? activeTheme.fill8 : activeTheme.appliedButtonMain};
-  border-radius: 32px;
-  border: none;
 
   :hover {
     cursor: ${({ isDisabled }) => (isDisabled ? 'not-allowed' : 'pointer')};
@@ -223,11 +220,8 @@ export const CssButtonMainStyles = css<CommonStyleProps & Themeable>`
 
 export const CssButtonSecondaryStyles = css<CommonStyleProps & Themeable>`
   ${CssSemiBoldS}
-  padding: 0px 50px;
   color: ${({ activeTheme, isDisabled }) => (isDisabled ? activeTheme.fill25 : activeTheme.textAndIconsPrimary)};
   background-color: ${({ activeTheme, isDisabled }) => (isDisabled ? activeTheme.fill24 : activeTheme.forcedBlack)};
-  border-radius: 32px;
-  border: none;
 
   :hover {
     cursor: ${({ isDisabled }) => (isDisabled ? 'not-allowed' : 'pointer')};
@@ -251,11 +245,8 @@ export const CssButtonRoundedStyles = css<CommonStyleProps & Themeable>`
 `;
 
 export const CssButtonTransparentStyles = css<CommonStyleProps & Themeable>`
-  padding: 0px 50px;
   color: ${({ activeTheme, isDisabled }) => (isDisabled ? activeTheme.textAndIconsDisabled : activeTheme.forcedWhite)};
   background-color: ${({ activeTheme }) => activeTheme.fill6};
-  border-radius: 32px;
-  border: none;
 
   :hover {
     cursor: ${({ isDisabled }) => (isDisabled ? 'not-allowed' : 'pointer')};
@@ -276,17 +267,17 @@ export const CssButtonTransparentStyles = css<CommonStyleProps & Themeable>`
   &.S {
     ${CssRegularS}
     height: 36px;
+    color: ${({ activeTheme, isDisabled }) =>
+      isDisabled ? activeTheme.textAndIconsDisabled : activeTheme.textAndIconsSecondary};
   }
 `;
 
 export const CssButtonStrokeStyles = css<CommonStyleProps & Themeable>`
   ${CssSemiBoldM}
   height: 64px;
-  padding: 0px 50px;
   color: ${({ activeTheme, isDisabled }) =>
     isDisabled ? activeTheme.textAndIconsDisabled : activeTheme.textAndIconsSecondary};
   background-color: transparent;
-  border-radius: 32px;
   border: 1px solid ${({ activeTheme }) => activeTheme.appliedStroke};
   box-sizing: border-box;
 
@@ -361,4 +352,39 @@ export const SColumn = styled.section`
   display: flex;
   flex-direction: column;
   flex: 1;
+`;
+
+export const SActionButton = styled.button`
+  padding: 0 16px;
+  border-radius: 32px;
+  border: none;
+
+  &.main {
+    ${CssButtonMainStyles}
+  }
+
+  &.secondary {
+    ${CssButtonSecondaryStyles}
+  }
+
+  &.rounded {
+    ${CssButtonRoundedStyles}
+  }
+
+  &.transparent {
+    ${CssButtonTransparentStyles}
+  }
+
+  &.stroke {
+    ${CssButtonStrokeStyles}
+  }
+
+  &.padding32 {
+    padding: 0 32px;
+  }
+
+  &.full-width {
+    width: 100%;
+    box-sizing: border-box;
+  }
 `;
