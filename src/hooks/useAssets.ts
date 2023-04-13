@@ -81,19 +81,6 @@ export const useAssets = () => {
                   }
 
                   if (method === 'ExtrinsicFailed') {
-                    const [error]: any = data;
-                    if (error.isModule) {
-                      const decoded = api.registry.findMetaError(error.asModule);
-                      console.log('----');
-                      console.log(decoded);
-                      const { docs, method, section } = decoded;
-
-                      console.log(`${section}.${method}: ${docs.join(' ')}`);
-                    } else {
-                      // Other, CannotLookup, BadOrigin, no extra info
-                      console.log(data[0].toString());
-                    }
-
                     setStatus({ type: ModalStatusTypes.ERROR, message: StatusMessages.ACTION_FAILED });
                     return true;
                   }

@@ -1,5 +1,4 @@
 import { ApiPromise } from '@polkadot/api';
-import { PalletAssetsAssetMetadata } from '@polkadot/types/lookup';
 import { BN, BN_ZERO, formatBalance } from '@polkadot/util';
 import { ToBn } from '@polkadot/util/types';
 import { Decimal } from 'decimal.js';
@@ -64,7 +63,7 @@ export const unitToPlanck = (units: string, decimals: number): string => {
 };
 
 export const addSlippage = (value: string, slippage: number): string => {
-  return new Decimal(100).minus(slippage).mul(value).toString();
+  return new Decimal(100).minus(slippage).div(100).mul(value).toString();
 };
 
 export const generateAssetId = (): number => {
