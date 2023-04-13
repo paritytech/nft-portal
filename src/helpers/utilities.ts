@@ -1,4 +1,10 @@
 import { ApiPromise } from '@polkadot/api';
+import { BN, BN_ZERO, formatBalance } from '@polkadot/util';
+import { ToBn } from '@polkadot/util/types';
+import { Decimal } from 'decimal.js';
+
+import { MultiAssets } from '@helpers/constants';
+import { PalletAssetConversionMultiAssetId, PoolReserves } from '@helpers/interfaces';
 
 export const ellipseAddress = (address = '', width = 10): string => {
   return `${address.slice(0, width)}...${address.slice(-width)}`;
@@ -56,6 +62,10 @@ export const unitToPlanck = (units: string, decimals: number): string => {
   return `${whole}${decimal.padEnd(decimals, '0')}`.replace(/^0+/, '');
 };
 
+export const addSlippage = (value: string, slippage: number): string => {
+  return new Decimal(100).minus(slippage).div(100).mul(value).toString();
+};
+
 export const generateAssetId = (): number => {
   return Math.floor(Date.now() / 1000);
 };
@@ -70,4 +80,42 @@ export const sortStrings = (string1: string | null, string2: string | null): num
     return 1;
   }
   return 0;
+};
+
+export const isUnsignedNumber = (check: string): boolean => {
+  const asNumber = +check;
+  return Number.isInteger(asNumber) && asNumber >= 0 && check === asNumber.toString();
+};
+
+export const constructMultiAsset = (assetId: string, api: ApiPromise): PalletAssetConversionMultiAssetId | null => {
+  if (assetId === 'native') {
+    return api.createType('PalletAssetConversionMultiAssetId', MultiAssets.NATIVE);
+  } else if (isUnsignedNumber(assetId)) {
+    return api.createType('PalletAssetConversionMultiAssetId', {
+      [MultiAssets.ASSET]: api.createType('AssetId', assetId),
+    });
+  }
+  return null;
+};
+
+export const isPoolEmpty = (poolReserves: PoolReserves | undefined): boolean => {
+  return poolReserves?.[0] === BN_ZERO && poolReserves?.[1] === BN_ZERO;
+};
+
+export const calcExchangeRate = (amount1: number, amount2: number): Decimal | null => {
+  if (amount1 === 0 || amount2 === 0) return null;
+  return new Decimal(amount2).div(new Decimal(amount1));
+};
+
+export const formatDecimals = (value: Decimal): string => {
+  return value.toSignificantDigits(6, Decimal.ROUND_UP).toString();
+};
+
+export const getCleanFormattedBalance = (planck: BN, decimals: number): string => {
+  return formatBalance(planck as ToBn, {
+    forceUnit: '-',
+    decimals,
+    withSi: false,
+    withZero: false,
+  }).replaceAll(',', '');
 };

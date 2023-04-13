@@ -9,10 +9,11 @@ import { useAccounts } from '@contexts/AccountsContext';
 import type { NativeTokenMetadata, TokenMetadata } from '@helpers/interfaces';
 import { PoolInfo } from '@helpers/interfaces';
 import { SColumn, SContentBlock, SRow } from '@helpers/reusableStyles';
+import { routes } from '@helpers/routes';
 import { SCard, SCardEdit } from '@helpers/styledComponents';
 import { sortStrings } from '@helpers/utilities';
 
-import EditIcon from '@images/icons/edit.svg';
+import PlusIcon from '@images/icons/plus.svg';
 
 interface PoolsViewProps {
   pools: PoolInfo[] | null;
@@ -50,10 +51,12 @@ const PoolsView = ({ pools, nativeMetadata, tokensMetadata }: PoolsViewProps) =>
         const reserve = pool.reserves[index];
         let symbol = nativeMetadata.name;
         let decimals = nativeMetadata.decimals;
+        let id = 'native';
 
         if (asset.isAsset) {
           const tokenInfo = tokensMetadata.find(({ id }) => id.eq(asset.asAsset));
           if (!tokenInfo) return null;
+          id = asset.asAsset.toString();
           symbol = tokenInfo.symbol;
           decimals = tokenInfo.decimals;
         }
@@ -67,6 +70,7 @@ const PoolsView = ({ pools, nativeMetadata, tokensMetadata }: PoolsViewProps) =>
         });
 
         return {
+          id,
           symbol,
           decimals,
           formattedReserve,
@@ -84,8 +88,8 @@ const PoolsView = ({ pools, nativeMetadata, tokensMetadata }: PoolsViewProps) =>
             <Card.Body>
               <SCardEdit className='text-muted' activetheme={theme}>
                 <span>Tokens Locked</span>
-                <Link to='1'>
-                  <EditIcon />
+                <Link to={routes.discover.addLiquidity(poolInfo[0].id, poolInfo[1].id)}>
+                  <PlusIcon />
                 </Link>
               </SCardEdit>
 

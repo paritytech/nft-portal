@@ -16,6 +16,7 @@ import { routes } from '@helpers/routes';
 import Drops from '@pages/Assets/Nfts/Drops';
 import Nfts from '@pages/Assets/Nfts/Nfts';
 import Pools from '@pages/Assets/Pools/Pools';
+import ValidateAddLiquidity from '@pages/Assets/Pools/ValidateAddLiquidity';
 import Tokens from '@pages/Assets/Tokens/Tokens';
 import Discover from '@pages/Discover/Discover';
 import MyAssets from '@pages/MyAssets/MyAssets';
@@ -185,8 +186,8 @@ const App = () => {
                 path={routes.myAssets.poolCreate}
                 element={
                   <>
-                    <Title className='XXL'>Create Pool</Title>
-                    <PrivateRoute redirectTo={routes.myAssets.pools}>
+                    <Title className='XXL'>Create Liquidity Pool</Title>
+                    <PrivateRoute redirectTo={routes.discover.pools}>
                       <PoolCreate />
                     </PrivateRoute>
                   </>
@@ -199,7 +200,10 @@ const App = () => {
             <Route path={routes.discover.nfts} element={<Nfts />} />
             <Route path={routes.discover.drops} element={<Drops />} />
             <Route path={routes.discover.tokens} element={<Tokens />} />
-            <Route path={routes.discover.pools} element={<Pools />} />
+            <Route path={routes.discover.pools} element={<Outlet />}>
+              <Route index element={<Pools />} />
+              <Route path={routes.discover.addLiquidity()} element={<ValidateAddLiquidity />} />
+            </Route>
           </Route>
 
           <Route path={routes.swap.index} element={<Outlet />}>

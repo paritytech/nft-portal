@@ -197,6 +197,11 @@ const commonSizes = css`
     ${CssSemiBoldM}
     height: 48px;
   }
+
+  &.XS {
+    ${CssSemiBoldXS}
+    height: 24px;
+  }
 `;
 
 export const CssButtonMainStyles = css<CommonStyleProps & Themeable>`

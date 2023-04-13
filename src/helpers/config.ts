@@ -6,6 +6,7 @@ import { Chain } from './interfaces';
 
 export const APP_NAME = 'assets-portal';
 export const IPFS_URL = 'https://gateway.pinata.cloud/ipfs/';
+export const ADD_LIQUIDITY_SLIPPAGE = 0.5; // 0.5%
 
 // TODO once we have design for light/polkadot-like theme then ChainThemes.POLKADOT should be set where appropriate
 // first chain in the list will be default chain
@@ -58,7 +59,7 @@ export const apiConfigRuntime: OverrideBundleType = {
   spec: {
     node: {
       runtime: {
-        DexApi: [
+        AssetConversionApi: [
           {
             methods: {
               get_reserves: {
