@@ -97,6 +97,12 @@ export const CssArrowDown = css`
   margin-top: 3px;
 `;
 
+export const CssCallToAction = css<Themeable>`
+  &.call-to-action {
+    box-shadow: 0 0 0 8px ${({ activeTheme }) => activeTheme.fill6};
+  }
+`;
+
 // CSS SNIPPETS - FONTS
 export const CssFontBoldXXL = css`
   font-family: 'Unbounded', cursive;
@@ -160,6 +166,13 @@ export const CssFontSemiBoldXS = css`
   font-weight: 600;
 `;
 
+export const CssFontRegularXL = css`
+  font-family: 'Inter', sans-serif;
+  font-size: 32px;
+  line-height: 40px;
+  font-weight: 400;
+`;
+
 export const CssFontRegularL = css`
   font-family: 'Inter', sans-serif;
   font-size: 24px;
@@ -220,6 +233,8 @@ export const CssButtonMainStyles = css<CommonStyleProps & Themeable>`
     color: ${({ activeTheme, isDisabled }) =>
       isDisabled ? activeTheme.textAndIconsDisabled : activeTheme.forcedBlack};
   }
+
+  ${CssCallToAction}
 
   ${CssCommonSizes}
 `;
@@ -345,6 +360,8 @@ export const SConnectButton = styled.button<Themeable>`
   .arrow-down {
     ${CssArrowDown}
   }
+
+  ${CssCallToAction}
 `;
 
 export const SRow = styled.section`

@@ -46,3 +46,8 @@ export enum MultiAssets {
   NATIVE = 'Native',
   ASSET = 'Asset',
 }
+
+export enum ConnectModalSteps {
+  CONNECT_TO_WALLET = 'CONNECT_TO_WALLET',
+  CONNECT_TO_ACCOUNT = 'CONNECT_TO_ACCOUNT',
+}

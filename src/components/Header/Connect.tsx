@@ -1,19 +1,12 @@
-import { BaseWallet } from '@polkadot-onboard/core';
 import { memo, useState } from 'react';
-import Modal from 'react-bootstrap/esm/Modal';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-
-import CloseButton from '@buttons/CloseButton';
-
-import Title from '@common/Title';
 
 import { useAccounts } from '@contexts/AccountsContext';
 
 import { Themeable } from '@helpers/interfaces';
 import { SConnectButton } from '@helpers/reusableStyles';
 import { routes } from '@helpers/routes';
-import { SModal } from '@helpers/styledComponents';
 import { ellipseAddress, sizeMatters } from '@helpers/utilities';
 
 import { useConnectToStoredAccount } from '@hooks/useConnectToStoredAccount';
@@ -27,7 +20,7 @@ import NftIcon from '@images/icons/nft.svg';
 import PlusIcon from '@images/icons/plus.svg';
 import PoolIcon from '@images/icons/pool.svg';
 
-import Wallet from './Wallet';
+import ConnectModal from '@modals/ConnectModal/ConnectModal';
 
 const SContainer = styled.div`
   position: relative;
@@ -105,14 +98,6 @@ const SIcon = styled.div<Themeable>`
   &.copied {
     background-color: ${({ activeTheme }) => activeTheme.fill30};
   }
-`;
-
-const STitle = styled(Title)<Themeable>`
-  color: ${({ activeTheme }) => activeTheme.textAndIconsPrimary};
-`;
-
-const SConnectModal = styled(SModal)`
-  margin-top: 150px;
 `;
 
 const Connect = () => {
@@ -208,21 +193,7 @@ const Connect = () => {
         </SAccountActions>
       </SContainer>
 
-      <SConnectModal show={showWalletSelection} onHide={handleClose} activetheme={theme}>
-        <Modal.Header className='border-0'>
-          <Modal.Title>
-            <STitle className='L' activeTheme={theme}>
-              Connect Wallet
-            </STitle>
-          </Modal.Title>
-          <CloseButton handleClose={handleClose} />
-        </Modal.Header>
-        <Modal.Body>
-          {wallets.map((wallet: BaseWallet, index) => (
-            <Wallet key={index} wallet={wallet} handleClose={handleClose} />
-          ))}
-        </Modal.Body>
-      </SConnectModal>
+      <ConnectModal showWalletSelection={showWalletSelection} handleClose={handleClose} wallets={wallets} />
     </>
   );
 };

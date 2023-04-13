@@ -1,11 +1,13 @@
 import { memo } from 'react';
 import styled from 'styled-components';
 
-import CloseButton from '@buttons/CloseButton';
+import IconButton from '@buttons/IconButton';
 
 import { useAccounts } from '@contexts/AccountsContext';
 
 import { ThemeStyle } from '@helpers/interfaces';
+
+import CrossIcon from '@images/icons/cross.svg';
 
 import ShowImage from './ShowImage';
 
@@ -13,7 +15,7 @@ const SImg = styled.img`
   max-width: 100%;
 `;
 
-const SClose = styled(CloseButton)`
+const SClose = styled(IconButton)`
   position: absolute;
   top: 10px;
   right: 10px;
@@ -23,7 +25,7 @@ const SClose = styled(CloseButton)`
 interface ImagePreviewProps {
   imageCid: string | undefined;
   imageSourceUrl: string | null;
-  handleClose: (event: React.MouseEvent<HTMLElement>) => void;
+  handleClose: () => void;
 }
 
 const ImagePreview = ({ imageCid, imageSourceUrl, handleClose }: ImagePreviewProps) => {
@@ -37,7 +39,7 @@ const ImagePreview = ({ imageCid, imageSourceUrl, handleClose }: ImagePreviewPro
     return (
       <>
         <SImg src={imageSourceUrl} alt='preview' />
-        <SClose handleClose={handleClose} activetheme={theme}></SClose>
+        <SClose icon={<CrossIcon />} action={handleClose} activetheme={theme}></SClose>
       </>
     );
   }
@@ -45,7 +47,7 @@ const ImagePreview = ({ imageCid, imageSourceUrl, handleClose }: ImagePreviewPro
   return (
     <>
       <ShowImage imageCid={imageCid} altText='preview' />
-      <SClose handleClose={handleClose} activetheme={theme}></SClose>
+      <SClose icon={<CrossIcon />} action={handleClose} activetheme={theme}></SClose>
     </>
   );
 };

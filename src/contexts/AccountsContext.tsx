@@ -14,8 +14,10 @@ interface AccountsContextProviderProps {
 }
 
 interface AccountsContextProps {
+  availableAccounts: Account[] | null;
   activeAccount: Account | null;
   activeWallet: BaseWallet | null;
+  setAvailableAccounts: (value: Account[] | null) => void;
   setActiveAccount: (value: Account | null) => void;
   setActiveWallet: (value: BaseWallet) => void;
   api: ApiPromise | null;
@@ -28,8 +30,10 @@ interface AccountsContextProps {
 
 /* eslint-disable @typescript-eslint/no-empty-function */
 const AccountsContext = createContext<AccountsContextProps>({
+  availableAccounts: null,
   activeAccount: null,
   activeWallet: null,
+  setAvailableAccounts: () => {},
   setActiveAccount: () => {},
   setActiveWallet: () => {},
   api: null,
@@ -44,6 +48,7 @@ const AccountsContext = createContext<AccountsContextProps>({
 export const useAccounts = () => useContext(AccountsContext);
 
 export const AccountsContextProvider = ({ children }: AccountsContextProviderProps) => {
+  const [availableAccounts, setAvailableAccounts] = useState<Account[] | null>(null);
   const [activeAccount, setActiveAccount] = useState<Account | null>(null);
   const [activeWallet, setActiveWallet] = useState<BaseWallet | null>(null);
   const [api, setApi] = useState<ApiPromise | null>(null);
@@ -90,8 +95,10 @@ export const AccountsContextProvider = ({ children }: AccountsContextProviderPro
 
   const contextData = useMemo(
     () => ({
+      availableAccounts,
       activeAccount,
       activeWallet,
+      setAvailableAccounts,
       setActiveAccount,
       setActiveWallet,
       api,
@@ -101,7 +108,18 @@ export const AccountsContextProvider = ({ children }: AccountsContextProviderPro
       setStoredChain,
       theme,
     }),
-    [activeAccount, activeWallet, api, storedActiveAccount, setStoredActiveAccount, storedChain, setStoredChain, theme],
+    [
+      availableAccounts,
+      activeAccount,
+      activeWallet,
+      setAvailableAccounts,
+      api,
+      storedActiveAccount,
+      setStoredActiveAccount,
+      storedChain,
+      setStoredChain,
+      theme,
+    ],
   );
 
   return <AccountsContext.Provider value={contextData}>{children}</AccountsContext.Provider>;

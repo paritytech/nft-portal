@@ -5,13 +5,13 @@ import { useAccounts } from '@contexts/AccountsContext';
 
 export const useWalletAccounts = (wallet: BaseWallet) => {
   const { storedActiveAccount } = useAccounts();
-  const [walletAccounts, setWalletAccounts] = useState<Account[]>([]);
+  const [walletAccounts, setWalletAccounts] = useState<Account[] | null>(null);
 
   const connectToWallet = useCallback(
     async (wallet: BaseWallet) => {
       // if accounts exist, means we are already connected to the wallet
       // unfortunately isConnected method doesn't work yet, so can't use it
-      if (walletAccounts.length > 0) {
+      if (walletAccounts && walletAccounts.length > 0) {
         return;
       }
 
