@@ -14,6 +14,7 @@ import Title from '@common/Title';
 import { useAccounts } from '@contexts/AccountsContext';
 import { useModalStatus } from '@contexts/ModalStatusContext';
 
+import { ADD_LIQUIDITY_SLIPPAGE } from '@helpers/config';
 import { ModalStatusTypes, StatusMessages } from '@helpers/constants';
 import {
   NativeTokenMetadata,
@@ -113,7 +114,7 @@ const AddLiquidity = ({
       }
 
       // add slippage tolerance to min amounts
-      const slippage = 0.5; // 0.5%
+      const slippage = ADD_LIQUIDITY_SLIPPAGE;
       const amount1Min = new BN(unitToPlanck(addSlippage(asset1Amount, slippage), nativeMetadata.decimals));
       const amount2Min = new BN(unitToPlanck(addSlippage(asset2Amount, slippage), assetMetadata.decimals));
 
