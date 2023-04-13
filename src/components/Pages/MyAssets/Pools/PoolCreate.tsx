@@ -23,10 +23,10 @@ const PoolCreate = () => {
   const {
     createPool,
     getAvailablePoolTokens,
-    getNativeMetadata,
     getNativeBalance,
-    nativeMetadata,
+    getNativeMetadata,
     nativeBalance,
+    nativeMetadata,
     availablePoolTokens,
   } = useAssets();
   const { openModalStatus, setStatus } = useModalStatus();
@@ -52,10 +52,10 @@ const PoolCreate = () => {
   );
 
   useEffect(() => {
-    getNativeMetadata();
     getAvailablePoolTokens();
     getNativeBalance();
-  }, [getNativeMetadata, getAvailablePoolTokens, getNativeBalance]);
+    getNativeMetadata();
+  }, [getAvailablePoolTokens, getNativeBalance, getNativeMetadata]);
 
   if (!api) {
     return null;
@@ -71,7 +71,6 @@ const PoolCreate = () => {
 
   return (
     <>
-      <Title className='XXL'>Create Liquidity Pool</Title>
       <ModalStatus />
       <Form onSubmit={submitCreatePool}>
         <section>

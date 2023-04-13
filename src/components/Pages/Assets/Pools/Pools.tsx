@@ -4,16 +4,17 @@ import { Link } from 'react-router-dom';
 
 import ActionButton from '@buttons/ActionButton';
 
+import { useAccounts } from '@contexts/AccountsContext';
+
 import { SContentBlockContainer } from '@helpers/reusableStyles';
 import { routes } from '@helpers/routes';
 
 import { useAssets } from '@hooks/useAssets';
-import { useConnectToStoredAccount } from '@hooks/useConnectToStoredAccount';
 
 import PoolsView from './PoolsView';
 
 const Pools = () => {
-  const { activeAccount } = useConnectToStoredAccount();
+  const { activeAccount } = useAccounts();
   const { getNativeMetadata, getPools, getTokensMetadata, nativeMetadata, pools, tokensMetadata } = useAssets();
   useEffect(() => {
     getPools();
