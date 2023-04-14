@@ -2,9 +2,6 @@ import { memo } from 'react';
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { useAccounts } from '@contexts/AccountsContext';
-
-import { ThemeStyle } from '@helpers/interfaces';
 import { CssFontBoldL, CssFontSemiBoldS } from '@helpers/reusableStyles';
 import { routes } from '@helpers/routes';
 
@@ -19,11 +16,11 @@ const SLogoButton = styled(NavLink)`
   display: flex;
   align-items: center;
   margin-right: 32px;
-  color: ${({ activetheme: activeTheme }: { activetheme: ThemeStyle }) => activeTheme.textAndIconsPrimary};
+  color: ${({ theme }) => theme.textAndIconsPrimary};
   text-decoration: none;
 
   :hover {
-    color: ${({ activetheme: activeTheme }: { activetheme: ThemeStyle }) => activeTheme.textAndIconsPrimary};
+    color: ${({ theme }) => theme.textAndIconsPrimary};
   }
 
   svg {
@@ -44,39 +41,29 @@ const SNavigationButton = styled(NavLink)`
   padding: 0 16px;
   text-decoration: none;
   text-align: center;
-  color: ${({ activetheme: activeTheme }: { activetheme: ThemeStyle }) => activeTheme.textAndIconsTertiary};
+  color: ${({ theme }) => theme.textAndIconsTertiary};
   border-radius: 32px;
 
   &.active,
   :hover {
-    color: ${({ activetheme: activeTheme }: { activetheme: ThemeStyle }) => activeTheme.textAndIconsPrimary};
+    color: ${({ theme }) => theme.textAndIconsPrimary};
   }
 
   &.active {
-    background-color: ${({ activetheme: activeTheme }: { activetheme: ThemeStyle }) => activeTheme.fill6};
+    background-color: ${({ theme }) => theme.fill6};
   }
 `;
 
-const Navigation = () => {
-  const { theme } = useAccounts();
-
-  return (
-    <SNav>
-      <SLogoButton to={routes.homepage} activetheme={theme}>
-        <Logo />
-        <span>Assets Portal</span>
-      </SLogoButton>
-      <SNavigationButton to={routes.myAssets.index} activetheme={theme}>
-        My Assets
-      </SNavigationButton>
-      <SNavigationButton to={routes.discover.nfts} activetheme={theme}>
-        Discover
-      </SNavigationButton>
-      <SNavigationButton to={routes.swap.index} activetheme={theme}>
-        Swap
-      </SNavigationButton>
-    </SNav>
-  );
-};
+const Navigation = () => (
+  <SNav>
+    <SLogoButton to={routes.homepage}>
+      <Logo />
+      <span>Assets Portal</span>
+    </SLogoButton>
+    <SNavigationButton to={routes.myAssets.index}>My Assets</SNavigationButton>
+    <SNavigationButton to={routes.discover.nfts}>Discover</SNavigationButton>
+    <SNavigationButton to={routes.swap.index}>Swap</SNavigationButton>
+  </SNav>
+);
 
 export default memo(Navigation);

@@ -4,7 +4,6 @@ import styled from 'styled-components';
 
 import ActionButton from '@buttons/ActionButton';
 
-import { useAccounts } from '@contexts/AccountsContext';
 import { useModalStatus } from '@contexts/ModalStatusContext';
 
 import { ModalStatusTypes } from '@helpers/constants';
@@ -17,7 +16,6 @@ const SStatusMessage = styled.p`
 `;
 
 const ModalStatus = () => {
-  const { theme } = useAccounts();
   const { isModalVisible, status, resetModalStatus, concludeModalStatus } = useModalStatus();
 
   useEffect(() => {
@@ -31,7 +29,7 @@ const ModalStatus = () => {
   const showButton = status.type === ModalStatusTypes.COMPLETE || status.type === ModalStatusTypes.ERROR;
 
   return (
-    <SModal centered show={isModalVisible} activetheme={theme}>
+    <SModal centered show={isModalVisible}>
       <Modal.Body className='text-center'>
         <Loader />
         <SStatusMessage>{status.message}</SStatusMessage>

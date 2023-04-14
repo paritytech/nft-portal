@@ -1,7 +1,7 @@
 import type { RegistryTypes } from '@polkadot/types-codec/types';
 import type { OverrideBundleType } from '@polkadot/types/types/registry';
 
-import { ChainThemes, ChainTitles } from './constants';
+import { ChainThemes, ChainTitles, ExtensionIds } from './constants';
 import { Chain } from './interfaces';
 
 export const APP_NAME = 'assets-portal';
@@ -27,8 +27,8 @@ export const extensionConfig = {
   disallowed: [],
   supported: [
     {
-      id: 'polkadot-js',
-      title: 'polkadotJS',
+      id: ExtensionIds.POLKADOTJS,
+      title: 'Polkadot JS',
       description: 'Basic account injection and signer',
       urls: {
         main: '',
@@ -40,8 +40,8 @@ export const extensionConfig = {
       },
     },
     {
-      id: 'talisman',
-      title: 'talisman',
+      id: ExtensionIds.TALISMAN,
+      title: 'Talisman',
       description:
         'Talisman is a Polkadot wallet that unlocks a new world of multichain web3 applications in the Paraverse',
       urls: {

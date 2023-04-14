@@ -1,20 +1,18 @@
 import { ReactElement, memo } from 'react';
 import styled from 'styled-components';
 
-import { useAccounts } from '@contexts/AccountsContext';
-
-import { Themeable } from '@helpers/interfaces';
+import { CommonStyleProps } from '@helpers/interfaces';
 
 import ArrowIcon from '@images/icons/arrow.svg';
 
-const SArrowButton = styled.button<Themeable>`
+const SArrowButton = styled.button`
   display: flex;
   justify-content: space-between;
   align-items: center;
   width: 100%;
   min-height: 56px;
   padding: 0 12px;
-  background-color: ${({ activeTheme }) => activeTheme.fill12};
+  background-color: ${({ theme }) => theme.fill6};
   border: 0;
   border-radius: 12px;
 
@@ -22,21 +20,22 @@ const SArrowButton = styled.button<Themeable>`
     width: 24px;
     height: 24px;
   }
+
+  :hover {
+    background-color: ${({ theme }) => theme.fill12};
+  }
 `;
 
-interface ArrowIconProps {
-  children: ReactElement | string;
+interface ArrowIconProps extends CommonStyleProps {
+  children: ReactElement | ReactElement[] | string;
   action: () => void;
 }
 
-const ArrowButton = ({ children, action }: ArrowIconProps) => {
-  const { theme } = useAccounts();
-
-  return (
-    <SArrowButton activeTheme={theme} onClick={action}>
-      <div>{children}</div> <ArrowIcon className='arrow' />
-    </SArrowButton>
-  );
-};
+const ArrowButton = ({ children, action, className }: ArrowIconProps) => (
+  <SArrowButton onClick={action} className={className}>
+    {children}
+    <ArrowIcon className='arrow' />
+  </SArrowButton>
+);
 
 export default memo(ArrowButton);

@@ -1,6 +1,7 @@
 import { Account, BaseWallet } from '@polkadot-onboard/core';
 import { ApiPromise, WsProvider } from '@polkadot/api';
 import { ReactElement, createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import { ThemeProvider } from 'styled-components';
 
 import { apiConfigRuntime, apiConfigTypes, chains } from '@helpers/config';
 import { ChainThemes } from '@helpers/constants';
@@ -25,7 +26,6 @@ interface AccountsContextProps {
   setStoredActiveAccount: (value: ActiveAccount | null) => void;
   storedChain: Chain | null;
   setStoredChain: (value: Chain | null) => void;
-  theme: ThemeStyle;
 }
 
 /* eslint-disable @typescript-eslint/no-empty-function */
@@ -41,7 +41,6 @@ const AccountsContext = createContext<AccountsContextProps>({
   setStoredActiveAccount: () => {},
   storedChain: null,
   setStoredChain: () => {},
-  theme: themes.kusama,
 });
 /* eslint-enable @typescript-eslint/no-empty-function */
 
@@ -106,7 +105,6 @@ export const AccountsContextProvider = ({ children }: AccountsContextProviderPro
       setStoredActiveAccount,
       storedChain,
       setStoredChain,
-      theme,
     }),
     [
       availableAccounts,
@@ -118,9 +116,12 @@ export const AccountsContextProvider = ({ children }: AccountsContextProviderPro
       setStoredActiveAccount,
       storedChain,
       setStoredChain,
-      theme,
     ],
   );
 
-  return <AccountsContext.Provider value={contextData}>{children}</AccountsContext.Provider>;
+  return (
+    <AccountsContext.Provider value={contextData}>
+      <ThemeProvider theme={theme}>{children}</ThemeProvider>
+    </AccountsContext.Provider>
+  );
 };

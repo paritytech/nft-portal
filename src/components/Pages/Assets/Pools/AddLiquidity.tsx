@@ -60,7 +60,7 @@ const AddLiquidity = ({
   nativeBalance,
   assetBalance,
 }: AddLiquidityProps) => {
-  const { activeAccount, theme } = useAccounts();
+  const { activeAccount } = useAccounts();
   const { addLiquidity } = useAssets();
   const { openModalStatus, setStatus } = useModalStatus();
   const [asset1Amount, setAsset1Amount] = useState<string>('');
@@ -212,7 +212,6 @@ const AddLiquidity = ({
               <ActionButton
                 className='main XS'
                 type='button'
-                activeTheme={theme}
                 action={() => onInput1Changed(getCleanFormattedBalance(nativeBalance as BN, nativeDecimals))}
               >
                 Max
@@ -242,7 +241,6 @@ const AddLiquidity = ({
               <ActionButton
                 className='main XS'
                 type='button'
-                activeTheme={theme}
                 action={() => onInput2Changed(getCleanFormattedBalance(assetBalance as BN, assetDecimals))}
               >
                 Max

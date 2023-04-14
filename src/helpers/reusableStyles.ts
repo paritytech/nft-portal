@@ -1,7 +1,7 @@
 import styled, { css } from 'styled-components';
 
 import { ChainThemes } from './constants';
-import { CommonStyleProps, ThemeStyle, Themeable } from './interfaces';
+import { CommonStyleProps, ThemeStyle } from './interfaces';
 
 export const deviceScreenSize = {
   mobile: '480px',
@@ -97,9 +97,9 @@ export const CssArrowDown = css`
   margin-top: 3px;
 `;
 
-export const CssCallToAction = css<Themeable>`
+export const CssCallToAction = css`
   &.call-to-action {
-    box-shadow: 0 0 0 8px ${({ activeTheme }) => activeTheme.fill6};
+    box-shadow: 0 0 0 8px ${({ theme }) => theme.fill6};
   }
 `;
 
@@ -218,25 +218,23 @@ const CssCommonSizes = css`
   }
 
   &.XS {
-    ${CssSemiBoldXS}
+    ${CssFontSemiBoldXS}
     height: 24px;
   }
 `;
 
-export const CssButtonMainStyles = css<CommonStyleProps & Themeable>`
-  color: ${({ activeTheme, isDisabled }) => (isDisabled ? activeTheme.textAndIconsDisabled : activeTheme.forcedBlack)};
-  background-color: ${({ activeTheme, isDisabled }) =>
-    isDisabled ? activeTheme.fill8 : activeTheme.appliedButtonMain};
+export const CssButtonMainStyles = css<CommonStyleProps>`
+  color: ${({ theme, isDisabled }) => (isDisabled ? theme.textAndIconsDisabled : theme.forcedBlack)};
+  background-color: ${({ theme, isDisabled }) => (isDisabled ? theme.fill8 : theme.appliedButtonMain)};
 
   :hover {
     cursor: ${({ isDisabled }) => (isDisabled ? 'not-allowed' : 'pointer')};
-    background-color: ${({ activeTheme, isDisabled }) => (isDisabled ? activeTheme.fill8 : activeTheme.fill80)};
+    background-color: ${({ theme, isDisabled }) => (isDisabled ? theme.fill8 : theme.fill80)};
   }
 
   a {
     text-decoration: none;
-    color: ${({ activeTheme, isDisabled }) =>
-      isDisabled ? activeTheme.textAndIconsDisabled : activeTheme.forcedBlack};
+    color: ${({ theme, isDisabled }) => (isDisabled ? theme.textAndIconsDisabled : theme.forcedBlack)};
   }
 
   ${CssCallToAction}
@@ -244,25 +242,25 @@ export const CssButtonMainStyles = css<CommonStyleProps & Themeable>`
   ${CssCommonSizes}
 `;
 
-export const CssButtonSecondaryStyles = css<CommonStyleProps & Themeable>`
+export const CssButtonSecondaryStyles = css<CommonStyleProps>`
   ${CssFontSemiBoldS}
-  color: ${({ activeTheme, isDisabled }) => (isDisabled ? activeTheme.fill25 : activeTheme.textAndIconsPrimary)};
-  background-color: ${({ activeTheme, isDisabled }) => (isDisabled ? activeTheme.fill24 : activeTheme.forcedBlack)};
+  color: ${({ theme, isDisabled }) => (isDisabled ? theme.fill25 : theme.textAndIconsPrimary)};
+  background-color: ${({ theme, isDisabled }) => (isDisabled ? theme.fill24 : theme.forcedBlack)};
 
   :hover {
     cursor: ${({ isDisabled }) => (isDisabled ? 'not-allowed' : 'pointer')};
-    background-color: ${({ activeTheme }) => activeTheme.fill24};
+    background-color: ${({ theme }) => theme.fill24};
   }
 
   a {
     text-decoration: none;
-    color: ${({ activeTheme, isDisabled }) => (isDisabled ? activeTheme.fill25 : activeTheme.textAndIconsPrimary)};
+    color: ${({ theme, isDisabled }) => (isDisabled ? theme.fill25 : theme.textAndIconsPrimary)};
   }
 
   ${CssCommonSizes}
 `;
 
-export const CssButtonRoundedStyles = css<CommonStyleProps & Themeable>`
+export const CssButtonRoundedStyles = css<CommonStyleProps>`
   ${CssButtonMainStyles}
 
   border-radius: 12px;
@@ -270,19 +268,18 @@ export const CssButtonRoundedStyles = css<CommonStyleProps & Themeable>`
   ${CssCommonSizes}
 `;
 
-export const CssButtonTransparentStyles = css<CommonStyleProps & Themeable>`
-  color: ${({ activeTheme, isDisabled }) => (isDisabled ? activeTheme.textAndIconsDisabled : activeTheme.forcedWhite)};
-  background-color: ${({ activeTheme }) => activeTheme.fill6};
+export const CssButtonTransparentStyles = css<CommonStyleProps>`
+  color: ${({ theme, isDisabled }) => (isDisabled ? theme.textAndIconsDisabled : theme.forcedWhite)};
+  background-color: ${({ theme }) => theme.fill6};
 
   :hover {
     cursor: ${({ isDisabled }) => (isDisabled ? 'not-allowed' : 'pointer')};
-    background-color: ${({ activeTheme, isDisabled }) => (isDisabled ? activeTheme.fill6 : activeTheme.fill12)};
+    background-color: ${({ theme, isDisabled }) => (isDisabled ? theme.fill6 : theme.fill12)};
   }
 
   a {
     text-decoration: none;
-    color: ${({ activeTheme, isDisabled }) =>
-      isDisabled ? activeTheme.textAndIconsDisabled : activeTheme.forcedWhite};
+    color: ${({ theme, isDisabled }) => (isDisabled ? theme.textAndIconsDisabled : theme.forcedWhite)};
   }
 
   &.L {
@@ -293,29 +290,26 @@ export const CssButtonTransparentStyles = css<CommonStyleProps & Themeable>`
   &.S {
     ${CssFontRegularS}
     height: 36px;
-    color: ${({ activeTheme, isDisabled }) =>
-      isDisabled ? activeTheme.textAndIconsDisabled : activeTheme.textAndIconsSecondary};
+    color: ${({ theme, isDisabled }) => (isDisabled ? theme.textAndIconsDisabled : theme.textAndIconsSecondary)};
   }
 `;
 
-export const CssButtonStrokeStyles = css<CommonStyleProps & Themeable>`
+export const CssButtonStrokeStyles = css<CommonStyleProps>`
   ${CssFontSemiBoldM}
   height: 64px;
-  color: ${({ activeTheme, isDisabled }) =>
-    isDisabled ? activeTheme.textAndIconsDisabled : activeTheme.textAndIconsSecondary};
+  color: ${({ theme, isDisabled }) => (isDisabled ? theme.textAndIconsDisabled : theme.textAndIconsSecondary)};
   background-color: transparent;
-  border: 1px solid ${({ activeTheme }) => activeTheme.appliedStroke};
+  border: 1px solid ${({ theme }) => theme.appliedStroke};
   box-sizing: border-box;
 
   :hover {
     cursor: ${({ isDisabled }) => (isDisabled ? 'not-allowed' : 'pointer')};
-    background-color: ${({ activeTheme, isDisabled }) => (isDisabled ? 'transparent' : activeTheme.fill6)};
+    background-color: ${({ theme, isDisabled }) => (isDisabled ? 'transparent' : theme.fill6)};
   }
 
   a {
     text-decoration: none;
-    color: ${({ activeTheme, isDisabled }) =>
-      isDisabled ? activeTheme.textAndIconsDisabled : activeTheme.textAndIconsSecondary};
+    color: ${({ theme, isDisabled }) => (isDisabled ? theme.textAndIconsDisabled : theme.textAndIconsSecondary)};
   }
 `;
 
@@ -339,7 +333,7 @@ export const SContentBlock = styled.div`
   align-items: center;
 `;
 
-export const SConnectButton = styled.button<Themeable>`
+export const SConnectButton = styled.button`
   ${CssFontSemiBoldS}
   display: flex;
   align-items: center;
@@ -347,15 +341,15 @@ export const SConnectButton = styled.button<Themeable>`
   height: 48px;
   line-height: 48px;
   padding: 0 24px;
-  background-color: ${({ activeTheme }) => activeTheme.appliedButtonMain};
-  color: ${({ activeTheme }) => activeTheme.forcedBlack};
+  background-color: ${({ theme }) => theme.appliedButtonMain};
+  color: ${({ theme }) => theme.forcedBlack};
   border: 0;
   border-radius: 32px;
 
   &.active {
     padding: 0 8px;
-    background-color: ${({ activeTheme }) => activeTheme.fill6};
-    color: ${({ activeTheme }) => activeTheme.textAndIconsSecondary};
+    background-color: ${({ theme }) => theme.fill6};
+    color: ${({ theme }) => theme.textAndIconsSecondary};
   }
 
   .identicon {

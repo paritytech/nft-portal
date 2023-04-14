@@ -7,16 +7,12 @@ import IconButton from '@buttons/IconButton';
 
 import Title from '@common/Title';
 
-import { useAccounts } from '@contexts/AccountsContext';
-
-import { Themeable } from '@helpers/interfaces';
-
 import CrossIcon from '@images/icons/cross.svg';
 
 import Wallet from './Wallet';
 
-const STitle = styled(Title)<Themeable>`
-  color: ${({ activeTheme }) => activeTheme.textAndIconsPrimary};
+const STitle = styled(Title)`
+  color: ${({ theme }) => theme.textAndIconsPrimary};
 `;
 
 interface ConnectToWalletProps {
@@ -25,26 +21,20 @@ interface ConnectToWalletProps {
   changeStep: () => void;
 }
 
-const ConnectToWallet = ({ handleClose, wallets, changeStep }: ConnectToWalletProps) => {
-  const { theme } = useAccounts();
-
-  return (
-    <>
-      <Modal.Header className='border-0'>
-        <Modal.Title>
-          <STitle className='L' activeTheme={theme}>
-            Connect Wallet
-          </STitle>
-        </Modal.Title>
-        <IconButton icon={<CrossIcon />} action={handleClose} />
-      </Modal.Header>
-      <Modal.Body>
-        {wallets.map((wallet: BaseWallet) => (
-          <Wallet key={wallet.metadata.title} wallet={wallet} changeStep={changeStep} />
-        ))}
-      </Modal.Body>
-    </>
-  );
-};
+const ConnectToWallet = ({ handleClose, wallets, changeStep }: ConnectToWalletProps) => (
+  <>
+    <Modal.Header className='border-0'>
+      <Modal.Title>
+        <STitle className='L'>Connect Wallet</STitle>
+      </Modal.Title>
+      <IconButton icon={<CrossIcon />} action={handleClose} />
+    </Modal.Header>
+    <Modal.Body>
+      {wallets.map((wallet: BaseWallet) => (
+        <Wallet key={wallet.metadata.title} wallet={wallet} changeStep={changeStep} />
+      ))}
+    </Modal.Body>
+  </>
+);
 
 export default memo(ConnectToWallet);

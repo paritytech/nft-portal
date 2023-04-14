@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { useAccounts } from '@contexts/AccountsContext';
 
 import { chains } from '@helpers/config';
-import { Chain, Themeable } from '@helpers/interfaces';
+import { Chain } from '@helpers/interfaces';
 import { CssArrowDown, CssFontSemiBoldS } from '@helpers/reusableStyles';
 import { routes } from '@helpers/routes';
 
@@ -28,13 +28,13 @@ const SContainer = styled.div`
   }
 `;
 
-const SCurrentChain = styled.button<Themeable>`
+const SCurrentChain = styled.button`
   display: flex;
   height: 48px;
   align-items: center;
   padding: 0 8px;
-  background-color: ${({ activeTheme }) => activeTheme.fill6};
-  color: ${({ activeTheme }) => activeTheme.textAndIconsPrimary};
+  background-color: ${({ theme }) => theme.fill6};
+  color: ${({ theme }) => theme.textAndIconsPrimary};
   border: 0;
   border-radius: 32px;
   gap: 10px;
@@ -49,7 +49,7 @@ const SCurrentChain = styled.button<Themeable>`
   }
 `;
 
-const SChainList = styled.div<Themeable>`
+const SChainList = styled.div`
   display: none;
   position: absolute;
   top: 100%;
@@ -57,8 +57,8 @@ const SChainList = styled.div<Themeable>`
   margin-top: 12px;
   padding: 16px;
 
-  background-color: ${({ activeTheme }) => activeTheme.backgroundTertiary};
-  color: ${({ activeTheme }) => activeTheme.textAndIconsPrimary};
+  background-color: ${({ theme }) => theme.backgroundTertiary};
+  color: ${({ theme }) => theme.textAndIconsPrimary};
   border-radius: 16px;
   z-index: 1;
 
@@ -69,7 +69,7 @@ const SChainList = styled.div<Themeable>`
   }
 `;
 
-const SChainOption = styled.div<Themeable>`
+const SChainOption = styled.div`
   ${CssFontSemiBoldS}
   display: flex;
   min-width: 184px;
@@ -79,7 +79,7 @@ const SChainOption = styled.div<Themeable>`
   gap: 8px;
 
   :hover {
-    background-color: ${({ activeTheme }) => activeTheme.appliedHover};
+    background-color: ${({ theme }) => theme.appliedHover};
     border-radius: 32px;
     cursor: pointer;
   }
@@ -92,7 +92,7 @@ const SChainOption = styled.div<Themeable>`
 
 const SelectChain = () => {
   const navigate = useNavigate();
-  const { storedChain, setStoredChain, theme } = useAccounts();
+  const { storedChain, setStoredChain } = useAccounts();
   const [isChainListVisible, setIsChainListVisible] = useState(false);
   const dropdownRef = useOutsideClick(() => setIsChainListVisible(false));
 
@@ -112,14 +112,14 @@ const SelectChain = () => {
 
   return (
     <SContainer ref={dropdownRef}>
-      <SCurrentChain onClick={toggleChainList} activeTheme={theme}>
+      <SCurrentChain onClick={toggleChainList}>
         {createElement(ChainIcons[storedChain.title])}
         <span>{storedChain.title}</span>
         <ArrowIcon className='arrow-down' />
       </SCurrentChain>
-      <SChainList className={isChainListVisible ? 'showlist' : ''} activeTheme={theme}>
+      <SChainList className={isChainListVisible ? 'showlist' : ''}>
         {chains.map((chain) => (
-          <SChainOption onClick={() => selectChain(chain)} key={chain.title} activeTheme={theme}>
+          <SChainOption onClick={() => selectChain(chain)} key={chain.title}>
             {createElement(ChainIcons[chain.title])}
             <span>{chain.title}</span>
           </SChainOption>

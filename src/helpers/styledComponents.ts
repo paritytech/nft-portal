@@ -3,10 +3,8 @@ import Card from 'react-bootstrap/esm/Card';
 import Modal from 'react-bootstrap/esm/Modal';
 import styled from 'styled-components';
 
-import { ThemeStyle } from './interfaces';
-
 export const SCard = styled(Card)`
-  background-color: ${({ activetheme }: { activetheme: ThemeStyle }) => activetheme.fill6};
+  background-color: ${({ theme }) => theme.fill6};
 `;
 
 export const SCardEdit = styled(Card.Subtitle)`
@@ -16,7 +14,7 @@ export const SCardEdit = styled(Card.Subtitle)`
   a {
     position: relative;
     padding-right: 6px;
-    color: ${({ activetheme }: { activetheme: ThemeStyle }) => activetheme.textAndIconsPrimary};
+    color: ${({ theme }) => theme.textAndIconsPrimary};
     text-decoration: none;
 
     :hover {
@@ -35,15 +33,15 @@ export const SCardEdit = styled(Card.Subtitle)`
 export const SModal = styled(Modal)`
   .modal-content {
     border-radius: 16px;
-    background-color: ${({ activetheme }: { activetheme: ThemeStyle }) => activetheme.backgroundTertiary};
-    border: 1px solid ${({ activetheme }: { activetheme: ThemeStyle }) => activetheme.appliedStroke};
+    background-color: ${({ theme }) => theme.backgroundTertiary};
+    border: 1px solid ${({ theme }) => theme.appliedStroke};
   }
 
   .modal-header {
     padding: 24px 24px 32px;
   }
 
-  modal-body {
+  .modal-body {
     padding: 0 24px 24px;
   }
 `;

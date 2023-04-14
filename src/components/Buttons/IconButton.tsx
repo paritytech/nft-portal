@@ -1,12 +1,10 @@
 import { ReactElement, memo } from 'react';
 import styled from 'styled-components';
 
-import { useAccounts } from '@contexts/AccountsContext';
+import { CommonStyleProps } from '@helpers/interfaces';
 
-import { CommonStyleProps, Themeable } from '@helpers/interfaces';
-
-const SIconButton = styled.button<Themeable>`
-  background-color: ${({ activeTheme }) => activeTheme.fill6};
+const SIconButton = styled.button`
+  background-color: ${({ theme }) => theme.fill6};
   display: flex;
   align-items: center;
   justify-content: center;
@@ -24,17 +22,13 @@ const SIconButton = styled.button<Themeable>`
 
 interface IconButtonProps extends CommonStyleProps {
   icon: ReactElement;
-  action: () => void;
+  action: (event: React.MouseEvent<HTMLElement>) => void;
 }
 
-const IconButton = ({ icon, action, className }: IconButtonProps) => {
-  const { theme } = useAccounts();
-
-  return (
-    <SIconButton className={className} onClick={action} activeTheme={theme}>
-      {icon}
-    </SIconButton>
-  );
-};
+const IconButton = ({ icon, action, className }: IconButtonProps) => (
+  <SIconButton className={className} onClick={action}>
+    {icon}
+  </SIconButton>
+);
 
 export default memo(IconButton);

@@ -21,7 +21,7 @@ interface ConnectModalProps {
 }
 
 const ConnectModal = ({ showWalletSelection, handleClose, wallets }: ConnectModalProps) => {
-  const { theme, activeWallet } = useAccounts();
+  const { activeWallet } = useAccounts();
   const [activeStep, setActiveStep] = useState<ConnectModalSteps>(ConnectModalSteps.CONNECT_TO_WALLET);
 
   const showStep = useCallback(() => {
@@ -49,7 +49,7 @@ const ConnectModal = ({ showWalletSelection, handleClose, wallets }: ConnectModa
   }, [activeStep, activeWallet, handleClose, wallets]);
 
   return (
-    <SConnectModal show={showWalletSelection} onHide={handleClose} activetheme={theme}>
+    <SConnectModal show={showWalletSelection} onHide={handleClose}>
       {showStep()}
     </SConnectModal>
   );

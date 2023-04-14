@@ -2,17 +2,14 @@ import { ReactElement, memo } from 'react';
 import { Navigate } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { useAccounts } from '@contexts/AccountsContext';
-
-import { Themeable } from '@helpers/interfaces';
 import { CssFontRegularXL, SConnectButton } from '@helpers/reusableStyles';
 
 import { useConnectToStoredAccount } from '@hooks/useConnectToStoredAccount';
 
-const SDoIt = styled.div<Themeable>`
+const SDoIt = styled.div`
   ${CssFontRegularXL}
   margin-bottom: 32px;
-  color: ${({ activeTheme }) => activeTheme.textAndIconsSecondary};
+  color: ${({ theme }) => theme.textAndIconsSecondary};
 `;
 
 interface PrivateRouteProps {
@@ -22,7 +19,6 @@ interface PrivateRouteProps {
 
 const PrivateRoute = ({ children, redirectTo }: PrivateRouteProps) => {
   const { activeAccount, isAutoConnectDone } = useConnectToStoredAccount();
-  const { theme } = useAccounts();
 
   if (isAutoConnectDone === false) {
     return null;
@@ -37,8 +33,8 @@ const PrivateRoute = ({ children, redirectTo }: PrivateRouteProps) => {
 
     return (
       <>
-        <SDoIt activeTheme={theme}>Connect wallet to see your assets</SDoIt>
-        <SConnectButton onClick={() => connect?.click()} activeTheme={theme} className='call-to-action'>
+        <SDoIt>Connect wallet to see your assets</SDoIt>
+        <SConnectButton onClick={() => connect?.click()} className='call-to-action'>
           Connect Wallet
         </SConnectButton>
       </>

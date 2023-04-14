@@ -4,8 +4,6 @@ import { Link, useParams } from 'react-router-dom';
 
 import ShowImage from '@common/ShowImage';
 
-import { useAccounts } from '@contexts/AccountsContext';
-
 import { NftMetadata } from '@helpers/interfaces';
 import { routes } from '@helpers/routes';
 import { SCard, SCardEdit } from '@helpers/styledComponents';
@@ -17,15 +15,14 @@ interface NftProps {
 }
 
 const Nft = ({ nftMetadata }: NftProps) => {
-  const { theme } = useAccounts();
   const { collectionId } = useParams();
   const { id, name, description, image } = nftMetadata;
 
   return (
-    <SCard activetheme={theme}>
+    <SCard>
       <ShowImage imageCid={image} altText={description} />
       <Card.Body>
-        <SCardEdit className='text-muted' activetheme={theme}>
+        <SCardEdit className='text-muted'>
           <span>NFT ID #{id}</span>
           <Link to={routes.myAssets.nftEdit(collectionId, id)}>
             Edit

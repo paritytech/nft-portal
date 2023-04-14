@@ -2,14 +2,11 @@ import { memo, useCallback, useEffect } from 'react';
 import { useDropzone } from 'react-dropzone';
 import styled from 'styled-components';
 
-import { useAccounts } from '@contexts/AccountsContext';
-
-import { Themeable } from '@helpers/interfaces';
 import { prefecthCid } from '@helpers/prefetchCid';
 
 import ImagePreview from './ImagePreview';
 
-const SDropZone = styled.div<Themeable>`
+const SDropZone = styled.div`
   position: relative;
   display: flex;
   flex-direction: column;
@@ -17,12 +14,12 @@ const SDropZone = styled.div<Themeable>`
   align-items: center;
   max-width: 500px;
   min-height: 300px;
-  border: 1px solid ${({ activeTheme }) => activeTheme.appliedStroke};
+  border: 1px solid ${({ theme }) => theme.appliedStroke};
   border-radius: 16px;
   outline: none;
 
   :hover {
-    background-color: ${({ activeTheme }) => activeTheme.appliedHover};
+    background-color: ${({ theme }) => theme.appliedHover};
 
     img {
       z-index: -1;
@@ -42,7 +39,6 @@ interface FileDropZoneProps {
 }
 
 const FileDropZone = ({ imageSourceUrl, setImageSourceUrl, imageCid, setImageCid }: FileDropZoneProps) => {
-  const { theme } = useAccounts();
   const allowedFileTypes = ['.jpg', '.png', '.gif', '.jpeg'];
   const maxSizeInMb = 10;
 
@@ -89,7 +85,7 @@ const FileDropZone = ({ imageSourceUrl, setImageSourceUrl, imageCid, setImageCid
   });
 
   return (
-    <SDropZone {...getRootProps({ className: 'dropzone' })} activeTheme={theme}>
+    <SDropZone {...getRootProps({ className: 'dropzone' })}>
       <input {...getInputProps()} />
 
       <ImagePreview imageCid={imageCid} imageSourceUrl={imageSourceUrl} handleClose={handleClose} />
