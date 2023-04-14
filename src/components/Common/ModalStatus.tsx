@@ -30,11 +30,12 @@ const ModalStatus = () => {
 
   return (
     <SModal centered show={isModalVisible}>
+      <Modal.Header className='border-0'></Modal.Header>
       <Modal.Body className='text-center'>
         <Loader />
         <SStatusMessage>{status.message}</SStatusMessage>
         {showButton && (
-          <ActionButton action={concludeModalStatus} className='main S'>
+          <ActionButton action={concludeModalStatus} className='main S padding32'>
             OK
           </ActionButton>
         )}

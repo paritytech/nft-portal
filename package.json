@@ -17,9 +17,9 @@
   "author": "SaltyCucumber",
   "license": "MIT",
   "dependencies": {
-    "@polkadot-onboard/core": "0.0.8-beta",
-    "@polkadot-onboard/injected-wallets": "0.0.8-beta",
-    "@polkadot-onboard/react": "0.0.9-beta",
+    "@polkadot-onboard/core": "0.0.9",
+    "@polkadot-onboard/injected-wallets": "0.0.9",
+    "@polkadot-onboard/react": "0.0.9",
     "@polkadot/api": "10.2.2",
     "@popperjs/core": "2.11.7",
     "axios": "1.3.4",

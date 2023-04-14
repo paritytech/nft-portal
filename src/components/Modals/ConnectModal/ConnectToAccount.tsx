@@ -61,14 +61,20 @@ const SLabel = styled.div`
 `;
 
 const SActiveWallet = styled.div`
+  position: relative;
   display: flex;
+  justify-content: center;
   align-items: center;
+  height: 40px;
+  margin: 24px 0;
   gap: 10px;
-  height: 56px;
-  padding-left: 12px;
   color: ${({ theme }) => theme.textAndIconsPrimary};
-  border-radius: 12px;
-  border: 1px solid ${({ theme }) => theme.appliedStroke};
+
+  button {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
 
   > svg {
     width: 32px;
@@ -101,17 +107,13 @@ const ConnectToAccount = ({ handleClose, wallet, changeStep }: ConnectToAccountP
 
   return (
     <>
-      <Modal.Header className='border-0'>
-        <Modal.Title>
-          <STitle className='L'>Connect to Account</STitle>
-        </Modal.Title>
-      </Modal.Header>
       <Modal.Body>
         <SActiveWallet>
           <IconButton icon={<BackIcon />} action={changeStep} />
           <ExtensionIcon extensionId={wallet.metadata.id} />
           {wallet.metadata.title}
         </SActiveWallet>
+
         <SLabel>Select Account</SLabel>
         {availableAccounts ? (
           availableAccounts.map((account: Account) => (
@@ -126,8 +128,7 @@ const ConnectToAccount = ({ handleClose, wallet, changeStep }: ConnectToAccountP
             </SArrowButton>
           ))
         ) : (
-          // TODO change this
-          <>no accounts found</>
+          <SLabel>No accounts found</SLabel>
         )}
       </Modal.Body>
     </>

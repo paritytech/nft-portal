@@ -1,6 +1,5 @@
 import { BaseWallet } from '@polkadot-onboard/core';
 import { memo, useCallback, useState } from 'react';
-import styled from 'styled-components';
 
 import { useAccounts } from '@contexts/AccountsContext';
 
@@ -9,10 +8,6 @@ import { SModal } from '@helpers/styledComponents';
 
 import ConnectToAccount from './ConnectToAccount';
 import ConnectToWallet from './ConnectToWallet';
-
-const SConnectModal = styled(SModal)`
-  margin-top: 150px;
-`;
 
 interface ConnectModalProps {
   showWalletSelection: boolean;
@@ -49,9 +44,9 @@ const ConnectModal = ({ showWalletSelection, handleClose, wallets }: ConnectModa
   }, [activeStep, activeWallet, handleClose, wallets]);
 
   return (
-    <SConnectModal show={showWalletSelection} onHide={handleClose}>
+    <SModal centered show={showWalletSelection} onHide={handleClose}>
       {showStep()}
-    </SConnectModal>
+    </SModal>
   );
 };
 

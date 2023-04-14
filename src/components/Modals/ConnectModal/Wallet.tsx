@@ -54,7 +54,6 @@ const Wallet = ({ wallet, changeStep }: WalletProps) => {
     connectToWallet(wallet);
   };
 
-  // TODO WalletMetadata interface, it does return id
   return (
     <SArrowButton action={handleConnection}>
       <SContent>
