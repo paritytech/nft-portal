@@ -7,19 +7,14 @@ import ArrowButton from '@buttons/ArrowButton';
 import IconButton from '@buttons/IconButton';
 
 import ExtensionIcon from '@common/ExtensionIcon';
-import Title from '@common/Title';
 
 import { useAccounts } from '@contexts/AccountsContext';
 
 import { CssFontRegularM, CssFontRegularS } from '@helpers/reusableStyles';
-import { ellipseAddress } from '@helpers/utilities';
+import { areEqualAddresses, ellipseAddress } from '@helpers/utilities';
 
 import AccountIcon from '@images/icons/account.svg';
 import BackIcon from '@images/icons/back.svg';
-
-const STitle = styled(Title)`
-  color: ${({ theme }) => theme.textAndIconsPrimary};
-`;
 
 const SArrowButton = styled(ArrowButton)`
   margin-bottom: 8px;
@@ -94,7 +89,7 @@ const ConnectToAccount = ({ handleClose, wallet, changeStep }: ConnectToAccountP
   const connectToAccount = (accountAddress: string) => {
     if (availableAccounts) {
       const foundAccount = availableAccounts.find(
-        (account) => account.address.toLocaleLowerCase() === accountAddress.toLocaleLowerCase(),
+        (account) => areEqualAddresses(account.address, accountAddress),
       );
 
       if (foundAccount) {
