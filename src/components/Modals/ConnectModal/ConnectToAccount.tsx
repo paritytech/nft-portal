@@ -88,9 +88,7 @@ const ConnectToAccount = ({ handleClose, wallet, changeStep }: ConnectToAccountP
 
   const connectToAccount = (accountAddress: string) => {
     if (availableAccounts) {
-      const foundAccount = availableAccounts.find(
-        (account) => areEqualAddresses(account.address, accountAddress),
-      );
+      const foundAccount = availableAccounts.find((account) => areEqualAddresses(account.address, accountAddress));
 
       if (foundAccount) {
         setActiveAccount(foundAccount);

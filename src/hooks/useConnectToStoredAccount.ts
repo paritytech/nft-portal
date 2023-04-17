@@ -2,6 +2,7 @@ import { useWallets } from '@polkadot-onboard/react';
 import { useCallback, useEffect, useState } from 'react';
 
 import { useAccounts } from '@contexts/AccountsContext';
+
 import { areEqualAddresses } from '@helpers/utilities';
 
 export const useConnectToStoredAccount = () => {
@@ -16,8 +17,8 @@ export const useConnectToStoredAccount = () => {
       if (foundWallet) {
         await foundWallet.connect();
         const accounts = await foundWallet.getAccounts();
-        const foundAccount = accounts.find(
-          (account) => areEqualAddresses(account.address, storedActiveAccount.account),
+        const foundAccount = accounts.find((account) =>
+          areEqualAddresses(account.address, storedActiveAccount.account),
         );
         if (foundAccount) {
           setActiveWallet(foundWallet);
