@@ -4,8 +4,6 @@ import Card from 'react-bootstrap/Card';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { useAccounts } from '@contexts/AccountsContext';
-
 import type { NativeTokenMetadata, TokenMetadata } from '@helpers/interfaces';
 import { PoolInfo } from '@helpers/interfaces';
 import { SColumn, SContentBlock, SRow } from '@helpers/reusableStyles';
@@ -36,7 +34,6 @@ const SReserve = styled.span`
 `;
 
 const PoolsView = ({ pools, nativeMetadata, tokensMetadata }: PoolsViewProps) => {
-  const { theme } = useAccounts();
   if (pools === null || nativeMetadata === null || tokensMetadata === null) {
     return <>Gathering data... please wait</>;
   }
@@ -84,9 +81,9 @@ const PoolsView = ({ pools, nativeMetadata, tokensMetadata }: PoolsViewProps) =>
     <>
       {poolsWithInfo.map((poolInfo) => (
         <SPoolBlock key={`${poolInfo[0].symbol}-${poolInfo[1].symbol}`}>
-          <SCard activetheme={theme}>
+          <SCard>
             <Card.Body>
-              <SCardEdit className='text-muted' activetheme={theme}>
+              <SCardEdit className='text-muted'>
                 <span>Tokens Locked</span>
                 <Link to={routes.discover.addLiquidity(poolInfo[0].id, poolInfo[1].id)}>
                   <PlusIcon />

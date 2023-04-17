@@ -2,24 +2,24 @@ import { ReactElement, memo } from 'react';
 import styled from 'styled-components';
 
 import { CommonStyleProps } from '@helpers/interfaces';
-import { CssBoldL, CssBoldM, CssBoldXL, CssBoldXXL } from '@helpers/reusableStyles';
+import { CssFontBoldL, CssFontBoldM, CssFontBoldXL, CssFontBoldXXL } from '@helpers/reusableStyles';
 
 const STitle = styled.div`
   &.XXL {
-    ${CssBoldXXL}
+    ${CssFontBoldXXL}
     margin-bottom: 30px;
   }
 
   &.XL {
-    ${CssBoldXL}
+    ${CssFontBoldXL}
   }
 
   &.L {
-    ${CssBoldL}
+    ${CssFontBoldL}
   }
 
   &.M {
-    ${CssBoldM}
+    ${CssFontBoldM}
   }
 `;
 

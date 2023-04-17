@@ -1,20 +1,24 @@
-import { memo } from 'react';
+import { ReactElement, memo } from 'react';
 import { Navigate } from 'react-router-dom';
+import styled from 'styled-components';
 
-import { useAccounts } from '@contexts/AccountsContext';
-
-import { SConnectButton } from '@helpers/reusableStyles';
+import { CssFontRegularXL, SConnectButton } from '@helpers/reusableStyles';
 
 import { useConnectToStoredAccount } from '@hooks/useConnectToStoredAccount';
 
+const SDoIt = styled.div`
+  ${CssFontRegularXL}
+  margin-bottom: 32px;
+  color: ${({ theme }) => theme.textAndIconsSecondary};
+`;
+
 interface PrivateRouteProps {
-  children: JSX.Element;
+  children: ReactElement;
   redirectTo?: string;
 }
 
 const PrivateRoute = ({ children, redirectTo }: PrivateRouteProps) => {
   const { activeAccount, isAutoConnectDone } = useConnectToStoredAccount();
-  const { theme } = useAccounts();
 
   if (isAutoConnectDone === false) {
     return null;
@@ -28,9 +32,12 @@ const PrivateRoute = ({ children, redirectTo }: PrivateRouteProps) => {
     const connect = document.getElementById('connect');
 
     return (
-      <SConnectButton onClick={() => connect?.click()} activeTheme={theme}>
-        Connect Wallet
-      </SConnectButton>
+      <>
+        <SDoIt>Connect wallet to see your assets</SDoIt>
+        <SConnectButton onClick={() => connect?.click()} className='call-to-action'>
+          Connect Wallet
+        </SConnectButton>
+      </>
     );
   }
 

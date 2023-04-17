@@ -119,3 +119,11 @@ export const getCleanFormattedBalance = (planck: BN, decimals: number): string =
     withZero: false,
   }).replaceAll(',', '');
 };
+
+export const areEqualAddresses = (address1: string, address2: string) => {
+  if (typeof address1 !== 'string' || typeof address2 !== 'string') {
+    return false;
+  }
+
+  return address1.toLowerCase() === address2.toLowerCase();
+};

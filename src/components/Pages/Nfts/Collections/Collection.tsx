@@ -6,8 +6,6 @@ import ActionButton from '@buttons/ActionButton';
 
 import ShowImage from '@common/ShowImage';
 
-import { useAccounts } from '@contexts/AccountsContext';
-
 import { CollectionMetadata } from '@helpers/interfaces';
 import { routes } from '@helpers/routes';
 import { SCard, SCardEdit } from '@helpers/styledComponents';
@@ -19,14 +17,13 @@ interface CollectionProps {
 }
 
 const Collection = ({ collectionMetadata }: CollectionProps) => {
-  const { theme } = useAccounts();
   const { id, name, description, image } = collectionMetadata;
 
   return (
-    <SCard activetheme={theme}>
+    <SCard>
       <ShowImage imageCid={image} altText={description} />
       <Card.Body>
-        <SCardEdit className='text-muted' activetheme={theme}>
+        <SCardEdit className='text-muted'>
           <span>Collection ID #{id}</span>
           <Link to={routes.myAssets.collectionEdit(id)}>
             Edit

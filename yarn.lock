@@ -1283,23 +1283,23 @@
     schema-utils "^3.0.0"
     source-map "^0.7.3"
 
-"@polkadot-onboard/core@0.0.8-beta":
-  version "0.0.8-beta"
-  resolved "https://registry.yarnpkg.com/@polkadot-onboard/core/-/core-0.0.8-beta.tgz#72d89379fc7c2c7bc7fe2ebe865b9c91fb846d7a"
-  integrity sha512-JpfeX3Yv6PbaCmnEXHWXf6ZNq87BySPkI/ZV+1L7r2cDwSGlAscrjv2a/3PiEWV0By6eLLB0l/wE1vDWpsRk7A==
+"@polkadot-onboard/core@0.0.9":
+  version "0.0.9"
+  resolved "https://registry.yarnpkg.com/@polkadot-onboard/core/-/core-0.0.9.tgz#ad1b379cd4805f6b792d2e1fcd05fde2aae3c88c"
+  integrity sha512-1TkZkJviHh1cX3/hddpNdhM26n1FQc4LFw6t1fG8kg5PgzQ0VEmV3/hpn/Y7RaxRb1yclcX43wcNa11qi/HNXA==
 
-"@polkadot-onboard/injected-wallets@0.0.8-beta":
-  version "0.0.8-beta"
-  resolved "https://registry.yarnpkg.com/@polkadot-onboard/injected-wallets/-/injected-wallets-0.0.8-beta.tgz#2b19ba176ccab33750faf98bd0ec88589fd6dc62"
-  integrity sha512-1WigarFp/27OGuLHDX5i8G8OBmpt54c+3YQMWsIdCb74W5tD7M+eLBiEAp7Q1elY3Z1M/qgpeyL2/TgtX7TvTQ==
+"@polkadot-onboard/injected-wallets@0.0.9":
+  version "0.0.9"
+  resolved "https://registry.yarnpkg.com/@polkadot-onboard/injected-wallets/-/injected-wallets-0.0.9.tgz#76c1a867c9ff922c7326ac242bdb86d7aa186560"
+  integrity sha512-0kpQ8uOfQnkZrtqvVxo01b7u5RDpBck/Uahz59ZFVnpxACAyIKs4vCKvOgYStd2sKit5AtqDGzr8H1C9Heugng==
   dependencies:
-    "@polkadot-onboard/core" "0.0.8-beta"
+    "@polkadot-onboard/core" "0.0.9"
     "@polkadot/extension-inject" "0.44.8"
 
-"@polkadot-onboard/react@0.0.9-beta":
-  version "0.0.9-beta"
-  resolved "https://registry.yarnpkg.com/@polkadot-onboard/react/-/react-0.0.9-beta.tgz#1823d392493f110a05907bbcbce58cb3713d437f"
-  integrity sha512-zkco4wuOsA/IyoCxA19xFBYnaJbFIoWrZJLQdN0Y7NmKcqYJxCMBydIEQxs+bqxydiOuZreXHLHohFr/OIxIyg==
+"@polkadot-onboard/react@0.0.9":
+  version "0.0.9"
+  resolved "https://registry.yarnpkg.com/@polkadot-onboard/react/-/react-0.0.9.tgz#5a06291906ea6b705c75509bcdcb0c6cb52bb889"
+  integrity sha512-HexZFL0gkX8qNjd/t0IPHQhHhYEaLaMucbNoSQ5pEIFlSEdxylO1ApKMO1g9q4CgACW5Y21Lz//ql7r6u34oDw==
   dependencies:
     react "18.2.0"
     react-dom "18.2.0"

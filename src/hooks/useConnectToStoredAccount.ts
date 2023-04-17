@@ -3,6 +3,8 @@ import { useCallback, useEffect, useState } from 'react';
 
 import { useAccounts } from '@contexts/AccountsContext';
 
+import { areEqualAddresses } from '@helpers/utilities';
+
 export const useConnectToStoredAccount = () => {
   const { wallets } = useWallets();
   const { activeAccount, storedActiveAccount, setActiveAccount, setActiveWallet } = useAccounts();
@@ -15,8 +17,8 @@ export const useConnectToStoredAccount = () => {
       if (foundWallet) {
         await foundWallet.connect();
         const accounts = await foundWallet.getAccounts();
-        const foundAccount = accounts.find(
-          (account) => account.address.toLocaleLowerCase() === storedActiveAccount.account.toLocaleLowerCase(),
+        const foundAccount = accounts.find((account) =>
+          areEqualAddresses(account.address, storedActiveAccount.account),
         );
         if (foundAccount) {
           setActiveWallet(foundWallet);

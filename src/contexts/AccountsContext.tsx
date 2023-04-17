@@ -1,6 +1,7 @@
 import { Account, BaseWallet } from '@polkadot-onboard/core';
 import { ApiPromise, WsProvider } from '@polkadot/api';
 import { ReactElement, createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import { ThemeProvider } from 'styled-components';
 
 import { apiConfigRuntime, apiConfigTypes, chains } from '@helpers/config';
 import { ChainThemes } from '@helpers/constants';
@@ -14,8 +15,10 @@ interface AccountsContextProviderProps {
 }
 
 interface AccountsContextProps {
+  availableAccounts: Account[] | null;
   activeAccount: Account | null;
   activeWallet: BaseWallet | null;
+  setAvailableAccounts: (value: Account[] | null) => void;
   setActiveAccount: (value: Account | null) => void;
   setActiveWallet: (value: BaseWallet) => void;
   api: ApiPromise | null;
@@ -23,13 +26,14 @@ interface AccountsContextProps {
   setStoredActiveAccount: (value: ActiveAccount | null) => void;
   storedChain: Chain | null;
   setStoredChain: (value: Chain | null) => void;
-  theme: ThemeStyle;
 }
 
 /* eslint-disable @typescript-eslint/no-empty-function */
 const AccountsContext = createContext<AccountsContextProps>({
+  availableAccounts: null,
   activeAccount: null,
   activeWallet: null,
+  setAvailableAccounts: () => {},
   setActiveAccount: () => {},
   setActiveWallet: () => {},
   api: null,
@@ -37,13 +41,13 @@ const AccountsContext = createContext<AccountsContextProps>({
   setStoredActiveAccount: () => {},
   storedChain: null,
   setStoredChain: () => {},
-  theme: themes.kusama,
 });
 /* eslint-enable @typescript-eslint/no-empty-function */
 
 export const useAccounts = () => useContext(AccountsContext);
 
 export const AccountsContextProvider = ({ children }: AccountsContextProviderProps) => {
+  const [availableAccounts, setAvailableAccounts] = useState<Account[] | null>(null);
   const [activeAccount, setActiveAccount] = useState<Account | null>(null);
   const [activeWallet, setActiveWallet] = useState<BaseWallet | null>(null);
   const [api, setApi] = useState<ApiPromise | null>(null);
@@ -90,8 +94,10 @@ export const AccountsContextProvider = ({ children }: AccountsContextProviderPro
 
   const contextData = useMemo(
     () => ({
+      availableAccounts,
       activeAccount,
       activeWallet,
+      setAvailableAccounts,
       setActiveAccount,
       setActiveWallet,
       api,
@@ -99,10 +105,23 @@ export const AccountsContextProvider = ({ children }: AccountsContextProviderPro
       setStoredActiveAccount,
       storedChain,
       setStoredChain,
-      theme,
     }),
-    [activeAccount, activeWallet, api, storedActiveAccount, setStoredActiveAccount, storedChain, setStoredChain, theme],
+    [
+      availableAccounts,
+      activeAccount,
+      activeWallet,
+      setAvailableAccounts,
+      api,
+      storedActiveAccount,
+      setStoredActiveAccount,
+      storedChain,
+      setStoredChain,
+    ],
   );
 
-  return <AccountsContext.Provider value={contextData}>{children}</AccountsContext.Provider>;
+  return (
+    <AccountsContext.Provider value={contextData}>
+      <ThemeProvider theme={theme}>{children}</ThemeProvider>
+    </AccountsContext.Provider>
+  );
 };

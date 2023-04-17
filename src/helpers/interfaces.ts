@@ -83,10 +83,6 @@ export interface Chain {
   theme: ChainThemes;
 }
 
-export interface Themeable {
-  activeTheme: ThemeStyle;
-}
-
 export interface ThemeStyle {
   backgroundSystem: string;
   backgroundPrimary: string;

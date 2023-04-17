@@ -10,6 +10,7 @@
       "@helpers/*": ["./helpers/*"],
       "@hooks/*": ["./hooks/*"],
       "@images/*": ["./images/*"],
+      "@modals/*": ["./components/Modals/*"],
       "@pages/*": ["./components/Pages/*"]
     }
   }

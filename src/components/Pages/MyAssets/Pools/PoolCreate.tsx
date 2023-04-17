@@ -8,7 +8,6 @@ import { Link } from 'react-router-dom';
 import ActionButton from '@buttons/ActionButton';
 
 import ModalStatus from '@common/ModalStatus';
-import Title from '@common/Title';
 
 import { useAccounts } from '@contexts/AccountsContext';
 import { useModalStatus } from '@contexts/ModalStatusContext';
