@@ -187,7 +187,7 @@ export const useCollections = () => {
             .create(activeAccount.address, collectionConfig)
             .signAndSend(activeAccount.address, { signer: activeWallet.signer }, ({ events, status }) => {
               if (status.isReady) {
-                setStatus({ type: ModalStatusTypes.IN_PROGRESS, message: StatusMessages.COLLECTION_MINTING });
+                setStatus({ type: ModalStatusTypes.IN_PROGRESS, message: StatusMessages.COLLECTION_CREATING });
               }
 
               if (status.isInBlock) {
@@ -195,7 +195,7 @@ export const useCollections = () => {
 
                 events.some(({ event: { data, method } }) => {
                   if (method === 'Created') {
-                    setStatus({ type: ModalStatusTypes.COMPLETE, message: StatusMessages.COLLECTION_MINTED });
+                    setStatus({ type: ModalStatusTypes.COMPLETE, message: StatusMessages.COLLECTION_CREATED });
 
                     const mintedCollectionId = data[0].toString();
                     saveCollectionMetadata(mintedCollectionId, collectionMetadata);
