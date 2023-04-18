@@ -4,7 +4,10 @@ import Modal from 'react-bootstrap/esm/Modal';
 import styled from 'styled-components';
 
 export const SCard = styled(Card)`
+  max-width: 364px;
   background-color: ${({ theme }) => theme.fill6};
+  padding: 8px;
+  border-radius: 16px;
 `;
 
 export const SCardEdit = styled(Card.Subtitle)`

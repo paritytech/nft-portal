@@ -153,7 +153,7 @@ const Connect = () => {
           </SSimpleAction>
           <SSeparator />
           <SActionBlock onClick={() => setIsAccountActionsVisible(false)}>
-            <Link to={routes.myAssets.newNftMint}>
+            <Link to={routes.myAssets.mintNftMain}>
               <SSimpleAction>
                 <span>Mint NFT</span>
                 <SIcon>

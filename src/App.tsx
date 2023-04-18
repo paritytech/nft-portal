@@ -17,15 +17,16 @@ import Pools from '@pages/Assets/Pools/Pools';
 import ValidateAddLiquidity from '@pages/Assets/Pools/ValidateAddLiquidity';
 import Tokens from '@pages/Assets/Tokens/Tokens';
 import Discover from '@pages/Discover/Discover';
+import CreateCollection from '@pages/MyAssets/MintNft/CreateCollection';
+import LoadCollectionsData from '@pages/MyAssets/MintNft/LoadCollectionsData';
+import MintNft from '@pages/MyAssets/MintNft/MintNft';
+import MintNftIndex from '@pages/MyAssets/MintNft/MintNftIndex';
 import MyAssets from '@pages/MyAssets/MyAssets';
-import NewNftMint from '@pages/MyAssets/NftMint/NewNftMint';
 import MyPools from '@pages/MyAssets/Pools/MyPools';
 import PoolCreate from '@pages/MyAssets/Pools/PoolCreate';
 import CollectionEdit from '@pages/Nfts/Collections/CollectionEdit';
-import CollectionMint from '@pages/Nfts/Collections/CollectionMint';
 import Collections from '@pages/Nfts/Collections/Collections';
 import NftEdit from '@pages/Nfts/Nfts/NftEdit';
-import NftMint from '@pages/Nfts/Nfts/NftMint';
 import MyNfts from '@pages/Nfts/Nfts/Nfts';
 import Swap from '@pages/Swap/Swap';
 
@@ -86,12 +87,30 @@ const App = () => (
             }
           />
 
-          <Route path={routes.myAssets.newNftMint} element={<NewNftMint />}>
+          <Route path={routes.myAssets.mintNftMain} element={<MintNftIndex />}>
             <Route
-              path={routes.myAssets.selectCollection}
+              index
               element={
                 <PrivateRoute>
-                  <div>under construction</div>
+                  <LoadCollectionsData />
+                </PrivateRoute>
+              }
+            />
+
+            <Route
+              path={routes.myAssets.createCollection}
+              element={
+                <PrivateRoute>
+                  <CreateCollection />
+                </PrivateRoute>
+              }
+            />
+
+            <Route
+              path={routes.myAssets.mintNft()}
+              element={
+                <PrivateRoute>
+                  <MintNft />
                 </PrivateRoute>
               }
             />
@@ -105,18 +124,6 @@ const App = () => (
                   <Title className='XXL'>My Collections</Title>
                   <PrivateRoute>
                     <Collections />
-                  </PrivateRoute>
-                </>
-              }
-            />
-
-            <Route
-              path={routes.myAssets.collectionMint}
-              element={
-                <>
-                  <Title className='XXL'>Mint Collection</Title>
-                  <PrivateRoute redirectTo={routes.myAssets.collections}>
-                    <CollectionMint />
                   </PrivateRoute>
                 </>
               }
@@ -142,18 +149,6 @@ const App = () => (
                     <Title className='XXL'>NFTs</Title>
                     <PrivateRoute redirectTo={routes.myAssets.collections}>
                       <MyNfts />
-                    </PrivateRoute>
-                  </>
-                }
-              />
-
-              <Route
-                path={routes.myAssets.nftMint()}
-                element={
-                  <>
-                    <Title className='XXL'>Mint NFT</Title>
-                    <PrivateRoute redirectTo={routes.myAssets.collections}>
-                      <NftMint />
                     </PrivateRoute>
                   </>
                 }
@@ -208,6 +203,8 @@ const App = () => (
             <Route index element={<Pools />} />
             <Route path={routes.discover.addLiquidity()} element={<ValidateAddLiquidity />} />
           </Route>
+
+          <Route path={routes.discover.index} element={<Navigate to={routes.discover.nfts} replace />} />
         </Route>
 
         <Route path={routes.swap.index} element={<Outlet />}>

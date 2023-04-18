@@ -21,8 +21,8 @@ const Collections = () => {
     <>
       <CollectionsView collectionsMetadata={collectionsMetadata} />
       <Stack direction='horizontal' gap={2} className='justify-content-end'>
-        <Link to={routes.myAssets.collectionMint}>
-          <ActionButton className='main S'>Mint Collection</ActionButton>
+        <Link to={routes.myAssets.createCollection}>
+          <ActionButton className='main S'>Create Collection</ActionButton>
         </Link>
       </Stack>
     </>

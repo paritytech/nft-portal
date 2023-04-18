@@ -61,7 +61,7 @@ const Navigation = () => (
       <span>Assets Portal</span>
     </SLogoButton>
     <SNavigationButton to={routes.myAssets.index}>My Assets</SNavigationButton>
-    <SNavigationButton to={routes.discover.nfts}>Discover</SNavigationButton>
+    <SNavigationButton to={routes.discover.index}>Discover</SNavigationButton>
     <SNavigationButton to={routes.swap.index}>Swap</SNavigationButton>
   </SNav>
 );
