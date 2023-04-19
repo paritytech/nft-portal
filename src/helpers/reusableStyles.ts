@@ -15,6 +15,8 @@ export const mediaQueries = {
   desktop: `(min-width: ${deviceScreenSize.desktop})`,
 };
 
+export const CLEAN_BACKGROUND_CLASSNAME = 'no-gradient';
+
 // ============
 // THEME STYLES
 // ============
@@ -36,6 +38,7 @@ export const themes: Record<ChainThemes, ThemeStyle> = {
     fill24: 'rgba(255, 255, 255, 0.24)',
     fill18: 'rgba(255, 255, 255, 0.18)',
     fill12: 'rgba(255, 255, 255, 0.12)',
+    fill10: 'rgba(255, 255, 255, 0.10)',
     fill8: 'rgba(255, 255, 255, 0.08)',
     fill6: 'rgba(255, 255, 255, 0.06)',
 
@@ -69,6 +72,7 @@ export const themes: Record<ChainThemes, ThemeStyle> = {
     fill24: 'rgba(0, 0, 0, 0.24)',
     fill18: 'rgba(0, 0, 0, 0.18)',
     fill12: 'rgba(0, 0, 0, 0.12)',
+    fill10: 'rgba(0, 0, 0, 0.10)',
     fill8: 'rgba(0, 0, 0, 0.08)',
     fill6: 'rgba(0, 0, 0, 0.06)',
 

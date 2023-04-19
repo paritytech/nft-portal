@@ -123,6 +123,8 @@ export const useCollections = () => {
         } finally {
           setIsCollectionDataLoading(false);
         }
+      } else {
+        setCollectionMetadata(null);
       }
     },
     [api, getCollectionIds],

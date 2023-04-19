@@ -3,10 +3,12 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 import ActionButton from '@buttons/ActionButton';
+import IconArrowButton from '@buttons/IconArrowButton';
 
 import { CollectionMetadata } from '@helpers/interfaces';
 import { CssFontRegularM, CssFontSemiBoldXL } from '@helpers/reusableStyles';
 import { routes } from '@helpers/routes';
+import { sizeMatters } from '@helpers/utilities';
 
 const SContainer = styled.div`
   width: 460px;
@@ -26,7 +28,9 @@ const SChoose = styled.div`
   color: ${({ theme }) => theme.textAndIconsSecondary};
 `;
 
-const SCollectionOption = styled.div``;
+const SCollectionOption = styled(Link)`
+  text-decoration: none;
+`;
 
 interface SelectCollectionProps {
   collectionsMetadata: CollectionMetadata[] | null;
@@ -46,22 +50,24 @@ const SelectCollection = ({ collectionsMetadata }: SelectCollectionProps) => {
           collections yet, create
           <br />a new one
         </SNote>
-        <ActionButton className='main S call-to-action'>
-          <Link to={routes.myAssets.createCollection}>Create New Collection</Link>
-        </ActionButton>
+        <Link to={routes.myAssets.createCollection}>
+          <ActionButton className='main S call-to-action'>Create New Collection</ActionButton>
+        </Link>
       </SContainer>
     );
   }
 
   return (
     <SContainer>
-      <ActionButton className='main S call-to-action full-width'>
-        <Link to={routes.myAssets.createCollection}>Create New Collection</Link>
-      </ActionButton>
+      <Link to={routes.myAssets.createCollection}>
+        <ActionButton className='main S call-to-action full-width'>Create New Collection</ActionButton>
+      </Link>
       <SChoose>or select the created one</SChoose>
       {collectionsMetadata.map((collectionMetadata) => (
-        <SCollectionOption key={collectionMetadata.id}>
-          <Link to={routes.myAssets.mintNft(collectionMetadata.id)}>{collectionMetadata.name}</Link>
+        <SCollectionOption to={routes.myAssets.mintNft(collectionMetadata.id)} key={collectionMetadata.id}>
+          <IconArrowButton imageCid={collectionMetadata.image}>
+            {sizeMatters(collectionMetadata.name, 20)}
+          </IconArrowButton>
         </SCollectionOption>
       ))}
     </SContainer>

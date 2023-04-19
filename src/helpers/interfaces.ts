@@ -100,6 +100,7 @@ export interface ThemeStyle {
   fill24: string;
   fill18: string;
   fill12: string;
+  fill10: string;
   fill8: string;
   fill6: string;
 

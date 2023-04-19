@@ -50,12 +50,8 @@ const Wallet = ({ wallet, changeStep }: WalletProps) => {
     }
   }, [walletAccounts, wallet, setActiveWallet, setAvailableAccounts, changeStep]);
 
-  const handleConnection = async () => {
-    connectToWallet(wallet);
-  };
-
   return (
-    <SArrowButton action={handleConnection}>
+    <SArrowButton action={() => connectToWallet(wallet)}>
       <SContent>
         <ExtensionIcon extensionId={wallet.metadata.id} />
         <span>{wallet.metadata.title}</span>
