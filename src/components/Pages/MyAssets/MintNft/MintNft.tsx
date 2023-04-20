@@ -20,7 +20,7 @@ import { generateAssetId } from '@helpers/utilities';
 import { useCheckMintingEligibility } from '@hooks/useCheckMintingEligibility';
 import { useNfts } from '@hooks/useNfts';
 
-const NftMint = () => {
+const MintNft = () => {
   const { collectionId } = useParams();
   const { mintNft } = useNfts(collectionId || '');
   const { activeAccount } = useAccounts();
@@ -141,4 +141,4 @@ const NftMint = () => {
   );
 };
 
-export default memo(NftMint);
+export default memo(MintNft);

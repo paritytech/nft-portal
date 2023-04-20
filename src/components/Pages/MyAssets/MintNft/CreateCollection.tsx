@@ -4,15 +4,18 @@ import Stack from 'react-bootstrap/esm/Stack';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
+import { saveImageToIpfs } from '@api/pinata';
+
 import ActionButton from '@buttons/ActionButton';
 import DateRangeButton from '@buttons/DateRangeButton';
 
+import FileDropZone from '@common/FileDropZone';
 import ModalStatus from '@common/ModalStatus';
 
 import { useAccounts } from '@contexts/AccountsContext';
 
 import { MintTypes } from '@helpers/constants';
-import { CollectionConfig, MintType } from '@helpers/interfaces';
+import { CollectionConfig, CollectionMetadataData, MintType } from '@helpers/interfaces';
 import { convertToBitFlagValue, getBlockNumber, pricePattern, unitToPlanck } from '@helpers/utilities';
 
 import { useCollections } from '@hooks/useCollections';
@@ -21,9 +24,11 @@ const SIndentation = styled.section`
   margin-left: 15px;
 `;
 
-const CollectionMint = () => {
+const CreateCollection = () => {
   const { api } = useAccounts();
-  const { mintCollection } = useCollections();
+  const { createCollection } = useCollections();
+  const collectionNameRef = useRef<HTMLInputElement>(null);
+  const collectionDescriptionRef = useRef<HTMLTextAreaElement>(null);
   const transferrableItemsRef = useRef<HTMLInputElement | null>(null);
   const unlockedMetadataRef = useRef<HTMLInputElement | null>(null);
   const unlockedAttributesRef = useRef<HTMLInputElement | null>(null);
@@ -34,29 +39,20 @@ const CollectionMint = () => {
   const unlockedItemMetadataRef = useRef<HTMLInputElement | null>(null);
   const unlockedItemAttributesRef = useRef<HTMLInputElement | null>(null);
   const holderOfCollectionIdRef = useRef<HTMLInputElement | null>(null);
+  const [imageCid, setImageCid] = useState<string | undefined>();
+  const [imageSourceUrl, setImageSourceUrl] = useState<string | null>(null);
   const [startDate, setStartDate] = useState<Date>();
   const [endDate, setEndDate] = useState<Date>();
   const [mintType, setMintType] = useState<MintTypes>(MintTypes.ISSUER);
 
-  const submitMintCollection = useCallback(
+  const submitCreateCollection = useCallback(
     async (event: FormEvent) => {
       event.preventDefault();
 
-      const collectionConfig = {} as CollectionConfig;
-
-      let mintTypeFinalized: MintType = mintType;
-      if (mintType === MintTypes.HOLDER_OF) {
-        if (holderOfCollectionIdRef.current === null) {
-          return;
-        }
-
-        mintTypeFinalized = {
-          [MintTypes.HOLDER_OF]: holderOfCollectionIdRef.current.value,
-        };
-      }
-
       if (
         api !== null &&
+        collectionNameRef.current !== null &&
+        collectionDescriptionRef.current !== null &&
         transferrableItemsRef.current !== null &&
         unlockedMetadataRef.current !== null &&
         unlockedAttributesRef.current !== null &&
@@ -83,24 +79,42 @@ const CollectionMint = () => {
         const startBlock = await getBlockNumber(api, startDate?.getTime());
         const endBlock = await getBlockNumber(api, endDate?.getTime());
 
-        collectionConfig.settings = settings;
-        collectionConfig.maxSupply =
-          maxSupplyRef.current.value === '' ? undefined : parseInt(maxSupplyRef.current.value, 10);
-        collectionConfig.mintSettings = {
-          mintType: mintTypeFinalized,
-          price:
-            priceRef.current.value === ''
-              ? undefined
-              : unitToPlanck(priceRef.current.value, api.registry.chainDecimals[0]),
-          startBlock,
-          endBlock,
-          defaultItemSettings,
-        };
-      }
+        let mintTypeFinalized: MintType = mintType;
+        if (mintType === MintTypes.HOLDER_OF) {
+          if (holderOfCollectionIdRef.current === null) {
+            return;
+          }
 
-      mintCollection(collectionConfig);
+          mintTypeFinalized = {
+            [MintTypes.HOLDER_OF]: holderOfCollectionIdRef.current.value,
+          };
+        }
+
+        const collectionConfig: CollectionConfig = {
+          settings,
+          maxSupply: maxSupplyRef.current.value === '' ? undefined : parseInt(maxSupplyRef.current.value, 10),
+          mintSettings: {
+            mintType: mintTypeFinalized,
+            price:
+              priceRef.current.value === ''
+                ? undefined
+                : unitToPlanck(priceRef.current.value, api.registry.chainDecimals[0]),
+            startBlock,
+            endBlock,
+            defaultItemSettings,
+          },
+        };
+
+        const collectionMetadata: CollectionMetadataData = {
+          name: collectionNameRef.current.value,
+          description: collectionDescriptionRef.current ? collectionDescriptionRef.current.value : undefined,
+          image: imageCid,
+        };
+
+        Promise.all([saveImageToIpfs(imageSourceUrl), createCollection(collectionConfig, collectionMetadata)]);
+      }
     },
-    [api, mintCollection, startDate, endDate, mintType],
+    [api, startDate, endDate, mintType, imageCid, imageSourceUrl, createCollection],
   );
 
   if (!api) {
@@ -112,7 +126,24 @@ const CollectionMint = () => {
   return (
     <>
       <ModalStatus />
-      <Form onSubmit={submitMintCollection}>
+      <Form onSubmit={submitCreateCollection}>
+        <Form.Group className='mb-3'>
+          <Form.Label>Collection name:</Form.Label>
+          <Form.Control type='text' ref={collectionNameRef} required />
+        </Form.Group>
+        <Form.Group className='mb-3'>
+          <Form.Label>Description:</Form.Label>
+          <Form.Control as='textarea' rows={3} ref={collectionDescriptionRef} />
+        </Form.Group>
+        <Form.Group className='mb-3'>
+          <Form.Label>Image:</Form.Label>
+          <FileDropZone
+            imageSourceUrl={imageSourceUrl}
+            setImageSourceUrl={setImageSourceUrl}
+            imageCid={imageCid}
+            setImageCid={setImageCid}
+          />
+        </Form.Group>
         <Form.Label className='fs-4'>Collection settings</Form.Label>
 
         <Form.Group className='mb-3'>
@@ -186,7 +217,7 @@ const CollectionMint = () => {
 
         <Stack direction='horizontal' gap={2} className='justify-content-end'>
           <ActionButton type='submit' className='main S'>
-            Mint collection
+            Create collection
           </ActionButton>
           <Link to='..'>
             <ActionButton type='button' className='secondary S'>
@@ -199,4 +230,4 @@ const CollectionMint = () => {
   );
 };
 
-export default memo(CollectionMint);
+export default memo(CreateCollection);

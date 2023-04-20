@@ -23,8 +23,8 @@ export enum ModalStatusTypes {
 
 export enum StatusMessages {
   ACTION_FAILED = 'Action failed to complete',
-  COLLECTION_MINTED = 'Collection minted!',
-  COLLECTION_MINTING = 'Minting collection, please wait',
+  COLLECTION_CREATED = 'Collection created!',
+  COLLECTION_CREATING = 'Creating collection, please wait',
   METADATA_UPDATED = 'Metadata updated',
   METADATA_UPDATING = 'Updating metadata, please wait',
   NFT_MINTED = 'NFT minted!',
