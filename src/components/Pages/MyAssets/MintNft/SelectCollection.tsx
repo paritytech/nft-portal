@@ -1,3 +1,4 @@
+import { truncate } from 'lodash';
 import { memo } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
@@ -8,7 +9,6 @@ import IconArrowButton from '@buttons/IconArrowButton';
 import { CollectionMetadata } from '@helpers/interfaces';
 import { CssFontRegularM, CssFontSemiBoldXL } from '@helpers/reusableStyles';
 import { routes } from '@helpers/routes';
-import { sizeMatters } from '@helpers/utilities';
 
 const SContainer = styled.div`
   width: 460px;
@@ -66,7 +66,7 @@ const SelectCollection = ({ collectionsMetadata }: SelectCollectionProps) => {
       {collectionsMetadata.map((collectionMetadata) => (
         <SCollectionOption to={routes.myAssets.mintNft(collectionMetadata.id)} key={collectionMetadata.id}>
           <IconArrowButton imageCid={collectionMetadata.image}>
-            {sizeMatters(collectionMetadata.name, 20)}
+            {truncate(collectionMetadata.name, { length: 20 })}
           </IconArrowButton>
         </SCollectionOption>
       ))}

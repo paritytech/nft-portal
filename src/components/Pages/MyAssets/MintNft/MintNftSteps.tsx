@@ -1,11 +1,10 @@
+import { truncate } from 'lodash';
 import { memo, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 import ShowImage from '@common/ShowImage';
 import Step from '@common/Step';
-
-import { sizeMatters } from '@helpers/utilities';
 
 import { useCollections } from '@hooks/useCollections';
 
@@ -33,7 +32,7 @@ const MintNftSteps = () => {
 
   const selectedCollectionLabel = collectionMetadata ? (
     <SSelectedCollection>
-      {sizeMatters(collectionMetadata.name, 20)}
+      {truncate(collectionMetadata.name, { length: 20 })}
       {collectionMetadata?.image && <ShowImage imageCid={collectionMetadata.image} altText={collectionMetadata.name} />}
     </SSelectedCollection>
   ) : (

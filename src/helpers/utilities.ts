@@ -10,18 +10,6 @@ export const ellipseAddress = (address = '', width = 10): string => {
   return `${address.slice(0, width)}...${address.slice(-width)}`;
 };
 
-export const sizeMatters = (yourThing: string | undefined | null, size = 16) => {
-  if (typeof yourThing === 'string') {
-    if (yourThing.length > size) {
-      return `${yourThing.slice(0, size)}...`;
-    } else {
-      return yourThing;
-    }
-  }
-
-  return '';
-};
-
 // the values are flipped to opposite because in the nfts pallet we use bitflags
 // where we select what to disable, so in pallet true = disabled, false = enabled
 // in order to not confuse users, in UI we use normal logic and then flip values here
