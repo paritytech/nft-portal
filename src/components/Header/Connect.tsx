@@ -1,3 +1,4 @@
+import { truncate } from 'lodash';
 import { memo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
@@ -6,7 +7,7 @@ import { useAccounts } from '@contexts/AccountsContext';
 
 import { SConnectButton } from '@helpers/reusableStyles';
 import { routes } from '@helpers/routes';
-import { ellipseAddress, sizeMatters } from '@helpers/utilities';
+import { ellipseAddress } from '@helpers/utilities';
 
 import { useConnectToStoredAccount } from '@hooks/useConnectToStoredAccount';
 import { useCopyToClipboard } from '@hooks/useCopyToClipboard';
@@ -133,7 +134,7 @@ const Connect = () => {
           {activeAccount !== null ? (
             <>
               <IdenticonIcon className='identicon' />
-              <span>{sizeMatters(activeAccount.name) || ellipseAddress(activeAccount.address, 4)}</span>
+              <span>{truncate(activeAccount.name, { length: 16 }) || ellipseAddress(activeAccount.address, 4)}</span>
               <ArrowIcon className='arrow-down' />
             </>
           ) : (
@@ -143,7 +144,7 @@ const Connect = () => {
 
         <SAccountActions className={isAccountActionsVisible ? 'active' : ''}>
           {activeAccount !== null && activeAccount.name && (
-            <span className='highlighted'>{sizeMatters(activeAccount.name)}</span>
+            <span className='highlighted'>{truncate(activeAccount.name, { length: 16 })}</span>
           )}
           <SSimpleAction onClick={copyToClipboard}>
             <span>{ellipseAddress(activeAccount?.address, 4)}</span>

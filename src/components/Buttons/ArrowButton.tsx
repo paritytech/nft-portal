@@ -28,7 +28,7 @@ const SArrowButton = styled.button`
 
 interface ArrowIconProps extends CommonStyleProps {
   children: ReactElement | ReactElement[] | string;
-  action: () => void;
+  action?: () => void;
 }
 
 const ArrowButton = ({ children, action, className }: ArrowIconProps) => (

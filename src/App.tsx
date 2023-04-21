@@ -8,7 +8,7 @@ import Title from '@common/Title';
 import Header from '@header/Header';
 
 import { ThemeStyle } from '@helpers/interfaces';
-import { mediaQueries } from '@helpers/reusableStyles';
+import { CLEAN_BACKGROUND_CLASSNAME, mediaQueries } from '@helpers/reusableStyles';
 import { routes } from '@helpers/routes';
 
 import Drops from '@pages/Assets/Nfts/Drops';
@@ -44,28 +44,31 @@ const SMainContainer = styled.main`
 `;
 
 const GlobalStyle = createGlobalStyle<{ theme: ThemeStyle }>`
-html, body {
-  height: 100%;
-}
-
-body {
-  margin: 0;
-  padding: 16px 0 0;
-  font-family: 'Inter', sans-serif;
-  font-weight: 400;
-  background-color: ${({ theme }) => theme.backgroundSystem};
-  background: radial-gradient(50% 50% at 50% 50%, #D43079 0%, rgba(212, 48, 121, 0.24) 0.01%, rgba(16, 16, 21, 0) 100%) 
-  ${({ theme }) => theme.backgroundSystem};
-  color: ${({ theme }) => theme.textAndIconsSecondary};
-}
-
-.modal-backdrop {
-  background-color: ${({ theme }) => theme.appliedOverlay};
-
-  &.show {
-    opacity: 1;
+  html, body {
+    height: 100%;
   }
-}
+
+  body {
+    margin: 0;
+    padding: 16px 0 0;
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    background: radial-gradient(50% 50% at 50% 50%, #D43079 0%, rgba(212, 48, 121, 0.24) 0.01%, rgba(16, 16, 21, 0) 100%) 
+    ${({ theme }) => theme.backgroundSystem};
+    color: ${({ theme }) => theme.textAndIconsSecondary};
+
+    &.${CLEAN_BACKGROUND_CLASSNAME} {
+      background: ${({ theme }) => theme.backgroundSystem};
+    }
+  }
+
+  .modal-backdrop {
+    background-color: ${({ theme }) => theme.appliedOverlay};
+
+    &.show {
+      opacity: 1;
+    }
+  }
 `;
 
 const App = () => (
