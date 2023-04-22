@@ -9,11 +9,11 @@ import Tokens from './Tokens';
 
 const LoadTokensData = () => {
   const [tokens, setTokens] = useState<TokenWithSupply[] | null>(null);
-  const { getAllTokensWithSupply } = useAssets();
+  const { getAllTokensWithNativeAndSupply } = useAssets();
 
   useEffect(() => {
-    getAllTokensWithSupply().then(setTokens);
-  }, [getAllTokensWithSupply]);
+    getAllTokensWithNativeAndSupply().then(setTokens);
+  }, [getAllTokensWithNativeAndSupply]);
 
   if (isEmpty(tokens)) {
     return <>Gathering data... please wait</>;

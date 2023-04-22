@@ -193,4 +193,6 @@ export type MetadataRecords = [StorageKey<[AssetId]>, PalletAssetsAssetMetadata]
 
 export type DetailsRecords = Option<PalletAssetsAssetDetails>[];
 
+export type TokensDetailsMap = Map<number, Option<PalletAssetsAssetDetails>>;
+
 export type MultiAsset = MultiAssets | { [MultiAssets.ASSET]: AssetId };

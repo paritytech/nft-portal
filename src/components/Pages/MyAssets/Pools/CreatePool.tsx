@@ -66,7 +66,7 @@ const CreatePool = () => {
 
   const availableTokensLeft = Array.isArray(availablePoolTokens) && availablePoolTokens.length > 0;
   const poolSetupFee = api.consts.assetConversion?.poolSetupFee ?? null;
-  const decimals = api.registry.chainDecimals[0];
+  const { symbol, decimals } = nativeMetadata;
 
   return (
     <>
@@ -74,7 +74,7 @@ const CreatePool = () => {
       <Form onSubmit={submitCreatePool}>
         <section>
           <br />
-          Create a pool for {nativeMetadata?.name?.toUpperCase()} and{' '}
+          Create a pool for {symbol?.toUpperCase()} and{' '}
           <select onChange={(event) => setNewPoolToken(event.target.value)} defaultValue={newPoolToken?.toString()}>
             <option value='-1'> - select token - </option>
             {availablePoolTokens.map((token, index) => (
