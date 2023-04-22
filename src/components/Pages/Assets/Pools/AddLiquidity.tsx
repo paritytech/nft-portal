@@ -28,7 +28,6 @@ import {
   calcExchangeRate,
   formatDecimals,
   getCleanFormattedBalance,
-  isPoolEmpty,
   pricePattern,
   unitToPlanck,
 } from '@helpers/utilities';
@@ -143,7 +142,6 @@ const AddLiquidity = ({
     if (amount1 !== '' && !amount1.match(pricePattern(nativeMetadata.decimals))) return;
 
     setAsset1Amount(amount1);
-    const isNewPool = isPoolEmpty(poolReserves);
     const asset1Value = amount1;
     const asset2Value = asset2Amount;
 
@@ -159,7 +157,6 @@ const AddLiquidity = ({
     if (amount2 !== '' && !amount2.match(pricePattern(assetMetadata.decimals))) return;
 
     setAsset2Amount(amount2);
-    const isNewPool = isPoolEmpty(poolReserves);
     const asset1Value = asset1Amount;
     const asset2Value = amount2;
 
