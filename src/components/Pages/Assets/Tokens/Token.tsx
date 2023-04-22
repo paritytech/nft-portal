@@ -22,7 +22,7 @@ const SColumn = styled.section`
   flex: 1;
 `;
 
-const SBalance = styled.span`
+const SSupply = styled.span`
   text-align: right;
 `;
 
@@ -44,7 +44,7 @@ const Token = ({ token }: TokenProps) => {
         <span>{name || ''}</span>
       </SColumn>
       <SColumn>
-        <SBalance>{formattedSupply}</SBalance>
+        <SSupply>{formattedSupply}</SSupply>
       </SColumn>
     </SRow>
   );
