@@ -76,7 +76,7 @@ export const isUnsignedNumber = (check: string): boolean => {
 };
 
 export const constructMultiAsset = (assetId: string, api: ApiPromise): PalletAssetConversionMultiAssetId | null => {
-  if (assetId === 'native') {
+  if (assetId?.toLowerCase() === 'native') {
     return api.createType('PalletAssetConversionMultiAssetId', MultiAssets.NATIVE);
   } else if (isUnsignedNumber(assetId)) {
     return api.createType('PalletAssetConversionMultiAssetId', {

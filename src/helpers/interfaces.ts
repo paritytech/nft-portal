@@ -6,6 +6,7 @@ import type { PalletAssetsAssetDetails, PalletAssetsAssetMetadata } from '@polka
 import type { BN } from '@polkadot/util';
 
 import {
+  ChainNativeTokenNames,
   ChainThemes,
   ChainTitles,
   MintTypes,
@@ -81,6 +82,7 @@ export interface Chain {
   url: string;
   title: ChainTitles;
   theme: ChainThemes;
+  nativeTokenName: ChainNativeTokenNames;
 }
 
 export interface ThemeStyle {
@@ -137,15 +139,18 @@ export interface TokenBalance {
   balance: BN;
 }
 
-export interface TokenMetadata extends TokenMetadataData {
-  id: AssetId;
+export interface TokenMetadata extends TokenMetadataInfo {
+  id: PalletAssetConversionMultiAssetId;
 }
 
-export interface TokenMetadataData {
+export interface TokenMetadataInfo {
   name: string | null;
   symbol: string | null;
   decimals: number;
-  details: PalletAssetsAssetDetails | null;
+}
+
+export interface TokenWithSupply extends TokenMetadata {
+  supply: BN | null;
 }
 
 export interface NativeTokenMetadata {

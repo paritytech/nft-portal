@@ -17,6 +17,7 @@ interface AccountsContextProviderProps {
 interface AccountsContextProps {
   availableAccounts: Account[] | null;
   activeAccount: Account | null;
+  activeChain: Chain | null;
   activeWallet: BaseWallet | null;
   setAvailableAccounts: (value: Account[] | null) => void;
   setActiveAccount: (value: Account | null) => void;
@@ -32,6 +33,7 @@ interface AccountsContextProps {
 const AccountsContext = createContext<AccountsContextProps>({
   availableAccounts: null,
   activeAccount: null,
+  activeChain: null,
   activeWallet: null,
   setAvailableAccounts: () => {},
   setActiveAccount: () => {},
@@ -49,6 +51,7 @@ export const useAccounts = () => useContext(AccountsContext);
 export const AccountsContextProvider = ({ children }: AccountsContextProviderProps) => {
   const [availableAccounts, setAvailableAccounts] = useState<Account[] | null>(null);
   const [activeAccount, setActiveAccount] = useState<Account | null>(null);
+  const [activeChain, setActiveChain] = useState<Chain | null>(null);
   const [activeWallet, setActiveWallet] = useState<BaseWallet | null>(null);
   const [api, setApi] = useState<ApiPromise | null>(null);
   const [theme, setTheme] = useState<ThemeStyle>(themes.kusama);
@@ -63,6 +66,7 @@ export const AccountsContextProvider = ({ children }: AccountsContextProviderPro
       unsub();
     });
     const api = await ApiPromise.create({ provider, typesBundle: apiConfigRuntime, types: apiConfigTypes });
+    setActiveChain(chain);
     setApi(api);
   }, [storedChain]);
 
@@ -96,6 +100,7 @@ export const AccountsContextProvider = ({ children }: AccountsContextProviderPro
     () => ({
       availableAccounts,
       activeAccount,
+      activeChain,
       activeWallet,
       setAvailableAccounts,
       setActiveAccount,
@@ -109,6 +114,7 @@ export const AccountsContextProvider = ({ children }: AccountsContextProviderPro
     [
       availableAccounts,
       activeAccount,
+      activeChain,
       activeWallet,
       setAvailableAccounts,
       api,

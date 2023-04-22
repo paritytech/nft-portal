@@ -3,10 +3,10 @@ import { ToBn } from '@polkadot/util/types';
 import { memo } from 'react';
 import styled from 'styled-components';
 
-import { TokenMetadata } from '@helpers/interfaces';
+import { TokenWithSupply } from '@helpers/interfaces';
 
 interface TokenProps {
-  tokenMetadata: TokenMetadata;
+  token: TokenWithSupply;
 }
 
 const SRow = styled.section`
@@ -26,11 +26,11 @@ const SBalance = styled.span`
   text-align: right;
 `;
 
-const Token = ({ tokenMetadata }: TokenProps) => {
-  const { name, symbol, decimals, details } = tokenMetadata;
+const Token = ({ token }: TokenProps) => {
+  const { name, symbol, decimals, supply } = token;
   const formattedSymbol = (symbol || '').toUpperCase();
-  const supply = details?.supply
-    ? formatBalance(details.supply as ToBn, {
+  const formattedSupply = supply
+    ? formatBalance(supply as ToBn, {
         decimals,
         withSi: true,
         withUnit: formattedSymbol,
@@ -44,7 +44,7 @@ const Token = ({ tokenMetadata }: TokenProps) => {
         <span>{name || ''}</span>
       </SColumn>
       <SColumn>
-        <SBalance>{supply}</SBalance>
+        <SBalance>{formattedSupply}</SBalance>
       </SColumn>
     </SRow>
   );

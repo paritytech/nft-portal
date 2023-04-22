@@ -1,21 +1,19 @@
-import { memo, useEffect } from 'react';
+import { memo } from 'react';
 
-import { useAssets } from '@hooks/useAssets';
+import type { TokenWithSupply } from '@helpers/interfaces';
 
-import TokensView from './TokensView';
+import Token from './Token';
 
-const Tokens = () => {
-  const { getNativeMetadata, getTokensMetadata, nativeMetadata, tokensMetadata } = useAssets();
+interface TokensProps {
+  tokens: TokenWithSupply[];
+}
 
-  useEffect(() => {
-    getNativeMetadata();
-    getTokensMetadata();
-  }, [getNativeMetadata, getTokensMetadata]);
-
+const Tokens = ({ tokens }: TokensProps) => {
   return (
     <>
-      <h2>All Tokens</h2>
-      <TokensView nativeMetadata={nativeMetadata} tokensMetadata={tokensMetadata} />
+      {tokens.map((token) => (
+        <Token key={token.id} token={token} />
+      ))}
     </>
   );
 };

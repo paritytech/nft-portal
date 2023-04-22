@@ -15,7 +15,7 @@ import Drops from '@pages/Assets/Nfts/Drops';
 import Nfts from '@pages/Assets/Nfts/Nfts';
 import Pools from '@pages/Assets/Pools/Pools';
 import ValidateAddLiquidity from '@pages/Assets/Pools/ValidateAddLiquidity';
-import Tokens from '@pages/Assets/Tokens/Tokens';
+import LoadTokensData from '@pages/Assets/Tokens/LoadTokensData';
 import Discover from '@pages/Discover/Discover';
 import CreateCollection from '@pages/MyAssets/MintNft/CreateCollection';
 import LoadCollectionsData from '@pages/MyAssets/MintNft/LoadCollectionsData';
@@ -201,7 +201,15 @@ const App = () => (
         <Route path={routes.discover.index} element={<Discover />}>
           <Route path={routes.discover.nfts} element={<Nfts />} />
           <Route path={routes.discover.drops} element={<Drops />} />
-          <Route path={routes.discover.tokens} element={<Tokens />} />
+          <Route
+            path={routes.discover.tokens}
+            element={
+              <>
+                <Title className='XXL'>All Tokens</Title>
+                <LoadTokensData />
+              </>
+            }
+          />
           <Route path={routes.discover.pools} element={<Outlet />}>
             <Route index element={<Pools />} />
             <Route path={routes.discover.addLiquidity()} element={<ValidateAddLiquidity />} />

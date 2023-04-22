@@ -30,12 +30,13 @@ import type {
   TokenBalance,
   TokenMetadata,
 } from '@helpers/interfaces';
+import { TokenWithSupply } from '@helpers/interfaces';
 import { routes } from '@helpers/routes';
-import { sortStrings } from '@helpers/utilities';
+import { constructMultiAsset, sortStrings } from '@helpers/utilities';
 
 export const useAssets = () => {
   const navigate = useNavigate();
-  const { api, activeAccount, activeWallet } = useAccounts();
+  const { api, activeAccount, activeChain, activeWallet } = useAccounts();
   const { openModalStatus, setStatus, setAction } = useModalStatus();
   const [availablePoolTokens, setAvailablePoolTokens] = useState<TokenMetadata[] | null>(null);
   const [nativeBalance, setNativeBalance] = useState<BN | null>(null);
@@ -104,7 +105,7 @@ export const useAssets = () => {
         openModalStatus();
 
         try {
-          const token1: MultiAsset = MultiAssets.NATIVE;
+          const token1: MultiAsset = MultiAssets.NATIVE; // TODO: check if we can use constructMultiAsset()
           const token2: MultiAsset = { [MultiAssets.ASSET]: tokenId };
 
           const unsub = await api.tx.assetConversion
@@ -386,6 +387,64 @@ export const useAssets = () => {
     }
   }, [api, getTokenIds]);
 
+  const getAllTokensWithSupply = useCallback(async (): Promise<TokenWithSupply[] | null> => {
+    if (!api) return null;
+
+    let allTokens: TokenWithSupply[] = [];
+
+    try {
+      allTokens.push({
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        id: constructMultiAsset(MultiAssets.NATIVE, api)!,
+        name: activeChain?.nativeTokenName ?? null,
+        symbol: api.registry.chainTokens[0],
+        decimals: api.registry.chainDecimals[0],
+        supply: (await api.query.balances?.totalIssuance?.().then((r) => r.toBn())) ?? null,
+      });
+
+      const tokens = await getTokenIds();
+      if (!tokens) return allTokens;
+
+      const [metadataRecords, detailsRecords]: [MetadataRecords, DetailsRecords] = await Promise.all([
+        api.query.assets.metadata.entries(),
+        api.query.assets.asset.multi(tokens),
+      ]);
+
+      const details = new Map<number, PalletAssetsAssetDetails | null>();
+      if (Array.isArray(detailsRecords) && detailsRecords.length > 0) {
+        detailsRecords.forEach((record, index) => {
+          const id = tokens[index].toNumber();
+          details.set(id, record.unwrapOr(null)?.supply.toBn());
+        });
+      }
+
+      if (Array.isArray(metadataRecords) && metadataRecords.length > 0) {
+        const records: TokenWithSupply[] = metadataRecords
+          .map(
+            ([
+              {
+                args: [id],
+              },
+              data,
+            ]) => ({
+              // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+              id: constructMultiAsset(id.toString(), api)!,
+              name: data.name?.toUtf8() || null,
+              symbol: data.symbol?.toUtf8() || null,
+              decimals: data.decimals?.toNumber() || 0,
+              supply: details.get(id.toNumber()) || null,
+            }),
+          )
+          .sort((a, b) => sortStrings(a.name, b.name));
+        allTokens = [...allTokens, ...records];
+      }
+    } catch (error) {
+      //
+    }
+
+    return allTokens;
+  }, [api, activeChain, getTokenIds]);
+
   return {
     addLiquidity,
     availablePoolTokens,
@@ -399,6 +458,7 @@ export const useAssets = () => {
     getPoolReserves,
     getTokensBalances,
     getTokensMetadata,
+    getAllTokensWithSupply,
     nativeBalance,
     nativeMetadata,
     pools,
