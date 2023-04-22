@@ -20,7 +20,7 @@ export const routes = {
       `/my-assets/collections/${collectionId}/nfts/edit/${nftId}`,
 
     pools: '/my-assets/pools',
-    poolCreate: '/my-assets/pools/create',
+    createPool: '/my-assets/pools/create',
   },
 
   discover: {

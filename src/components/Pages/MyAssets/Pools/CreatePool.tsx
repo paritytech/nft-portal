@@ -17,7 +17,7 @@ import { routes } from '@helpers/routes';
 
 import { useAssets } from '@hooks/useAssets';
 
-const PoolCreate = () => {
+const CreatePool = () => {
   const { api } = useAccounts();
   const {
     createPool,
@@ -117,4 +117,4 @@ const PoolCreate = () => {
   );
 };
 
-export default memo(PoolCreate);
+export default memo(CreatePool);

@@ -163,7 +163,7 @@ const Connect = () => {
               </SSimpleAction>
             </Link>
 
-            <Link to={routes.myAssets.poolCreate}>
+            <Link to={routes.myAssets.createPool}>
               <SSimpleAction>
                 <span>Create Liquidity Pool</span>
                 <SIcon>

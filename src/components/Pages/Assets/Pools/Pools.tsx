@@ -30,7 +30,7 @@ const Pools = () => {
       </SContentBlockContainer>
       {activeAccount && (
         <Stack direction='horizontal' gap={2} className='justify-content-end'>
-          <Link to={routes.myAssets.poolCreate}>
+          <Link to={routes.myAssets.createPool}>
             <ActionButton>Create Pool</ActionButton>
           </Link>
         </Stack>
