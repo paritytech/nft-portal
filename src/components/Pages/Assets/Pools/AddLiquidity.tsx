@@ -16,12 +16,7 @@ import { useModalStatus } from '@contexts/ModalStatusContext';
 
 import { ADD_LIQUIDITY_SLIPPAGE } from '@helpers/config';
 import { ModalStatusTypes, StatusMessages } from '@helpers/constants';
-import {
-  NativeTokenMetadata,
-  PalletAssetConversionMultiAssetId,
-  PoolReserves,
-  TokenMetadata,
-} from '@helpers/interfaces';
+import { MultiAssetId, NativeTokenMetadata, PoolReserves, TokenMetadata } from '@helpers/interfaces';
 import { routes } from '@helpers/routes';
 import {
   addSlippage,
@@ -35,8 +30,8 @@ import {
 import { useAssets } from '@hooks/useAssets';
 
 interface AddLiquidityProps {
-  asset1: PalletAssetConversionMultiAssetId;
-  asset2: PalletAssetConversionMultiAssetId;
+  asset1: MultiAssetId;
+  asset2: MultiAssetId;
   nativeMetadata: NativeTokenMetadata;
   assetMetadata: TokenMetadata;
   minAmount1: BN;

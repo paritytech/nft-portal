@@ -5,7 +5,7 @@ import NotFound from '@common/NotFound';
 
 import { useAccounts } from '@contexts/AccountsContext';
 
-import { PalletAssetConversionMultiAssetId } from '@helpers/interfaces';
+import type { MultiAssetId } from '@helpers/interfaces';
 import { constructMultiAsset } from '@helpers/utilities';
 
 import { useAssets } from '@hooks/useAssets';
@@ -14,7 +14,7 @@ import LoadSwapData from '@pages/Swap/LoadSwapData';
 
 const ValidateSwap = () => {
   const [paramsValid, setParamsValid] = useState<boolean | null>(null);
-  const [poolId, setPoolId] = useState<[PalletAssetConversionMultiAssetId, PalletAssetConversionMultiAssetId]>(null);
+  const [poolId, setPoolId] = useState<[MultiAssetId, MultiAssetId]>(null);
   const { assetId1, assetId2 } = useParams();
   const { api } = useAccounts();
   const { getDefaultPool } = useAssets();

@@ -3,7 +3,7 @@ import { memo, useEffect, useState } from 'react';
 
 import { useAccounts } from '@contexts/AccountsContext';
 
-import type { PalletAssetConversionMultiAssetId, PoolReserves, TokenMetadata } from '@helpers/interfaces';
+import type { MultiAssetId, PoolReserves, TokenMetadata } from '@helpers/interfaces';
 import { isPoolEmpty } from '@helpers/utilities';
 
 import { useAssets } from '@hooks/useAssets';
@@ -11,8 +11,8 @@ import { useAssets } from '@hooks/useAssets';
 import AddLiquidity from '@pages/Assets/Pools/AddLiquidity';
 
 interface LoadAddLiquidityDataProps {
-  asset1: PalletAssetConversionMultiAssetId;
-  asset2: PalletAssetConversionMultiAssetId;
+  asset1: MultiAssetId;
+  asset2: MultiAssetId;
 }
 
 const LoadAddLiquidityData = ({ asset1, asset2 }: LoadAddLiquidityDataProps) => {

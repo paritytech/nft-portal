@@ -22,8 +22,7 @@ import type {
   Chain,
   DetailsRecords,
   MetadataRecords,
-  MultiAsset,
-  PalletAssetConversionMultiAssetId,
+  MultiAssetId,
   PalletAssetConversionPoolId,
   PalletAssetConversionPoolInfo,
   PoolInfo,
@@ -34,7 +33,7 @@ import type {
 } from '@helpers/interfaces';
 import { TokenWithSupply } from '@helpers/interfaces';
 import { routes } from '@helpers/routes';
-import { constructMultiAsset, sortStrings } from '@helpers/utilities';
+import { multiAssetToParam, sortStrings, toMultiAsset } from '@helpers/utilities';
 
 export const useAssets = () => {
   const navigate = useNavigate();
@@ -48,14 +47,7 @@ export const useAssets = () => {
   const [pools, setPools] = useState<PoolInfo[] | null>(null);
 
   const addLiquidity = useCallback(
-    async (
-      asset1: PalletAssetConversionMultiAssetId,
-      asset2: PalletAssetConversionMultiAssetId,
-      amount1: BN,
-      amount2: BN,
-      amount1Min: BN,
-      amount2Min: BN,
-    ) => {
+    async (asset1: MultiAssetId, asset2: MultiAssetId, amount1: BN, amount2: BN, amount1Min: BN, amount2Min: BN) => {
       if (api && activeAccount && activeWallet) {
         setStatus({ type: ModalStatusTypes.INIT_TRANSACTION, message: StatusMessages.TRANSACTION_CONFIRM });
         openModalStatus();
@@ -101,15 +93,12 @@ export const useAssets = () => {
   );
 
   const createPool = useCallback(
-    async (tokenId: AssetId) => {
+    async (token1: MultiAssetId, token2: MultiAssetId) => {
       if (api && activeAccount && activeWallet) {
         setStatus({ type: ModalStatusTypes.INIT_TRANSACTION, message: StatusMessages.TRANSACTION_CONFIRM });
         openModalStatus();
 
         try {
-          const token1: MultiAsset = MultiAssets.NATIVE; // TODO: check if we can use constructMultiAsset()
-          const token2: MultiAsset = { [MultiAssets.ASSET]: tokenId };
-
           const unsub = await api.tx.assetConversion
             .createPool(token1, token2)
             .signAndSend(activeAccount.address, { signer: activeWallet.signer }, ({ events, status }) => {
@@ -124,9 +113,12 @@ export const useAssets = () => {
                   if (method === 'PoolCreated') {
                     const createdPoolId = data.poolId as PalletAssetConversionPoolId;
 
-                    if (createdPoolId && createdPoolId[1].isAsset && createdPoolId[1].asAsset.eq(tokenId)) {
+                    if (createdPoolId && createdPoolId[0].eq(token1) && createdPoolId[1].eq(token2)) {
                       setStatus({ type: ModalStatusTypes.COMPLETE, message: StatusMessages.POOL_CREATED });
-                      setAction(() => () => navigate(routes.discover.addLiquidity('native', tokenId.toString())));
+                      setAction(
+                        () => () =>
+                          navigate(routes.discover.addLiquidity(multiAssetToParam(token1), multiAssetToParam(token2))),
+                      );
                       return true;
                     }
                   }
@@ -261,10 +253,7 @@ export const useAssets = () => {
   }, [activeChain, api]);
 
   const getPoolReserves = useCallback(
-    async (
-      asset1: PalletAssetConversionMultiAssetId,
-      asset2: PalletAssetConversionMultiAssetId,
-    ): Promise<PoolReserves> => {
+    async (asset1: MultiAssetId, asset2: MultiAssetId): Promise<PoolReserves> => {
       let reserves: PoolReserves = [BN_ZERO, BN_ZERO];
 
       if (api && api.call.assetConversionApi) {
@@ -314,7 +303,7 @@ export const useAssets = () => {
     }
   }, [api, getPoolReserves]);
 
-  const getTokenIds = useCallback(async () => {
+  const getTokenIds = useCallback(async (): Promise<AssetId[] | null> => {
     if (api) {
       const results: StorageKey<[AssetId]>[] = await api.query.assets.asset.keys();
       return results.map(({ args: [id] }) => id);
@@ -434,16 +423,14 @@ export const useAssets = () => {
   }, [activeChain, api, fetchAllTokensDetails, fetchAllTokensMetadata]);
 
   const formatNativeTokenMetadata = (api: ApiPromise, activeChain: Chain): TokenMetadata => ({
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    id: constructMultiAsset(MultiAssets.NATIVE, api)!,
+    id: toMultiAsset(MultiAssets.NATIVE, api),
     name: activeChain?.nativeTokenName ?? null,
     symbol: api.registry.chainTokens[0],
     decimals: api.registry.chainDecimals[0],
   });
 
   const formatAssetMetadata = (id: AssetId, data: PalletAssetsAssetMetadata, api: ApiPromise): TokenMetadata => ({
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    id: constructMultiAsset(id.toString(), api)!,
+    id: toMultiAsset(id, api),
     name: data.name?.toUtf8() || null,
     symbol: data.symbol?.toUtf8() || null,
     decimals: data.decimals?.toNumber() || 0,

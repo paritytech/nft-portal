@@ -1,5 +1,6 @@
 import { formatBalance } from '@polkadot/util';
 import type { ToBn } from '@polkadot/util/types';
+import { isEmpty } from 'lodash';
 import { FormEvent, memo, useCallback, useEffect, useState } from 'react';
 import Stack from 'react-bootstrap/Stack';
 import Form from 'react-bootstrap/esm/Form';
@@ -12,8 +13,9 @@ import ModalStatus from '@common/ModalStatus';
 import { useAccounts } from '@contexts/AccountsContext';
 import { useModalStatus } from '@contexts/ModalStatusContext';
 
-import { ModalStatusTypes, StatusMessages } from '@helpers/constants';
+import { ModalStatusTypes, MultiAssets, StatusMessages } from '@helpers/constants';
 import { routes } from '@helpers/routes';
+import { toMultiAsset } from '@helpers/utilities';
 
 import { useAssets } from '@hooks/useAssets';
 
@@ -24,9 +26,9 @@ const CreatePool = () => {
     getAvailablePoolTokens,
     getNativeBalance,
     getNativeMetadata,
+    availablePoolTokens,
     nativeBalance,
     nativeMetadata,
-    availablePoolTokens,
   } = useAssets();
   const { openModalStatus, setStatus } = useModalStatus();
   const [newPoolToken, setNewPoolToken] = useState<string>('-1');
@@ -44,7 +46,7 @@ const CreatePool = () => {
           openModalStatus();
           return;
         }
-        createPool(selectedPoolToken.id);
+        createPool(toMultiAsset(MultiAssets.NATIVE, api), selectedPoolToken.id);
       }
     },
     [api, availablePoolTokens, createPool, nativeBalance, newPoolToken, openModalStatus, setStatus],
@@ -64,7 +66,7 @@ const CreatePool = () => {
     return <>Loading data... please wait</>;
   }
 
-  const availableTokensLeft = Array.isArray(availablePoolTokens) && availablePoolTokens.length > 0;
+  const availableTokensLeft = !isEmpty(availablePoolTokens);
   const poolSetupFee = api.consts.assetConversion?.poolSetupFee ?? null;
   const { symbol, decimals } = nativeMetadata;
 

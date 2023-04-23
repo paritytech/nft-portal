@@ -140,7 +140,7 @@ export interface TokenBalance {
 }
 
 export interface TokenMetadata extends TokenMetadataInfo {
-  id: PalletAssetConversionMultiAssetId;
+  id: MultiAssetId;
 }
 
 export interface TokenMetadataInfo {
@@ -163,7 +163,7 @@ export interface PalletAssetConversionPoolInfo extends Struct {
   readonly lpToken: AssetId;
 }
 
-export interface PalletAssetConversionMultiAssetId extends Enum {
+export interface MultiAssetId extends Enum {
   readonly isNative: boolean;
   readonly isAsset: boolean;
   readonly asAsset: AssetId;
@@ -185,14 +185,10 @@ export type MintTypeJson = Record<'public' | 'issuer' | 'holderOf', null | numbe
 
 export type PoolReserves = [BN, BN];
 
-export type PalletAssetConversionPoolId = ITuple<
-  [PalletAssetConversionMultiAssetId, PalletAssetConversionMultiAssetId]
->;
+export type PalletAssetConversionPoolId = ITuple<[MultiAssetId, MultiAssetId]>;
 
 export type MetadataRecords = [StorageKey<[AssetId]>, PalletAssetsAssetMetadata][];
 
 export type DetailsRecords = Option<PalletAssetsAssetDetails>[];
 
 export type TokensDetailsMap = Map<number, Option<PalletAssetsAssetDetails>>;
-
-export type MultiAsset = MultiAssets | { [MultiAssets.ASSET]: AssetId };

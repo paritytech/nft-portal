@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 import { useAccounts } from '@contexts/AccountsContext';
 
-import type { PalletAssetConversionMultiAssetId, PoolReserves, TokenMetadata } from '@helpers/interfaces';
+import type { MultiAssetId, PoolReserves, TokenMetadata } from '@helpers/interfaces';
 import { routes } from '@helpers/routes';
 import { fromMultiAsset, isPoolEmpty } from '@helpers/utilities';
 
@@ -13,8 +13,8 @@ import { useAssets } from '@hooks/useAssets';
 import Swap from '@pages/Swap/Swap';
 
 interface LoadSwapDataProps {
-  asset1: PalletAssetConversionMultiAssetId;
-  asset2: PalletAssetConversionMultiAssetId;
+  asset1: MultiAssetId;
+  asset2: MultiAssetId;
 }
 
 const LoadSwapData = ({ asset1, asset2 }: LoadSwapDataProps) => {
