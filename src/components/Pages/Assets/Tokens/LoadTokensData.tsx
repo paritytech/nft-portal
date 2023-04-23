@@ -19,8 +19,7 @@ const LoadTokensData = () => {
     return <>Gathering data... please wait</>;
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  return <Tokens tokens={tokens!} />;
+  return <Tokens tokens={tokens as TokenWithSupply[]} />;
 };
 
 export default memo(LoadTokensData);
