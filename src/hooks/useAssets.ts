@@ -36,7 +36,7 @@ import { multiAssetToParam, sortStrings, toMultiAsset } from '@helpers/utilities
 
 export const useAssets = () => {
   const navigate = useNavigate();
-  const { api, activeAccount, activeChain, activeWallet } = useAccounts();
+  const { api, activeAccount, storedChain, activeWallet } = useAccounts();
   const { openModalStatus, setStatus, setAction } = useModalStatus();
   const [availablePoolTokens, setAvailablePoolTokens] = useState<TokenMetadata[]>();
   const [nativeBalance, setNativeBalance] = useState<BN>();
@@ -240,20 +240,20 @@ export const useAssets = () => {
 
   const getAssetMetadata = useCallback(
     async (assetId: MultiAssetId): Promise<TokenMetadata> => {
-      if (!api || !activeChain) return;
+      if (!api || !storedChain) return;
 
       try {
         if (assetId.isAsset) {
           const metadata: PalletAssetsAssetMetadata = await api.query.assets.metadata(assetId.asAsset);
           return formatAssetMetadata(assetId.asAsset, metadata, api);
         } else {
-          return formatNativeTokenMetadata(api, activeChain);
+          return formatNativeTokenMetadata(api, storedChain);
         }
       } catch (error) {
         //
       }
     },
-    [api, activeChain],
+    [api, storedChain],
   );
 
   const getNativeBalance = useCallback(async () => {
@@ -268,10 +268,10 @@ export const useAssets = () => {
   }, [api, activeAccount]);
 
   const getNativeMetadata = useCallback(async () => {
-    if (api && activeChain) {
-      setNativeMetadata(formatNativeTokenMetadata(api, activeChain));
+    if (api && storedChain) {
+      setNativeMetadata(formatNativeTokenMetadata(api, storedChain));
     }
-  }, [activeChain, api]);
+  }, [storedChain, api]);
 
   const getPoolReserves = useCallback(
     async (asset1: MultiAssetId, asset2: MultiAssetId): Promise<PoolReserves> => {
@@ -332,24 +332,24 @@ export const useAssets = () => {
   }, [api]);
 
   const getAllTokens = useCallback(async () => {
-    if (allTokens || !api || !activeChain) return;
+    if (allTokens || !api || !storedChain) return;
 
     try {
       const tokens = await fetchAllTokensMetadata();
-      setAllTokens([formatNativeTokenMetadata(api, activeChain), ...tokens]);
+      setAllTokens([formatNativeTokenMetadata(api, storedChain), ...tokens]);
     } catch (error) {
       //
     }
-  }, [activeChain, allTokens, api, fetchAllTokensMetadata]);
+  }, [storedChain, allTokens, api, fetchAllTokensMetadata]);
 
   const getAllTokensWithNativeAndSupply = useCallback(async (): Promise<TokenWithSupply[]> => {
-    if (!api || !activeChain) return;
+    if (!api || !storedChain) return;
 
     let result: TokenWithSupply[] = [];
 
     try {
       result.push({
-        ...formatNativeTokenMetadata(api, activeChain),
+        ...formatNativeTokenMetadata(api, storedChain),
         supply: (await api.query.balances?.totalIssuance?.().then((r) => r.toBn())) ?? null,
       });
 
@@ -370,11 +370,11 @@ export const useAssets = () => {
     }
 
     return result;
-  }, [activeChain, api, fetchAllTokensDetails, fetchAllTokensMetadata]);
+  }, [storedChain, api, fetchAllTokensDetails, fetchAllTokensMetadata]);
 
-  const formatNativeTokenMetadata = (api: ApiPromise, activeChain: Chain): TokenMetadata => ({
+  const formatNativeTokenMetadata = (api: ApiPromise, storedChain: Chain): TokenMetadata => ({
     id: toMultiAsset(MultiAssets.NATIVE, api),
-    name: activeChain?.nativeTokenName ?? '',
+    name: storedChain?.nativeTokenName ?? '',
     symbol: api.registry.chainTokens[0],
     decimals: api.registry.chainDecimals[0],
   });
