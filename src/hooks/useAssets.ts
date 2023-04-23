@@ -9,6 +9,7 @@ import type {
 import { PalletAssetsAssetMetadata } from '@polkadot/types/lookup';
 import type { BN } from '@polkadot/util';
 import { BN_ZERO } from '@polkadot/util';
+import { isEmpty } from 'lodash';
 import { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -19,8 +20,6 @@ import { ModalStatusTypes, MultiAssets, StatusMessages } from '@helpers/constant
 import { handleError } from '@helpers/handleError';
 import type {
   Chain,
-  DetailsRecords,
-  MetadataRecords,
   MultiAssetId,
   PalletAssetConversionPoolId,
   PalletAssetConversionPoolInfo,
@@ -28,6 +27,8 @@ import type {
   PoolReserves,
   TokenMetadata,
   TokensDetailsMap,
+  TokensDetailsRecords,
+  TokensMetadataRecords,
 } from '@helpers/interfaces';
 import { TokenWithSupply } from '@helpers/interfaces';
 import { routes } from '@helpers/routes';
@@ -37,11 +38,11 @@ export const useAssets = () => {
   const navigate = useNavigate();
   const { api, activeAccount, activeChain, activeWallet } = useAccounts();
   const { openModalStatus, setStatus, setAction } = useModalStatus();
-  const [availablePoolTokens, setAvailablePoolTokens] = useState<TokenMetadata[] | null>(null);
-  const [nativeBalance, setNativeBalance] = useState<BN | null>(null);
-  const [nativeMetadata, setNativeMetadata] = useState<TokenMetadata | null>(null);
-  const [allTokens, setAllTokens] = useState<TokenMetadata[] | null>(null);
-  const [pools, setPools] = useState<PoolInfo[] | null>(null);
+  const [availablePoolTokens, setAvailablePoolTokens] = useState<TokenMetadata[]>();
+  const [nativeBalance, setNativeBalance] = useState<BN>();
+  const [nativeMetadata, setNativeMetadata] = useState<TokenMetadata>();
+  const [allTokens, setAllTokens] = useState<TokenMetadata[]>();
+  const [pools, setPools] = useState<PoolInfo[]>();
 
   const addLiquidity = useCallback(
     async (asset1: MultiAssetId, asset2: MultiAssetId, amount1: BN, amount2: BN, amount1Min: BN, amount2Min: BN) => {
@@ -138,12 +139,13 @@ export const useAssets = () => {
   );
 
   const fetchAllTokensMetadata = useCallback(async (): Promise<TokenMetadata[]> => {
-    let result: TokenMetadata[] = [];
-    if (!api) return result;
+    if (!api) return;
 
-    const metadataRecords: MetadataRecords = await api.query.assets.metadata.entries();
-    if (Array.isArray(metadataRecords) && metadataRecords.length > 0) {
-      result = metadataRecords
+    let result: TokenMetadata[] = [];
+    const metadata: TokensMetadataRecords = await api.query.assets.metadata.entries();
+
+    if (!isEmpty(metadata)) {
+      result = metadata
         .map(
           ([
             {
@@ -159,12 +161,13 @@ export const useAssets = () => {
   }, [api]);
 
   const fetchAllTokensDetails = useCallback(async (): Promise<TokensDetailsMap> => {
-    const result: TokensDetailsMap = new Map();
     const tokensIds = await getTokenIds();
-    if (!api || !tokensIds) return result;
+    if (!api || !tokensIds) return;
 
-    const details: DetailsRecords = await api.query.assets.asset.multi(tokensIds);
-    if (Array.isArray(details) && details.length > 0) {
+    const result: TokensDetailsMap = new Map();
+    const details: TokensDetailsRecords = await api.query.assets.asset.multi(tokensIds);
+
+    if (!isEmpty(details)) {
       details.forEach((record, index) => {
         const id = tokensIds[index].toNumber();
         result.set(id, record.unwrapOr(null)?.supply.toBn());
@@ -321,13 +324,11 @@ export const useAssets = () => {
     }
   }, [api, getPoolReserves]);
 
-  const getTokenIds = useCallback(async (): Promise<AssetId[] | null> => {
+  const getTokenIds = useCallback(async (): Promise<AssetId[]> => {
     if (api) {
       const results: StorageKey<[AssetId]>[] = await api.query.assets.asset.keys();
       return results.map(({ args: [id] }) => id);
     }
-
-    return null;
   }, [api]);
 
   const getAllTokens = useCallback(async () => {
@@ -361,7 +362,7 @@ export const useAssets = () => {
         ...result,
         ...metadata.map((token) => ({
           ...token,
-          supply: details.get(token.id.asAsset.toNumber()) || null,
+          supply: details?.get(token.id.asAsset.toNumber()) ?? null,
         })),
       ];
     } catch (error) {

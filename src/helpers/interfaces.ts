@@ -176,8 +176,8 @@ export type PoolReserves = [BN, BN];
 
 export type PalletAssetConversionPoolId = ITuple<[MultiAssetId, MultiAssetId]>;
 
-export type MetadataRecords = [StorageKey<[AssetId]>, PalletAssetsAssetMetadata][];
+export type TokensMetadataRecords = [StorageKey<[AssetId]>, PalletAssetsAssetMetadata][];
 
-export type DetailsRecords = Option<PalletAssetsAssetDetails>[];
+export type TokensDetailsRecords = Option<PalletAssetsAssetDetails>[];
 
 export type TokensDetailsMap = Map<number, Option<PalletAssetsAssetDetails>>;

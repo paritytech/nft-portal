@@ -15,8 +15,8 @@ import { multiAssetToParam, sortStrings } from '@helpers/utilities';
 import PlusIcon from '@images/icons/plus.svg';
 
 interface PoolsViewProps {
-  pools: PoolInfo[] | null;
-  allTokens: TokenMetadata[] | null;
+  pools: PoolInfo[];
+  allTokens: TokenMetadata[];
 }
 
 const SPoolBlock = styled(SContentBlock)`
@@ -40,7 +40,7 @@ interface PoolAsset extends TokenMetadata {
 type PoolAssets = [PoolAsset, PoolAsset][];
 
 const PoolsView = ({ pools, allTokens }: PoolsViewProps) => {
-  if (pools === null || allTokens === null) {
+  if (!pools || !allTokens) {
     return <>Gathering data... please wait</>;
   }
 

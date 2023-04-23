@@ -15,7 +15,7 @@ import Drops from '@pages/Assets/Nfts/Drops';
 import Nfts from '@pages/Assets/Nfts/Nfts';
 import Pools from '@pages/Assets/Pools/Pools';
 import ValidateAddLiquidity from '@pages/Assets/Pools/ValidateAddLiquidity';
-import LoadTokensData from '@pages/Assets/Tokens/LoadTokensData';
+import Tokens from '@pages/Assets/Tokens/Tokens';
 import Discover from '@pages/Discover/Discover';
 import CreateCollection from '@pages/MyAssets/MintNft/CreateCollection';
 import LoadCollectionsData from '@pages/MyAssets/MintNft/LoadCollectionsData';
@@ -206,7 +206,7 @@ const App = () => (
             element={
               <>
                 <Title className='XXL'>All Tokens</Title>
-                <LoadTokensData />
+                <Tokens />
               </>
             }
           />

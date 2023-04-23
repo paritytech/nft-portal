@@ -62,7 +62,7 @@ const CreatePool = () => {
     return null;
   }
 
-  if (availablePoolTokens === null || nativeMetadata === null || nativeBalance === null) {
+  if (!availablePoolTokens || !nativeMetadata || !nativeBalance) {
     return <>Loading data... please wait</>;
   }
 

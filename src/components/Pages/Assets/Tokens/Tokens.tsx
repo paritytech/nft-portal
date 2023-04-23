@@ -1,14 +1,24 @@
-import { memo } from 'react';
+import { isEmpty } from 'lodash';
+import { memo, useEffect, useState } from 'react';
 
-import type { TokenWithSupply } from '@helpers/interfaces';
+import { TokenWithSupply } from '@helpers/interfaces';
 
-import Token from './Token';
+import { useAssets } from '@hooks/useAssets';
 
-interface TokensProps {
-  tokens: TokenWithSupply[];
-}
+import Token from '@pages/Assets/Tokens/Token';
 
-const Tokens = ({ tokens }: TokensProps) => {
+const Tokens = () => {
+  const [tokens, setTokens] = useState<TokenWithSupply[]>();
+  const { getAllTokensWithNativeAndSupply } = useAssets();
+
+  useEffect(() => {
+    getAllTokensWithNativeAndSupply().then(setTokens);
+  }, [getAllTokensWithNativeAndSupply]);
+
+  if (isEmpty(tokens)) {
+    return <>Gathering data... please wait</>;
+  }
+
   return (
     <>
       {tokens.map((token) => (
