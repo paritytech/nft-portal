@@ -8,7 +8,7 @@ import { useAssets } from '@hooks/useAssets';
 import Tokens from './Tokens';
 
 const LoadTokensData = () => {
-  const [tokens, setTokens] = useState<TokenWithSupply[] | null>(null);
+  const [tokens, setTokens] = useState<TokenWithSupply[]>();
   const { getAllTokensWithNativeAndSupply } = useAssets();
 
   useEffect(() => {
@@ -19,7 +19,7 @@ const LoadTokensData = () => {
     return <>Gathering data... please wait</>;
   }
 
-  return <Tokens tokens={tokens as TokenWithSupply[]} />;
+  return <Tokens tokens={tokens} />;
 };
 
 export default memo(LoadTokensData);

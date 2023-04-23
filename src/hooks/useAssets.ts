@@ -341,8 +341,8 @@ export const useAssets = () => {
     }
   }, [activeChain, allTokens, api, fetchAllTokensMetadata]);
 
-  const getAllTokensWithNativeAndSupply = useCallback(async (): Promise<TokenWithSupply[] | null> => {
-    if (!api || !activeChain) return null;
+  const getAllTokensWithNativeAndSupply = useCallback(async (): Promise<TokenWithSupply[]> => {
+    if (!api || !activeChain) return;
 
     let result: TokenWithSupply[] = [];
 
