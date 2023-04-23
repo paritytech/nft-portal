@@ -90,13 +90,12 @@ export const multiAssetToParam = (asset: MultiAssetId): string => {
   return asset.isAsset ? asset.asAsset.toString() : 'native';
 };
 
-export const parseAssetParam = (assetId: string, api: ApiPromise): MultiAssetId | null => {
-  if (assetId?.toLowerCase() === 'native') {
-    return api.createType('PalletAssetConversionMultiAssetId', MultiAssets.NATIVE);
-  } else if (isUnsignedNumber(assetId)) {
-    return api.createType('PalletAssetConversionMultiAssetId', {
-      [MultiAssets.ASSET]: api.createType('AssetId', assetId),
-    });
+export const parseAssetParam = (asset: string | undefined, api: ApiPromise): MultiAssetId | null => {
+  asset ||= '';
+  if (asset.toLowerCase() === 'native') {
+    return toMultiAsset(MultiAssets.NATIVE, api);
+  } else if (isUnsignedNumber(asset)) {
+    return toMultiAsset(api.createType('AssetId', asset), api);
   }
   return null;
 };

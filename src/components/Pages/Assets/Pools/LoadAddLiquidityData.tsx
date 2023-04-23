@@ -17,43 +17,33 @@ interface LoadAddLiquidityDataProps {
 
 const LoadAddLiquidityData = ({ asset1, asset2 }: LoadAddLiquidityDataProps) => {
   const { activeAccount, api } = useAccounts();
-  const {
-    getAssetBalance,
-    getAssetMetadata,
-    getNativeBalance,
-    getNativeMetadata,
-    getPoolReserves,
-    nativeMetadata,
-    nativeBalance,
-  } = useAssets();
-  const [assetBalance, setAssetBalance] = useState<BN>(BN_ZERO);
-  const [assetMetadata, setAssetMetadata] = useState<TokenMetadata>();
+  const { getAssetBalance, getAssetMetadata, getAssetMinBalance, getPoolReserves } = useAssets();
+  const [asset1Balance, setAsset1Balance] = useState<BN>();
+  const [asset2Balance, setAsset2Balance] = useState<BN>();
+  const [asset1MinBalance, setAsset1MinBalance] = useState<BN>();
+  const [asset2MinBalance, setAsset2MinBalance] = useState<BN>();
+  const [asset1Metadata, setAsset1Metadata] = useState<TokenMetadata>();
+  const [asset2Metadata, setAsset2Metadata] = useState<TokenMetadata>();
   const [poolReserves, setPoolReserves] = useState<PoolReserves>();
 
   useEffect(() => {
     if (api) {
-      if (asset1 && asset2) {
-        getAssetMetadata(asset2.asAsset).then(setAssetMetadata);
-        getPoolReserves(asset1, asset2).then(setPoolReserves);
-      }
-      if (activeAccount && asset2) {
-        getAssetBalance(asset2.asAsset).then((balance) => setAssetBalance(balance || BN_ZERO));
-        getNativeBalance();
-      }
+      getAssetMetadata(asset1).then(setAsset1Metadata);
+      getAssetMetadata(asset2).then(setAsset2Metadata);
+      getAssetMinBalance(asset1).then((balance) => setAsset1MinBalance(balance || BN_ZERO));
+      getAssetMinBalance(asset2).then((balance) => setAsset2MinBalance(balance || BN_ZERO));
+      getPoolReserves(asset1, asset2).then(setPoolReserves);
     }
-  }, [api, activeAccount, asset1, asset2, getAssetBalance, getAssetMetadata, getNativeBalance, getPoolReserves]);
+  }, [api, activeAccount, asset1, asset2, getAssetMinBalance, getAssetMetadata, getPoolReserves]);
 
   useEffect(() => {
-    if (api && !nativeMetadata) {
-      getNativeMetadata();
+    if (api && activeAccount) {
+      getAssetBalance(asset1).then((balance) => setAsset1Balance(balance || BN_ZERO));
+      getAssetBalance(asset2).then((balance) => setAsset2Balance(balance || BN_ZERO));
     }
-  }, [api, getNativeMetadata, nativeMetadata]);
+  }, [api, activeAccount, asset1, asset2, getAssetBalance]);
 
-  if (!api) {
-    return null;
-  }
-
-  if (!nativeMetadata || !assetMetadata || !poolReserves) {
+  if (!asset1Metadata || !asset2Metadata || !poolReserves) {
     return <>Loading data... please wait</>;
   }
 
@@ -61,14 +51,14 @@ const LoadAddLiquidityData = ({ asset1, asset2 }: LoadAddLiquidityDataProps) => 
     <AddLiquidity
       asset1={asset1}
       asset2={asset2}
-      nativeMetadata={nativeMetadata}
-      assetMetadata={assetMetadata}
-      minAmount1={api.consts.balances.existentialDeposit.toBn()}
-      minAmount2={assetMetadata.details?.minBalance.toBn() || BN_ZERO}
+      asset1Metadata={asset1Metadata}
+      asset2Metadata={asset2Metadata}
+      minAmount1={asset1MinBalance}
+      minAmount2={asset2MinBalance}
       poolReserves={poolReserves}
       isNewPool={isPoolEmpty(poolReserves)}
-      nativeBalance={nativeBalance}
-      assetBalance={assetBalance}
+      asset1Balance={asset1Balance}
+      asset2Balance={asset2Balance}
     />
   );
 };

@@ -6,7 +6,7 @@ import NotFound from '@common/NotFound';
 import { useAccounts } from '@contexts/AccountsContext';
 
 import type { MultiAssetId } from '@helpers/interfaces';
-import { toMultiAsset } from '@helpers/utilities';
+import { parseAssetParam } from '@helpers/utilities';
 
 import LoadAddLiquidityData from '@pages/Assets/Pools/LoadAddLiquidityData';
 
@@ -19,10 +19,9 @@ const ValidateAddLiquidity = () => {
   const validateParams = useCallback(async () => {
     if (api && api.query.assetConversion) {
       let paramsValid = false;
-      const token1 = toMultiAsset(assetId1 || '', api);
-      const token2 = toMultiAsset(assetId2 || '', api);
+      const token1 = parseAssetParam(assetId1, api);
+      const token2 = parseAssetParam(assetId2, api);
       if (token1 && token2) {
-        console.log(token2.toString());
         const poolId = [token1, token2];
         setPoolId(poolId);
         const poolExists = !(await api.query.assetConversion.pools(poolId)).isEmpty;

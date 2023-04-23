@@ -134,11 +134,6 @@ export interface MintAccessNft {
   ownedItem: string;
 }
 
-export interface TokenBalance {
-  id: AssetId;
-  balance: BN;
-}
-
 export interface TokenMetadata extends TokenMetadataInfo {
   id: MultiAssetId;
 }
@@ -151,13 +146,6 @@ export interface TokenMetadataInfo {
 
 export interface TokenWithSupply extends TokenMetadata {
   supply: BN | null;
-}
-
-// TODO: remove
-export interface NativeTokenMetadata {
-  name: string | null;
-  decimals: number;
-  issuance: BN | null;
 }
 
 export interface PalletAssetConversionPoolInfo extends Struct {
