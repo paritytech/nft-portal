@@ -144,8 +144,8 @@ export interface TokenMetadata extends TokenMetadataInfo {
 }
 
 export interface TokenMetadataInfo {
-  name: string | null;
-  symbol: string | null;
+  name: string;
+  symbol: string;
   decimals: number;
 }
 
@@ -153,6 +153,7 @@ export interface TokenWithSupply extends TokenMetadata {
   supply: BN | null;
 }
 
+// TODO: remove
 export interface NativeTokenMetadata {
   name: string | null;
   decimals: number;

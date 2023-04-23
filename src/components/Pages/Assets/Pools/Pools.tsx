@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom';
 
 import ActionButton from '@buttons/ActionButton';
 
+import Title from '@common/Title';
+
 import { useAccounts } from '@contexts/AccountsContext';
 
 import { SContentBlockContainer } from '@helpers/reusableStyles';
@@ -15,18 +17,17 @@ import PoolsView from './PoolsView';
 
 const Pools = () => {
   const { activeAccount } = useAccounts();
-  const { getNativeMetadata, getPools, getTokensMetadata, nativeMetadata, pools, tokensMetadata } = useAssets();
+  const { getAllTokens, getPools, allTokens, pools } = useAssets();
   useEffect(() => {
     getPools();
-    getNativeMetadata();
-    getTokensMetadata();
-  }, [getPools, getNativeMetadata, getTokensMetadata]);
+    getAllTokens();
+  }, [getPools, getAllTokens]);
 
   return (
     <>
-      <h2>All Pools</h2>
+      <Title className='XXL'>All Pools</Title>
       <SContentBlockContainer>
-        <PoolsView pools={pools} nativeMetadata={nativeMetadata} tokensMetadata={tokensMetadata} />
+        <PoolsView pools={pools} allTokens={allTokens} />
       </SContentBlockContainer>
       {activeAccount && (
         <Stack direction='horizontal' gap={2} className='justify-content-end'>

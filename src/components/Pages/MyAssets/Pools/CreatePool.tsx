@@ -76,12 +76,12 @@ const CreatePool = () => {
       <Form onSubmit={submitCreatePool}>
         <section>
           <br />
-          Create a pool for {symbol?.toUpperCase()} and{' '}
+          Create a pool for {symbol.toUpperCase()} and{' '}
           <select onChange={(event) => setNewPoolToken(event.target.value)} defaultValue={newPoolToken?.toString()}>
             <option value='-1'> - select token - </option>
             {availablePoolTokens.map((token, index) => (
               <option key={token.id.toString()} value={index.toString()}>
-                {token.symbol?.toUpperCase()}
+                {token.symbol.toUpperCase()}
               </option>
             ))}
           </select>

@@ -1,22 +1,22 @@
 import { formatBalance } from '@polkadot/util';
+import { isEmpty } from 'lodash';
 import { memo } from 'react';
 import Card from 'react-bootstrap/Card';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
-import type { NativeTokenMetadata, TokenMetadata } from '@helpers/interfaces';
+import type { TokenMetadata } from '@helpers/interfaces';
 import { PoolInfo } from '@helpers/interfaces';
 import { SColumn, SContentBlock, SRow } from '@helpers/reusableStyles';
 import { routes } from '@helpers/routes';
 import { SCard, SCardEdit } from '@helpers/styledComponents';
-import { sortStrings } from '@helpers/utilities';
+import { multiAssetToParam, sortStrings } from '@helpers/utilities';
 
 import PlusIcon from '@images/icons/plus.svg';
 
 interface PoolsViewProps {
   pools: PoolInfo[] | null;
-  nativeMetadata: NativeTokenMetadata | null;
-  tokensMetadata: TokenMetadata[] | null;
+  allTokens: TokenMetadata[] | null;
 }
 
 const SPoolBlock = styled(SContentBlock)`
@@ -33,12 +33,18 @@ const SReserve = styled.span`
   text-align: right;
 `;
 
-const PoolsView = ({ pools, nativeMetadata, tokensMetadata }: PoolsViewProps) => {
-  if (pools === null || nativeMetadata === null || tokensMetadata === null) {
+interface PoolAsset extends TokenMetadata {
+  formattedReserve: string;
+}
+
+type PoolAssets = [PoolAsset, PoolAsset][];
+
+const PoolsView = ({ pools, allTokens }: PoolsViewProps) => {
+  if (pools === null || allTokens === null) {
     return <>Gathering data... please wait</>;
   }
 
-  if (!Array.isArray(pools) || pools.length === 0) {
+  if (isEmpty(pools)) {
     return <>No pools found</>;
   }
 
@@ -46,19 +52,10 @@ const PoolsView = ({ pools, nativeMetadata, tokensMetadata }: PoolsViewProps) =>
     .map((pool) => {
       return pool.poolId.map((asset, index) => {
         const reserve = pool.reserves[index];
-        let symbol = nativeMetadata.name;
-        let decimals = nativeMetadata.decimals;
-        let id = 'native';
+        const tokenInfo = allTokens.find(({ id }) => id.eq(asset));
+        if (!tokenInfo) return null;
 
-        if (asset.isAsset) {
-          const tokenInfo = tokensMetadata.find(({ id }) => id.eq(asset.asAsset));
-          if (!tokenInfo) return null;
-          id = asset.asAsset.toString();
-          symbol = tokenInfo.symbol;
-          decimals = tokenInfo.decimals;
-        }
-        symbol = symbol || '';
-
+        const { symbol, decimals } = tokenInfo;
         const formattedReserve = formatBalance(reserve, {
           decimals,
           withUnit: symbol.toUpperCase(),
@@ -67,15 +64,13 @@ const PoolsView = ({ pools, nativeMetadata, tokensMetadata }: PoolsViewProps) =>
         });
 
         return {
-          id,
-          symbol,
-          decimals,
+          ...tokenInfo,
           formattedReserve,
         };
       });
     })
-    .filter((poolInfo) => poolInfo[0] && poolInfo[1])
-    .sort((poolInfo1, poolInfo2) => sortStrings(poolInfo1[1].symbol, poolInfo2[1].symbol));
+    .filter((poolInfo) => poolInfo[0] !== null && poolInfo[1] !== null) as PoolAssets;
+  poolsWithInfo.sort((poolInfo1, poolInfo2) => sortStrings(poolInfo1[1].symbol, poolInfo2[1].symbol));
 
   return (
     <>
@@ -85,7 +80,12 @@ const PoolsView = ({ pools, nativeMetadata, tokensMetadata }: PoolsViewProps) =>
             <Card.Body>
               <SCardEdit className='text-muted'>
                 <span>Tokens Locked</span>
-                <Link to={routes.discover.addLiquidity(poolInfo[0].id, poolInfo[1].id)}>
+                <Link
+                  to={routes.discover.addLiquidity(
+                    multiAssetToParam(poolInfo[0].id),
+                    multiAssetToParam(poolInfo[1].id),
+                  )}
+                >
                   <PlusIcon />
                 </Link>
               </SCardEdit>

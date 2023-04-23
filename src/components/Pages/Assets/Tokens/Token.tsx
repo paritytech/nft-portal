@@ -28,7 +28,7 @@ const SSupply = styled.span`
 
 const Token = ({ token }: TokenProps) => {
   const { name, symbol, decimals, supply } = token;
-  const formattedSymbol = (symbol || '').toUpperCase();
+  const formattedSymbol = symbol.toUpperCase();
   const formattedSupply = supply
     ? formatBalance(supply as ToBn, {
         decimals,
@@ -41,7 +41,7 @@ const Token = ({ token }: TokenProps) => {
   return (
     <SRow>
       <SColumn>
-        <span>{name || ''}</span>
+        <span>{name}</span>
       </SColumn>
       <SColumn>
         <SSupply>{formattedSupply}</SSupply>

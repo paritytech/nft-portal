@@ -42,7 +42,7 @@ export const useAssets = () => {
   const [availablePoolTokens, setAvailablePoolTokens] = useState<TokenMetadata[] | null>(null);
   const [nativeBalance, setNativeBalance] = useState<BN | null>(null);
   const [nativeMetadata, setNativeMetadata] = useState<TokenMetadata | null>(null);
-  const [tokensMetadata, setTokensMetadata] = useState<TokenMetadata[] | null>(null);
+  const [allTokens, setAllTokens] = useState<TokenMetadata[] | null>(null);
   const [tokensBalances, setTokensBalances] = useState<TokenBalance[] | null>(null);
   const [pools, setPools] = useState<PoolInfo[] | null>(null);
 
@@ -346,51 +346,16 @@ export const useAssets = () => {
     }
   }, [api, activeAccount, getTokenIds]);
 
-  const getTokensMetadata = useCallback(async () => {
-    if (api) {
-      try {
-        let metadata: TokenMetadata[] = [];
-        const tokens = await getTokenIds();
-        if (!tokens) return;
+  const getAllTokens = useCallback(async () => {
+    if (allTokens || !api || !activeChain) return;
 
-        const [metadataRecords, detailsRecords]: [MetadataRecords, DetailsRecords] = await Promise.all([
-          api.query.assets.metadata.entries(),
-          api.query.assets.asset.multi(tokens),
-        ]);
-
-        const details = new Map<number, PalletAssetsAssetDetails | null>();
-        if (Array.isArray(detailsRecords) && detailsRecords.length > 0) {
-          detailsRecords.forEach((record, index) => {
-            const id = tokens[index].toNumber();
-            details.set(id, record.unwrapOr(null));
-          });
-        }
-
-        if (Array.isArray(metadataRecords) && metadataRecords.length > 0) {
-          metadata = metadataRecords
-            .map(
-              ([
-                {
-                  args: [id],
-                },
-                data,
-              ]) => ({
-                id,
-                name: data.name?.toUtf8() || null,
-                symbol: data.symbol?.toUtf8() || null,
-                decimals: data.decimals?.toNumber() || 0,
-                details: details.get(id.toNumber()) || null,
-              }),
-            )
-            .sort((a, b) => sortStrings(a.name, b.name));
-        }
-
-        setTokensMetadata(metadata);
-      } catch (error) {
-        //
-      }
+    try {
+      const tokens = await fetchAllTokensMetadata();
+      setAllTokens([formatNativeTokenMetadata(api, activeChain), ...tokens]);
+    } catch (error) {
+      //
     }
-  }, [api, getTokenIds]);
+  }, [activeChain, allTokens, api, fetchAllTokensMetadata]);
 
   const getAllTokensWithNativeAndSupply = useCallback(async (): Promise<TokenWithSupply[] | null> => {
     if (!api || !activeChain) return null;
@@ -424,15 +389,15 @@ export const useAssets = () => {
 
   const formatNativeTokenMetadata = (api: ApiPromise, activeChain: Chain): TokenMetadata => ({
     id: toMultiAsset(MultiAssets.NATIVE, api),
-    name: activeChain?.nativeTokenName ?? null,
+    name: activeChain?.nativeTokenName ?? '',
     symbol: api.registry.chainTokens[0],
     decimals: api.registry.chainDecimals[0],
   });
 
   const formatAssetMetadata = (id: AssetId, data: PalletAssetsAssetMetadata, api: ApiPromise): TokenMetadata => ({
     id: toMultiAsset(id, api),
-    name: data.name?.toUtf8() || null,
-    symbol: data.symbol?.toUtf8() || null,
+    name: data.name?.toUtf8() || '',
+    symbol: data.symbol?.toUtf8() || '',
     decimals: data.decimals?.toNumber() || 0,
   });
 
@@ -448,12 +413,12 @@ export const useAssets = () => {
     getPools,
     getPoolReserves,
     getTokensBalances,
-    getTokensMetadata,
+    getAllTokens,
     getAllTokensWithNativeAndSupply,
+    allTokens,
     nativeBalance,
     nativeMetadata,
     pools,
     tokensBalances,
-    tokensMetadata,
   };
 };
