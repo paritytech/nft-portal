@@ -16,19 +16,13 @@ import { useModalStatus } from '@contexts/ModalStatusContext';
 
 import { ADD_LIQUIDITY_SLIPPAGE } from '@helpers/config';
 import { ModalStatusTypes, StatusMessages } from '@helpers/constants';
-import {
-  NativeTokenMetadata,
-  PalletAssetConversionMultiAssetId,
-  PoolReserves,
-  TokenMetadata,
-} from '@helpers/interfaces';
+import { MultiAssetId, PoolReserves, TokenMetadata } from '@helpers/interfaces';
 import { routes } from '@helpers/routes';
 import {
   addSlippage,
   calcExchangeRate,
   formatDecimals,
   getCleanFormattedBalance,
-  isPoolEmpty,
   pricePattern,
   unitToPlanck,
 } from '@helpers/utilities';
@@ -36,29 +30,29 @@ import {
 import { useAssets } from '@hooks/useAssets';
 
 interface AddLiquidityProps {
-  asset1: PalletAssetConversionMultiAssetId;
-  asset2: PalletAssetConversionMultiAssetId;
-  nativeMetadata: NativeTokenMetadata;
-  assetMetadata: TokenMetadata;
-  minAmount1: BN;
-  minAmount2: BN;
+  asset1: MultiAssetId;
+  asset2: MultiAssetId;
+  asset1Metadata: TokenMetadata;
+  asset2Metadata: TokenMetadata;
+  minAmount1: BN | undefined;
+  minAmount2: BN | undefined;
   poolReserves: PoolReserves;
   isNewPool: boolean;
-  nativeBalance: BN | null;
-  assetBalance: BN | null;
+  asset1Balance: BN | undefined;
+  asset2Balance: BN | undefined;
 }
 
 const AddLiquidity = ({
   asset1,
   asset2,
-  nativeMetadata,
-  assetMetadata,
+  asset1Metadata,
+  asset2Metadata,
   minAmount1,
   minAmount2,
   poolReserves,
   isNewPool,
-  nativeBalance,
-  assetBalance,
+  asset1Balance,
+  asset2Balance,
 }: AddLiquidityProps) => {
   const { activeAccount } = useAccounts();
   const { addLiquidity } = useAssets();
@@ -70,28 +64,28 @@ const AddLiquidity = ({
   const submitAddLiquidity = useCallback(
     async (event: FormEvent) => {
       event.preventDefault();
-      if (!activeAccount || !assetBalance || !nativeBalance || !asset1Amount || !asset2Amount) return;
+      if (!activeAccount || !asset1Balance || !asset2Balance || !asset1Amount || !asset2Amount) return;
 
-      const amount1 = new BN(unitToPlanck(asset1Amount, nativeMetadata.decimals));
-      const amount2 = new BN(unitToPlanck(asset2Amount, assetMetadata.decimals));
+      const amount1 = new BN(unitToPlanck(asset1Amount, asset1Metadata.decimals));
+      const amount2 = new BN(unitToPlanck(asset2Amount, asset2Metadata.decimals));
       let formError = null;
 
       if (isNewPool) {
         // validate min balances
-        if (amount1.lt(minAmount1)) {
+        if (minAmount1 && amount1.lt(minAmount1)) {
           const minAmountFormatted = formatBalance(minAmount1, {
-            withUnit: nativeMetadata.name?.toUpperCase(),
-            decimals: nativeMetadata.decimals,
+            withUnit: asset1Metadata.symbol.toUpperCase(),
+            decimals: asset1Metadata.decimals,
             withSi: true,
             withZero: false,
           });
           formError = StatusMessages.POOL_MIN_LIQUIDITY_ERROR.replace('{amount}', minAmountFormatted);
         }
 
-        if (!formError && amount2.lt(minAmount2)) {
+        if (!formError && minAmount2 && amount2.lt(minAmount2)) {
           const minAmountFormatted = formatBalance(minAmount2, {
-            withUnit: assetMetadata.symbol.toUpperCase(),
-            decimals: assetMetadata.decimals,
+            withUnit: asset2Metadata.symbol.toUpperCase(),
+            decimals: asset2Metadata.decimals,
             withSi: true,
             withZero: false,
           });
@@ -100,10 +94,10 @@ const AddLiquidity = ({
       }
 
       // validate user has enough funds
-      if (!formError && nativeBalance.lt(amount1)) {
+      if (!formError && asset1Balance.lt(amount1)) {
         formError = StatusMessages.POOL_ADD_LIQUIDITY_AMOUNT_TOO_HIGH;
       }
-      if (!formError && assetBalance.lt(amount2)) {
+      if (!formError && asset2Balance.lt(amount2)) {
         formError = StatusMessages.POOL_ADD_LIQUIDITY_AMOUNT_TOO_HIGH;
       }
 
@@ -115,8 +109,8 @@ const AddLiquidity = ({
 
       // add slippage tolerance to min amounts
       const slippage = ADD_LIQUIDITY_SLIPPAGE;
-      const amount1Min = new BN(unitToPlanck(addSlippage(asset1Amount, slippage), nativeMetadata.decimals));
-      const amount2Min = new BN(unitToPlanck(addSlippage(asset2Amount, slippage), assetMetadata.decimals));
+      const amount1Min = new BN(unitToPlanck(addSlippage(asset1Amount, slippage), asset1Metadata.decimals));
+      const amount2Min = new BN(unitToPlanck(addSlippage(asset2Amount, slippage), asset2Metadata.decimals));
 
       addLiquidity(asset1, asset2, amount1, amount2, amount1Min, amount2Min);
     },
@@ -128,11 +122,11 @@ const AddLiquidity = ({
       minAmount1,
       minAmount2,
       activeAccount,
-      assetBalance,
-      assetMetadata,
+      asset1Balance,
+      asset2Balance,
+      asset1Metadata,
+      asset2Metadata,
       addLiquidity,
-      nativeBalance,
-      nativeMetadata,
       isNewPool,
       openModalStatus,
       setStatus,
@@ -140,10 +134,9 @@ const AddLiquidity = ({
   );
 
   const onInput1Changed = (amount1: string) => {
-    if (amount1 !== '' && !amount1.match(pricePattern(nativeMetadata.decimals))) return;
+    if (amount1 !== '' && !amount1.match(pricePattern(asset1Metadata.decimals))) return;
 
     setAsset1Amount(amount1);
-    const isNewPool = isPoolEmpty(poolReserves);
     const asset1Value = amount1;
     const asset2Value = asset2Amount;
 
@@ -156,10 +149,9 @@ const AddLiquidity = ({
   };
 
   const onInput2Changed = (amount2: string) => {
-    if (amount2 !== '' && !amount2.match(pricePattern(assetMetadata.decimals))) return;
+    if (amount2 !== '' && !amount2.match(pricePattern(asset2Metadata.decimals))) return;
 
     setAsset2Amount(amount2);
-    const isNewPool = isPoolEmpty(poolReserves);
     const asset1Value = asset1Amount;
     const asset2Value = amount2;
 
@@ -173,17 +165,11 @@ const AddLiquidity = ({
 
   useEffect(() => {
     if (!isNewPool) {
-      const asset1Reserve = getCleanFormattedBalance(poolReserves[0], nativeMetadata.decimals);
-      const asset2Reserve = getCleanFormattedBalance(poolReserves[1], assetMetadata.decimals);
+      const asset1Reserve = getCleanFormattedBalance(poolReserves[0], asset1Metadata.decimals);
+      const asset2Reserve = getCleanFormattedBalance(poolReserves[1], asset2Metadata.decimals);
       setExchangeRate(calcExchangeRate(+asset1Reserve, +asset2Reserve));
     }
-  }, [isNewPool, poolReserves, assetMetadata, nativeMetadata]);
-
-  const nativeDecimals = nativeMetadata.decimals;
-  const assetDecimals = assetMetadata.decimals;
-  const nativeName = nativeMetadata.name?.toUpperCase();
-  const assetName = assetMetadata.name.toUpperCase();
-  const assetSymbol = assetMetadata.symbol.toUpperCase();
+  }, [isNewPool, poolReserves, asset1Metadata, asset2Metadata]);
 
   return (
     <>
@@ -191,28 +177,28 @@ const AddLiquidity = ({
       <ModalStatus />
       <Form onSubmit={submitAddLiquidity}>
         <Form.Group className='mb-3'>
-          <Form.Label>{nativeName}:</Form.Label>
+          <Form.Label>{asset1Metadata.symbol.toUpperCase()}:</Form.Label>
           <Form.Control
             value={asset1Amount}
             placeholder='0.0'
             type='text'
-            pattern={pricePattern(nativeDecimals)}
+            pattern={pricePattern(asset1Metadata.decimals)}
             onChange={(event) => onInput1Changed(event.target.value)}
             min={0}
           />
-          {activeAccount && nativeBalance && (
+          {activeAccount && asset1Balance && (
             <div>
               Balance:{' '}
-              {formatBalance(nativeBalance as ToBn, {
+              {formatBalance(asset1Balance as ToBn, {
                 forceUnit: '-',
-                decimals: nativeDecimals,
+                decimals: asset1Metadata.decimals,
                 withSi: false,
                 withZero: false,
               })}{' '}
               <ActionButton
                 className='main XS'
                 type='button'
-                action={() => onInput1Changed(getCleanFormattedBalance(nativeBalance as BN, nativeDecimals))}
+                action={() => onInput1Changed(getCleanFormattedBalance(asset1Balance as BN, asset1Metadata.decimals))}
               >
                 Max
               </ActionButton>
@@ -220,28 +206,28 @@ const AddLiquidity = ({
           )}
         </Form.Group>
         <Form.Group className='mb-3'>
-          <Form.Label>{assetName}:</Form.Label>
+          <Form.Label>{asset2Metadata.symbol.toUpperCase()}:</Form.Label>
           <Form.Control
             value={asset2Amount}
             placeholder='0.0'
             type='text'
-            pattern={pricePattern(assetDecimals)}
+            pattern={pricePattern(asset2Metadata.decimals)}
             onChange={(event) => onInput2Changed(event.target.value)}
             min={0}
           />
-          {activeAccount && assetBalance && (
+          {activeAccount && asset2Balance && (
             <div>
               Balance:{' '}
-              {formatBalance(assetBalance as ToBn, {
+              {formatBalance(asset2Balance as ToBn, {
                 forceUnit: '-',
-                decimals: assetDecimals,
+                decimals: asset2Metadata.decimals,
                 withSi: false,
                 withZero: false,
               })}{' '}
               <ActionButton
                 className='main XS'
                 type='button'
-                action={() => onInput2Changed(getCleanFormattedBalance(assetBalance as BN, assetDecimals))}
+                action={() => onInput2Changed(getCleanFormattedBalance(asset2Balance as BN, asset2Metadata.decimals))}
               >
                 Max
               </ActionButton>
@@ -250,7 +236,8 @@ const AddLiquidity = ({
         </Form.Group>
         {exchangeRate && (
           <section>
-            1 {nativeName} = {formatDecimals(exchangeRate)} {assetSymbol}
+            1 {asset1Metadata.symbol.toUpperCase()} = {formatDecimals(exchangeRate)}{' '}
+            {asset2Metadata.symbol.toUpperCase()}
           </section>
         )}
 

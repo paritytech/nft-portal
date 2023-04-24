@@ -1,21 +1,29 @@
-import { memo, useEffect } from 'react';
+import { isEmpty } from 'lodash';
+import { memo, useEffect, useState } from 'react';
+
+import { TokenWithSupply } from '@helpers/interfaces';
 
 import { useAssets } from '@hooks/useAssets';
 
-import TokensView from './TokensView';
+import Token from '@pages/Assets/Tokens/Token';
 
 const Tokens = () => {
-  const { getNativeMetadata, getTokensMetadata, nativeMetadata, tokensMetadata } = useAssets();
+  const [tokens, setTokens] = useState<TokenWithSupply[]>();
+  const { getAllTokensWithNativeAndSupply } = useAssets();
 
   useEffect(() => {
-    getNativeMetadata();
-    getTokensMetadata();
-  }, [getNativeMetadata, getTokensMetadata]);
+    getAllTokensWithNativeAndSupply().then(setTokens);
+  }, [getAllTokensWithNativeAndSupply]);
+
+  if (isEmpty(tokens)) {
+    return <>Gathering data... please wait</>;
+  }
 
   return (
     <>
-      <h2>All Tokens</h2>
-      <TokensView nativeMetadata={nativeMetadata} tokensMetadata={tokensMetadata} />
+      {tokens.map((token) => (
+        <Token key={token.id} token={token} />
+      ))}
     </>
   );
 };

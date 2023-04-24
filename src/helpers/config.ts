@@ -1,7 +1,7 @@
 import type { RegistryTypes } from '@polkadot/types-codec/types';
 import type { OverrideBundleType } from '@polkadot/types/types/registry';
 
-import { ChainThemes, ChainTitles, ExtensionIds } from './constants';
+import { ChainNativeTokenNames, ChainThemes, ChainTitles, ExtensionIds } from './constants';
 import { Chain } from './interfaces';
 
 export const APP_NAME = 'assets-portal';
@@ -15,11 +15,13 @@ export const chains: Chain[] = [
     url: 'wss://westmint-rpc.polkadot.io',
     title: ChainTitles.WESTMINT,
     theme: ChainThemes.KUSAMA,
+    nativeTokenName: ChainNativeTokenNames.WESTMINT,
   },
   {
     url: 'ws://127.0.0.1:9944',
     title: ChainTitles.LOCALHOST,
     theme: ChainThemes.KUSAMA,
+    nativeTokenName: ChainNativeTokenNames.LOCALHOST,
   },
 ];
 

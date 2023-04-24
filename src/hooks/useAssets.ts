@@ -1,3 +1,4 @@
+import type { ApiPromise } from '@polkadot/api';
 import type { Option, StorageKey } from '@polkadot/types';
 import type { AssetId } from '@polkadot/types/interfaces';
 import type {
@@ -8,7 +9,7 @@ import type {
 import { PalletAssetsAssetMetadata } from '@polkadot/types/lookup';
 import type { BN } from '@polkadot/util';
 import { BN_ZERO } from '@polkadot/util';
-import { ToBn } from '@polkadot/util/types';
+import { isEmpty } from 'lodash';
 import { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -18,41 +19,33 @@ import { useModalStatus } from '@contexts/ModalStatusContext';
 import { ModalStatusTypes, MultiAssets, StatusMessages } from '@helpers/constants';
 import { handleError } from '@helpers/handleError';
 import type {
-  DetailsRecords,
-  MetadataRecords,
-  MultiAsset,
-  NativeTokenMetadata,
-  PalletAssetConversionMultiAssetId,
+  Chain,
+  MultiAssetId,
   PalletAssetConversionPoolId,
   PalletAssetConversionPoolInfo,
   PoolInfo,
   PoolReserves,
-  TokenBalance,
   TokenMetadata,
+  TokensDetailsMap,
+  TokensDetailsRecords,
+  TokensMetadataRecords,
 } from '@helpers/interfaces';
+import { TokenWithSupply } from '@helpers/interfaces';
 import { routes } from '@helpers/routes';
-import { sortStrings } from '@helpers/utilities';
+import { multiAssetToParam, sortStrings, toMultiAsset } from '@helpers/utilities';
 
 export const useAssets = () => {
   const navigate = useNavigate();
-  const { api, activeAccount, activeWallet } = useAccounts();
+  const { api, activeAccount, storedChain, activeWallet } = useAccounts();
   const { openModalStatus, setStatus, setAction } = useModalStatus();
-  const [availablePoolTokens, setAvailablePoolTokens] = useState<TokenMetadata[] | null>(null);
-  const [nativeBalance, setNativeBalance] = useState<BN | null>(null);
-  const [nativeMetadata, setNativeMetadata] = useState<NativeTokenMetadata | null>(null);
-  const [tokensMetadata, setTokensMetadata] = useState<TokenMetadata[] | null>(null);
-  const [tokensBalances, setTokensBalances] = useState<TokenBalance[] | null>(null);
-  const [pools, setPools] = useState<PoolInfo[] | null>(null);
+  const [availablePoolTokens, setAvailablePoolTokens] = useState<TokenMetadata[]>();
+  const [nativeBalance, setNativeBalance] = useState<BN>();
+  const [nativeMetadata, setNativeMetadata] = useState<TokenMetadata>();
+  const [allTokens, setAllTokens] = useState<TokenMetadata[]>();
+  const [pools, setPools] = useState<PoolInfo[]>();
 
   const addLiquidity = useCallback(
-    async (
-      asset1: PalletAssetConversionMultiAssetId,
-      asset2: PalletAssetConversionMultiAssetId,
-      amount1: BN,
-      amount2: BN,
-      amount1Min: BN,
-      amount2Min: BN,
-    ) => {
+    async (asset1: MultiAssetId, asset2: MultiAssetId, amount1: BN, amount2: BN, amount1Min: BN, amount2Min: BN) => {
       if (api && activeAccount && activeWallet) {
         setStatus({ type: ModalStatusTypes.INIT_TRANSACTION, message: StatusMessages.TRANSACTION_CONFIRM });
         openModalStatus();
@@ -98,15 +91,12 @@ export const useAssets = () => {
   );
 
   const createPool = useCallback(
-    async (tokenId: AssetId) => {
+    async (token1: MultiAssetId, token2: MultiAssetId) => {
       if (api && activeAccount && activeWallet) {
         setStatus({ type: ModalStatusTypes.INIT_TRANSACTION, message: StatusMessages.TRANSACTION_CONFIRM });
         openModalStatus();
 
         try {
-          const token1: MultiAsset = MultiAssets.NATIVE;
-          const token2: MultiAsset = { [MultiAssets.ASSET]: tokenId };
-
           const unsub = await api.tx.assetConversion
             .createPool(token1, token2)
             .signAndSend(activeAccount.address, { signer: activeWallet.signer }, ({ events, status }) => {
@@ -121,9 +111,12 @@ export const useAssets = () => {
                   if (method === 'PoolCreated') {
                     const createdPoolId = data.poolId as PalletAssetConversionPoolId;
 
-                    if (createdPoolId && createdPoolId[1].isAsset && createdPoolId[1].asAsset.eq(tokenId)) {
+                    if (createdPoolId && createdPoolId[0].eq(token1) && createdPoolId[1].eq(token2)) {
                       setStatus({ type: ModalStatusTypes.COMPLETE, message: StatusMessages.POOL_CREATED });
-                      setAction(() => () => navigate(routes.discover.addLiquidity('native', tokenId.toString())));
+                      setAction(
+                        () => () =>
+                          navigate(routes.discover.addLiquidity(multiAssetToParam(token1), multiAssetToParam(token2))),
+                      );
                       return true;
                     }
                   }
@@ -145,78 +138,122 @@ export const useAssets = () => {
     [api, activeAccount, activeWallet, navigate, openModalStatus, setStatus, setAction],
   );
 
+  const fetchAllTokensMetadata = useCallback(async (): Promise<TokenMetadata[]> => {
+    if (!api) return;
+
+    let result: TokenMetadata[] = [];
+    const metadata: TokensMetadataRecords = await api.query.assets.metadata.entries();
+
+    if (!isEmpty(metadata)) {
+      result = metadata
+        .map(
+          ([
+            {
+              args: [id],
+            },
+            data,
+          ]) => formatAssetMetadata(id, data, api),
+        )
+        .sort((a, b) => sortStrings(a.name, b.name));
+    }
+
+    return result;
+  }, [api]);
+
+  const fetchAllTokensDetails = useCallback(async (): Promise<TokensDetailsMap> => {
+    const tokensIds = await getTokenIds();
+    if (!api || !tokensIds) return;
+
+    const result: TokensDetailsMap = new Map();
+    const details: TokensDetailsRecords = await api.query.assets.asset.multi(tokensIds);
+
+    if (!isEmpty(details)) {
+      details.forEach((record, index) => {
+        const id = tokensIds[index].toNumber();
+        result.set(id, record.unwrapOr(null)?.supply.toBn());
+      });
+    }
+
+    return result;
+  }, [api, getTokenIds]);
+
   const getAvailablePoolTokens = useCallback(async () => {
     if (api && api.query.assetConversion) {
       let availablePoolTokens: TokenMetadata[] = [];
       try {
         // load all tokens
-        const allTokens: MetadataRecords = await api.query.assets.metadata.entries();
+        const allTokens: TokenMetadata[] = await fetchAllTokensMetadata();
 
         // load all pools
         const poolRecords: StorageKey<[PalletAssetConversionPoolId]>[] = await api.query.assetConversion.pools.keys();
         const pools = poolRecords.map(({ args: [id] }) => id[1].asAsset.toNumber());
 
         // subtract one from another
-        availablePoolTokens = allTokens
-          .map(
-            ([
-              {
-                args: [id],
-              },
-              data,
-            ]) => ({
-              id,
-              name: data.name?.toUtf8() || null,
-              symbol: data.symbol?.toUtf8() || null,
-              decimals: data.decimals?.toNumber() || 0,
-              details: null,
-            }),
-          )
-          .filter((item) => !pools.includes(item.id.toNumber()))
-          .sort((a, b) => sortStrings(a.name, b.name));
+        availablePoolTokens = allTokens.filter((item) => !pools.includes(item.id.asAsset.toNumber()));
       } catch (error) {
         //
       }
 
       setAvailablePoolTokens(availablePoolTokens);
     }
-  }, [api]);
+  }, [api, fetchAllTokensMetadata]);
 
   const getAssetBalance = useCallback(
-    async (assetId: AssetId): Promise<BN> => {
-      if (api && activeAccount) {
-        try {
+    async (assetId: MultiAssetId): Promise<BN> => {
+      if (!api || !activeAccount) return;
+
+      try {
+        if (assetId.isAsset) {
           const result: Option<PalletAssetsAssetAccount> = await api.query.assets.account(
-            assetId,
+            assetId.asAsset,
             activeAccount.address,
           );
           return result.unwrapOr(null)?.balance.toBn();
-        } catch (error) {
-          //
+        } else {
+          const { data: balance } = await api.query.system.account(activeAccount.address);
+          return (balance as PalletBalancesAccountData).free.toBn();
         }
+      } catch (error) {
+        //
       }
     },
     [api, activeAccount],
   );
 
-  const getAssetMetadata = useCallback(
-    async (assetId: AssetId): Promise<TokenMetadata> => {
-      if (api) {
-        const [metadata, details]: [PalletAssetsAssetMetadata, Option<PalletAssetsAssetDetails>] = await Promise.all([
-          api.query.assets.metadata(assetId),
-          api.query.assets.asset(assetId),
-        ]);
+  const getAssetMinBalance = useCallback(
+    async (assetId: MultiAssetId): Promise<BN> => {
+      if (!api) return;
 
-        return {
-          id: assetId,
-          name: metadata.name?.toUtf8() || null,
-          symbol: metadata.symbol?.toUtf8() || null,
-          decimals: metadata.decimals?.toNumber() || 0,
-          details: details.unwrapOr(null),
-        };
+      try {
+        if (assetId.isAsset) {
+          const result: Option<PalletAssetsAssetDetails> = await api.query.assets.asset(assetId.asAsset);
+          return result.unwrapOr(null)?.minBalance.toBn();
+        } else {
+          return api.consts.balances.existentialDeposit.toBn();
+        }
+      } catch (error) {
+        //
       }
     },
     [api],
+  );
+
+  const getAssetMetadata = useCallback(
+    async (assetId: MultiAssetId): Promise<TokenMetadata> => {
+      if (!api || !storedChain) return;
+
+      try {
+        if (assetId.isAsset) {
+          const metadata: PalletAssetsAssetMetadata = await api.query.assets.metadata(assetId.asAsset);
+          return formatAssetMetadata(assetId.asAsset, metadata, api);
+        } else {
+          return formatNativeTokenMetadata(api, storedChain);
+        }
+      } catch (error) {
+        //
+      }
+    },
+    [api, storedChain],
   );
 
   const getNativeBalance = useCallback(async () => {
@@ -231,23 +268,13 @@ export const useAssets = () => {
   }, [api, activeAccount]);
 
   const getNativeMetadata = useCallback(async () => {
-    if (api) {
-      const decimals = api.registry.chainDecimals[0];
-      const name = api.registry.chainTokens[0];
-      const issuance = (await api.query.balances?.totalIssuance?.()) ?? null;
-      setNativeMetadata({
-        name,
-        decimals,
-        issuance,
-      });
+    if (api && storedChain) {
+      setNativeMetadata(formatNativeTokenMetadata(api, storedChain));
     }
-  }, [api]);
+  }, [storedChain, api]);
 
   const getPoolReserves = useCallback(
-    async (
-      asset1: PalletAssetConversionMultiAssetId,
-      asset2: PalletAssetConversionMultiAssetId,
-    ): Promise<PoolReserves> => {
+    async (asset1: MultiAssetId, asset2: MultiAssetId): Promise<PoolReserves> => {
       let reserves: PoolReserves = [BN_ZERO, BN_ZERO];
 
       if (api && api.call.assetConversionApi) {
@@ -297,94 +324,67 @@ export const useAssets = () => {
     }
   }, [api, getPoolReserves]);
 
-  const getTokenIds = useCallback(async () => {
+  const getTokenIds = useCallback(async (): Promise<AssetId[]> => {
     if (api) {
       const results: StorageKey<[AssetId]>[] = await api.query.assets.asset.keys();
       return results.map(({ args: [id] }) => id);
     }
-
-    return null;
   }, [api]);
 
-  const getTokensBalances = useCallback(async () => {
-    if (api && activeAccount) {
-      try {
-        let balances: TokenBalance[] = [];
+  const getAllTokens = useCallback(async () => {
+    if (allTokens || !api || !storedChain) return;
 
-        const tokens = await getTokenIds();
-        if (!tokens) {
-          setTokensBalances(null);
-          return;
-        }
-
-        const params = tokens.map((tokenId) => [tokenId, activeAccount.address]);
-        const results: Option<PalletAssetsAssetAccount>[] = await api.query.assets.account.multi(params);
-
-        if (Array.isArray(results) && results.length > 0) {
-          balances = results
-            .map((record, index) => ({
-              id: tokens[index].toNumber(),
-              record,
-            }))
-            .filter(({ record }) => record.isSome)
-            .map(({ id, record }) => ({
-              id,
-              balance: record.unwrap()?.balance as ToBn,
-            }));
-        }
-
-        setTokensBalances(balances);
-      } catch (error) {
-        //
-      }
+    try {
+      const tokens = await fetchAllTokensMetadata();
+      setAllTokens([formatNativeTokenMetadata(api, storedChain), ...tokens]);
+    } catch (error) {
+      //
     }
-  }, [api, activeAccount, getTokenIds]);
+  }, [storedChain, allTokens, api, fetchAllTokensMetadata]);
 
-  const getTokensMetadata = useCallback(async () => {
-    if (api) {
-      try {
-        let metadata: TokenMetadata[] = [];
-        const tokens = await getTokenIds();
-        if (!tokens) return;
+  const getAllTokensWithNativeAndSupply = useCallback(async (): Promise<TokenWithSupply[]> => {
+    if (!api || !storedChain) return;
 
-        const [metadataRecords, detailsRecords]: [MetadataRecords, DetailsRecords] = await Promise.all([
-          api.query.assets.metadata.entries(),
-          api.query.assets.asset.multi(tokens),
-        ]);
+    let result: TokenWithSupply[] = [];
 
-        const details = new Map<number, PalletAssetsAssetDetails | null>();
-        if (Array.isArray(detailsRecords) && detailsRecords.length > 0) {
-          detailsRecords.forEach((record, index) => {
-            const id = tokens[index].toNumber();
-            details.set(id, record.unwrapOr(null));
-          });
-        }
+    try {
+      result.push({
+        ...formatNativeTokenMetadata(api, storedChain),
+        supply: (await api.query.balances?.totalIssuance?.().then((r) => r.toBn())) ?? null,
+      });
 
-        if (Array.isArray(metadataRecords) && metadataRecords.length > 0) {
-          metadata = metadataRecords
-            .map(
-              ([
-                {
-                  args: [id],
-                },
-                data,
-              ]) => ({
-                id,
-                name: data.name?.toUtf8() || null,
-                symbol: data.symbol?.toUtf8() || null,
-                decimals: data.decimals?.toNumber() || 0,
-                details: details.get(id.toNumber()) || null,
-              }),
-            )
-            .sort((a, b) => sortStrings(a.name, b.name));
-        }
+      const [details, metadata]: [TokensDetailsMap, TokenMetadata[]] = await Promise.all([
+        fetchAllTokensDetails(),
+        fetchAllTokensMetadata(),
+      ]);
 
-        setTokensMetadata(metadata);
-      } catch (error) {
-        //
-      }
+      result = [
+        ...result,
+        ...metadata.map((token) => ({
+          ...token,
+          supply: details?.get(token.id.asAsset.toNumber()) ?? null,
+        })),
+      ];
+    } catch (error) {
+      //
     }
-  }, [api, getTokenIds]);
+
+    return result;
+  }, [storedChain, api, fetchAllTokensDetails, fetchAllTokensMetadata]);
+
+  const formatNativeTokenMetadata = (api: ApiPromise, storedChain: Chain): TokenMetadata => ({
+    id: toMultiAsset(MultiAssets.NATIVE, api),
+    name: storedChain?.nativeTokenName ?? '',
+    symbol: api.registry.chainTokens[0],
+    decimals: api.registry.chainDecimals[0],
+  });
+
+  const formatAssetMetadata = (id: AssetId, data: PalletAssetsAssetMetadata, api: ApiPromise): TokenMetadata => ({
+    id: toMultiAsset(id, api),
+    name: data.name?.toUtf8() || '',
+    symbol: data.symbol?.toUtf8() || '',
+    decimals: data.decimals?.toNumber() || 0,
+  });
 
   return {
     addLiquidity,
@@ -392,17 +392,17 @@ export const useAssets = () => {
     createPool,
     getAvailablePoolTokens,
     getAssetBalance,
+    getAssetMinBalance,
     getAssetMetadata,
     getNativeBalance,
     getNativeMetadata,
     getPools,
     getPoolReserves,
-    getTokensBalances,
-    getTokensMetadata,
+    getAllTokens,
+    getAllTokensWithNativeAndSupply,
+    allTokens,
     nativeBalance,
     nativeMetadata,
     pools,
-    tokensBalances,
-    tokensMetadata,
   };
 };
