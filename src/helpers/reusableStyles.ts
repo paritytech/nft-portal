@@ -5,7 +5,7 @@ import { CommonStyleProps, ThemeStyle } from './interfaces';
 
 export const deviceScreenSize = {
   mobile: '480px',
-  tablet: '768px',
+  tablet: '900px',
   desktop: '1250px',
 };
 

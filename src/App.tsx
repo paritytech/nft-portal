@@ -35,7 +35,7 @@ const SMainContainer = styled.main`
   margin: 0 auto;
 
   @media ${mediaQueries.tablet} {
-    width: 728px;
+    width: 854px;
   }
 
   @media ${mediaQueries.desktop} {

@@ -13,7 +13,7 @@ interface ModalStatusContextProps {
   setStatus: (value: StatusEntry | null) => void;
   resetModalStatus: () => void;
   concludeModalStatus: () => void;
-  setAction: (value: (() => void) | undefined) => void;
+  setAction: (value?: (() => void)) => void;
 }
 
 /* eslint-disable @typescript-eslint/no-empty-function */

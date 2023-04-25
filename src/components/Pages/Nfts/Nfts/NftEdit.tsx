@@ -19,8 +19,8 @@ const NftEdit = () => {
   const { getNftMetadata, saveNftMetadata, nftMetadata, isNftDataLoading } = useNfts(collectionId || '');
   const nftNameRef = useRef<HTMLInputElement>(null);
   const nftDescriptionRef = useRef<HTMLTextAreaElement>(null);
-  const [imageCid, setImageCid] = useState<string | undefined>();
-  const [imageSourceUrl, setImageSourceUrl] = useState<string | null>(null);
+  const [imageCid, setImageCid] = useState<string>();
+  const [imageSourceUrl, setImageSourceUrl] = useState<string>();
 
   const submitMetadata = useCallback(
     async (event: FormEvent) => {

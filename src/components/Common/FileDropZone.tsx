@@ -3,7 +3,7 @@ import { useDropzone } from 'react-dropzone';
 import styled from 'styled-components';
 
 import { prefecthCid } from '@helpers/prefetchCid';
-
+import PlusIcon from '@images/icons/plus.svg';
 import ImagePreview from './ImagePreview';
 
 const SDropZone = styled.div`
@@ -26,14 +26,20 @@ const SDropZone = styled.div`
     }
   }
 
-  p {
-    margin: 0;
+  span {
+    color: ${({ theme }) => theme.textAndIconsSecondary};
+  }
+
+  .positive {
+    width: 48px;
+    height: 48px;
+    margin-bottom: 8px;
   }
 `;
 
 interface FileDropZoneProps {
-  imageSourceUrl: string | null;
-  setImageSourceUrl: (value: string | null) => void;
+  imageSourceUrl?: string;
+  setImageSourceUrl: (value?: string) => void;
   imageCid?: string;
   setImageCid: (value?: string) => void;
 }
@@ -45,7 +51,7 @@ const FileDropZone = ({ imageSourceUrl, setImageSourceUrl, imageCid, setImageCid
   const cleanup = useCallback(() => {
     if (imageSourceUrl) {
       URL.revokeObjectURL(imageSourceUrl);
-      setImageSourceUrl(null);
+      setImageSourceUrl();
     }
 
     if (imageCid) {
@@ -92,9 +98,8 @@ const FileDropZone = ({ imageSourceUrl, setImageSourceUrl, imageCid, setImageCid
 
       {!imageCid && !imageSourceUrl && (
         <>
-          <p>Drag 'n' drop some file here or click to select file</p>
-          <p>Allowed files: {allowedFileTypes.map((type) => type).join(' ')}</p>
-          <p>Max size: {maxSizeInMb} MB</p>
+          <span className='positive'><PlusIcon /></span>
+          <span>Add media file</span>
         </>
       )}
     </SDropZone>

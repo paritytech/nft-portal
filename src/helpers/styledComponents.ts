@@ -1,4 +1,5 @@
 // Styled components are separated from reusableStyles to prevent circular dependencies
+import { FormControl } from 'react-bootstrap';
 import Card from 'react-bootstrap/esm/Card';
 import Modal from 'react-bootstrap/esm/Modal';
 import styled from 'styled-components';
@@ -46,5 +47,35 @@ export const SModal = styled(Modal)`
 
   .modal-body {
     padding: 0 24px 24px;
+  }
+`;
+
+export const SInput = styled(FormControl)`
+  height: 56px;
+  background-color: ${({ theme }) => theme.fill6};
+  color: ${({ theme }) => theme.textAndIconsPrimary};
+  border-radius: 32px;
+  border: 0;
+  box-sizing: border-box;
+  text-indent: 24px;
+  transition: none;
+
+  :hover {
+    border: 4px solid ${({ theme }) => theme.fill12};
+    text-indent: 20px;
+  }
+
+  :focus {
+    background-color: ${({ theme }) => theme.fill6};
+    color: ${({ theme }) => theme.textAndIconsPrimary};
+    border: 2px solid ${({ theme }) => theme.textAndIconsPrimary};
+    text-indent: 22px;
+  }
+
+  :disabled {
+    background: none;
+    border: 1px solid ${({ theme }) => theme.fill12};
+    text-indent: 23px;
+    cursor: not-allowed;
   }
 `;

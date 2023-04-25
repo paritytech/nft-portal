@@ -16,16 +16,40 @@ import { useAccounts } from '@contexts/AccountsContext';
 
 import { MintTypes } from '@helpers/constants';
 import { CollectionConfig, CollectionMetadataData, MintType } from '@helpers/interfaces';
-import { convertToBitFlagValue, getBlockNumber, pricePattern, unitToPlanck } from '@helpers/utilities';
+import { convertToBitFlagValue, ellipseAddress, getBlockNumber, pricePattern, unitToPlanck } from '@helpers/utilities';
 
 import { useCollections } from '@hooks/useCollections';
+import { SInput } from '@helpers/styledComponents';
 
-const SIndentation = styled.section`
-  margin-left: 15px;
+const SFormLayout = styled(Form)`
+  display: flex;
+  gap: 56px;
+
+  aside {
+    width: 300px;
+  }
+
+  section {
+    flex-grow: 1;
+  }
+`;
+
+const SLabel = styled(Form.Label)`
+  color: ${({ theme }) => theme.textAndIconsSecondary};
+`;
+
+const SInfoRow = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 16px;
+
+  span:first-child {
+    color: ${({ theme }) => theme.textAndIconsSecondary};
+  }
 `;
 
 const CreateCollection = () => {
-  const { api } = useAccounts();
+  const { api, activeAccount } = useAccounts();
   const { createCollection } = useCollections();
   const collectionNameRef = useRef<HTMLInputElement>(null);
   const collectionDescriptionRef = useRef<HTMLTextAreaElement>(null);
@@ -34,13 +58,13 @@ const CreateCollection = () => {
   const unlockedAttributesRef = useRef<HTMLInputElement | null>(null);
   const unlockedMaxSupplyRef = useRef<HTMLInputElement | null>(null);
   const maxSupplyRef = useRef<HTMLInputElement | null>(null);
-  const priceRef = useRef<HTMLInputElement | null>(null);
   const transferrableItemRef = useRef<HTMLInputElement | null>(null);
   const unlockedItemMetadataRef = useRef<HTMLInputElement | null>(null);
   const unlockedItemAttributesRef = useRef<HTMLInputElement | null>(null);
   const holderOfCollectionIdRef = useRef<HTMLInputElement | null>(null);
-  const [imageCid, setImageCid] = useState<string | undefined>();
-  const [imageSourceUrl, setImageSourceUrl] = useState<string | null>(null);
+  const [price, setPrice] = useState<string>('');
+  const [imageCid, setImageCid] = useState<string>();
+  const [imageSourceUrl, setImageSourceUrl] = useState<string>();
   const [startDate, setStartDate] = useState<Date>();
   const [endDate, setEndDate] = useState<Date>();
   const [mintType, setMintType] = useState<MintTypes>(MintTypes.ISSUER);
@@ -58,7 +82,6 @@ const CreateCollection = () => {
         unlockedAttributesRef.current !== null &&
         unlockedMaxSupplyRef.current !== null &&
         maxSupplyRef.current !== null &&
-        priceRef.current !== null &&
         transferrableItemRef.current !== null &&
         unlockedItemMetadataRef.current !== null &&
         unlockedItemAttributesRef.current !== null
@@ -96,9 +119,9 @@ const CreateCollection = () => {
           mintSettings: {
             mintType: mintTypeFinalized,
             price:
-              priceRef.current.value === ''
+              price === ''
                 ? undefined
-                : unitToPlanck(priceRef.current.value, api.registry.chainDecimals[0]),
+                : unitToPlanck(price, api.registry.chainDecimals[0]),
             startBlock,
             endBlock,
             defaultItemSettings,
@@ -114,7 +137,7 @@ const CreateCollection = () => {
         Promise.all([saveImageToIpfs(imageSourceUrl), createCollection(collectionConfig, collectionMetadata)]);
       }
     },
-    [api, startDate, endDate, mintType, imageCid, imageSourceUrl, createCollection],
+    [api, startDate, endDate, mintType, price, imageCid, imageSourceUrl, createCollection],
   );
 
   if (!api) {
@@ -126,106 +149,113 @@ const CreateCollection = () => {
   return (
     <>
       <ModalStatus />
-      <Form onSubmit={submitCreateCollection}>
-        <Form.Group className='mb-3'>
-          <Form.Label>Collection name:</Form.Label>
-          <Form.Control type='text' ref={collectionNameRef} required />
-        </Form.Group>
-        <Form.Group className='mb-3'>
-          <Form.Label>Description:</Form.Label>
-          <Form.Control as='textarea' rows={3} ref={collectionDescriptionRef} />
-        </Form.Group>
-        <Form.Group className='mb-3'>
-          <Form.Label>Image:</Form.Label>
-          <FileDropZone
-            imageSourceUrl={imageSourceUrl}
-            setImageSourceUrl={setImageSourceUrl}
-            imageCid={imageCid}
-            setImageCid={setImageCid}
-          />
-        </Form.Group>
-        <Form.Label className='fs-4'>Collection settings</Form.Label>
+      <SFormLayout onSubmit={submitCreateCollection}>
+        <aside>
+          <Form.Group className='mb-3'>
+            <SLabel>Media</SLabel>
+            <FileDropZone
+              imageSourceUrl={imageSourceUrl}
+              setImageSourceUrl={setImageSourceUrl}
+              imageCid={imageCid}
+              setImageCid={setImageCid}
+            />
+          </Form.Group>
 
-        <Form.Group className='mb-3'>
-          <SIndentation>
-            <Form.Group className='mb-3'>
-              <Form.Check type='checkbox' label='Transferrable items' ref={transferrableItemsRef} defaultChecked />
-              <Form.Check type='checkbox' label='Unlocked metadata' ref={unlockedMetadataRef} defaultChecked />
-              <Form.Check type='checkbox' label='Unlocked attributes' ref={unlockedAttributesRef} defaultChecked />
-              <Form.Check type='checkbox' label='Unlocked max supply' ref={unlockedMaxSupplyRef} defaultChecked />
-            </Form.Group>
+          <SInfoRow>
+            <span>Collection Owner</span>
+            <span>{ellipseAddress(activeAccount?.address)}</span>
+          </SInfoRow>
 
-            <Form.Group className='mb-3'>
-              <Form.Label>
-                Max supply <i>(optional)</i>:
-              </Form.Label>
-              <Form.Control type='number' ref={maxSupplyRef} />
-            </Form.Group>
-          </SIndentation>
-        </Form.Group>
+          <SInfoRow>
+            <span>Collection Mint Price</span>
+            <span>{price || '0'} {api.registry.chainTokens}</span>
+          </SInfoRow>
+        </aside>
+        <section>
+          <Form.Group className='mb-3'>
+            <SLabel>Collection name</SLabel>
+            <SInput type='text' ref={collectionNameRef} required />
+          </Form.Group>
+          <Form.Group className='mb-3'>
+            <SLabel>Description</SLabel>
+            <Form.Control as='textarea' rows={3} ref={collectionDescriptionRef} />
+          </Form.Group>
 
-        <Form.Group className='mb-3'>
-          <Form.Label className='fs-4'>Mint settings</Form.Label>
+          <div>Collection settings</div>
 
-          <SIndentation>
-            <Form.Group className='mb-3'>
-              <Form.Label>Mint type:</Form.Label>
-              <Form.Select onChange={(event) => setMintType(event.target.value as MintTypes)} defaultValue={mintType}>
-                {Object.entries(MintTypes).map(([key, value]) => (
-                  <option key={key} value={value}>
-                    {value}
-                  </option>
-                ))}
-              </Form.Select>
-              {mintType === MintTypes.HOLDER_OF && (
-                <Form.Group className='mt-3'>
-                  <Form.Label>Collection ID (must have a NFT from this collection)</Form.Label>
-                  <Form.Control type='number' ref={holderOfCollectionIdRef} min={0} required />
-                </Form.Group>
-              )}
-            </Form.Group>
+          <Form.Group className='mb-3'>
+            <Form.Check type='checkbox' label='Transferrable items' ref={transferrableItemsRef} defaultChecked />
+            <Form.Check type='checkbox' label='Unlocked metadata' ref={unlockedMetadataRef} defaultChecked />
+            <Form.Check type='checkbox' label='Unlocked attributes' ref={unlockedAttributesRef} defaultChecked />
+            <Form.Check type='checkbox' label='Unlocked max supply' ref={unlockedMaxSupplyRef} defaultChecked />
+          </Form.Group>
 
-            <Form.Group className='mb-3'>
-              <Form.Label>
-                Price <i>(optional)</i>:
-              </Form.Label>
-              <Form.Control
-                type='text'
-                ref={priceRef}
-                pattern={pricePattern(chainDecimals)}
-                title={`Please enter a number e.g. 10.25, max precision is ${chainDecimals} decimals after .`}
-              />
-            </Form.Group>
+          <Form.Group className='mb-3'>
+            <SLabel>
+              Max supply <i>(optional)</i>:
+            </SLabel>
+            <Form.Control type='number' ref={maxSupplyRef} />
+          </Form.Group>
 
-            <Form.Group className='mb-3'>
-              <DateRangeButton
-                startDate={startDate}
-                setStartDate={setStartDate}
-                endDate={endDate}
-                setEndDate={setEndDate}
-              />
-            </Form.Group>
+          <div>Mint settings</div>
 
-            <Form.Group className='mb-3'>
-              <Form.Label>Default item settings:</Form.Label>
-              <Form.Check type='checkbox' label='Transferrable' ref={transferrableItemRef} defaultChecked />
-              <Form.Check type='checkbox' label='Unlocked metadata' ref={unlockedItemMetadataRef} defaultChecked />
-              <Form.Check type='checkbox' label='Unlocked attributes' ref={unlockedItemAttributesRef} defaultChecked />
-            </Form.Group>
-          </SIndentation>
-        </Form.Group>
+          <Form.Group className='mb-3'>
+            <SLabel>Mint type:</SLabel>
+            <Form.Select onChange={(event) => setMintType(event.target.value as MintTypes)} defaultValue={mintType}>
+              {Object.entries(MintTypes).map(([key, value]) => (
+                <option key={key} value={value}>
+                  {value}
+                </option>
+              ))}
+            </Form.Select>
+            {mintType === MintTypes.HOLDER_OF && (
+              <Form.Group className='mt-3'>
+                <SLabel>Collection ID (must have a NFT from this collection)</SLabel>
+                <Form.Control type='number' ref={holderOfCollectionIdRef} min={0} required />
+              </Form.Group>
+            )}
+          </Form.Group>
 
-        <Stack direction='horizontal' gap={2} className='justify-content-end'>
-          <ActionButton type='submit' className='main S'>
-            Create collection
-          </ActionButton>
-          <Link to='..'>
-            <ActionButton type='button' className='secondary S'>
-              Back
+          <Form.Group className='mb-3'>
+            <SLabel>
+              Price <i>(optional)</i>:
+            </SLabel>
+            <Form.Control
+              type='text'
+              pattern={pricePattern(chainDecimals)}
+              title={`Please enter a number e.g. 10.25, max precision is ${chainDecimals} decimals after .`}
+              onChange={event => setPrice(event.target.value)}
+            />
+          </Form.Group>
+
+          <Form.Group className='mb-3'>
+            <DateRangeButton
+              startDate={startDate}
+              setStartDate={setStartDate}
+              endDate={endDate}
+              setEndDate={setEndDate}
+            />
+          </Form.Group>
+
+          <Form.Group className='mb-3'>
+            <SLabel>Default item settings</SLabel>
+            <Form.Check type='checkbox' label='Transferrable' ref={transferrableItemRef} defaultChecked />
+            <Form.Check type='checkbox' label='Unlocked metadata' ref={unlockedItemMetadataRef} defaultChecked />
+            <Form.Check type='checkbox' label='Unlocked attributes' ref={unlockedItemAttributesRef} defaultChecked />
+          </Form.Group>
+
+          <Stack direction='horizontal' gap={2} className='justify-content-end mb-6'>
+            <ActionButton type='submit' className='main S'>
+              Create collection
             </ActionButton>
-          </Link>
-        </Stack>
-      </Form>
+            <Link to='..'>
+              <ActionButton type='button' className='secondary S'>
+                Back
+              </ActionButton>
+            </Link>
+          </Stack>
+        </section>
+      </SFormLayout>
     </>
   );
 };

@@ -134,7 +134,7 @@ const Connect = () => {
           {activeAccount !== null ? (
             <>
               <IdenticonIcon className='identicon' />
-              <span>{truncate(activeAccount.name, { length: 16 }) || ellipseAddress(activeAccount.address, 4)}</span>
+              <span>{truncate(activeAccount.name, { length: 16 }) || ellipseAddress(activeAccount.address)}</span>
               <ArrowIcon className='arrow-down' />
             </>
           ) : (
