@@ -1,10 +1,11 @@
 import { ApiPromise } from '@polkadot/api';
+import { AssetId } from '@polkadot/types/interfaces';
 import { BN, BN_ZERO, formatBalance } from '@polkadot/util';
 import { ToBn } from '@polkadot/util/types';
 import { Decimal } from 'decimal.js';
 
 import { MultiAssets } from '@helpers/constants';
-import { PalletAssetConversionMultiAssetId, PoolReserves } from '@helpers/interfaces';
+import { MultiAssetId, PoolReserves } from '@helpers/interfaces';
 
 export const ellipseAddress = (address = '', charCount = 4): string => {
   if (address === '') {
@@ -79,13 +80,26 @@ export const isUnsignedNumber = (check: string): boolean => {
   return Number.isInteger(asNumber) && asNumber >= 0 && check === asNumber.toString();
 };
 
-export const constructMultiAsset = (assetId: string, api: ApiPromise): PalletAssetConversionMultiAssetId | null => {
-  if (assetId === 'native') {
-    return api.createType('PalletAssetConversionMultiAssetId', MultiAssets.NATIVE);
-  } else if (isUnsignedNumber(assetId)) {
-    return api.createType('PalletAssetConversionMultiAssetId', {
-      [MultiAssets.ASSET]: api.createType('AssetId', assetId),
-    });
+export const toMultiAsset = (asset: AssetId | MultiAssets.NATIVE, api: ApiPromise): MultiAssetId => {
+  const value =
+    asset === MultiAssets.NATIVE
+      ? MultiAssets.NATIVE
+      : {
+          [MultiAssets.ASSET]: asset,
+        };
+  return api.createType('PalletAssetConversionMultiAssetId', value);
+};
+
+export const multiAssetToParam = (asset: MultiAssetId): string => {
+  return asset.isAsset ? asset.asAsset.toString() : 'native';
+};
+
+export const parseAssetParam = (asset: string | undefined, api: ApiPromise): MultiAssetId | null => {
+  asset ||= '';
+  if (asset.toLowerCase() === 'native') {
+    return toMultiAsset(MultiAssets.NATIVE, api);
+  } else if (isUnsignedNumber(asset)) {
+    return toMultiAsset(api.createType('AssetId', asset), api);
   }
   return null;
 };

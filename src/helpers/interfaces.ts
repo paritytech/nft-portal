@@ -6,6 +6,7 @@ import type { PalletAssetsAssetDetails, PalletAssetsAssetMetadata } from '@polka
 import type { BN } from '@polkadot/util';
 
 import {
+  ChainNativeTokenNames,
   ChainThemes,
   ChainTitles,
   MintTypes,
@@ -81,6 +82,7 @@ export interface Chain {
   url: string;
   title: ChainTitles;
   theme: ChainThemes;
+  nativeTokenName: ChainNativeTokenNames;
 }
 
 export interface ThemeStyle {
@@ -132,33 +134,25 @@ export interface MintAccessNft {
   ownedItem: string;
 }
 
-export interface TokenBalance {
-  id: AssetId;
-  balance: BN;
+export interface TokenMetadata extends TokenMetadataInfo {
+  id: MultiAssetId;
 }
 
-export interface TokenMetadata extends TokenMetadataData {
-  id: AssetId;
-}
-
-export interface TokenMetadataData {
-  name: string | null;
-  symbol: string | null;
+export interface TokenMetadataInfo {
+  name: string;
+  symbol: string;
   decimals: number;
-  details: PalletAssetsAssetDetails | null;
 }
 
-export interface NativeTokenMetadata {
-  name: string | null;
-  decimals: number;
-  issuance: BN | null;
+export interface TokenWithSupply extends TokenMetadata {
+  supply: BN | null;
 }
 
 export interface PalletAssetConversionPoolInfo extends Struct {
   readonly lpToken: AssetId;
 }
 
-export interface PalletAssetConversionMultiAssetId extends Enum {
+export interface MultiAssetId extends Enum {
   readonly isNative: boolean;
   readonly isAsset: boolean;
   readonly asAsset: AssetId;
@@ -180,12 +174,10 @@ export type MintTypeJson = Record<'public' | 'issuer' | 'holderOf', null | numbe
 
 export type PoolReserves = [BN, BN];
 
-export type PalletAssetConversionPoolId = ITuple<
-  [PalletAssetConversionMultiAssetId, PalletAssetConversionMultiAssetId]
->;
+export type PalletAssetConversionPoolId = ITuple<[MultiAssetId, MultiAssetId]>;
 
-export type MetadataRecords = [StorageKey<[AssetId]>, PalletAssetsAssetMetadata][];
+export type TokensMetadataRecords = [StorageKey<[AssetId]>, PalletAssetsAssetMetadata][];
 
-export type DetailsRecords = Option<PalletAssetsAssetDetails>[];
+export type TokensDetailsRecords = Option<PalletAssetsAssetDetails>[];
 
-export type MultiAsset = MultiAssets | { [MultiAssets.ASSET]: AssetId };
+export type TokensDetailsMap = Map<number, Option<PalletAssetsAssetDetails>>;

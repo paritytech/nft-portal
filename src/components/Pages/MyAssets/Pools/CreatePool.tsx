@@ -1,5 +1,6 @@
 import { formatBalance } from '@polkadot/util';
 import type { ToBn } from '@polkadot/util/types';
+import { isEmpty } from 'lodash';
 import { FormEvent, memo, useCallback, useEffect, useState } from 'react';
 import Stack from 'react-bootstrap/Stack';
 import Form from 'react-bootstrap/esm/Form';
@@ -12,21 +13,22 @@ import ModalStatus from '@common/ModalStatus';
 import { useAccounts } from '@contexts/AccountsContext';
 import { useModalStatus } from '@contexts/ModalStatusContext';
 
-import { ModalStatusTypes, StatusMessages } from '@helpers/constants';
+import { ModalStatusTypes, MultiAssets, StatusMessages } from '@helpers/constants';
 import { routes } from '@helpers/routes';
+import { toMultiAsset } from '@helpers/utilities';
 
 import { useAssets } from '@hooks/useAssets';
 
-const PoolCreate = () => {
+const CreatePool = () => {
   const { api } = useAccounts();
   const {
     createPool,
     getAvailablePoolTokens,
     getNativeBalance,
     getNativeMetadata,
+    availablePoolTokens,
     nativeBalance,
     nativeMetadata,
-    availablePoolTokens,
   } = useAssets();
   const { openModalStatus, setStatus } = useModalStatus();
   const [newPoolToken, setNewPoolToken] = useState<string>('-1');
@@ -44,7 +46,7 @@ const PoolCreate = () => {
           openModalStatus();
           return;
         }
-        createPool(selectedPoolToken.id);
+        createPool(toMultiAsset(MultiAssets.NATIVE, api), selectedPoolToken.id);
       }
     },
     [api, availablePoolTokens, createPool, nativeBalance, newPoolToken, openModalStatus, setStatus],
@@ -60,13 +62,13 @@ const PoolCreate = () => {
     return null;
   }
 
-  if (availablePoolTokens === null || nativeMetadata === null || nativeBalance === null) {
+  if (!availablePoolTokens || !nativeMetadata || !nativeBalance) {
     return <>Loading data... please wait</>;
   }
 
-  const availableTokensLeft = Array.isArray(availablePoolTokens) && availablePoolTokens.length > 0;
+  const availableTokensLeft = !isEmpty(availablePoolTokens);
   const poolSetupFee = api.consts.assetConversion?.poolSetupFee ?? null;
-  const decimals = api.registry.chainDecimals[0];
+  const { symbol, decimals } = nativeMetadata;
 
   return (
     <>
@@ -74,12 +76,12 @@ const PoolCreate = () => {
       <Form onSubmit={submitCreatePool}>
         <section>
           <br />
-          Create a pool for {nativeMetadata?.name?.toUpperCase()} and{' '}
+          Create a pool for {symbol.toUpperCase()} and{' '}
           <select onChange={(event) => setNewPoolToken(event.target.value)} defaultValue={newPoolToken?.toString()}>
             <option value='-1'> - select token - </option>
             {availablePoolTokens.map((token, index) => (
               <option key={token.id.toString()} value={index.toString()}>
-                {token.symbol?.toUpperCase()}
+                {token.symbol.toUpperCase()}
               </option>
             ))}
           </select>
@@ -117,4 +119,4 @@ const PoolCreate = () => {
   );
 };
 
-export default memo(PoolCreate);
+export default memo(CreatePool);
