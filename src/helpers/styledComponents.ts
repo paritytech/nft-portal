@@ -1,8 +1,10 @@
 // Styled components are separated from reusableStyles to prevent circular dependencies
-import { FormControl } from 'react-bootstrap';
+import { FormGroup } from 'react-bootstrap';
 import Card from 'react-bootstrap/esm/Card';
 import Modal from 'react-bootstrap/esm/Modal';
 import styled from 'styled-components';
+
+import { CssFormControl } from './reusableStyles';
 
 export const SCard = styled(Card)`
   max-width: 364px;
@@ -50,32 +52,37 @@ export const SModal = styled(Modal)`
   }
 `;
 
-export const SInput = styled(FormControl)`
-  height: 56px;
-  background-color: ${({ theme }) => theme.fill6};
-  color: ${({ theme }) => theme.textAndIconsPrimary};
-  border-radius: 32px;
-  border: 0;
-  box-sizing: border-box;
-  text-indent: 24px;
-  transition: none;
+export const SGroup = styled(FormGroup)`
+  margin-bottom: 32px;
 
-  :hover {
-    border: 4px solid ${({ theme }) => theme.fill12};
-    text-indent: 20px;
+  input[type='text'],
+  input[type='number'] {
+    height: 56px;
+    padding: 0;
+    border-radius: 32px;
+
+    ${CssFormControl}
   }
 
-  :focus {
-    background-color: ${({ theme }) => theme.fill6};
-    color: ${({ theme }) => theme.textAndIconsPrimary};
-    border: 2px solid ${({ theme }) => theme.textAndIconsPrimary};
-    text-indent: 22px;
-  }
+  textarea {
+    width: 100%;
+    height: 128px;
+    padding: 16px 0;
+    border-radius: 16px;
+    resize: none;
 
-  :disabled {
-    background: none;
-    border: 1px solid ${({ theme }) => theme.fill12};
-    text-indent: 23px;
-    cursor: not-allowed;
+    ${CssFormControl}
+
+    :hover {
+      padding-top: 12px;
+    }
+
+    :focus {
+      padding-top: 14px;
+    }
+
+    :hover:disabled {
+      padding-top: 16px;
+    }
   }
 `;

@@ -39,7 +39,7 @@ const SMainContainer = styled.main`
   }
 
   @media ${mediaQueries.desktop} {
-    width: 1050px;
+    width: 1250px;
   }
 `;
 

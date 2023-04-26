@@ -3,7 +3,9 @@ import { useDropzone } from 'react-dropzone';
 import styled from 'styled-components';
 
 import { prefecthCid } from '@helpers/prefetchCid';
+
 import PlusIcon from '@images/icons/plus.svg';
+
 import ImagePreview from './ImagePreview';
 
 const SDropZone = styled.div`
@@ -98,7 +100,9 @@ const FileDropZone = ({ imageSourceUrl, setImageSourceUrl, imageCid, setImageCid
 
       {!imageCid && !imageSourceUrl && (
         <>
-          <span className='positive'><PlusIcon /></span>
+          <span className='positive'>
+            <PlusIcon />
+          </span>
           <span>Add media file</span>
         </>
       )}

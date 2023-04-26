@@ -42,6 +42,7 @@ export const getBlockNumber = async (api: ApiPromise, timestamp?: number): Promi
 };
 
 export const pricePattern = (maxPrecision: number): string => `^(0|[1-9][0-9]*)([.][0-9]{0,${maxPrecision}})?$`;
+export const wholeNumbersPattern = '^[0-9]*$';
 
 export const unitToPlanck = (units: string, decimals: number): string => {
   const separated = units.split('.');

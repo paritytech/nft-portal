@@ -1,4 +1,6 @@
 import { FormEvent, memo, useCallback, useRef, useState } from 'react';
+import { FormControl } from 'react-bootstrap';
+import Collapse from 'react-bootstrap/esm/Collapse';
 import Form from 'react-bootstrap/esm/Form';
 import Stack from 'react-bootstrap/esm/Stack';
 import { Link } from 'react-router-dom';
@@ -8,7 +10,9 @@ import { saveImageToIpfs } from '@api/pinata';
 
 import ActionButton from '@buttons/ActionButton';
 import DateRangeButton from '@buttons/DateRangeButton';
+import IconButton from '@buttons/IconButton';
 
+import Checkbox from '@common/Checkbox';
 import FileDropZone from '@common/FileDropZone';
 import ModalStatus from '@common/ModalStatus';
 
@@ -16,17 +20,44 @@ import { useAccounts } from '@contexts/AccountsContext';
 
 import { MintTypes } from '@helpers/constants';
 import { CollectionConfig, CollectionMetadataData, MintType } from '@helpers/interfaces';
-import { convertToBitFlagValue, ellipseAddress, getBlockNumber, pricePattern, unitToPlanck } from '@helpers/utilities';
+import { CssArrowDown, CssFontSemiBoldL, CssFontSemiBoldXL, SFormBlock } from '@helpers/reusableStyles';
+import { SGroup } from '@helpers/styledComponents';
+import {
+  convertToBitFlagValue,
+  ellipseAddress,
+  getBlockNumber,
+  pricePattern,
+  unitToPlanck,
+  wholeNumbersPattern,
+} from '@helpers/utilities';
 
 import { useCollections } from '@hooks/useCollections';
-import { SInput } from '@helpers/styledComponents';
+
+import DropdownIcon from '@images/icons/arrow.svg';
+import BackIcon from '@images/icons/back.svg';
+
+const SHat = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 48px;
+
+  button {
+    width: 56px;
+    height: 56px;
+  }
+`;
+
+const STitle = styled.div`
+  ${CssFontSemiBoldXL}
+`;
 
 const SFormLayout = styled(Form)`
   display: flex;
   gap: 56px;
 
   aside {
-    width: 300px;
+    min-width: 300px;
   }
 
   section {
@@ -45,6 +76,33 @@ const SInfoRow = styled.div`
 
   span:first-child {
     color: ${({ theme }) => theme.textAndIconsSecondary};
+  }
+`;
+
+const SToggleBlock = styled.div`
+  padding-top: 32px;
+`;
+
+const SToggle = styled.button`
+  ${CssFontSemiBoldL}
+
+  padding: 0;
+  border: 0;
+  background: none;
+  color: ${({ theme }) => theme.textAndIconsPrimary};
+
+  .arrow-down {
+    ${CssArrowDown}
+    margin: 0;
+  }
+`;
+
+const SDescription = styled.p`
+  margin: 12px 0 24px;
+  color: ${({ theme }) => theme.textAndIconsTertiary};
+
+  :last-child {
+    margin-bottom: 0;
   }
 `;
 
@@ -68,6 +126,7 @@ const CreateCollection = () => {
   const [startDate, setStartDate] = useState<Date>();
   const [endDate, setEndDate] = useState<Date>();
   const [mintType, setMintType] = useState<MintTypes>(MintTypes.ISSUER);
+  const [toggleCollectionSettings, setToggleCollectionSettings] = useState<boolean>(true);
 
   const submitCreateCollection = useCallback(
     async (event: FormEvent) => {
@@ -118,10 +177,7 @@ const CreateCollection = () => {
           maxSupply: maxSupplyRef.current.value === '' ? undefined : parseInt(maxSupplyRef.current.value, 10),
           mintSettings: {
             mintType: mintTypeFinalized,
-            price:
-              price === ''
-                ? undefined
-                : unitToPlanck(price, api.registry.chainDecimals[0]),
+            price: price === '' ? undefined : unitToPlanck(price, api.registry.chainDecimals[0]),
             startBlock,
             endBlock,
             defaultItemSettings,
@@ -149,9 +205,16 @@ const CreateCollection = () => {
   return (
     <>
       <ModalStatus />
+      <SHat>
+        <Link to='..'>
+          <IconButton icon={<BackIcon />} />
+        </Link>
+        <STitle>Create New Collection</STitle>
+      </SHat>
+
       <SFormLayout onSubmit={submitCreateCollection}>
         <aside>
-          <Form.Group className='mb-3'>
+          <SGroup>
             <SLabel>Media</SLabel>
             <FileDropZone
               imageSourceUrl={imageSourceUrl}
@@ -159,7 +222,7 @@ const CreateCollection = () => {
               imageCid={imageCid}
               setImageCid={setImageCid}
             />
-          </Form.Group>
+          </SGroup>
 
           <SInfoRow>
             <span>Collection Owner</span>
@@ -168,39 +231,71 @@ const CreateCollection = () => {
 
           <SInfoRow>
             <span>Collection Mint Price</span>
-            <span>{price || '0'} {api.registry.chainTokens}</span>
+            <span>
+              {price || '0'} {api.registry.chainTokens}
+            </span>
           </SInfoRow>
         </aside>
         <section>
-          <Form.Group className='mb-3'>
-            <SLabel>Collection name</SLabel>
-            <SInput type='text' ref={collectionNameRef} required />
-          </Form.Group>
-          <Form.Group className='mb-3'>
-            <SLabel>Description</SLabel>
-            <Form.Control as='textarea' rows={3} ref={collectionDescriptionRef} />
-          </Form.Group>
+          <SFormBlock>
+            <SGroup>
+              <SLabel>Collection name</SLabel>
+              <FormControl type='text' ref={collectionNameRef} placeholder='Enter Collection Name' required />
+            </SGroup>
+          </SFormBlock>
+          <SFormBlock>
+            <SGroup>
+              <SLabel>Description</SLabel>
+              <FormControl as='textarea' ref={collectionDescriptionRef} placeholder='Enter Collection Description' />
+            </SGroup>
+          </SFormBlock>
 
-          <div>Collection settings</div>
+          <SFormBlock>
+            <SToggle type='button' onClick={() => setToggleCollectionSettings(!toggleCollectionSettings)}>
+              Collection settings <DropdownIcon className='arrow-down' />
+            </SToggle>
+            <Collapse in={toggleCollectionSettings}>
+              <SToggleBlock>
+                <SGroup>
+                  <Checkbox ref={transferrableItemsRef} label='Transferrable items' defaultChecked />
+                  <SDescription>
+                    When disabled, the items will be non-transferrable (good for soul-bound NFTs)
+                  </SDescription>
 
-          <Form.Group className='mb-3'>
-            <Form.Check type='checkbox' label='Transferrable items' ref={transferrableItemsRef} defaultChecked />
-            <Form.Check type='checkbox' label='Unlocked metadata' ref={unlockedMetadataRef} defaultChecked />
-            <Form.Check type='checkbox' label='Unlocked attributes' ref={unlockedAttributesRef} defaultChecked />
-            <Form.Check type='checkbox' label='Unlocked max supply' ref={unlockedMaxSupplyRef} defaultChecked />
-          </Form.Group>
+                  <Checkbox ref={unlockedMetadataRef} label='Unlocked metadata' defaultChecked />
+                  <SDescription>When disabled, the metadata will be locked</SDescription>
 
-          <Form.Group className='mb-3'>
-            <SLabel>
-              Max supply <i>(optional)</i>:
-            </SLabel>
-            <Form.Control type='number' ref={maxSupplyRef} />
-          </Form.Group>
+                  <Checkbox ref={unlockedAttributesRef} label='Unlocked attributes' defaultChecked />
+                  <SDescription>
+                    When disabled, the attributes in the CollectionOwner namespace will be locked
+                  </SDescription>
+
+                  <Checkbox ref={unlockedMaxSupplyRef} label='Unlocked max supply' defaultChecked />
+                  <SDescription>
+                    allows to change the max supply until it gets locked (i.e. the possibility to change the supply for
+                    a limited amount of time)
+                  </SDescription>
+                </SGroup>
+                <SGroup>
+                  <SLabel>
+                    Max supply <i>(optional)</i>
+                  </SLabel>
+                  <FormControl
+                    type='number'
+                    ref={maxSupplyRef}
+                    min={0}
+                    pattern={wholeNumbersPattern}
+                    placeholder='Set amount'
+                  />
+                </SGroup>
+              </SToggleBlock>
+            </Collapse>
+          </SFormBlock>
 
           <div>Mint settings</div>
 
           <Form.Group className='mb-3'>
-            <SLabel>Mint type:</SLabel>
+            <SLabel>Mint type</SLabel>
             <Form.Select onChange={(event) => setMintType(event.target.value as MintTypes)} defaultValue={mintType}>
               {Object.entries(MintTypes).map(([key, value]) => (
                 <option key={key} value={value}>
@@ -218,13 +313,13 @@ const CreateCollection = () => {
 
           <Form.Group className='mb-3'>
             <SLabel>
-              Price <i>(optional)</i>:
+              Price <i>(optional)</i>
             </SLabel>
             <Form.Control
               type='text'
               pattern={pricePattern(chainDecimals)}
               title={`Please enter a number e.g. 10.25, max precision is ${chainDecimals} decimals after .`}
-              onChange={event => setPrice(event.target.value)}
+              onChange={(event) => setPrice(event.target.value)}
             />
           </Form.Group>
 
@@ -248,11 +343,6 @@ const CreateCollection = () => {
             <ActionButton type='submit' className='main S'>
               Create collection
             </ActionButton>
-            <Link to='..'>
-              <ActionButton type='button' className='secondary S'>
-                Back
-              </ActionButton>
-            </Link>
           </Stack>
         </section>
       </SFormLayout>

@@ -22,7 +22,7 @@ const SIconButton = styled.button`
 
 interface IconButtonProps extends CommonStyleProps {
   icon: ReactElement;
-  action: (event: React.MouseEvent<HTMLElement>) => void;
+  action?: (event: React.MouseEvent<HTMLElement>) => void;
 }
 
 const IconButton = ({ icon, action, className }: IconButtonProps) => (
