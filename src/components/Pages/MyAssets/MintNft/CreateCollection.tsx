@@ -1,8 +1,7 @@
-import { FormEvent, memo, useCallback, useRef, useState } from 'react';
+import { ChangeEvent, FormEvent, memo, useCallback, useRef, useState } from 'react';
 import { FormControl } from 'react-bootstrap';
 import Collapse from 'react-bootstrap/esm/Collapse';
 import Form from 'react-bootstrap/esm/Form';
-import Stack from 'react-bootstrap/esm/Stack';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -15,13 +14,14 @@ import IconButton from '@buttons/IconButton';
 import Checkbox from '@common/Checkbox';
 import FileDropZone from '@common/FileDropZone';
 import ModalStatus from '@common/ModalStatus';
+import Radio from '@common/Radio';
 
 import { useAccounts } from '@contexts/AccountsContext';
 
 import { MintTypes } from '@helpers/constants';
 import { CollectionConfig, CollectionMetadataData, MintType } from '@helpers/interfaces';
 import { CssArrowDown, CssFontSemiBoldL, CssFontSemiBoldXL, SFormBlock } from '@helpers/reusableStyles';
-import { SGroup } from '@helpers/styledComponents';
+import { SGroup, SLabel } from '@helpers/styledComponents';
 import {
   convertToBitFlagValue,
   ellipseAddress,
@@ -65,10 +65,6 @@ const SFormLayout = styled(Form)`
   }
 `;
 
-const SLabel = styled(Form.Label)`
-  color: ${({ theme }) => theme.textAndIconsSecondary};
-`;
-
 const SInfoRow = styled.div`
   display: flex;
   justify-content: space-between;
@@ -106,6 +102,12 @@ const SDescription = styled.p`
   }
 `;
 
+const SPageControls = styled.div`
+  padding-top: 40px;
+  margin-bottom: 40px;
+  border-top: 1px solid ${({ theme }) => theme.appliedSeparator};
+`;
+
 const CreateCollection = () => {
   const { api, activeAccount } = useAccounts();
   const { createCollection } = useCollections();
@@ -126,7 +128,8 @@ const CreateCollection = () => {
   const [startDate, setStartDate] = useState<Date>();
   const [endDate, setEndDate] = useState<Date>();
   const [mintType, setMintType] = useState<MintTypes>(MintTypes.ISSUER);
-  const [toggleCollectionSettings, setToggleCollectionSettings] = useState<boolean>(true);
+  const [toggleCollectionSettings, setToggleCollectionSettings] = useState<boolean>(false);
+  const [toggleMintSettings, setToggleMintSettings] = useState<boolean>(false);
 
   const submitCreateCollection = useCallback(
     async (event: FormEvent) => {
@@ -196,6 +199,8 @@ const CreateCollection = () => {
     [api, startDate, endDate, mintType, price, imageCid, imageSourceUrl, createCollection],
   );
 
+  const mintTypeChangeHandler = (event: ChangeEvent<HTMLInputElement>) => setMintType(event.target.value as MintTypes);
+
   if (!api) {
     return null;
   }
@@ -236,6 +241,7 @@ const CreateCollection = () => {
             </span>
           </SInfoRow>
         </aside>
+
         <section>
           <SFormBlock>
             <SGroup>
@@ -243,6 +249,7 @@ const CreateCollection = () => {
               <FormControl type='text' ref={collectionNameRef} placeholder='Enter Collection Name' required />
             </SGroup>
           </SFormBlock>
+
           <SFormBlock>
             <SGroup>
               <SLabel>Description</SLabel>
@@ -292,58 +299,89 @@ const CreateCollection = () => {
             </Collapse>
           </SFormBlock>
 
-          <div>Mint settings</div>
+          <SFormBlock>
+            <SToggle type='button' onClick={() => setToggleMintSettings(!toggleMintSettings)}>
+              Mint settings <DropdownIcon className='arrow-down' />
+            </SToggle>
+            <Collapse in={toggleMintSettings}>
+              <SToggleBlock>
+                <SGroup>
+                  <SLabel>Mint type</SLabel>
+                  <Radio
+                    name='mint-type'
+                    label='Only You Can Mint'
+                    value={MintTypes.ISSUER}
+                    onChange={mintTypeChangeHandler}
+                    selectedValue={mintType}
+                  />
+                  <Radio
+                    name='mint-type'
+                    label='Everyone Can Mint'
+                    value={MintTypes.PUBLIC}
+                    onChange={mintTypeChangeHandler}
+                    selectedValue={mintType}
+                  />
+                  <Radio
+                    name='mint-type'
+                    label='Holder of Other NFT Collection Can Mint'
+                    value={MintTypes.HOLDER_OF}
+                    onChange={mintTypeChangeHandler}
+                    selectedValue={mintType}
+                  />
+                </SGroup>
 
-          <Form.Group className='mb-3'>
-            <SLabel>Mint type</SLabel>
-            <Form.Select onChange={(event) => setMintType(event.target.value as MintTypes)} defaultValue={mintType}>
-              {Object.entries(MintTypes).map(([key, value]) => (
-                <option key={key} value={value}>
-                  {value}
-                </option>
-              ))}
-            </Form.Select>
-            {mintType === MintTypes.HOLDER_OF && (
-              <Form.Group className='mt-3'>
-                <SLabel>Collection ID (must have a NFT from this collection)</SLabel>
-                <Form.Control type='number' ref={holderOfCollectionIdRef} min={0} required />
-              </Form.Group>
-            )}
-          </Form.Group>
+                {mintType === MintTypes.HOLDER_OF && (
+                  <SGroup>
+                    <SLabel>Collection ID (must have a NFT from this collection)</SLabel>
+                    <FormControl type='number' ref={holderOfCollectionIdRef} min={0} required />
+                  </SGroup>
+                )}
 
-          <Form.Group className='mb-3'>
-            <SLabel>
-              Price <i>(optional)</i>
-            </SLabel>
-            <Form.Control
-              type='text'
-              pattern={pricePattern(chainDecimals)}
-              title={`Please enter a number e.g. 10.25, max precision is ${chainDecimals} decimals after .`}
-              onChange={(event) => setPrice(event.target.value)}
-            />
-          </Form.Group>
+                <SGroup>
+                  <SLabel>
+                    Price <i>(optional)</i>
+                  </SLabel>
+                  <FormControl
+                    type='text'
+                    pattern={pricePattern(chainDecimals)}
+                    title={`Please enter a number e.g. 10.25, max precision is ${chainDecimals} decimals after .`}
+                    onChange={(event) => setPrice(event.target.value)}
+                    placeholder='Set amount'
+                  />
+                </SGroup>
 
-          <Form.Group className='mb-3'>
-            <DateRangeButton
-              startDate={startDate}
-              setStartDate={setStartDate}
-              endDate={endDate}
-              setEndDate={setEndDate}
-            />
-          </Form.Group>
+                <DateRangeButton
+                  startDate={startDate}
+                  setStartDate={setStartDate}
+                  labelStart={
+                    <>
+                      Mint start <i>(optional)</i>
+                    </>
+                  }
+                  endDate={endDate}
+                  setEndDate={setEndDate}
+                  labelEnd={
+                    <>
+                      Mint end <i>(optional)</i>
+                    </>
+                  }
+                />
 
-          <Form.Group className='mb-3'>
-            <SLabel>Default item settings</SLabel>
-            <Form.Check type='checkbox' label='Transferrable' ref={transferrableItemRef} defaultChecked />
-            <Form.Check type='checkbox' label='Unlocked metadata' ref={unlockedItemMetadataRef} defaultChecked />
-            <Form.Check type='checkbox' label='Unlocked attributes' ref={unlockedItemAttributesRef} defaultChecked />
-          </Form.Group>
+                <SGroup>
+                  <SLabel className='bigger-margin'>Default item settings</SLabel>
+                  <Checkbox ref={transferrableItemRef} label='Transferrable' defaultChecked />
+                  <Checkbox ref={unlockedItemMetadataRef} label='Unlocked metadata' defaultChecked />
+                  <Checkbox ref={unlockedItemAttributesRef} label='Unlocked attributes' defaultChecked />
+                </SGroup>
+              </SToggleBlock>
+            </Collapse>
+          </SFormBlock>
 
-          <Stack direction='horizontal' gap={2} className='justify-content-end mb-6'>
-            <ActionButton type='submit' className='main S'>
+          <SPageControls>
+            <ActionButton type='submit' className='main S full-width'>
               Create collection
             </ActionButton>
-          </Stack>
+          </SPageControls>
         </section>
       </SFormLayout>
     </>

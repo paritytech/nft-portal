@@ -1,13 +1,17 @@
 import { StateRects } from '@popperjs/core';
-import { memo } from 'react';
-import Form from 'react-bootstrap/esm/Form';
+import { ReactElement, memo } from 'react';
+import FormControl from 'react-bootstrap/esm/FormControl';
 import DatePicker from 'react-datepicker';
+
+import { SGroup, SLabel } from '@helpers/styledComponents';
 
 interface DateRangeButtonProps {
   startDate?: Date;
   setStartDate: (value: Date) => void;
+  labelStart: string | ReactElement;
   endDate?: Date;
   setEndDate: (value: Date) => void;
+  labelEnd: string | ReactElement;
 }
 
 const popperModifiers = [
@@ -21,7 +25,14 @@ const popperModifiers = [
   },
 ];
 
-const DateRangeButton = ({ startDate, setStartDate, endDate, setEndDate }: DateRangeButtonProps) => {
+const DateRangeButton = ({
+  startDate,
+  setStartDate,
+  labelStart,
+  endDate,
+  setEndDate,
+  labelEnd,
+}: DateRangeButtonProps) => {
   const minTime = new Date();
   minTime.setMilliseconds(0);
   minTime.setSeconds(0);
@@ -68,12 +79,11 @@ const DateRangeButton = ({ startDate, setStartDate, endDate, setEndDate }: DateR
 
   return (
     <>
-      <Form.Group className='mb-3'>
-        <Form.Label>
-          Mint start <i>(optional)</i>:
-        </Form.Label>
+      <SGroup>
+        <SLabel>{labelStart}</SLabel>
         <DatePicker
-          customInput={<Form.Control />}
+          customInput={<FormControl type='text' />}
+          placeholderText='Set start date'
           showTimeSelect
           selectsStart
           dateFormat='MMMM d, yyyy HH:mm'
@@ -87,14 +97,13 @@ const DateRangeButton = ({ startDate, setStartDate, endDate, setEndDate }: DateR
           minTime={setMinStartTime(startDate || new Date())}
           maxTime={setMaxStartTime(endDate)}
         />
-      </Form.Group>
+      </SGroup>
 
-      <Form.Group className='mb-3'>
-        <Form.Label>
-          Mint end <i>(optional)</i>:
-        </Form.Label>
+      <SGroup>
+        <SLabel>{labelEnd}</SLabel>
         <DatePicker
-          customInput={<Form.Control />}
+          customInput={<FormControl type='text' />}
+          placeholderText='Set end date'
           showTimeSelect
           selectsEnd
           dateFormat='MMMM d, yyyy HH:mm'
@@ -108,7 +117,7 @@ const DateRangeButton = ({ startDate, setStartDate, endDate, setEndDate }: DateR
           minTime={setMinEndTime(endDate || new Date())}
           maxTime={maxTime}
         />
-      </Form.Group>
+      </SGroup>
     </>
   );
 };

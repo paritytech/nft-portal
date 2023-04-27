@@ -1,5 +1,5 @@
 // Styled components are separated from reusableStyles to prevent circular dependencies
-import { FormGroup } from 'react-bootstrap';
+import { FormGroup, FormLabel } from 'react-bootstrap';
 import Card from 'react-bootstrap/esm/Card';
 import Modal from 'react-bootstrap/esm/Modal';
 import styled from 'styled-components';
@@ -84,5 +84,14 @@ export const SGroup = styled(FormGroup)`
     :hover:disabled {
       padding-top: 16px;
     }
+  }
+`;
+
+export const SLabel = styled(FormLabel)`
+  color: ${({ theme }) => theme.textAndIconsSecondary};
+  margin-bottom: 12px;
+
+  &.bigger-margin {
+    margin-bottom: 24px;
   }
 `;

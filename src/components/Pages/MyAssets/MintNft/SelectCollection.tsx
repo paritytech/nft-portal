@@ -29,6 +29,8 @@ const SChoose = styled.div`
 `;
 
 const SCollectionOption = styled(Link)`
+  display: block;
+  margin-bottom: 16px;
   text-decoration: none;
 `;
 
