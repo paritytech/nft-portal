@@ -35,11 +35,11 @@ const SMainContainer = styled.main`
   margin: 0 auto;
 
   @media ${mediaQueries.tablet} {
-    width: 728px;
+    width: 854px;
   }
 
   @media ${mediaQueries.desktop} {
-    width: 1050px;
+    width: 1250px;
   }
 `;
 

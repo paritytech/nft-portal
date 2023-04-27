@@ -5,8 +5,8 @@ import { CommonStyleProps, ThemeStyle } from './interfaces';
 
 export const deviceScreenSize = {
   mobile: '480px',
-  tablet: '768px',
-  desktop: '1250px',
+  tablet: '900px',
+  desktop: '1300px',
 };
 
 export const mediaQueries = {
@@ -105,6 +105,47 @@ export const CssCallToAction = css`
   &.call-to-action {
     box-shadow: 0 0 0 8px ${({ theme }) => theme.fill6};
   }
+`;
+
+export const CssFormControl = css`
+  background-color: ${({ theme }) => theme.fill6};
+  color: ${({ theme }) => theme.textAndIconsPrimary};
+  border: 0;
+  box-sizing: border-box;
+  padding-left: 24px;
+  transition: none;
+  outline: 0;
+
+  :hover {
+    border: 4px solid ${({ theme }) => theme.fill12};
+    padding-left: 20px;
+  }
+
+  :focus {
+    background-color: ${({ theme }) => theme.fill6};
+    color: ${({ theme }) => theme.textAndIconsPrimary};
+    border: 2px solid ${({ theme }) => theme.textAndIconsPrimary};
+    padding-left: 22px;
+    box-shadow: none;
+  }
+
+  :disabled {
+    background: none;
+    padding-left: 23px;
+    border: 1px solid ${({ theme }) => theme.fill12};
+    color: ${({ theme }) => theme.textAndIconsDisabled};
+    cursor: not-allowed;
+  }
+`;
+
+export const CssInclusivelyHidden = css`
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  height: 1px;
+  overflow: hidden;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
 `;
 
 // CSS SNIPPETS - FONTS
@@ -413,4 +454,8 @@ export const SActionButton = styled.button`
     width: 100%;
     box-sizing: border-box;
   }
+`;
+
+export const SFormBlock = styled.div`
+  margin-bottom: 40px;
 `;

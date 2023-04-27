@@ -20,8 +20,8 @@ const CollectionEdit = () => {
     useCollections();
   const collectionNameRef = useRef<HTMLInputElement>(null);
   const collectionDescriptionRef = useRef<HTMLTextAreaElement>(null);
-  const [imageCid, setImageCid] = useState<string | undefined>();
-  const [imageSourceUrl, setImageSourceUrl] = useState<string | null>(null);
+  const [imageCid, setImageCid] = useState<string>();
+  const [imageSourceUrl, setImageSourceUrl] = useState<string>();
 
   const submitMetadata = useCallback(
     async (event: FormEvent) => {

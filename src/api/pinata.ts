@@ -16,8 +16,8 @@ export const saveDataToIpfs = async (metadata: CollectionMetadataData): Promise<
   return response.ipfsCid;
 };
 
-export const saveImageToIpfs = async (sourceUrl: string | null): Promise<string | null> => {
-  if (sourceUrl === null) {
+export const saveImageToIpfs = async (sourceUrl?: string): Promise<string | null> => {
+  if (typeof sourceUrl === 'undefined') {
     return null;
   }
 

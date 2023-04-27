@@ -7,8 +7,12 @@ import { Decimal } from 'decimal.js';
 import { MultiAssets } from '@helpers/constants';
 import { MultiAssetId, PoolReserves } from '@helpers/interfaces';
 
-export const ellipseAddress = (address = '', width = 10): string => {
-  return `${address.slice(0, width)}...${address.slice(-width)}`;
+export const ellipseAddress = (address = '', charCount = 4): string => {
+  if (address === '') {
+    return '';
+  }
+
+  return `${address.slice(0, charCount)}...${address.slice(-charCount)}`;
 };
 
 // the values are flipped to opposite because in the nfts pallet we use bitflags
@@ -38,6 +42,7 @@ export const getBlockNumber = async (api: ApiPromise, timestamp?: number): Promi
 };
 
 export const pricePattern = (maxPrecision: number): string => `^(0|[1-9][0-9]*)([.][0-9]{0,${maxPrecision}})?$`;
+export const wholeNumbersPattern = '^[0-9]*$';
 
 export const unitToPlanck = (units: string, decimals: number): string => {
   const separated = units.split('.');

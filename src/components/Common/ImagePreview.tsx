@@ -19,8 +19,8 @@ const SClose = styled(IconButton)`
 `;
 
 interface ImagePreviewProps {
-  imageCid: string | undefined;
-  imageSourceUrl: string | null;
+  imageCid?: string;
+  imageSourceUrl?: string;
   handleClose: (event: React.MouseEvent<HTMLElement>) => void;
 }
 

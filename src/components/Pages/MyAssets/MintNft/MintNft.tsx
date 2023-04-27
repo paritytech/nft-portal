@@ -36,7 +36,7 @@ const MintNft = () => {
   const nftDescriptionRef = useRef<HTMLTextAreaElement>(null);
   const nftReceiverRef = useRef<HTMLInputElement>(null);
   const [imageCid, setImageCid] = useState<string | undefined>();
-  const [imageSourceUrl, setImageSourceUrl] = useState<string | null>(null);
+  const [imageSourceUrl, setImageSourceUrl] = useState<string>();
 
   const submitMintNft = useCallback(
     async (event: FormEvent) => {
