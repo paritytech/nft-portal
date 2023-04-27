@@ -1,6 +1,8 @@
 // Styled components are separated from reusableStyles to prevent circular dependencies
-import { FormGroup, FormLabel } from 'react-bootstrap';
 import Card from 'react-bootstrap/esm/Card';
+import Form from 'react-bootstrap/esm/Form';
+import FormGroup from 'react-bootstrap/esm/FormGroup';
+import FormLabel from 'react-bootstrap/esm/FormLabel';
 import Modal from 'react-bootstrap/esm/Modal';
 import styled from 'styled-components';
 
@@ -52,13 +54,26 @@ export const SModal = styled(Modal)`
   }
 `;
 
+export const SFormLayout = styled(Form)`
+  display: flex;
+  gap: 56px;
+
+  aside {
+    min-width: 300px;
+  }
+
+  section {
+    flex-grow: 1;
+  }
+`;
+
 export const SGroup = styled(FormGroup)`
   margin-bottom: 32px;
 
   input[type='text'],
   input[type='number'] {
     height: 56px;
-    padding: 0;
+    padding: 0 24px;
     border-radius: 32px;
 
     ${CssFormControl}
@@ -67,7 +82,7 @@ export const SGroup = styled(FormGroup)`
   textarea {
     width: 100%;
     height: 128px;
-    padding: 16px 0;
+    padding: 16px 24px;
     border-radius: 16px;
     resize: none;
 

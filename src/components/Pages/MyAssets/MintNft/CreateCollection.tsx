@@ -20,8 +20,8 @@ import { useAccounts } from '@contexts/AccountsContext';
 
 import { MintTypes } from '@helpers/constants';
 import { CollectionConfig, CollectionMetadataData, MintType } from '@helpers/interfaces';
-import { CssArrowDown, CssFontSemiBoldL, CssFontSemiBoldXL, SFormBlock } from '@helpers/reusableStyles';
-import { SGroup, SLabel } from '@helpers/styledComponents';
+import { CssArrowDown, CssFontSemiBoldL, CssFontSemiBoldXL, SFormBlock, SPageControls } from '@helpers/reusableStyles';
+import { SFormLayout, SGroup, SLabel } from '@helpers/styledComponents';
 import {
   convertToBitFlagValue,
   ellipseAddress,
@@ -50,19 +50,6 @@ const SHat = styled.div`
 
 const STitle = styled.div`
   ${CssFontSemiBoldXL}
-`;
-
-const SFormLayout = styled(Form)`
-  display: flex;
-  gap: 56px;
-
-  aside {
-    min-width: 300px;
-  }
-
-  section {
-    flex-grow: 1;
-  }
 `;
 
 const SInfoRow = styled.div`
@@ -100,12 +87,6 @@ const SDescription = styled.p`
   :last-child {
     margin-bottom: 0;
   }
-`;
-
-const SPageControls = styled.div`
-  padding-top: 40px;
-  margin-bottom: 40px;
-  border-top: 1px solid ${({ theme }) => theme.appliedSeparator};
 `;
 
 const CreateCollection = () => {
@@ -220,7 +201,9 @@ const CreateCollection = () => {
       <SFormLayout onSubmit={submitCreateCollection}>
         <aside>
           <SGroup>
-            <SLabel>Media</SLabel>
+            <SLabel>
+              Media <i>(optional)</i>
+            </SLabel>
             <FileDropZone
               imageSourceUrl={imageSourceUrl}
               setImageSourceUrl={setImageSourceUrl}
@@ -378,7 +361,7 @@ const CreateCollection = () => {
           </SFormBlock>
 
           <SPageControls>
-            <ActionButton type='submit' className='main S full-width'>
+            <ActionButton type='submit' className='main S w-100'>
               Create collection
             </ActionButton>
           </SPageControls>

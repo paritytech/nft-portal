@@ -62,7 +62,7 @@ const SelectCollection = ({ collectionsMetadata }: SelectCollectionProps) => {
   return (
     <SContainer>
       <Link to={routes.myAssets.createCollection}>
-        <ActionButton className='main S call-to-action full-width'>Create New Collection</ActionButton>
+        <ActionButton className='main S call-to-action w-100'>Create New Collection</ActionButton>
       </Link>
       <SChoose>or select the created one</SChoose>
       {collectionsMetadata.map((collectionMetadata) => (
