@@ -237,7 +237,7 @@ const CreateCollection = () => {
           <SInfoRow>
             <span>Collection Mint Price</span>
             <span>
-              {price || '0'} {api.registry.chainTokens}
+              {price || '0'} {api.registry.chainTokens[0]}
             </span>
           </SInfoRow>
         </aside>
