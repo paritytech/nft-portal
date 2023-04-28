@@ -1,6 +1,6 @@
-import { FormEvent, memo, useCallback, useRef, useState } from 'react';
+import { BN } from '@polkadot/util';
+import { ChangeEvent, FormEvent, memo, useCallback, useEffect, useRef, useState } from 'react';
 import FormControl from 'react-bootstrap/esm/FormControl';
-import FormSelect from 'react-bootstrap/esm/FormSelect';
 import Stack from 'react-bootstrap/esm/Stack';
 import { Link, useParams } from 'react-router-dom';
 
@@ -10,23 +10,26 @@ import ActionButton from '@buttons/ActionButton';
 
 import FileDropZone from '@common/FileDropZone';
 import ModalStatus from '@common/ModalStatus';
+import Radio from '@common/Radio';
 import ShowRestrictionMessage from '@common/ShowRestrictionMessage';
 
 import { useAccounts } from '@contexts/AccountsContext';
 
 import { RestrictionTypes } from '@helpers/constants';
-import { CollectionMetadataData, MintAccessNft } from '@helpers/interfaces';
-import { SFormBlock, SPageControls } from '@helpers/reusableStyles';
+import { CollectionConfigJson, CollectionMetadataData, MintAccessNft } from '@helpers/interfaces';
+import { SFormBlock, SInfoRow, SPageControls } from '@helpers/reusableStyles';
 import { SFormLayout, SGroup, SLabel } from '@helpers/styledComponents';
-import { generateAssetId } from '@helpers/utilities';
+import { generateAssetId, getCleanFormattedBalance } from '@helpers/utilities';
 
 import { useCheckMintingEligibility } from '@hooks/useCheckMintingEligibility';
+import { useCollections } from '@hooks/useCollections';
 import { useNfts } from '@hooks/useNfts';
 
 const MintNft = () => {
   const { collectionId } = useParams();
+  const { getCollectionConfig } = useCollections();
   const { mintNft } = useNfts(collectionId || '');
-  const { activeAccount } = useAccounts();
+  const { api, activeAccount } = useAccounts();
   const {
     restrictionMessages,
     checkAvailabilityRestriction,
@@ -40,6 +43,7 @@ const MintNft = () => {
   const nftReceiverRef = useRef<HTMLInputElement>(null);
   const [imageCid, setImageCid] = useState<string | undefined>();
   const [imageSourceUrl, setImageSourceUrl] = useState<string>();
+  const [mintPrice, setMintPrice] = useState<string>();
 
   const submitMintNft = useCallback(
     async (event: FormEvent) => {
@@ -65,6 +69,26 @@ const MintNft = () => {
     [clearRestrictions, collectionId, checkAvailabilityRestriction, imageCid, imageSourceUrl, mintNft, mintAccessNft],
   );
 
+  useEffect(() => {
+    const getPrice = async () => {
+      if (api && collectionId) {
+        const rawConfig = await getCollectionConfig(collectionId);
+
+        if (rawConfig) {
+          const jsonConfig = rawConfig.toJSON() as unknown as CollectionConfigJson;
+          const price = getCleanFormattedBalance(
+            new BN(jsonConfig.mintSettings.price || '0'),
+            api.registry.chainDecimals[0],
+          );
+
+          setMintPrice(price);
+        }
+      }
+    };
+
+    getPrice();
+  }, [api, collectionId, getCollectionConfig]);
+
   if (activeAccount === null) {
     return null;
   }
@@ -85,6 +109,13 @@ const MintNft = () => {
               setImageCid={setImageCid}
             />
           </SGroup>
+
+          <SInfoRow>
+            <span>Collection Mint Price</span>
+            <span>
+              {mintPrice} {api?.registry.chainTokens[0]}
+            </span>
+          </SInfoRow>
         </aside>
 
         <section>
@@ -113,15 +144,19 @@ const MintNft = () => {
 
             {Array.isArray(ownedNftsFromAnotherCollection) && ownedNftsFromAnotherCollection.length > 0 && (
               <SGroup>
-                <SLabel>Select which access NFT you want to use for the mint</SLabel>
-                <FormSelect onChange={(event) => setMintAccessNft({ ownedItem: event.target.value })} required>
-                  <option value=''>Select NFT</option>
-                  {ownedNftsFromAnotherCollection.map((ownedNft) => (
-                    <option key={ownedNft} value={ownedNft}>
-                      {ownedNft}
-                    </option>
-                  ))}
-                </FormSelect>
+                <SLabel>Select which NFT you want to use for the mint access</SLabel>
+                {ownedNftsFromAnotherCollection.map((ownedNft) => (
+                  <Radio
+                    name='mint-access'
+                    label={ownedNft}
+                    value={ownedNft}
+                    onChange={(event: ChangeEvent<HTMLInputElement>) =>
+                      setMintAccessNft({ ownedItem: event.target.value })
+                    }
+                    selectedValue={mintAccessNft?.ownedItem || ''}
+                    required
+                  />
+                ))}
               </SGroup>
             )}
             <ShowRestrictionMessage

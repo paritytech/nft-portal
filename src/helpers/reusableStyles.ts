@@ -459,3 +459,13 @@ export const SPageControls = styled.div`
   margin-bottom: 40px;
   border-top: 1px solid ${({ theme }) => theme.appliedSeparator};
 `;
+
+export const SInfoRow = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 16px;
+
+  span:first-child {
+    color: ${({ theme }) => theme.textAndIconsSecondary};
+  }
+`;

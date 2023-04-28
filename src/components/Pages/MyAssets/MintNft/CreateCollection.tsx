@@ -1,7 +1,6 @@
 import { ChangeEvent, FormEvent, memo, useCallback, useRef, useState } from 'react';
 import { FormControl } from 'react-bootstrap';
 import Collapse from 'react-bootstrap/esm/Collapse';
-import Form from 'react-bootstrap/esm/Form';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -20,7 +19,14 @@ import { useAccounts } from '@contexts/AccountsContext';
 
 import { MintTypes } from '@helpers/constants';
 import { CollectionConfig, CollectionMetadataData, MintType } from '@helpers/interfaces';
-import { CssArrowDown, CssFontSemiBoldL, CssFontSemiBoldXL, SFormBlock, SPageControls } from '@helpers/reusableStyles';
+import {
+  CssArrowDown,
+  CssFontSemiBoldL,
+  CssFontSemiBoldXL,
+  SFormBlock,
+  SInfoRow,
+  SPageControls,
+} from '@helpers/reusableStyles';
 import { SFormLayout, SGroup, SLabel } from '@helpers/styledComponents';
 import {
   convertToBitFlagValue,
@@ -50,16 +56,6 @@ const SHat = styled.div`
 
 const STitle = styled.div`
   ${CssFontSemiBoldXL}
-`;
-
-const SInfoRow = styled.div`
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 16px;
-
-  span:first-child {
-    color: ${({ theme }) => theme.textAndIconsSecondary};
-  }
 `;
 
 const SToggleBlock = styled.div`
