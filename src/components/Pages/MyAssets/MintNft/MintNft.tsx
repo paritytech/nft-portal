@@ -1,5 +1,6 @@
-import { FormEvent, memo, useCallback, useRef, useState } from 'react';
-import Form from 'react-bootstrap/esm/Form';
+import { BN } from '@polkadot/util';
+import { ChangeEvent, FormEvent, memo, useCallback, useEffect, useRef, useState } from 'react';
+import FormControl from 'react-bootstrap/esm/FormControl';
 import Stack from 'react-bootstrap/esm/Stack';
 import { Link, useParams } from 'react-router-dom';
 
@@ -9,21 +10,26 @@ import ActionButton from '@buttons/ActionButton';
 
 import FileDropZone from '@common/FileDropZone';
 import ModalStatus from '@common/ModalStatus';
+import Radio from '@common/Radio';
 import ShowRestrictionMessage from '@common/ShowRestrictionMessage';
 
 import { useAccounts } from '@contexts/AccountsContext';
 
 import { RestrictionTypes } from '@helpers/constants';
-import { CollectionMetadataData, MintAccessNft } from '@helpers/interfaces';
-import { generateAssetId } from '@helpers/utilities';
+import { CollectionConfigJson, CollectionMetadataData, MintAccessNft } from '@helpers/interfaces';
+import { SFormBlock, SInfoRow, SPageControls } from '@helpers/reusableStyles';
+import { SFormLayout, SGroup, SLabel } from '@helpers/styledComponents';
+import { generateAssetId, getCleanFormattedBalance } from '@helpers/utilities';
 
 import { useCheckMintingEligibility } from '@hooks/useCheckMintingEligibility';
+import { useCollections } from '@hooks/useCollections';
 import { useNfts } from '@hooks/useNfts';
 
 const MintNft = () => {
   const { collectionId } = useParams();
+  const { getCollectionConfig } = useCollections();
   const { mintNft } = useNfts(collectionId || '');
-  const { activeAccount } = useAccounts();
+  const { api, activeAccount } = useAccounts();
   const {
     restrictionMessages,
     checkAvailabilityRestriction,
@@ -37,6 +43,7 @@ const MintNft = () => {
   const nftReceiverRef = useRef<HTMLInputElement>(null);
   const [imageCid, setImageCid] = useState<string | undefined>();
   const [imageSourceUrl, setImageSourceUrl] = useState<string>();
+  const [mintPrice, setMintPrice] = useState<string>();
 
   const submitMintNft = useCallback(
     async (event: FormEvent) => {
@@ -62,6 +69,26 @@ const MintNft = () => {
     [clearRestrictions, collectionId, checkAvailabilityRestriction, imageCid, imageSourceUrl, mintNft, mintAccessNft],
   );
 
+  useEffect(() => {
+    const getPrice = async () => {
+      if (api && collectionId) {
+        const rawConfig = await getCollectionConfig(collectionId);
+
+        if (rawConfig) {
+          const jsonConfig = rawConfig.toJSON() as unknown as CollectionConfigJson;
+          const price = getCleanFormattedBalance(
+            new BN(jsonConfig.mintSettings.price || '0'),
+            api.registry.chainDecimals[0],
+          );
+
+          setMintPrice(price);
+        }
+      }
+    };
+
+    getPrice();
+  }, [api, collectionId, getCollectionConfig]);
+
   if (activeAccount === null) {
     return null;
   }
@@ -69,74 +96,98 @@ const MintNft = () => {
   return (
     <>
       <ModalStatus />
-      <Form onSubmit={submitMintNft}>
-        <Form.Group className='mb-3'>
-          <Form.Label>NFT name:</Form.Label>
-          <Form.Control type='text' ref={nftNameRef} required />
-        </Form.Group>
+      <SFormLayout onSubmit={submitMintNft}>
+        <aside>
+          <SGroup>
+            <SLabel>
+              Media <i>(optional)</i>
+            </SLabel>
+            <FileDropZone
+              imageSourceUrl={imageSourceUrl}
+              setImageSourceUrl={setImageSourceUrl}
+              imageCid={imageCid}
+              setImageCid={setImageCid}
+            />
+          </SGroup>
 
-        <Form.Group className='mb-3'>
-          <Form.Label>NFT receiver:</Form.Label>
-          <Form.Control ref={nftReceiverRef} defaultValue={activeAccount.address} />
-        </Form.Group>
+          <SInfoRow>
+            <span>Collection Mint Price</span>
+            <span>
+              {mintPrice} {api?.registry.chainTokens[0]}
+            </span>
+          </SInfoRow>
+        </aside>
 
-        <Form.Group className='mb-3'>
-          <Form.Label>
-            Description <i>(optional)</i>:
-          </Form.Label>
-          <Form.Control as='textarea' rows={3} ref={nftDescriptionRef} />
-        </Form.Group>
+        <section>
+          <SFormBlock>
+            <SGroup>
+              <SLabel>Name</SLabel>
+              <FormControl type='text' ref={nftNameRef} placeholder='Enter NFT Name' required />
+            </SGroup>
 
-        <Form.Group className='mb-3'>
-          <Form.Label>
-            Image <i>(optional)</i>:
-          </Form.Label>
-          <FileDropZone
-            imageSourceUrl={imageSourceUrl}
-            setImageSourceUrl={setImageSourceUrl}
-            imageCid={imageCid}
-            setImageCid={setImageCid}
-          />
-        </Form.Group>
+            <SGroup>
+              <SLabel>Mint To</SLabel>
+              <FormControl
+                type='text'
+                ref={nftReceiverRef}
+                placeholder='Receiver Wallet'
+                defaultValue={activeAccount.address}
+              />
+            </SGroup>
 
-        {Array.isArray(ownedNftsFromAnotherCollection) && ownedNftsFromAnotherCollection.length > 0 && (
-          <Form.Group className='mb-3'>
-            <Form.Label>Select which access NFT you want to use for the mint:</Form.Label>
-            <Form.Select onChange={(event) => setMintAccessNft({ ownedItem: event.target.value })} required>
-              <option value=''>Select NFT</option>
-              {ownedNftsFromAnotherCollection.map((ownedNft) => (
-                <option key={ownedNft} value={ownedNft}>
-                  {ownedNft}
-                </option>
-              ))}
-            </Form.Select>
-          </Form.Group>
-        )}
-        <ShowRestrictionMessage
-          restrictionsMessages={restrictionMessages}
-          restrictionType={RestrictionTypes.MUST_BE_HOLDER_OF}
-        />
-        <ShowRestrictionMessage
-          restrictionsMessages={restrictionMessages}
-          restrictionType={RestrictionTypes.ALL_NFTS_MINTED}
-        />
-        <ShowRestrictionMessage
-          restrictionsMessages={restrictionMessages}
-          restrictionType={RestrictionTypes.NFT_TAKEN}
-        />
+            <SGroup>
+              <SLabel>
+                Description <i>(optional)</i>
+              </SLabel>
+              <FormControl as='textarea' rows={3} ref={nftDescriptionRef} placeholder='Enter NFT Description' />
+            </SGroup>
 
-        <Stack direction='horizontal' gap={2} className='justify-content-end'>
-          <ActionButton type='submit' isDisabled={!isEligibleToMint} className='main S'>
-            Mint NFT
-          </ActionButton>
+            {Array.isArray(ownedNftsFromAnotherCollection) && ownedNftsFromAnotherCollection.length > 0 && (
+              <SGroup>
+                <SLabel>Select which NFT you want to use for the mint access</SLabel>
+                {ownedNftsFromAnotherCollection.map((ownedNft) => (
+                  <Radio
+                    name='mint-access'
+                    label={ownedNft}
+                    value={ownedNft}
+                    onChange={(event: ChangeEvent<HTMLInputElement>) =>
+                      setMintAccessNft({ ownedItem: event.target.value })
+                    }
+                    selectedValue={mintAccessNft?.ownedItem || ''}
+                    required
+                  />
+                ))}
+              </SGroup>
+            )}
+            <ShowRestrictionMessage
+              restrictionsMessages={restrictionMessages}
+              restrictionType={RestrictionTypes.MUST_BE_HOLDER_OF}
+            />
+            <ShowRestrictionMessage
+              restrictionsMessages={restrictionMessages}
+              restrictionType={RestrictionTypes.ALL_NFTS_MINTED}
+            />
+            <ShowRestrictionMessage
+              restrictionsMessages={restrictionMessages}
+              restrictionType={RestrictionTypes.NFT_TAKEN}
+            />
+          </SFormBlock>
 
-          <Link to='..'>
-            <ActionButton type='button' className='secondary S'>
-              Back
-            </ActionButton>
-          </Link>
-        </Stack>
-      </Form>
+          <SPageControls>
+            <Stack direction='horizontal' gap={3}>
+              <ActionButton type='submit' isDisabled={!isEligibleToMint} className='main L w-50'>
+                Mint NFT
+              </ActionButton>
+
+              <Link to='..' className='d-block w-50'>
+                <ActionButton type='button' className='secondary L w-100'>
+                  Back
+                </ActionButton>
+              </Link>
+            </Stack>
+          </SPageControls>
+        </section>
+      </SFormLayout>
     </>
   );
 };

@@ -23,6 +23,7 @@ export interface CommonStyleProps {
   className?: string;
   isDisabled?: boolean;
   type?: 'button' | 'submit' | 'reset';
+  required?: boolean;
 }
 export interface CollectionMetadata extends CollectionMetadataData {
   id: string;

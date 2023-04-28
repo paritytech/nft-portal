@@ -1,6 +1,7 @@
 import { ChangeEvent, memo } from 'react';
 import styled from 'styled-components';
 
+import { CommonStyleProps } from '@helpers/interfaces';
 import { CssInclusivelyHidden } from '@helpers/reusableStyles';
 
 import ActiveRadio from '@images/icons/active-radio.svg';
@@ -22,7 +23,7 @@ const SRadio = styled.input`
   ${CssInclusivelyHidden}
 `;
 
-interface RadioProps {
+interface RadioProps extends CommonStyleProps {
   name: string;
   label: string;
   value: string;
@@ -30,9 +31,16 @@ interface RadioProps {
   selectedValue: string;
 }
 
-const Radio = ({ name, label, value, onChange, selectedValue }: RadioProps) => (
+const Radio = ({ name, label, value, onChange, selectedValue, required }: RadioProps) => (
   <SLabel>
-    <SRadio type='radio' onChange={onChange} name={name} value={value} checked={selectedValue === value} />
+    <SRadio
+      type='radio'
+      onChange={onChange}
+      name={name}
+      value={value}
+      checked={selectedValue === value}
+      required={required}
+    />
     {selectedValue === value ? <ActiveRadio /> : <EmptyRadio />}
     <span>{label}</span>
   </SLabel>

@@ -1,7 +1,6 @@
 import { ChangeEvent, FormEvent, memo, useCallback, useRef, useState } from 'react';
 import { FormControl } from 'react-bootstrap';
 import Collapse from 'react-bootstrap/esm/Collapse';
-import Form from 'react-bootstrap/esm/Form';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -20,8 +19,15 @@ import { useAccounts } from '@contexts/AccountsContext';
 
 import { MintTypes } from '@helpers/constants';
 import { CollectionConfig, CollectionMetadataData, MintType } from '@helpers/interfaces';
-import { CssArrowDown, CssFontSemiBoldL, CssFontSemiBoldXL, SFormBlock } from '@helpers/reusableStyles';
-import { SGroup, SLabel } from '@helpers/styledComponents';
+import {
+  CssArrowDown,
+  CssFontSemiBoldL,
+  CssFontSemiBoldXL,
+  SFormBlock,
+  SInfoRow,
+  SPageControls,
+} from '@helpers/reusableStyles';
+import { SFormLayout, SGroup, SLabel } from '@helpers/styledComponents';
 import {
   convertToBitFlagValue,
   ellipseAddress,
@@ -52,29 +58,6 @@ const STitle = styled.div`
   ${CssFontSemiBoldXL}
 `;
 
-const SFormLayout = styled(Form)`
-  display: flex;
-  gap: 56px;
-
-  aside {
-    min-width: 300px;
-  }
-
-  section {
-    flex-grow: 1;
-  }
-`;
-
-const SInfoRow = styled.div`
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 16px;
-
-  span:first-child {
-    color: ${({ theme }) => theme.textAndIconsSecondary};
-  }
-`;
-
 const SToggleBlock = styled.div`
   padding-top: 32px;
 `;
@@ -100,12 +83,6 @@ const SDescription = styled.p`
   :last-child {
     margin-bottom: 0;
   }
-`;
-
-const SPageControls = styled.div`
-  padding-top: 40px;
-  margin-bottom: 40px;
-  border-top: 1px solid ${({ theme }) => theme.appliedSeparator};
 `;
 
 const CreateCollection = () => {
@@ -220,7 +197,9 @@ const CreateCollection = () => {
       <SFormLayout onSubmit={submitCreateCollection}>
         <aside>
           <SGroup>
-            <SLabel>Media</SLabel>
+            <SLabel>
+              Media <i>(optional)</i>
+            </SLabel>
             <FileDropZone
               imageSourceUrl={imageSourceUrl}
               setImageSourceUrl={setImageSourceUrl}
@@ -378,7 +357,7 @@ const CreateCollection = () => {
           </SFormBlock>
 
           <SPageControls>
-            <ActionButton type='submit' className='main S full-width'>
+            <ActionButton type='submit' className='main S w-100'>
               Create collection
             </ActionButton>
           </SPageControls>

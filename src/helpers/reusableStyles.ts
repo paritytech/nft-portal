@@ -112,7 +112,6 @@ export const CssFormControl = css`
   color: ${({ theme }) => theme.textAndIconsPrimary};
   border: 0;
   box-sizing: border-box;
-  padding-left: 24px;
   transition: none;
   outline: 0;
 
@@ -449,13 +448,24 @@ export const SActionButton = styled.button`
   &.padding32 {
     padding: 0 32px;
   }
-
-  &.full-width {
-    width: 100%;
-    box-sizing: border-box;
-  }
 `;
 
 export const SFormBlock = styled.div`
   margin-bottom: 40px;
+`;
+
+export const SPageControls = styled.div`
+  padding-top: 40px;
+  margin-bottom: 40px;
+  border-top: 1px solid ${({ theme }) => theme.appliedSeparator};
+`;
+
+export const SInfoRow = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 16px;
+
+  span:first-child {
+    color: ${({ theme }) => theme.textAndIconsSecondary};
+  }
 `;
