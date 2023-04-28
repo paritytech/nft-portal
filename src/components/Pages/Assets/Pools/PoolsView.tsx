@@ -85,6 +85,7 @@ const PoolsView = ({ pools, allTokens }: PoolsViewProps) => {
                     multiAssetToParam(poolInfo[0].id),
                     multiAssetToParam(poolInfo[1].id),
                   )}
+                  title='Add liquidity'
                 >
                   <PlusIcon />
                 </Link>
@@ -93,7 +94,12 @@ const PoolsView = ({ pools, allTokens }: PoolsViewProps) => {
               <SPoolInfo>
                 <SRow>
                   <SColumn>
-                    <span>{poolInfo[0].symbol.toUpperCase()}</span>
+                    <Link
+                      to={routes.swap.assets(multiAssetToParam(poolInfo[0].id), multiAssetToParam(poolInfo[1].id))}
+                      title='Swap assets'
+                    >
+                      {poolInfo[0].symbol.toUpperCase()}
+                    </Link>
                   </SColumn>
                   <SColumn>
                     <SReserve>{poolInfo[0].formattedReserve}</SReserve>
@@ -101,7 +107,12 @@ const PoolsView = ({ pools, allTokens }: PoolsViewProps) => {
                 </SRow>
                 <SRow>
                   <SColumn>
-                    <span>{poolInfo[1].symbol.toUpperCase()}</span>
+                    <Link
+                      to={routes.swap.assets(multiAssetToParam(poolInfo[0].id), multiAssetToParam(poolInfo[1].id))}
+                      title='Swap assets'
+                    >
+                      {poolInfo[1].symbol.toUpperCase()}
+                    </Link>
                   </SColumn>
                   <SColumn>
                     <SReserve>{poolInfo[1].formattedReserve}</SReserve>
