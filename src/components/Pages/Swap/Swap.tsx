@@ -19,9 +19,9 @@ import { ModalStatusTypes, StatusMessages, SwapTypes } from '@helpers/constants'
 import { MultiAssetId, PoolId, PoolReserves, TokenMetadata } from '@helpers/interfaces';
 import { routes } from '@helpers/routes';
 import {
+  applySlippage,
   calcExchangeRate,
   calcPriceImpact,
-  calcSlippage,
   calcSwapAmountIn,
   calcSwapAmountOut,
   formatDecimals,
@@ -139,8 +139,11 @@ const Swap = ({
 
       const amountWithSlippage =
         swapType === SwapTypes.EXACT_IN
-          ? unitToPlanck(calcSlippage(asset2Amount, 100 - SLIPPAGE, asset2Metadata.decimals), asset2Metadata.decimals)
-          : unitToPlanck(calcSlippage(asset1Amount, 100 + SLIPPAGE, asset1Metadata.decimals), asset1Metadata.decimals);
+          ? unitToPlanck(applySlippage(asset2Amount, true, SLIPPAGE, asset2Metadata.decimals), asset2Metadata.decimals)
+          : unitToPlanck(
+              applySlippage(asset1Amount, false, SLIPPAGE, asset1Metadata.decimals),
+              asset1Metadata.decimals,
+            );
 
       swap(asset1, asset2, amount1, amount2, new BN(amountWithSlippage), swapType);
     },
@@ -230,9 +233,9 @@ const Swap = ({
       setImpact(calcPriceImpact(exchangeRate, idealExchangeRate));
       let calculatedSlippage;
       if (swapType === SwapTypes.EXACT_IN) {
-        calculatedSlippage = calcSlippage(asset2Amount, 100 - SLIPPAGE, asset2Metadata.decimals);
+        calculatedSlippage = applySlippage(asset2Amount, true, SLIPPAGE, asset2Metadata.decimals);
       } else {
-        calculatedSlippage = calcSlippage(asset1Amount, 100 + SLIPPAGE, asset1Metadata.decimals);
+        calculatedSlippage = applySlippage(asset1Amount, false, SLIPPAGE, asset1Metadata.decimals);
       }
       setAfterSlippage(calculatedSlippage);
       setFormDisabled(false);

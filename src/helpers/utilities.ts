@@ -166,7 +166,13 @@ export const calcPriceImpact = (currentRate: Decimal, idealRate: Decimal): numbe
   return new Decimal(100).sub(currentRate.mul(100).div(idealRate)).toDP(2).toNumber();
 };
 
-export const calcSlippage = (amount: string, slippage: number, decimals: number): string => {
+export const applySlippage = (
+  amount: string,
+  lowerRange: boolean,
+  slippagePercent: number,
+  decimals: number,
+): string => {
+  const slippage = lowerRange ? 100 - slippagePercent : 100 + slippagePercent;
   return new Decimal(amount).mul(slippage).div(100).toDP(decimals).toString();
 };
 

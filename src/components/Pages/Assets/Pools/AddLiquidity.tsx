@@ -19,8 +19,8 @@ import { ModalStatusTypes, StatusMessages } from '@helpers/constants';
 import { MultiAssetId, PoolReserves, TokenMetadata } from '@helpers/interfaces';
 import { routes } from '@helpers/routes';
 import {
+  applySlippage,
   calcExchangeRate,
-  calcSlippage,
   formatDecimals,
   formatExchangeRate,
   getCleanFormattedBalance,
@@ -111,10 +111,10 @@ const AddLiquidity = ({
       // add slippage tolerance to min amounts
       const slippage = ADD_LIQUIDITY_SLIPPAGE;
       const amount1Min = new BN(
-        unitToPlanck(calcSlippage(asset1Amount, 100 - slippage, asset1Metadata.decimals), asset1Metadata.decimals),
+        unitToPlanck(applySlippage(asset1Amount, true, slippage, asset1Metadata.decimals), asset1Metadata.decimals),
       );
       const amount2Min = new BN(
-        unitToPlanck(calcSlippage(asset2Amount, 100 - slippage, asset2Metadata.decimals), asset2Metadata.decimals),
+        unitToPlanck(applySlippage(asset2Amount, true, slippage, asset2Metadata.decimals), asset2Metadata.decimals),
       );
 
       addLiquidity(asset1, asset2, amount1, amount2, amount1Min, amount2Min);
