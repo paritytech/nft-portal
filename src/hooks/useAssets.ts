@@ -7,8 +7,7 @@ import type {
   PalletBalancesAccountData,
 } from '@polkadot/types/lookup';
 import { PalletAssetsAssetMetadata } from '@polkadot/types/lookup';
-import type { BN } from '@polkadot/util';
-import { BN_ZERO } from '@polkadot/util';
+import { BN, BN_ZERO } from '@polkadot/util';
 import { isEmpty } from 'lodash';
 import { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -16,13 +15,14 @@ import { useNavigate } from 'react-router-dom';
 import { useAccounts } from '@contexts/AccountsContext';
 import { useModalStatus } from '@contexts/ModalStatusContext';
 
-import { ModalStatusTypes, MultiAssets, StatusMessages } from '@helpers/constants';
+import { ModalStatusTypes, MultiAssets, StatusMessages, SwapTypes } from '@helpers/constants';
 import { handleError } from '@helpers/handleError';
 import type {
   Chain,
   MultiAssetId,
   PalletAssetConversionPoolId,
   PalletAssetConversionPoolInfo,
+  PoolId,
   PoolInfo,
   PoolReserves,
   TokenMetadata,
@@ -67,8 +67,9 @@ export const useAssets = () => {
 
                     if (poolId && poolId[0].eq(asset1) && poolId[1].eq(asset2)) {
                       setStatus({ type: ModalStatusTypes.COMPLETE, message: StatusMessages.POOL_LIQUIDITY_ADDED });
-                      // TODO: send to swap page when it's ready
-                      setAction(() => () => navigate(routes.discover.pools));
+                      setAction(
+                        () => () => navigate(routes.swap.assets(multiAssetToParam(asset1), multiAssetToParam(asset2))),
+                      );
                       return true;
                     }
                   }
@@ -138,6 +139,71 @@ export const useAssets = () => {
     [api, activeAccount, activeWallet, navigate, openModalStatus, setStatus, setAction],
   );
 
+  const swap = useCallback(
+    async (
+      asset1: MultiAssetId,
+      asset2: MultiAssetId,
+      amount1: BN,
+      amount2: BN,
+      amountWithSlippage: BN,
+      swapType: SwapTypes,
+    ) => {
+      if (api && activeAccount && activeWallet) {
+        setStatus({ type: ModalStatusTypes.INIT_TRANSACTION, message: StatusMessages.TRANSACTION_CONFIRM });
+        openModalStatus();
+
+        const swapMethod =
+          swapType === SwapTypes.EXACT_IN
+            ? api.tx.assetConversion.swapExactTokensForTokens(
+                [asset1, asset2],
+                amount1,
+                amountWithSlippage,
+                activeAccount.address,
+                true,
+              )
+            : api.tx.assetConversion.swapTokensForExactTokens(
+                [asset1, asset2],
+                amount2,
+                amountWithSlippage,
+                activeAccount.address,
+              );
+
+        try {
+          const unsub = await swapMethod.signAndSend(
+            activeAccount.address,
+            { signer: activeWallet.signer },
+            ({ events, status }) => {
+              if (status.isReady) {
+                setStatus({ type: ModalStatusTypes.IN_PROGRESS, message: StatusMessages.SWAP_EXECUTING });
+              }
+
+              if (status.isInBlock) {
+                unsub();
+
+                events.some(({ event: { data, method } }) => {
+                  if (method === 'SwapExecuted') {
+                    setStatus({ type: ModalStatusTypes.COMPLETE, message: StatusMessages.SWAP_EXECUTED });
+                    return true;
+                  }
+
+                  if (method === 'ExtrinsicFailed') {
+                    setStatus({ type: ModalStatusTypes.ERROR, message: StatusMessages.ACTION_FAILED });
+                    return true;
+                  }
+
+                  return false;
+                });
+              }
+            },
+          );
+        } catch (error) {
+          setStatus({ type: ModalStatusTypes.ERROR, message: handleError(error) });
+        }
+      }
+    },
+    [api, activeAccount, activeWallet, openModalStatus, setStatus],
+  );
+
   const fetchAllTokensMetadata = useCallback(async (): Promise<TokenMetadata[]> => {
     if (!api) return;
 
@@ -154,7 +220,7 @@ export const useAssets = () => {
             data,
           ]) => formatAssetMetadata(id, data, api),
         )
-        .sort((a, b) => sortStrings(a.name, b.name));
+        .sort((a, b) => sortStrings(a.symbol, b.symbol));
     }
 
     return result;
@@ -255,6 +321,30 @@ export const useAssets = () => {
     },
     [api, storedChain],
   );
+
+  const getDefaultPool = useCallback(async (): Promise<PoolId | null> => {
+    if (api && api.query.assetConversion) {
+      let defaultPoolId = null;
+      try {
+        // load all tokens sorted by symbol
+        const allTokens: TokenMetadata[] = await fetchAllTokensMetadata();
+
+        // load all pools
+        const poolRecords: StorageKey<[PalletAssetConversionPoolId]>[] = await api.query.assetConversion.pools.keys();
+        const pools = poolRecords.map(({ args: [id] }) => id[1].asAsset.toNumber());
+
+        // find the first token that has a pool created
+        const firstPool = allTokens.find((item) => pools.includes(item.id.asAsset.toNumber()));
+
+        if (firstPool) {
+          defaultPoolId = [toMultiAsset(MultiAssets.NATIVE, api), firstPool.id];
+        }
+      } catch (error) {
+        //
+      }
+      return defaultPoolId;
+    }
+  }, [api, fetchAllTokensMetadata]);
 
   const getNativeBalance = useCallback(async () => {
     if (api && activeAccount) {
@@ -394,6 +484,7 @@ export const useAssets = () => {
     getAssetBalance,
     getAssetMinBalance,
     getAssetMetadata,
+    getDefaultPool,
     getNativeBalance,
     getNativeMetadata,
     getPools,
@@ -404,5 +495,6 @@ export const useAssets = () => {
     nativeBalance,
     nativeMetadata,
     pools,
+    swap,
   };
 };

@@ -1,7 +1,7 @@
 import { BN, formatBalance } from '@polkadot/util';
 import type { ToBn } from '@polkadot/util/types';
 import { Decimal } from 'decimal.js';
-import { FormEvent, memo, useCallback, useEffect, useState } from 'react';
+import { FormEvent, memo, useCallback, useEffect, useMemo, useState } from 'react';
 import Stack from 'react-bootstrap/Stack';
 import Form from 'react-bootstrap/esm/Form';
 import { Link } from 'react-router-dom';
@@ -19,9 +19,10 @@ import { ModalStatusTypes, StatusMessages } from '@helpers/constants';
 import { MultiAssetId, PoolReserves, TokenMetadata } from '@helpers/interfaces';
 import { routes } from '@helpers/routes';
 import {
-  addSlippage,
+  applySlippage,
   calcExchangeRate,
   formatDecimals,
+  formatExchangeRate,
   getCleanFormattedBalance,
   pricePattern,
   unitToPlanck,
@@ -95,10 +96,10 @@ const AddLiquidity = ({
 
       // validate user has enough funds
       if (!formError && asset1Balance.lt(amount1)) {
-        formError = StatusMessages.POOL_ADD_LIQUIDITY_AMOUNT_TOO_HIGH;
+        formError = StatusMessages.POOL_AMOUNT_TOO_HIGH;
       }
       if (!formError && asset2Balance.lt(amount2)) {
-        formError = StatusMessages.POOL_ADD_LIQUIDITY_AMOUNT_TOO_HIGH;
+        formError = StatusMessages.POOL_AMOUNT_TOO_HIGH;
       }
 
       if (formError) {
@@ -109,8 +110,12 @@ const AddLiquidity = ({
 
       // add slippage tolerance to min amounts
       const slippage = ADD_LIQUIDITY_SLIPPAGE;
-      const amount1Min = new BN(unitToPlanck(addSlippage(asset1Amount, slippage), asset1Metadata.decimals));
-      const amount2Min = new BN(unitToPlanck(addSlippage(asset2Amount, slippage), asset2Metadata.decimals));
+      const amount1Min = new BN(
+        unitToPlanck(applySlippage(asset1Amount, true, slippage, asset1Metadata.decimals), asset1Metadata.decimals),
+      );
+      const amount2Min = new BN(
+        unitToPlanck(applySlippage(asset2Amount, true, slippage, asset2Metadata.decimals), asset2Metadata.decimals),
+      );
 
       addLiquidity(asset1, asset2, amount1, amount2, amount1Min, amount2Min);
     },
@@ -141,7 +146,17 @@ const AddLiquidity = ({
     const asset2Value = asset2Amount;
 
     if (isNewPool) {
-      const exchangeRate = asset1Value && asset2Value ? calcExchangeRate(+asset1Value, +asset2Value) : null;
+      const exchangeRate =
+        asset1Value && asset2Value
+          ? calcExchangeRate(
+              [
+                new BN(unitToPlanck(asset1Value, asset1Metadata.decimals)),
+                new BN(unitToPlanck(asset2Value, asset2Metadata.decimals)),
+              ],
+              asset1Metadata.decimals,
+              asset2Metadata.decimals,
+            )
+          : null;
       setExchangeRate(exchangeRate);
     } else if (exchangeRate) {
       setAsset2Amount(amount1 ? formatDecimals(exchangeRate.mul(asset1Value)) : '');
@@ -156,7 +171,17 @@ const AddLiquidity = ({
     const asset2Value = amount2;
 
     if (isNewPool) {
-      const exchangeRate = asset1Value && asset2Value ? calcExchangeRate(+asset1Value, +asset2Value) : null;
+      const exchangeRate =
+        asset1Value && asset2Value
+          ? calcExchangeRate(
+              [
+                new BN(unitToPlanck(asset1Value, asset1Metadata.decimals)),
+                new BN(unitToPlanck(asset2Value, asset2Metadata.decimals)),
+              ],
+              asset1Metadata.decimals,
+              asset2Metadata.decimals,
+            )
+          : null;
       setExchangeRate(exchangeRate);
     } else if (exchangeRate) {
       setAsset1Amount(amount2 ? formatDecimals(new Decimal(asset2Value).div(exchangeRate)) : '');
@@ -165,11 +190,11 @@ const AddLiquidity = ({
 
   useEffect(() => {
     if (!isNewPool) {
-      const asset1Reserve = getCleanFormattedBalance(poolReserves[0], asset1Metadata.decimals);
-      const asset2Reserve = getCleanFormattedBalance(poolReserves[1], asset2Metadata.decimals);
-      setExchangeRate(calcExchangeRate(+asset1Reserve, +asset2Reserve));
+      setExchangeRate(calcExchangeRate(poolReserves, asset1Metadata.decimals, asset2Metadata.decimals));
     }
-  }, [isNewPool, poolReserves, asset1Metadata, asset2Metadata]);
+  }, [isNewPool, poolReserves, asset1Metadata?.decimals, asset2Metadata?.decimals]);
+
+  const formattedExchangeRate = useMemo(() => (exchangeRate ? formatExchangeRate(exchangeRate) : ''), [exchangeRate]);
 
   return (
     <>
@@ -236,8 +261,7 @@ const AddLiquidity = ({
         </Form.Group>
         {exchangeRate && (
           <section>
-            1 {asset1Metadata.symbol.toUpperCase()} = {formatDecimals(exchangeRate)}{' '}
-            {asset2Metadata.symbol.toUpperCase()}
+            1 {asset1Metadata.symbol.toUpperCase()} ≈ {formattedExchangeRate} {asset2Metadata.symbol.toUpperCase()}
           </section>
         )}
 

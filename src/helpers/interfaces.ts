@@ -175,6 +175,8 @@ export type MintTypeJson = Record<'public' | 'issuer' | 'holderOf', null | numbe
 
 export type PoolReserves = [BN, BN];
 
+export type PoolId = [MultiAssetId, MultiAssetId];
+
 export type PalletAssetConversionPoolId = ITuple<[MultiAssetId, MultiAssetId]>;
 
 export type TokensMetadataRecords = [StorageKey<[AssetId]>, PalletAssetsAssetMetadata][];

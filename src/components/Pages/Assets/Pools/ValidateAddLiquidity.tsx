@@ -5,14 +5,14 @@ import NotFound from '@common/NotFound';
 
 import { useAccounts } from '@contexts/AccountsContext';
 
-import type { MultiAssetId } from '@helpers/interfaces';
+import type { PoolId } from '@helpers/interfaces';
 import { parseAssetParam } from '@helpers/utilities';
 
 import LoadAddLiquidityData from '@pages/Assets/Pools/LoadAddLiquidityData';
 
 const ValidateAddLiquidity = () => {
   const [paramsValid, setParamsValid] = useState<boolean | null>(null);
-  const [poolId, setPoolId] = useState<[MultiAssetId, MultiAssetId]>(null);
+  const [poolId, setPoolId] = useState<PoolId>();
   const { assetId1, assetId2 } = useParams();
   const { api } = useAccounts();
 

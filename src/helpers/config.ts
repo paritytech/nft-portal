@@ -78,6 +78,50 @@ export const apiConfigRuntime: OverrideBundleType = {
                 ],
                 type: 'Option<(Balance,Balance)>',
               },
+              quote_price_exact_tokens_for_tokens: {
+                description: 'Quote price: exact tokens for tokens',
+                params: [
+                  {
+                    name: 'asset1',
+                    type: 'PalletAssetConversionMultiAssetId',
+                  },
+                  {
+                    name: 'asset2',
+                    type: 'PalletAssetConversionMultiAssetId',
+                  },
+                  {
+                    name: 'amount',
+                    type: 'u128',
+                  },
+                  {
+                    name: 'include_fee',
+                    type: 'bool',
+                  },
+                ],
+                type: 'Option<(Balance)>',
+              },
+              quote_price_tokens_for_exact_tokens: {
+                description: 'Quote price: tokens for exact tokens',
+                params: [
+                  {
+                    name: 'asset1',
+                    type: 'PalletAssetConversionMultiAssetId',
+                  },
+                  {
+                    name: 'asset2',
+                    type: 'PalletAssetConversionMultiAssetId',
+                  },
+                  {
+                    name: 'amount',
+                    type: 'u128',
+                  },
+                  {
+                    name: 'include_fee',
+                    type: 'bool',
+                  },
+                ],
+                type: 'Option<(Balance)>',
+              },
             },
             version: 1,
           },
