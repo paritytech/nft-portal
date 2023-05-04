@@ -5,6 +5,7 @@ import SectionTitle from '@common/SectionTitle';
 import Title from '@common/Title';
 
 import { routes } from '@helpers/routes';
+import SwapWidget from 'components/Widgets/SwapWidget';
 
 const SMyAssets = styled.div`
   display: flex;
@@ -21,6 +22,7 @@ const SMainContent = styled.div`
 
 const SSideContent = styled.aside`
   flex-grow: 1;
+  max-width: 380px;
 `;
 
 const MyAssets = () => {
@@ -35,7 +37,9 @@ const MyAssets = () => {
         </section>
       </SMainContent>
 
-      <SSideContent>Swapper (under construction)</SSideContent>
+      <SSideContent>
+        <SwapWidget />
+      </SSideContent>
     </SMyAssets>
   );
 };

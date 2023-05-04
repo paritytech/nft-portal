@@ -123,7 +123,7 @@ export interface ThemeStyle {
 
 export interface StatusEntry {
   type: ModalStatusTypes;
-  message: StatusMessages;
+  message: StatusMessages | string;
 }
 
 export interface RestrictionMessage {

@@ -14,11 +14,6 @@ import { multiAssetToParam, sortStrings } from '@helpers/utilities';
 
 import PlusIcon from '@images/icons/plus.svg';
 
-interface PoolsViewProps {
-  pools: PoolInfo[];
-  allTokens: TokenMetadata[];
-}
-
 const SPoolBlock = styled(SContentBlock)`
   flex: 1;
   width: auto;
@@ -38,6 +33,11 @@ interface PoolAsset extends TokenMetadata {
 }
 
 type PoolAssets = [PoolAsset, PoolAsset][];
+
+interface PoolsViewProps {
+  pools?: PoolInfo[];
+  allTokens?: TokenMetadata[];
+}
 
 const PoolsView = ({ pools, allTokens }: PoolsViewProps) => {
   if (!pools || !allTokens) {
@@ -70,6 +70,7 @@ const PoolsView = ({ pools, allTokens }: PoolsViewProps) => {
       });
     })
     .filter((poolInfo) => poolInfo[0] !== null && poolInfo[1] !== null) as PoolAssets;
+
   poolsWithInfo.sort((poolInfo1, poolInfo2) => sortStrings(poolInfo1[1].symbol, poolInfo2[1].symbol));
 
   return (

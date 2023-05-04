@@ -43,6 +43,7 @@ export const useAssets = () => {
   const [nativeMetadata, setNativeMetadata] = useState<TokenMetadata>();
   const [allTokens, setAllTokens] = useState<TokenMetadata[]>();
   const [pools, setPools] = useState<PoolInfo[]>();
+  const [poolTokenPairs, setPoolTokenPairs] = useState<TokenMetadata[][]>();
 
   const addLiquidity = useCallback(
     async (asset1: MultiAssetId, asset2: MultiAssetId, amount1: BN, amount2: BN, amount1Min: BN, amount2Min: BN) => {
@@ -246,6 +247,7 @@ export const useAssets = () => {
   const getAvailablePoolTokens = useCallback(async () => {
     if (api && api.query.assetConversion) {
       let availablePoolTokens: TokenMetadata[] = [];
+
       try {
         // load all tokens
         const allTokens: TokenMetadata[] = await fetchAllTokensMetadata();
@@ -263,6 +265,35 @@ export const useAssets = () => {
       setAvailablePoolTokens(availablePoolTokens);
     }
   }, [api, fetchAllTokensMetadata]);
+
+  const getPoolTokenPairs = useCallback(async () => {
+    if (api && api.query.assetConversion && storedChain) {
+      try {
+        const allTokens: TokenMetadata[] = await fetchAllTokensMetadata();
+        const poolRecords: StorageKey<[PalletAssetConversionPoolId]>[] = await api.query.assetConversion.pools.keys();
+
+        const prepareAsset = (asset: MultiAssetId) => {
+          if (asset.isAsset) {
+            const foundToken = allTokens.find((token) => token.id.asAsset.toNumber() === asset.asAsset.toNumber());
+
+            if (foundToken) {
+              return foundToken;
+            }
+          } else {
+            return formatNativeTokenMetadata(api, storedChain);
+          }
+        };
+
+        const poolTokenPairs = poolRecords
+          .map(({ args: [id] }) => [prepareAsset(id[0]), prepareAsset(id[1])])
+          .filter((asset): asset is TokenMetadata[] => typeof asset[0] !== 'undefined' && typeof asset[1] !== 'undefined');
+
+          setPoolTokenPairs(poolTokenPairs);
+      } catch (error) {
+        //
+      }
+    }
+  }, [api, fetchAllTokensMetadata, storedChain]);
 
   const getAssetBalance = useCallback(
     async (assetId: MultiAssetId): Promise<BN> => {
@@ -489,12 +520,14 @@ export const useAssets = () => {
     getNativeMetadata,
     getPools,
     getPoolReserves,
+    getPoolTokenPairs,
     getAllTokens,
     getAllTokensWithNativeAndSupply,
     allTokens,
     nativeBalance,
     nativeMetadata,
     pools,
+    poolTokenPairs,
     swap,
   };
 };

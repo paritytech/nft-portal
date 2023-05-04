@@ -25,24 +25,32 @@ const ValidateSwap = () => {
 
   const validateParams = useCallback(async () => {
     if (!api || !api.query.assetConversion) return;
+
     if (assetId1 && assetId2) {
       let paramsValid = false;
       asset1.current = parseAssetParam(assetId1, api);
       asset2.current = parseAssetParam(assetId2, api);
+
       if (asset1.current && asset2.current) {
         const poolId = getPoolId(asset1.current as MultiAssetId, asset2.current as MultiAssetId);
         setPoolId(poolId);
         const poolExists = !(await api.query.assetConversion.pools(poolId)).isEmpty;
         if (poolExists) paramsValid = true;
       }
+
       setParamsValid(paramsValid);
     } else {
       const defaultPool = await getDefaultPool();
+
       if (defaultPool !== null) {
         navigate(routes.swap.assets(multiAssetToParam(defaultPool[0]), multiAssetToParam(defaultPool[1])));
       }
     }
   }, [api, assetId1, assetId2, getDefaultPool, navigate]);
+
+  const handleTokenChange = useCallback((asset1: MultiAssetId, asset2: MultiAssetId) => {
+    navigate(routes.swap.assets(multiAssetToParam(asset1), multiAssetToParam(asset2)));
+  }, [navigate]);
 
   useEffect(() => {
     validateParams();
@@ -56,7 +64,7 @@ const ValidateSwap = () => {
     return <NotFound />;
   }
 
-  return <LoadSwapData asset1={asset1.current as MultiAssetId} asset2={asset2.current as MultiAssetId} pool={poolId} />;
+  return <LoadSwapData asset1={asset1.current as MultiAssetId} asset2={asset2.current as MultiAssetId} pool={poolId} handleTokenChange={handleTokenChange} />;
 };
 
 export default memo(ValidateSwap);
