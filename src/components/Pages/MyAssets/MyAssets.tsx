@@ -1,3 +1,4 @@
+import SwapWidget from 'components/Widgets/SwapWidget';
 import { memo } from 'react';
 import styled from 'styled-components';
 
@@ -5,7 +6,6 @@ import SectionTitle from '@common/SectionTitle';
 import Title from '@common/Title';
 
 import { routes } from '@helpers/routes';
-import SwapWidget from 'components/Widgets/SwapWidget';
 
 const SMyAssets = styled.div`
   display: flex;

@@ -305,9 +305,11 @@ export const useAssets = () => {
 
         const poolTokenPairs = poolRecords
           .map(({ args: [id] }) => [prepareAsset(id[0]), prepareAsset(id[1])])
-          .filter((asset): asset is TokenMetadata[] => typeof asset[0] !== 'undefined' && typeof asset[1] !== 'undefined');
+          .filter(
+            (asset): asset is TokenMetadata[] => typeof asset[0] !== 'undefined' && typeof asset[1] !== 'undefined',
+          );
 
-          setPoolTokenPairs(poolTokenPairs);
+        setPoolTokenPairs(poolTokenPairs);
       } catch (error) {
         //
       }

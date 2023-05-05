@@ -19,14 +19,8 @@ interface LoadSwapDataProps {
 
 const LoadSwapData = ({ asset1, asset2, pool, handleTokenChange }: LoadSwapDataProps) => {
   const { activeAccount, api } = useAccounts();
-  const {
-    getAssetBalance,
-    getAssetMetadata,
-    getAssetMinBalance,
-    getPoolReserves,
-    getPoolTokenPairs,
-    poolTokenPairs,
-  } = useAssets();
+  const { getAssetBalance, getAssetMetadata, getAssetMinBalance, getPoolReserves, getPoolTokenPairs, poolTokenPairs } =
+    useAssets();
   const [asset1Balance, setAsset1Balance] = useState<BN>();
   const [asset2Balance, setAsset2Balance] = useState<BN>();
   const [asset1Metadata, setAsset1Metadata] = useState<TokenMetadata>();
@@ -44,7 +38,17 @@ const LoadSwapData = ({ asset1, asset2, pool, handleTokenChange }: LoadSwapDataP
       getPoolReserves(pool[0], pool[1]).then(setPoolReserves);
       getPoolTokenPairs();
     }
-  }, [api, activeAccount, asset1, asset2, getAssetMetadata, getAssetMinBalance, getPoolReserves, getPoolTokenPairs, pool]);
+  }, [
+    api,
+    activeAccount,
+    asset1,
+    asset2,
+    getAssetMetadata,
+    getAssetMinBalance,
+    getPoolReserves,
+    getPoolTokenPairs,
+    pool,
+  ]);
 
   useEffect(() => {
     if (api && activeAccount) {
@@ -61,7 +65,15 @@ const LoadSwapData = ({ asset1, asset2, pool, handleTokenChange }: LoadSwapDataP
     }
   }, [api]);
 
-  if (!asset1Metadata || !asset2Metadata || !poolReserves || !asset1MinKeep || !asset2MinKeep || !swapFee || !poolTokenPairs) {
+  if (
+    !asset1Metadata ||
+    !asset2Metadata ||
+    !poolReserves ||
+    !asset1MinKeep ||
+    !asset2MinKeep ||
+    !swapFee ||
+    !poolTokenPairs
+  ) {
     return <>Loading data... please wait</>;
   }
   // TODO: subscribe to poolReserves, fetch every x seconds while the component is mounted and the page is active

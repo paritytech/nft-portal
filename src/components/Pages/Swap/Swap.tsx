@@ -356,7 +356,6 @@ const Swap = ({
           )}
         </Form.Group>
 
-
         <ActionButton action={() => handleTokenChange(asset2, asset1)}>Flip sides</ActionButton>
         <br />
         <br />

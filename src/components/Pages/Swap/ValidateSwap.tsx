@@ -48,9 +48,12 @@ const ValidateSwap = () => {
     }
   }, [api, assetId1, assetId2, getDefaultPool, navigate]);
 
-  const handleTokenChange = useCallback((asset1: MultiAssetId, asset2: MultiAssetId) => {
-    navigate(routes.swap.assets(multiAssetToParam(asset1), multiAssetToParam(asset2)));
-  }, [navigate]);
+  const handleTokenChange = useCallback(
+    (asset1: MultiAssetId, asset2: MultiAssetId) => {
+      navigate(routes.swap.assets(multiAssetToParam(asset1), multiAssetToParam(asset2)));
+    },
+    [navigate],
+  );
 
   useEffect(() => {
     validateParams();
@@ -64,7 +67,14 @@ const ValidateSwap = () => {
     return <NotFound />;
   }
 
-  return <LoadSwapData asset1={asset1.current as MultiAssetId} asset2={asset2.current as MultiAssetId} pool={poolId} handleTokenChange={handleTokenChange} />;
+  return (
+    <LoadSwapData
+      asset1={asset1.current as MultiAssetId}
+      asset2={asset2.current as MultiAssetId}
+      pool={poolId}
+      handleTokenChange={handleTokenChange}
+    />
+  );
 };
 
 export default memo(ValidateSwap);
