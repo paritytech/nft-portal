@@ -61,14 +61,17 @@ export const generateAssetId = (): number => {
 };
 
 export const sortStrings = (string1: string | null, string2: string | null): number => {
-  string1 = string1?.toUpperCase();
-  string2 = string2?.toUpperCase();
-  if (string1 < string2) {
+  const str1 = string1?.toUpperCase() || '';
+  const str2 = string2?.toUpperCase() || '';
+
+  if (str1 < str2) {
     return -1;
   }
-  if (string1 > string2) {
+
+  if (str1 > str2) {
     return 1;
   }
+
   return 0;
 };
 
@@ -177,7 +180,7 @@ export const applySlippage = (
 };
 
 export const getCleanFormattedBalance = (planck: BN, decimals: number): string => {
-  return formatBalance(planck as ToBn, {
+  return formatBalance(planck as unknown as ToBn, {
     forceUnit: '-',
     decimals,
     withSi: false,

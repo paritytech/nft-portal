@@ -205,7 +205,7 @@ export const useAssets = () => {
     [api, activeAccount, activeWallet, openModalStatus, setStatus],
   );
 
-  const fetchAllTokensMetadata = useCallback(async (): Promise<TokenMetadata[]> => {
+  const fetchAllTokensMetadata = useCallback(async (): Promise<TokenMetadata[] | undefined> => {
     if (!api) return;
 
     let result: TokenMetadata[] = [];
@@ -227,8 +227,27 @@ export const useAssets = () => {
     return result;
   }, [api]);
 
-  const fetchAllTokensDetails = useCallback(async (): Promise<TokensDetailsMap> => {
+  const getTokenIds = useCallback(async (): Promise<AssetId[] | undefined> => {
+    if (api) {
+      const results: StorageKey<[AssetId]>[] = await api.query.assets.asset.keys();
+      return results.map(({ args: [id] }) => id);
+    }
+  }, [api]);
+
+  const getAllTokens = useCallback(async () => {
+    if (allTokens || !api || !storedChain) return;
+
+    try {
+      const tokens = await fetchAllTokensMetadata();
+      setAllTokens([formatNativeTokenMetadata(api, storedChain), ...tokens]);
+    } catch (error) {
+      //
+    }
+  }, [storedChain, allTokens, api, fetchAllTokensMetadata]);
+
+  const fetchAllTokensDetails = useCallback(async (): Promise<TokensDetailsMap | undefined> => {
     const tokensIds = await getTokenIds();
+
     if (!api || !tokensIds) return;
 
     const result: TokensDetailsMap = new Map();
@@ -296,7 +315,7 @@ export const useAssets = () => {
   }, [api, fetchAllTokensMetadata, storedChain]);
 
   const getAssetBalance = useCallback(
-    async (assetId: MultiAssetId): Promise<BN> => {
+    async (assetId: MultiAssetId): Promise<BN | undefined> => {
       if (!api || !activeAccount) return;
 
       try {
@@ -318,7 +337,7 @@ export const useAssets = () => {
   );
 
   const getAssetMinBalance = useCallback(
-    async (assetId: MultiAssetId): Promise<BN> => {
+    async (assetId: MultiAssetId): Promise<BN | undefined> => {
       if (!api) return;
 
       try {
@@ -336,7 +355,7 @@ export const useAssets = () => {
   );
 
   const getAssetMetadata = useCallback(
-    async (assetId: MultiAssetId): Promise<TokenMetadata> => {
+    async (assetId: MultiAssetId): Promise<TokenMetadata | undefined> => {
       if (!api || !storedChain) return;
 
       try {
@@ -353,9 +372,10 @@ export const useAssets = () => {
     [api, storedChain],
   );
 
-  const getDefaultPool = useCallback(async (): Promise<PoolId | null> => {
+  const getDefaultPool = useCallback(async (): Promise<PoolId | null | undefined> => {
     if (api && api.query.assetConversion) {
-      let defaultPoolId = null;
+      let defaultPoolId: PoolId | null = null;
+
       try {
         // load all tokens sorted by symbol
         const allTokens: TokenMetadata[] = await fetchAllTokensMetadata();
@@ -445,25 +465,7 @@ export const useAssets = () => {
     }
   }, [api, getPoolReserves]);
 
-  const getTokenIds = useCallback(async (): Promise<AssetId[]> => {
-    if (api) {
-      const results: StorageKey<[AssetId]>[] = await api.query.assets.asset.keys();
-      return results.map(({ args: [id] }) => id);
-    }
-  }, [api]);
-
-  const getAllTokens = useCallback(async () => {
-    if (allTokens || !api || !storedChain) return;
-
-    try {
-      const tokens = await fetchAllTokensMetadata();
-      setAllTokens([formatNativeTokenMetadata(api, storedChain), ...tokens]);
-    } catch (error) {
-      //
-    }
-  }, [storedChain, allTokens, api, fetchAllTokensMetadata]);
-
-  const getAllTokensWithNativeAndSupply = useCallback(async (): Promise<TokenWithSupply[]> => {
+  const getAllTokensWithNativeAndSupply = useCallback(async (): Promise<TokenWithSupply[] | undefined> => {
     if (!api || !storedChain) return;
 
     let result: TokenWithSupply[] = [];

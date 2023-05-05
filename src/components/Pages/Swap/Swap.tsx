@@ -316,7 +316,7 @@ const Swap = ({
         <Form.Group className='mb-3'>
           <Form.Select
             className='mb-3'
-            defaultValue={multiAssetToParam(asset1)}
+            value={multiAssetToParam(asset1)}
             onChange={(event) =>
               handleTokenChange(toMultiAsset(api.createType('AssetId', event.target.value), api), asset2)
             }
@@ -356,16 +356,15 @@ const Swap = ({
           )}
         </Form.Group>
 
-        <Link to={routes.swap.assets(multiAssetToParam(asset2), multiAssetToParam(asset1))} title='Swap assets'>
-          Flip sides
-        </Link>
+
+        <ActionButton action={() => handleTokenChange(asset2, asset1)}>Flip sides</ActionButton>
         <br />
         <br />
 
         <Form.Group className='mb-3'>
           <Form.Select
             className='mb-3'
-            defaultValue={multiAssetToParam(asset2)}
+            value={multiAssetToParam(asset2)}
             onChange={(event) =>
               handleTokenChange(asset1, toMultiAsset(api.createType('AssetId', event.target.value), api))
             }

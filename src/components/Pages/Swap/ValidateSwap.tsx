@@ -42,7 +42,7 @@ const ValidateSwap = () => {
     } else {
       const defaultPool = await getDefaultPool();
 
-      if (defaultPool !== null) {
+      if (defaultPool) {
         navigate(routes.swap.assets(multiAssetToParam(defaultPool[0]), multiAssetToParam(defaultPool[1])));
       }
     }
