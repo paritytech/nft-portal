@@ -15,14 +15,14 @@ const Tokens = () => {
     getAllTokensWithNativeAndSupply().then(setTokens);
   }, [getAllTokensWithNativeAndSupply]);
 
-  if (isEmpty(tokens)) {
+  if (!tokens || isEmpty(tokens)) {
     return <>Gathering data... please wait</>;
   }
 
   return (
     <>
       {tokens.map((token) => (
-        <Token key={token.id} token={token} />
+        <Token key={token.id.toHex()} token={token} />
       ))}
     </>
   );

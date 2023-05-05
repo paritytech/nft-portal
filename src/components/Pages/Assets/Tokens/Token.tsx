@@ -30,7 +30,7 @@ const Token = ({ token }: TokenProps) => {
   const { name, symbol, decimals, supply } = token;
   const formattedSymbol = symbol.toUpperCase();
   const formattedSupply = supply
-    ? formatBalance(supply as ToBn, {
+    ? formatBalance(supply as unknown as ToBn, {
         decimals,
         withSi: true,
         withUnit: formattedSymbol,

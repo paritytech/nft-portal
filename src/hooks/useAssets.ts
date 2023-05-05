@@ -64,6 +64,8 @@ export const useAssets = () => {
 
                 events.some(({ event: { data, method } }) => {
                   if (method === 'LiquidityAdded') {
+                    // TODO check later if we can add a proper type for data
+                    // @ts-ignore
                     const poolId = data.poolId as PalletAssetConversionPoolId;
 
                     if (poolId && poolId[0].eq(asset1) && poolId[1].eq(asset2)) {
@@ -111,6 +113,8 @@ export const useAssets = () => {
 
                 events.some(({ event: { data, method } }) => {
                   if (method === 'PoolCreated') {
+                    // TODO check later if we can add a proper type for data
+                    // @ts-ignore
                     const createdPoolId = data.poolId as PalletAssetConversionPoolId;
 
                     if (createdPoolId && createdPoolId[0].eq(token1) && createdPoolId[1].eq(token2)) {
@@ -205,11 +209,9 @@ export const useAssets = () => {
     [api, activeAccount, activeWallet, openModalStatus, setStatus],
   );
 
-  const fetchAllTokensMetadata = useCallback(async (): Promise<TokenMetadata[] | undefined> => {
-    if (!api) return;
-
+  const fetchAllTokensMetadata = useCallback(async (): Promise<TokenMetadata[]> => {
     let result: TokenMetadata[] = [];
-    const metadata: TokensMetadataRecords = await api.query.assets.metadata.entries();
+    const metadata: TokensMetadataRecords = await api!.query.assets.metadata.entries();
 
     if (!isEmpty(metadata)) {
       result = metadata
@@ -219,7 +221,7 @@ export const useAssets = () => {
               args: [id],
             },
             data,
-          ]) => formatAssetMetadata(id, data, api),
+          ]) => formatAssetMetadata(id, data, api!),
         )
         .sort((a, b) => sortStrings(a.symbol, b.symbol));
     }
@@ -256,7 +258,7 @@ export const useAssets = () => {
     if (!isEmpty(details)) {
       details.forEach((record, index) => {
         const id = tokensIds[index].toNumber();
-        result.set(id, record.unwrapOr(null)?.supply.toBn());
+        result.set(id, record.unwrapOr(null));
       });
     }
 
@@ -423,6 +425,8 @@ export const useAssets = () => {
       if (api && api.call.assetConversionApi) {
         const res = await api.call.assetConversionApi.getReserves(asset1, asset2);
         if (res && !res.isEmpty) {
+          // TODO check later if we can add a proper type for res
+          // @ts-ignore
           const [reserve1, reserve2] = res.unwrap();
           reserves = [reserve1.toBn(), reserve2.toBn()];
         }
@@ -478,17 +482,21 @@ export const useAssets = () => {
         supply: (await api.query.balances?.totalIssuance?.().then((r) => r.toBn())) ?? null,
       });
 
-      const [details, metadata]: [TokensDetailsMap, TokenMetadata[]] = await Promise.all([
+      const [details, metadata]: [TokensDetailsMap | undefined, TokenMetadata[]] = await Promise.all([
         fetchAllTokensDetails(),
         fetchAllTokensMetadata(),
       ]);
 
       result = [
         ...result,
-        ...metadata.map((token) => ({
-          ...token,
-          supply: details?.get(token.id.asAsset.toNumber()) ?? null,
-        })),
+        ...metadata.map((token) => {
+          let supply = null;
+          if (details) {
+            supply = details.get(token.id.asAsset.toNumber())?.supply || null;
+          }
+
+          return { ...token, supply };
+        }),
       ];
     } catch (error) {
       //
