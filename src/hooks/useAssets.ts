@@ -158,7 +158,7 @@ export const useAssets = () => {
         openModalStatus();
 
         const swapMethod =
-          swapType === SwapTypes.EXACT_IN
+          swapType === SwapTypes.EXACT_SEND
             ? api.tx.assetConversion.swapExactTokensForTokens(
                 [asset1, asset2],
                 amount1,
@@ -171,6 +171,7 @@ export const useAssets = () => {
                 amount2,
                 amountWithSlippage,
                 activeAccount.address,
+                true,
               );
 
         try {
@@ -487,17 +488,12 @@ export const useAssets = () => {
         fetchAllTokensMetadata(),
       ]);
 
-      result = [
-        ...result,
-        ...metadata.map((token) => {
-          let supply = null;
-          if (details) {
-            supply = details.get(token.id.asAsset.toNumber())?.supply || null;
-          }
-
-          return { ...token, supply };
-        }),
-      ];
+      if (details) {
+        result = [
+          ...result,
+          ...metadata.map((token) => ({ ...token, supply: details.get(token.id.asAsset.toNumber())?.supply || null })),
+        ];
+      }
     } catch (error) {
       //
     }

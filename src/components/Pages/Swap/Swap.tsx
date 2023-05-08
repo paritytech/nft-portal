@@ -29,6 +29,7 @@ import {
   getCleanFormattedBalance,
   isPoolEmpty,
   multiAssetToParam,
+  parseAssetParam,
   pricePattern,
   toMultiAsset,
   unitToPlanck,
@@ -150,7 +151,7 @@ const Swap = ({
     if (!amount1.match(pricePattern(asset1Metadata.decimals))) return;
 
     setAsset1Amount(amount1);
-    setSwapType(SwapTypes.EXACT_IN);
+    setSwapType(SwapTypes.EXACT_SEND);
 
     const amountIn = unitToPlanck(amount1, asset1Metadata.decimals);
     const amountOut = calcSwapAmountOut(reserves, new BN(amountIn), asset2Metadata.decimals, swapFee);
@@ -168,7 +169,7 @@ const Swap = ({
     if (!amount2.match(pricePattern(asset2Metadata.decimals))) return;
 
     setAsset2Amount(amount2);
-    setSwapType(SwapTypes.EXACT_OUT);
+    setSwapType(SwapTypes.EXACT_RECEIVE);
 
     const amountOut = unitToPlanck(amount2, asset2Metadata.decimals);
     const amountIn = calcSwapAmountIn(reserves, new BN(amountOut), asset1Metadata.decimals, swapFee);
@@ -188,7 +189,7 @@ const Swap = ({
       let formError: StatusMessages | string | null = null;
 
       // validate max balances
-      if (swapType === SwapTypes.EXACT_IN) {
+      if (swapType === SwapTypes.EXACT_SEND) {
         const maxSwapAmount: BN = reserves[1].sub(minKeepAmount2);
         if (amount2.gt(maxSwapAmount)) {
           const maxAmountFormatted = formatBalance(maxSwapAmount, {
@@ -224,7 +225,7 @@ const Swap = ({
       }
 
       const amountWithSlippage =
-        swapType === SwapTypes.EXACT_IN
+        swapType === SwapTypes.EXACT_SEND
           ? unitToPlanck(applySlippage(asset2Amount, true, SLIPPAGE, asset2Metadata.decimals), asset2Metadata.decimals)
           : unitToPlanck(
               applySlippage(asset1Amount, false, SLIPPAGE, asset1Metadata.decimals),
@@ -265,7 +266,7 @@ const Swap = ({
       setImpact(calcPriceImpact(exchangeRate, idealExchangeRate));
 
       let calculatedSlippage;
-      if (swapType === SwapTypes.EXACT_IN) {
+      if (swapType === SwapTypes.EXACT_SEND) {
         calculatedSlippage = applySlippage(asset2Amount, true, SLIPPAGE, asset2Metadata.decimals);
       } else {
         calculatedSlippage = applySlippage(asset1Amount, false, SLIPPAGE, asset1Metadata.decimals);
@@ -315,7 +316,7 @@ const Swap = ({
             className='mb-3'
             value={multiAssetToParam(asset1)}
             onChange={(event) =>
-              handleTokenChange(toMultiAsset(api.createType('AssetId', event.target.value), api), asset2)
+              handleTokenChange(parseAssetParam(event.target.value, api)!, asset2)
             }
           >
             {tokenOptions1.map(({ id, symbol }) => (
@@ -362,7 +363,7 @@ const Swap = ({
             className='mb-3'
             value={multiAssetToParam(asset2)}
             onChange={(event) =>
-              handleTokenChange(asset1, toMultiAsset(api.createType('AssetId', event.target.value), api))
+              handleTokenChange(asset1, parseAssetParam(event.target.value, api)!)
             }
           >
             {tokenOptions2.map(({ id, symbol }) => (
@@ -409,10 +410,10 @@ const Swap = ({
         <section>Price impact: {impact !== null ? `${impact}%` : '-'}</section>
 
         <section>Slippage tolerance: {SLIPPAGE}%</section>
-        {afterSlippage && swapType === SwapTypes.EXACT_IN && (
+        {afterSlippage && swapType === SwapTypes.EXACT_SEND && (
           <section>Minimum received after slippage: {afterSlippage}</section>
         )}
-        {afterSlippage && swapType === SwapTypes.EXACT_OUT && (
+        {afterSlippage && swapType === SwapTypes.EXACT_RECEIVE && (
           <section>Maximum sent after slippage: {afterSlippage}</section>
         )}
 
