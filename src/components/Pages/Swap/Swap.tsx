@@ -89,7 +89,7 @@ const Swap = ({
   const [formDisabled, setFormDisabled] = useState<boolean>(true);
   const [swapType, setSwapType] = useState<SwapTypes | null>(null);
 
-  const reserves: [BN, BN] = useMemo(
+  const reserves: PoolReserves = useMemo(
     () => (pool[0] === asset1 ? poolReserves : [poolReserves[1], poolReserves[0]]),
     [pool, asset1, poolReserves],
   );
