@@ -1,3 +1,4 @@
+import SwapWidget from 'components/Widgets/SwapWidget';
 import { memo } from 'react';
 import styled from 'styled-components';
 
@@ -21,6 +22,7 @@ const SMainContent = styled.div`
 
 const SSideContent = styled.aside`
   flex-grow: 1;
+  max-width: 380px;
 `;
 
 const MyAssets = () => {
@@ -35,7 +37,9 @@ const MyAssets = () => {
         </section>
       </SMainContent>
 
-      <SSideContent>Swapper (under construction)</SSideContent>
+      <SSideContent>
+        <SwapWidget />
+      </SSideContent>
     </SMyAssets>
   );
 };

@@ -18,6 +18,7 @@ import PoolsView from './PoolsView';
 const Pools = () => {
   const { activeAccount } = useAccounts();
   const { getAllTokens, getPools, allTokens, pools } = useAssets();
+
   useEffect(() => {
     getPools();
     getAllTokens();

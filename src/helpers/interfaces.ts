@@ -123,7 +123,7 @@ export interface ThemeStyle {
 
 export interface StatusEntry {
   type: ModalStatusTypes;
-  message: StatusMessages;
+  message: StatusMessages | string;
 }
 
 export interface RestrictionMessage {
@@ -183,4 +183,4 @@ export type TokensMetadataRecords = [StorageKey<[AssetId]>, PalletAssetsAssetMet
 
 export type TokensDetailsRecords = Option<PalletAssetsAssetDetails>[];
 
-export type TokensDetailsMap = Map<number, Option<PalletAssetsAssetDetails>>;
+export type TokensDetailsMap = Map<number, PalletAssetsAssetDetails | null>;

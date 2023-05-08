@@ -70,6 +70,6 @@ export enum ExtensionIds {
 }
 
 export enum SwapTypes {
-  EXACT_IN,
-  EXACT_OUT,
+  EXACT_SEND,
+  EXACT_RECEIVE,
 }

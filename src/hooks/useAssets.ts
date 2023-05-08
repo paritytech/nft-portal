@@ -43,6 +43,7 @@ export const useAssets = () => {
   const [nativeMetadata, setNativeMetadata] = useState<TokenMetadata>();
   const [allTokens, setAllTokens] = useState<TokenMetadata[]>();
   const [pools, setPools] = useState<PoolInfo[]>();
+  const [poolTokenPairs, setPoolTokenPairs] = useState<TokenMetadata[][]>();
 
   const addLiquidity = useCallback(
     async (asset1: MultiAssetId, asset2: MultiAssetId, amount1: BN, amount2: BN, amount1Min: BN, amount2Min: BN) => {
@@ -63,6 +64,8 @@ export const useAssets = () => {
 
                 events.some(({ event: { data, method } }) => {
                   if (method === 'LiquidityAdded') {
+                    // TODO check later if we can add a proper type for data
+                    // @ts-ignore
                     const poolId = data.poolId as PalletAssetConversionPoolId;
 
                     if (poolId && poolId[0].eq(asset1) && poolId[1].eq(asset2)) {
@@ -110,6 +113,8 @@ export const useAssets = () => {
 
                 events.some(({ event: { data, method } }) => {
                   if (method === 'PoolCreated') {
+                    // TODO check later if we can add a proper type for data
+                    // @ts-ignore
                     const createdPoolId = data.poolId as PalletAssetConversionPoolId;
 
                     if (createdPoolId && createdPoolId[0].eq(token1) && createdPoolId[1].eq(token2)) {
@@ -153,7 +158,7 @@ export const useAssets = () => {
         openModalStatus();
 
         const swapMethod =
-          swapType === SwapTypes.EXACT_IN
+          swapType === SwapTypes.EXACT_SEND
             ? api.tx.assetConversion.swapExactTokensForTokens(
                 [asset1, asset2],
                 amount1,
@@ -166,6 +171,7 @@ export const useAssets = () => {
                 amount2,
                 amountWithSlippage,
                 activeAccount.address,
+                true,
               );
 
         try {
@@ -205,10 +211,8 @@ export const useAssets = () => {
   );
 
   const fetchAllTokensMetadata = useCallback(async (): Promise<TokenMetadata[]> => {
-    if (!api) return;
-
     let result: TokenMetadata[] = [];
-    const metadata: TokensMetadataRecords = await api.query.assets.metadata.entries();
+    const metadata: TokensMetadataRecords = await api!.query.assets.metadata.entries();
 
     if (!isEmpty(metadata)) {
       result = metadata
@@ -218,7 +222,7 @@ export const useAssets = () => {
               args: [id],
             },
             data,
-          ]) => formatAssetMetadata(id, data, api),
+          ]) => formatAssetMetadata(id, data, api!),
         )
         .sort((a, b) => sortStrings(a.symbol, b.symbol));
     }
@@ -226,8 +230,27 @@ export const useAssets = () => {
     return result;
   }, [api]);
 
-  const fetchAllTokensDetails = useCallback(async (): Promise<TokensDetailsMap> => {
+  const getTokenIds = useCallback(async (): Promise<AssetId[] | undefined> => {
+    if (api) {
+      const results: StorageKey<[AssetId]>[] = await api.query.assets.asset.keys();
+      return results.map(({ args: [id] }) => id);
+    }
+  }, [api]);
+
+  const getAllTokens = useCallback(async () => {
+    if (allTokens || !api || !storedChain) return;
+
+    try {
+      const tokens = await fetchAllTokensMetadata();
+      setAllTokens([formatNativeTokenMetadata(api, storedChain), ...tokens]);
+    } catch (error) {
+      //
+    }
+  }, [storedChain, allTokens, api, fetchAllTokensMetadata]);
+
+  const fetchAllTokensDetails = useCallback(async (): Promise<TokensDetailsMap | undefined> => {
     const tokensIds = await getTokenIds();
+
     if (!api || !tokensIds) return;
 
     const result: TokensDetailsMap = new Map();
@@ -236,7 +259,7 @@ export const useAssets = () => {
     if (!isEmpty(details)) {
       details.forEach((record, index) => {
         const id = tokensIds[index].toNumber();
-        result.set(id, record.unwrapOr(null)?.supply.toBn());
+        result.set(id, record.unwrapOr(null));
       });
     }
 
@@ -246,6 +269,7 @@ export const useAssets = () => {
   const getAvailablePoolTokens = useCallback(async () => {
     if (api && api.query.assetConversion) {
       let availablePoolTokens: TokenMetadata[] = [];
+
       try {
         // load all tokens
         const allTokens: TokenMetadata[] = await fetchAllTokensMetadata();
@@ -264,8 +288,39 @@ export const useAssets = () => {
     }
   }, [api, fetchAllTokensMetadata]);
 
+  const getPoolTokenPairs = useCallback(async () => {
+    if (api && api.query.assetConversion && storedChain) {
+      try {
+        const allTokens: TokenMetadata[] = await fetchAllTokensMetadata();
+        const poolRecords: StorageKey<[PalletAssetConversionPoolId]>[] = await api.query.assetConversion.pools.keys();
+
+        const prepareAsset = (asset: MultiAssetId) => {
+          if (asset.isAsset) {
+            const foundToken = allTokens.find((token) => token.id.asAsset.toNumber() === asset.asAsset.toNumber());
+
+            if (foundToken) {
+              return foundToken;
+            }
+          } else {
+            return formatNativeTokenMetadata(api, storedChain);
+          }
+        };
+
+        const poolTokenPairs = poolRecords
+          .map(({ args: [id] }) => [prepareAsset(id[0]), prepareAsset(id[1])])
+          .filter(
+            (asset): asset is TokenMetadata[] => typeof asset[0] !== 'undefined' && typeof asset[1] !== 'undefined',
+          );
+
+        setPoolTokenPairs(poolTokenPairs);
+      } catch (error) {
+        //
+      }
+    }
+  }, [api, fetchAllTokensMetadata, storedChain]);
+
   const getAssetBalance = useCallback(
-    async (assetId: MultiAssetId): Promise<BN> => {
+    async (assetId: MultiAssetId): Promise<BN | undefined> => {
       if (!api || !activeAccount) return;
 
       try {
@@ -287,7 +342,7 @@ export const useAssets = () => {
   );
 
   const getAssetMinBalance = useCallback(
-    async (assetId: MultiAssetId): Promise<BN> => {
+    async (assetId: MultiAssetId): Promise<BN | undefined> => {
       if (!api) return;
 
       try {
@@ -305,7 +360,7 @@ export const useAssets = () => {
   );
 
   const getAssetMetadata = useCallback(
-    async (assetId: MultiAssetId): Promise<TokenMetadata> => {
+    async (assetId: MultiAssetId): Promise<TokenMetadata | undefined> => {
       if (!api || !storedChain) return;
 
       try {
@@ -322,9 +377,10 @@ export const useAssets = () => {
     [api, storedChain],
   );
 
-  const getDefaultPool = useCallback(async (): Promise<PoolId | null> => {
+  const getDefaultPool = useCallback(async (): Promise<PoolId | null | undefined> => {
     if (api && api.query.assetConversion) {
-      let defaultPoolId = null;
+      let defaultPoolId: PoolId | null = null;
+
       try {
         // load all tokens sorted by symbol
         const allTokens: TokenMetadata[] = await fetchAllTokensMetadata();
@@ -370,6 +426,8 @@ export const useAssets = () => {
       if (api && api.call.assetConversionApi) {
         const res = await api.call.assetConversionApi.getReserves(asset1, asset2);
         if (res && !res.isEmpty) {
+          // TODO check later if we can add a proper type for res
+          // @ts-ignore
           const [reserve1, reserve2] = res.unwrap();
           reserves = [reserve1.toBn(), reserve2.toBn()];
         }
@@ -414,25 +472,7 @@ export const useAssets = () => {
     }
   }, [api, getPoolReserves]);
 
-  const getTokenIds = useCallback(async (): Promise<AssetId[]> => {
-    if (api) {
-      const results: StorageKey<[AssetId]>[] = await api.query.assets.asset.keys();
-      return results.map(({ args: [id] }) => id);
-    }
-  }, [api]);
-
-  const getAllTokens = useCallback(async () => {
-    if (allTokens || !api || !storedChain) return;
-
-    try {
-      const tokens = await fetchAllTokensMetadata();
-      setAllTokens([formatNativeTokenMetadata(api, storedChain), ...tokens]);
-    } catch (error) {
-      //
-    }
-  }, [storedChain, allTokens, api, fetchAllTokensMetadata]);
-
-  const getAllTokensWithNativeAndSupply = useCallback(async (): Promise<TokenWithSupply[]> => {
+  const getAllTokensWithNativeAndSupply = useCallback(async (): Promise<TokenWithSupply[] | undefined> => {
     if (!api || !storedChain) return;
 
     let result: TokenWithSupply[] = [];
@@ -443,18 +483,17 @@ export const useAssets = () => {
         supply: (await api.query.balances?.totalIssuance?.().then((r) => r.toBn())) ?? null,
       });
 
-      const [details, metadata]: [TokensDetailsMap, TokenMetadata[]] = await Promise.all([
+      const [details, metadata]: [TokensDetailsMap | undefined, TokenMetadata[]] = await Promise.all([
         fetchAllTokensDetails(),
         fetchAllTokensMetadata(),
       ]);
 
-      result = [
-        ...result,
-        ...metadata.map((token) => ({
-          ...token,
-          supply: details?.get(token.id.asAsset.toNumber()) ?? null,
-        })),
-      ];
+      if (details) {
+        result = [
+          ...result,
+          ...metadata.map((token) => ({ ...token, supply: details.get(token.id.asAsset.toNumber())?.supply || null })),
+        ];
+      }
     } catch (error) {
       //
     }
@@ -489,12 +528,14 @@ export const useAssets = () => {
     getNativeMetadata,
     getPools,
     getPoolReserves,
+    getPoolTokenPairs,
     getAllTokens,
     getAllTokensWithNativeAndSupply,
     allTokens,
     nativeBalance,
     nativeMetadata,
     pools,
+    poolTokenPairs,
     swap,
   };
 };

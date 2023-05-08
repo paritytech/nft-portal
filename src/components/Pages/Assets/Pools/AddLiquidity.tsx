@@ -214,7 +214,7 @@ const AddLiquidity = ({
           {activeAccount && asset1Balance && (
             <div>
               Balance:{' '}
-              {formatBalance(asset1Balance as ToBn, {
+              {formatBalance(asset1Balance as unknown as ToBn, {
                 forceUnit: '-',
                 decimals: asset1Metadata.decimals,
                 withSi: false,
@@ -243,7 +243,7 @@ const AddLiquidity = ({
           {activeAccount && asset2Balance && (
             <div>
               Balance:{' '}
-              {formatBalance(asset2Balance as ToBn, {
+              {formatBalance(asset2Balance as unknown as ToBn, {
                 forceUnit: '-',
                 decimals: asset2Metadata.decimals,
                 withSi: false,

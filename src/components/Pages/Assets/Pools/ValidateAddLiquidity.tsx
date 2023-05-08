@@ -21,12 +21,15 @@ const ValidateAddLiquidity = () => {
       let paramsValid = false;
       const token1 = parseAssetParam(assetId1, api);
       const token2 = parseAssetParam(assetId2, api);
+
       if (token1 && token2) {
-        const poolId = [token1, token2];
+        const poolId: PoolId = [token1, token2];
         setPoolId(poolId);
+
         const poolExists = !(await api.query.assetConversion.pools(poolId)).isEmpty;
         if (poolExists) paramsValid = true;
       }
+
       setParamsValid(paramsValid);
     }
   }, [api, assetId1, assetId2]);

@@ -37,10 +37,13 @@ const CreatePool = () => {
     async (event: FormEvent) => {
       event.preventDefault();
       const selectedPoolToken = availablePoolTokens?.[Number(newPoolToken)];
-      if (api && selectedPoolToken) {
+      if (api && selectedPoolToken && nativeBalance) {
         // validate user has enough funds to cover the setup fee
         const poolSetupFee = api.consts.assetConversion?.poolSetupFee ?? null;
         const existentialDeposit = api.consts.balances.existentialDeposit;
+
+        // TODO check later if we can add a proper type for poolSetupFee
+        // @ts-ignore
         if (poolSetupFee && !poolSetupFee.isZero() && nativeBalance.lt(poolSetupFee.add(existentialDeposit))) {
           setStatus({ type: ModalStatusTypes.ERROR, message: StatusMessages.POOL_INSUFFICIENT_BALANCE_FOR_DEPOSIT });
           openModalStatus();
@@ -85,11 +88,13 @@ const CreatePool = () => {
               </option>
             ))}
           </select>
+          {/* TODO check later if we can add a proper type for poolSetupFee
+          @ts-ignore */}
           {poolSetupFee && !poolSetupFee.isZero() && (
             <>
               <br />
               <br />
-              Pool creation fee: {formatBalance(poolSetupFee as ToBn, { decimals, withZero: false })}
+              Pool creation fee: {formatBalance(poolSetupFee as unknown as ToBn, { decimals, withZero: false })}
             </>
           )}
           <br />
