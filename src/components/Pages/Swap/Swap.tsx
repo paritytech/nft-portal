@@ -216,9 +216,6 @@ const Swap = ({
       if (!formError && asset1Balance?.lt(amount1)) {
         formError = StatusMessages.POOL_AMOUNT_TOO_HIGH;
       }
-      if (!formError && asset2Balance?.lt(amount2)) {
-        formError = StatusMessages.POOL_AMOUNT_TOO_HIGH;
-      }
 
       if (formError) {
         setStatus({ type: ModalStatusTypes.ERROR, message: formError });
