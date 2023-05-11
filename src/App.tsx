@@ -29,6 +29,7 @@ import Collections from '@pages/Nfts/Collections/Collections';
 import NftEdit from '@pages/Nfts/Nfts/NftEdit';
 import MyNfts from '@pages/Nfts/Nfts/Nfts';
 import ValidateSwap from '@pages/Swap/ValidateSwap';
+import Capi from '@pages/Capi';
 
 const SMainContainer = styled.main`
   color: ${({ theme }) => theme.textAndIconsPrimary};
@@ -221,6 +222,10 @@ const App = () => (
         <Route path={routes.swap.index} element={<Outlet />}>
           <Route index element={<ValidateSwap />} />
           <Route path={routes.swap.assets()} element={<ValidateSwap />} />
+        </Route>
+
+        <Route path={routes.capi.index} element={<Outlet />}>
+          <Route index element={<Capi />} />
         </Route>
 
         <Route path='*' element={<Navigate to={routes.homepage} replace />} />

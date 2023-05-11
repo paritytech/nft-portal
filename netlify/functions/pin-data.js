@@ -1,6 +1,6 @@
 const axios = require('axios');
 
-exports.handler = async function (event) {
+export async function pinData(event) {
   try {
     const result = await axios.post('https://api.pinata.cloud/pinning/pinJSONToIPFS', event.body, {
       headers: {

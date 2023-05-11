@@ -3,7 +3,7 @@ const FormData = require('form-data');
 
 const parseMultipartForm = require('../parseMultipartForm');
 
-exports.handler = async function (event) {
+export async function pinImage(event) {
   const fields = await parseMultipartForm(event);
   const { filename, content } = fields.file;
 

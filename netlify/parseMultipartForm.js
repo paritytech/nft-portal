@@ -1,6 +1,6 @@
-const Busboy = require('busboy');
+import Busboy from 'busboy';
 
-module.exports = function parseMultipartForm(event) {
+export function parseMultipartForm(event) {
   return new Promise((resolve) => {
     const fields = {};
 

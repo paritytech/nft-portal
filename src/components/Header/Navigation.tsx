@@ -63,6 +63,7 @@ const Navigation = () => (
     <SNavigationButton to={routes.myAssets.index}>My Assets</SNavigationButton>
     <SNavigationButton to={routes.discover.index}>Discover</SNavigationButton>
     <SNavigationButton to={routes.swap.index}>Swap</SNavigationButton>
+    <SNavigationButton to={routes.capi.index}>Capi</SNavigationButton>
   </SNav>
 );
 
