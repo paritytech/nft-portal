@@ -16,7 +16,6 @@ export default {
       },
       {
         test: /\.m?js$/,
-        exclude: /node_modules\/capi/,
         resolve: {
           fullySpecified: false,
         },
