@@ -16,6 +16,7 @@ export default {
       },
       {
         test: /\.m?js$/,
+        exclude: /node_modules\/capi/,
         resolve: {
           fullySpecified: false,
         },
@@ -32,10 +33,6 @@ export default {
         test: /\.svg$/,
         use: ['@svgr/webpack'],
       },
-      {
-        test: /\.node$/,
-        loader: 'node-loader',
-      },
     ],
   },
   resolve: {
@@ -43,11 +40,7 @@ export default {
     plugins: [new TsconfigPathsPlugin()],
     fallback: {
       crypto: 'crypto-browserify',
-      http: 'stream-http',
-      https: 'https-browserify',
-      path: 'path-browserify',
       stream: 'stream-browserify',
-      url: 'url',
     },
   },
   plugins: [
@@ -57,5 +50,5 @@ export default {
   ],
   experiments: {
     topLevelAwait: true,
-  }
+  },
 };
