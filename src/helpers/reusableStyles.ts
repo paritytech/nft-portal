@@ -1,7 +1,7 @@
-import styled, { css } from 'styled-components';
+import { css, styled } from 'styled-components';
 
-import { ChainThemes } from './constants';
-import { CommonStyleProps, ThemeStyle } from './interfaces';
+import { ChainThemes } from './constants.ts';
+import { CommonStyleProps, ThemeStyle } from './interfaces.ts';
 
 export const deviceScreenSize = {
   mobile: '480px',

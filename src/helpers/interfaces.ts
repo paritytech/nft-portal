@@ -14,7 +14,7 @@ import {
   MultiAssets,
   RestrictionTypes,
   StatusMessages,
-} from './constants';
+} from './constants.ts';
 
 // ==========
 // INTERFACES

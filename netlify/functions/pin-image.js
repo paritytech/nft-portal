@@ -1,9 +1,9 @@
-const axios = require('axios');
-const FormData = require('form-data');
+import axios from 'axios';
+import FormData from 'form-data';
 
-const parseMultipartForm = require('../parseMultipartForm');
+import { parseMultipartForm } from '../parseMultipartForm';
 
-export async function pinImage(event) {
+export const handler = async (event) => {
   const fields = await parseMultipartForm(event);
   const { filename, content } = fields.file;
 

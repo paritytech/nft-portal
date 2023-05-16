@@ -1,17 +1,17 @@
 import { memo, useCallback, useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
-import NotFound from '@common/NotFound';
+import NotFound from '@common/NotFound.tsx';
 
-import { useAccounts } from '@contexts/AccountsContext';
+import { useAccounts } from '@contexts/AccountsContext.tsx';
 
-import type { MultiAssetId } from '@helpers/interfaces';
-import { routes } from '@helpers/routes';
-import { getPoolId, multiAssetToParam, parseAssetParam } from '@helpers/utilities';
+import type { MultiAssetId } from '@helpers/interfaces.ts';
+import { routes } from '@helpers/routes.ts';
+import { getPoolId, multiAssetToParam, parseAssetParam } from '@helpers/utilities.ts';
 
-import { useAssets } from '@hooks/useAssets';
+import { useAssets } from '@hooks/useAssets.ts';
 
-import LoadSwapData from '@pages/Swap/LoadSwapData';
+import LoadSwapData from '@pages/Swap/LoadSwapData.tsx';
 
 const ValidateSwap = () => {
   const { api } = useAccounts();

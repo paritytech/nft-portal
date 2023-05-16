@@ -37,8 +37,4 @@ export const routes = {
     index: '/swap',
     assets: (asset1: string = ASSET_ID_PARAM1, asset2: string = ASSET_ID_PARAM2) => `/swap/${asset1}/${asset2}`,
   },
-
-  capi: {
-    index: '/capi',
-  },
 };

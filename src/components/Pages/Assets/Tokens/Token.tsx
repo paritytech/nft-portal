@@ -1,9 +1,9 @@
 import { formatBalance } from '@polkadot/util';
 import { ToBn } from '@polkadot/util/types';
 import { memo } from 'react';
-import styled from 'styled-components';
+import { styled } from 'styled-components';
 
-import { TokenWithSupply } from '@helpers/interfaces';
+import { TokenWithSupply } from '@helpers/interfaces.ts';
 
 interface TokenProps {
   token: TokenWithSupply;

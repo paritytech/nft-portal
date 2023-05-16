@@ -1,12 +1,8 @@
 // Styled components are separated from reusableStyles to prevent circular dependencies
-import Card from 'react-bootstrap/esm/Card';
-import Form from 'react-bootstrap/esm/Form';
-import FormGroup from 'react-bootstrap/esm/FormGroup';
-import FormLabel from 'react-bootstrap/esm/FormLabel';
-import Modal from 'react-bootstrap/esm/Modal';
-import styled from 'styled-components';
+import { Card, Form, FormGroup, FormLabel, Modal } from 'react-bootstrap';
+import { styled } from 'styled-components';
 
-import { CssFormControl } from './reusableStyles';
+import { CssFormControl } from './reusableStyles.ts';
 
 export const SCard = styled(Card)`
   max-width: 364px;

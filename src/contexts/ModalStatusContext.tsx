@@ -1,6 +1,6 @@
 import { ReactElement, createContext, useCallback, useContext, useMemo, useState } from 'react';
 
-import { StatusEntry } from '@helpers/interfaces';
+import { StatusEntry } from '@helpers/interfaces.ts';
 
 interface ModalStatusContextProviderProps {
   children: ReactElement;

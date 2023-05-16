@@ -1,17 +1,17 @@
 import { Account, BaseWallet } from '@polkadot-onboard/core';
 import { memo } from 'react';
-import Modal from 'react-bootstrap/esm/Modal';
-import styled from 'styled-components';
+import { ModalBody } from 'react-bootstrap';
+import { styled } from 'styled-components';
 
-import ArrowButton from '@buttons/ArrowButton';
-import IconButton from '@buttons/IconButton';
+import ArrowButton from '@buttons/ArrowButton.tsx';
+import IconButton from '@buttons/IconButton.tsx';
 
-import ExtensionIcon from '@common/ExtensionIcon';
+import ExtensionIcon from '@common/ExtensionIcon.tsx';
 
-import { useAccounts } from '@contexts/AccountsContext';
+import { useAccounts } from '@contexts/AccountsContext.tsx';
 
-import { CssFontRegularM, CssFontRegularS } from '@helpers/reusableStyles';
-import { areEqualAddresses, ellipseAddress } from '@helpers/utilities';
+import { CssFontRegularM, CssFontRegularS } from '@helpers/reusableStyles.ts';
+import { areEqualAddresses, ellipseAddress } from '@helpers/utilities.ts';
 
 import AccountIcon from '@images/icons/account.svg';
 import BackIcon from '@images/icons/back.svg';
@@ -100,7 +100,7 @@ const ConnectToAccount = ({ handleClose, wallet, changeStep }: ConnectToAccountP
 
   return (
     <>
-      <Modal.Body>
+      <ModalBody>
         <SActiveWallet>
           <IconButton icon={<BackIcon />} action={changeStep} />
           <ExtensionIcon extensionId={wallet.metadata.id} />
@@ -123,7 +123,7 @@ const ConnectToAccount = ({ handleClose, wallet, changeStep }: ConnectToAccountP
         ) : (
           <SLabel>No accounts found</SLabel>
         )}
-      </Modal.Body>
+      </ModalBody>
     </>
   );
 };

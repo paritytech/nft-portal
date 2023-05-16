@@ -1,14 +1,14 @@
 import { BN, BN_ZERO } from '@polkadot/util';
 import { memo, useEffect, useState } from 'react';
 
-import { useAccounts } from '@contexts/AccountsContext';
+import { useAccounts } from '@contexts/AccountsContext.tsx';
 
-import type { MultiAssetId, PoolReserves, TokenMetadata } from '@helpers/interfaces';
-import { isPoolEmpty } from '@helpers/utilities';
+import type { MultiAssetId, PoolReserves, TokenMetadata } from '@helpers/interfaces.ts';
+import { isPoolEmpty } from '@helpers/utilities.ts';
 
-import { useAssets } from '@hooks/useAssets';
+import { useAssets } from '@hooks/useAssets.ts';
 
-import AddLiquidity from '@pages/Assets/Pools/AddLiquidity';
+import AddLiquidity from '@pages/Assets/Pools/AddLiquidity.tsx';
 
 interface LoadAddLiquidityDataProps {
   asset1: MultiAssetId;

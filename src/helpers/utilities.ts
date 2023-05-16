@@ -4,8 +4,8 @@ import { BN, BN_ZERO, formatBalance } from '@polkadot/util';
 import { ToBn } from '@polkadot/util/types';
 import { Decimal } from 'decimal.js';
 
-import { MultiAssets } from '@helpers/constants';
-import { MultiAssetId, PoolId, PoolReserves } from '@helpers/interfaces';
+import { MultiAssets } from '@helpers/constants.ts';
+import { MultiAssetId, PoolId, PoolReserves } from '@helpers/interfaces.ts';
 
 export const ellipseAddress = (address = '', charCount = 4): string => {
   if (address === '') {

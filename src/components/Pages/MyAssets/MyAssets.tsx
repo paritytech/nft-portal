@@ -1,11 +1,11 @@
-import SwapWidget from 'components/Widgets/SwapWidget';
+import SwapWidget from 'components/Widgets/SwapWidget.tsx';
 import { memo } from 'react';
-import styled from 'styled-components';
+import { styled } from 'styled-components';
 
-import SectionTitle from '@common/SectionTitle';
-import Title from '@common/Title';
+import SectionTitle from '@common/SectionTitle.tsx';
+import Title from '@common/Title.tsx';
 
-import { routes } from '@helpers/routes';
+import { routes } from '@helpers/routes.ts';
 
 const SMyAssets = styled.div`
   display: flex;

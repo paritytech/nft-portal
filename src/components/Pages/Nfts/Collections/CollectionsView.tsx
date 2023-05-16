@@ -1,9 +1,9 @@
 import { memo } from 'react';
 
-import { CollectionMetadata } from '@helpers/interfaces';
-import { SContentBlockContainer } from '@helpers/reusableStyles';
+import { CollectionMetadata } from '@helpers/interfaces.ts';
+import { SContentBlockContainer } from '@helpers/reusableStyles.ts';
 
-import Collection from './Collection';
+import Collection from './Collection.tsx';
 
 interface CollectionsViewProps {
   collectionsMetadata: CollectionMetadata[] | null;

@@ -7,13 +7,14 @@
     "esModuleInterop": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
-    "moduleResolution": "nodenext",
+    "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-    "module": "ESNext"
+    "module": "esnext",
+    "allowImportingTsExtensions": true
   },
-  "include": ["./src/**/*", "./images.d.ts"],
+  "include": ["./src/**/*", "./declarations.d.ts"],
   "extends": "./tsconfig.paths.json"
 }

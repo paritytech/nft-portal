@@ -2,22 +2,21 @@ import { BN, formatBalance } from '@polkadot/util';
 import type { ToBn } from '@polkadot/util/types';
 import { Decimal } from 'decimal.js';
 import { FormEvent, memo, useCallback, useEffect, useMemo, useState } from 'react';
-import Stack from 'react-bootstrap/Stack';
-import Form from 'react-bootstrap/esm/Form';
+import { Form, Stack } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
+import { styled } from 'styled-components';
 
-import ActionButton from '@buttons/ActionButton';
+import ActionButton from '@buttons/ActionButton.tsx';
 
-import ModalStatus from '@common/ModalStatus';
-import Title from '@common/Title';
+import ModalStatus from '@common/ModalStatus.tsx';
+import Title from '@common/Title.tsx';
 
-import { useAccounts } from '@contexts/AccountsContext';
-import { useModalStatus } from '@contexts/ModalStatusContext';
+import { useAccounts } from '@contexts/AccountsContext.tsx';
+import { useModalStatus } from '@contexts/ModalStatusContext.tsx';
 
-import { ModalStatusTypes, StatusMessages, SwapTypes } from '@helpers/constants';
-import { MultiAssetId, PoolId, PoolReserves, TokenMetadata } from '@helpers/interfaces';
-import { routes } from '@helpers/routes';
+import { ModalStatusTypes, StatusMessages, SwapTypes } from '@helpers/constants.ts';
+import { MultiAssetId, PoolId, PoolReserves, TokenMetadata } from '@helpers/interfaces.ts';
+import { routes } from '@helpers/routes.ts';
 import {
   applySlippage,
   calcExchangeRate,
@@ -31,11 +30,10 @@ import {
   multiAssetToParam,
   parseAssetParam,
   pricePattern,
-  toMultiAsset,
   unitToPlanck,
-} from '@helpers/utilities';
+} from '@helpers/utilities.ts';
 
-import { useAssets } from '@hooks/useAssets';
+import { useAssets } from '@hooks/useAssets.ts';
 
 const SNotification = styled.div`
   padding: 10px;
@@ -245,7 +243,6 @@ const Swap = ({
       reserves,
       activeAccount,
       asset1Balance,
-      asset2Balance,
       asset1Metadata,
       asset2Metadata,
       openModalStatus,
@@ -315,9 +312,7 @@ const Swap = ({
           <Form.Select
             className='mb-3'
             value={multiAssetToParam(asset1)}
-            onChange={(event) =>
-              handleTokenChange(parseAssetParam(event.target.value, api)!, asset2)
-            }
+            onChange={(event) => handleTokenChange(parseAssetParam(event.target.value, api)!, asset2)}
           >
             {tokenOptions1.map(({ id, symbol }) => (
               <option key={symbol} value={multiAssetToParam(id)}>
@@ -362,9 +357,7 @@ const Swap = ({
           <Form.Select
             className='mb-3'
             value={multiAssetToParam(asset2)}
-            onChange={(event) =>
-              handleTokenChange(asset1, parseAssetParam(event.target.value, api)!)
-            }
+            onChange={(event) => handleTokenChange(asset1, parseAssetParam(event.target.value, api)!)}
           >
             {tokenOptions2.map(({ id, symbol }) => (
               <option key={symbol} value={multiAssetToParam(id)}>

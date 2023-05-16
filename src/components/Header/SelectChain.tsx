@@ -1,15 +1,15 @@
 import { createElement, memo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
+import { styled } from 'styled-components';
 
-import { useAccounts } from '@contexts/AccountsContext';
+import { useAccounts } from '@contexts/AccountsContext.tsx';
 
-import { chains } from '@helpers/config';
-import { Chain } from '@helpers/interfaces';
-import { CssArrowDown, CssFontSemiBoldS } from '@helpers/reusableStyles';
-import { routes } from '@helpers/routes';
+import { chains } from '@helpers/config.ts';
+import { Chain } from '@helpers/interfaces.ts';
+import { CssArrowDown, CssFontSemiBoldS } from '@helpers/reusableStyles.ts';
+import { routes } from '@helpers/routes.ts';
 
-import { useOutsideClick } from '@hooks/useOutsideClick';
+import { useOutsideClick } from '@hooks/useOutsideClick.ts';
 
 import ArrowIcon from '@images/icons/arrow.svg';
 import Localhost from '@images/icons/chain-localhost.svg';
@@ -118,7 +118,7 @@ const SelectChain = () => {
         <ArrowIcon className='arrow-down' />
       </SCurrentChain>
       <SChainList className={isChainListVisible ? 'showlist' : ''}>
-        {chains.map((chain) => (
+        {chains.map((chain: Chain) => (
           <SChainOption onClick={() => selectChain(chain)} key={chain.title}>
             {createElement(ChainIcons[chain.title])}
             <span>{chain.title}</span>

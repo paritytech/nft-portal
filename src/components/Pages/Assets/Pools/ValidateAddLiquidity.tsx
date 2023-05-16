@@ -1,14 +1,14 @@
 import { memo, useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
-import NotFound from '@common/NotFound';
+import NotFound from '@common/NotFound.tsx';
 
-import { useAccounts } from '@contexts/AccountsContext';
+import { useAccounts } from '@contexts/AccountsContext.tsx';
 
-import type { PoolId } from '@helpers/interfaces';
-import { parseAssetParam } from '@helpers/utilities';
+import type { PoolId } from '@helpers/interfaces.ts';
+import { parseAssetParam } from '@helpers/utilities.ts';
 
-import LoadAddLiquidityData from '@pages/Assets/Pools/LoadAddLiquidityData';
+import LoadAddLiquidityData from '@pages/Assets/Pools/LoadAddLiquidityData.tsx';
 
 const ValidateAddLiquidity = () => {
   const [paramsValid, setParamsValid] = useState<boolean | null>(null);

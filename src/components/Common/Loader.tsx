@@ -1,9 +1,9 @@
 import { memo } from 'react';
-import styled from 'styled-components';
+import { styled } from 'styled-components';
 
-import { useModalStatus } from '@contexts/ModalStatusContext';
+import { useModalStatus } from '@contexts/ModalStatusContext.tsx';
 
-import { ModalStatusTypes } from '@helpers/constants';
+import { ModalStatusTypes } from '@helpers/constants.ts';
 
 import PolkadotIcon from '@images/icons/polkadot.svg';
 

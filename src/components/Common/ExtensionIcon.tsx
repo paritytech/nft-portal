@@ -1,6 +1,6 @@
 import { memo } from 'react';
 
-import { ExtensionIds } from '@helpers/constants';
+import { ExtensionIds } from '@helpers/constants.ts';
 
 import PolkadotjsIcon from '@images/icons/polkadotjs.svg';
 import TalismanIcon from '@images/icons/talisman.svg';

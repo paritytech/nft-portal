@@ -1,8 +1,8 @@
 import { ReactElement, memo } from 'react';
-import styled from 'styled-components';
+import { styled } from 'styled-components';
 
-import { CommonStyleProps } from '@helpers/interfaces';
-import { CssFontBoldL, CssFontBoldM, CssFontBoldXL, CssFontBoldXXL } from '@helpers/reusableStyles';
+import { CommonStyleProps } from '@helpers/interfaces.ts';
+import { CssFontBoldL, CssFontBoldM, CssFontBoldXL, CssFontBoldXXL } from '@helpers/reusableStyles.ts';
 
 const STitle = styled.div`
   &.XXL {

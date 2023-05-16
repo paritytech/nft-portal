@@ -42,6 +42,9 @@ export default {
       stream: 'stream-browserify',
     },
   },
+  externals: {
+    "node:net": {},
+  },
   plugins: [
     new HtmlWebpackPlugin({
       template: './src/index.html',

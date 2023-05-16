@@ -1,15 +1,15 @@
 import { memo, useEffect } from 'react';
-import Modal from 'react-bootstrap/esm/Modal';
-import styled from 'styled-components';
+import { Modal } from 'react-bootstrap';
+import { styled } from 'styled-components';
 
-import ActionButton from '@buttons/ActionButton';
+import ActionButton from '@buttons/ActionButton.tsx';
 
-import { useModalStatus } from '@contexts/ModalStatusContext';
+import { useModalStatus } from '@contexts/ModalStatusContext.tsx';
 
-import { ModalStatusTypes } from '@helpers/constants';
-import { SModal } from '@helpers/styledComponents';
+import { ModalStatusTypes } from '@helpers/constants.ts';
+import { SModal } from '@helpers/styledComponents.ts';
 
-import Loader from './Loader';
+import Loader from './Loader.tsx';
 
 const SStatusMessage = styled.p`
   font-size: 24px;

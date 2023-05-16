@@ -1,8 +1,8 @@
 import { memo } from 'react';
-import Card from 'react-bootstrap/esm/Card';
-import styled from 'styled-components';
+import { Card } from 'react-bootstrap';
+import { styled } from 'styled-components';
 
-import { IPFS_URL } from '@helpers/config';
+import { IPFS_URL } from '@helpers/config.ts';
 
 const SImg = styled.div`
   img {

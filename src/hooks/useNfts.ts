@@ -3,16 +3,16 @@ import { AccountId32 } from '@polkadot/types/interfaces';
 import { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { saveDataToIpfs } from '@api/pinata';
+import { saveDataToIpfs } from '@api/pinata.ts';
 
-import { useAccounts } from '@contexts/AccountsContext';
-import { useModalStatus } from '@contexts/ModalStatusContext';
+import { useAccounts } from '@contexts/AccountsContext.tsx';
+import { useModalStatus } from '@contexts/ModalStatusContext.tsx';
 
-import { IPFS_URL } from '@helpers/config';
-import { ModalStatusTypes, StatusMessages } from '@helpers/constants';
-import { handleError } from '@helpers/handleError';
-import { MintAccessNft, NftMetadata, NftMetadataData } from '@helpers/interfaces';
-import { routes } from '@helpers/routes';
+import { IPFS_URL } from '@helpers/config.ts';
+import { ModalStatusTypes, StatusMessages } from '@helpers/constants.ts';
+import { handleError } from '@helpers/handleError.ts';
+import { MintAccessNft, NftMetadata, NftMetadataData } from '@helpers/interfaces.ts';
+import { routes } from '@helpers/routes.ts';
 
 export const useNfts = (collectionId: string) => {
   const { api, activeAccount, activeWallet } = useAccounts();

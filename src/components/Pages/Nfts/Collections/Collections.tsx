@@ -1,14 +1,14 @@
 import { memo, useEffect } from 'react';
-import Stack from 'react-bootstrap/esm/Stack';
+import { Stack } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
-import ActionButton from '@buttons/ActionButton';
+import ActionButton from '@buttons/ActionButton.tsx';
 
-import { routes } from '@helpers/routes';
+import { routes } from '@helpers/routes.ts';
 
-import { useCollections } from '@hooks/useCollections';
+import { useCollections } from '@hooks/useCollections.ts';
 
-import CollectionsView from './CollectionsView';
+import CollectionsView from './CollectionsView.tsx';
 
 const Collections = () => {
   const { getCollectionsMetadata, collectionsMetadata } = useCollections();

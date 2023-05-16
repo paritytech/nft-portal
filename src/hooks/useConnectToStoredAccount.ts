@@ -1,9 +1,9 @@
 import { useWallets } from '@polkadot-onboard/react';
 import { useCallback, useEffect, useState } from 'react';
 
-import { useAccounts } from '@contexts/AccountsContext';
+import { useAccounts } from '@contexts/AccountsContext.tsx';
 
-import { areEqualAddresses } from '@helpers/utilities';
+import { areEqualAddresses } from '@helpers/utilities.ts';
 
 export const useConnectToStoredAccount = () => {
   const { wallets } = useWallets();

@@ -1,18 +1,17 @@
 import { FormEvent, memo, useCallback, useEffect, useRef, useState } from 'react';
-import Form from 'react-bootstrap/esm/Form';
-import Stack from 'react-bootstrap/esm/Stack';
+import { Form, Stack } from 'react-bootstrap';
 import { Link, useParams } from 'react-router-dom';
 
-import { saveImageToIpfs } from '@api/pinata';
+import { saveImageToIpfs } from '@api/pinata.ts';
 
-import ActionButton from '@buttons/ActionButton';
+import ActionButton from '@buttons/ActionButton.tsx';
 
-import FileDropZone from '@common/FileDropZone';
-import ModalStatus from '@common/ModalStatus';
+import FileDropZone from '@common/FileDropZone.tsx';
+import ModalStatus from '@common/ModalStatus.tsx';
 
-import { CollectionMetadataData } from '@helpers/interfaces';
+import { CollectionMetadataData } from '@helpers/interfaces.ts';
 
-import { useNfts } from '@hooks/useNfts';
+import { useNfts } from '@hooks/useNfts.ts';
 
 const NftEdit = () => {
   const { collectionId, nftId } = useParams();

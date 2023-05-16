@@ -1,11 +1,11 @@
 import { isEmpty } from 'lodash';
 import { memo, useEffect, useState } from 'react';
 
-import { TokenWithSupply } from '@helpers/interfaces';
+import { TokenWithSupply } from '@helpers/interfaces.ts';
 
-import { useAssets } from '@hooks/useAssets';
+import { useAssets } from '@hooks/useAssets.ts';
 
-import Token from '@pages/Assets/Tokens/Token';
+import Token from '@pages/Assets/Tokens/Token.tsx';
 
 const Tokens = () => {
   const [tokens, setTokens] = useState<TokenWithSupply[]>();

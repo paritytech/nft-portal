@@ -1,12 +1,12 @@
 import { memo, useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
-import styled from 'styled-components';
+import { styled } from 'styled-components';
 
-import Title from '@common/Title';
+import Title from '@common/Title.tsx';
 
-import { CLEAN_BACKGROUND_CLASSNAME } from '@helpers/reusableStyles';
+import { CLEAN_BACKGROUND_CLASSNAME } from '@helpers/reusableStyles.ts';
 
-import MintNftSteps from './MintNftSteps';
+import MintNftSteps from './MintNftSteps.tsx';
 
 const SSeparator = styled.div`
   height: 1px;

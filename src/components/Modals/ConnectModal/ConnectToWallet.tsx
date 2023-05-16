@@ -1,15 +1,15 @@
 import { BaseWallet } from '@polkadot-onboard/core';
 import { memo } from 'react';
-import Modal from 'react-bootstrap/esm/Modal';
-import styled from 'styled-components';
+import { ModalBody, ModalHeader, ModalTitle } from 'react-bootstrap';
+import { styled } from 'styled-components';
 
-import IconButton from '@buttons/IconButton';
+import IconButton from '@buttons/IconButton.tsx';
 
-import Title from '@common/Title';
+import Title from '@common/Title.tsx';
 
 import CrossIcon from '@images/icons/cross.svg';
 
-import Wallet from './Wallet';
+import Wallet from './Wallet.tsx';
 
 const STitle = styled(Title)`
   color: ${({ theme }) => theme.textAndIconsPrimary};
@@ -23,17 +23,17 @@ interface ConnectToWalletProps {
 
 const ConnectToWallet = ({ handleClose, wallets, changeStep }: ConnectToWalletProps) => (
   <>
-    <Modal.Header className='border-0'>
-      <Modal.Title>
+    <ModalHeader className='border-0'>
+      <ModalTitle>
         <STitle className='L'>Connect Wallet</STitle>
-      </Modal.Title>
+      </ModalTitle>
       <IconButton icon={<CrossIcon />} action={handleClose} />
-    </Modal.Header>
-    <Modal.Body>
+    </ModalHeader>
+    <ModalBody>
       {wallets.map((wallet: BaseWallet) => (
         <Wallet key={wallet.metadata.title} wallet={wallet} changeStep={changeStep} />
       ))}
-    </Modal.Body>
+    </ModalBody>
   </>
 );
 

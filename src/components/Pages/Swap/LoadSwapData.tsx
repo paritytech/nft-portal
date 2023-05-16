@@ -2,13 +2,13 @@ import { u32 } from '@polkadot/types';
 import { BN, BN_ZERO } from '@polkadot/util';
 import { memo, useEffect, useMemo, useState } from 'react';
 
-import { useAccounts } from '@contexts/AccountsContext';
+import { useAccounts } from '@contexts/AccountsContext.tsx';
 
-import type { MultiAssetId, PoolId, PoolReserves, TokenMetadata } from '@helpers/interfaces';
+import type { MultiAssetId, PoolId, PoolReserves, TokenMetadata } from '@helpers/interfaces.ts';
 
-import { useAssets } from '@hooks/useAssets';
+import { useAssets } from '@hooks/useAssets.ts';
 
-import Swap from '@pages/Swap/Swap';
+import Swap from '@pages/Swap/Swap.tsx';
 
 interface LoadSwapDataProps {
   asset1: MultiAssetId;

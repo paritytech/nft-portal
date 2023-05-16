@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
-import { RestrictionTypes } from '@helpers/constants';
-import { RestrictionMessage } from '@helpers/interfaces';
+import { RestrictionTypes } from '@helpers/constants.ts';
+import { RestrictionMessage } from '@helpers/interfaces.ts';
 
 export const useRestrictions = () => {
   const [restrictionMessages, setRestrictionMessages] = useState<RestrictionMessage[] | []>([]);

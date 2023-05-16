@@ -1,9 +1,9 @@
 import { memo } from 'react';
 
-import { NftMetadata } from '@helpers/interfaces';
-import { SContentBlockContainer } from '@helpers/reusableStyles';
+import { NftMetadata } from '@helpers/interfaces.ts';
+import { SContentBlockContainer } from '@helpers/reusableStyles.ts';
 
-import Nft from './Nft';
+import Nft from './Nft.tsx';
 
 interface NftsViewProps {
   nftsMetadata: NftMetadata[] | null;

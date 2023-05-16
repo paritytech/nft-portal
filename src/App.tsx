@@ -1,35 +1,33 @@
 import '@polkadot/api-augment';
 import { Navigate, Outlet, Route, Routes } from 'react-router-dom';
-import styled, { createGlobalStyle } from 'styled-components';
+import { createGlobalStyle, styled } from 'styled-components';
 
-import PrivateRoute from '@common/PrivateRoute';
-import Title from '@common/Title';
+import PrivateRoute from '@common/PrivateRoute.tsx';
+import Title from '@common/Title.tsx';
 
-import Header from '@header/Header';
+import Header from '@header/Header.tsx';
 
-import { ThemeStyle } from '@helpers/interfaces';
-import { CLEAN_BACKGROUND_CLASSNAME, mediaQueries } from '@helpers/reusableStyles';
-import { routes } from '@helpers/routes';
+import { CLEAN_BACKGROUND_CLASSNAME, mediaQueries } from '@helpers/reusableStyles.ts';
+import { routes } from '@helpers/routes.ts';
 
-import Drops from '@pages/Assets/Nfts/Drops';
-import Nfts from '@pages/Assets/Nfts/Nfts';
-import Pools from '@pages/Assets/Pools/Pools';
-import ValidateAddLiquidity from '@pages/Assets/Pools/ValidateAddLiquidity';
-import Tokens from '@pages/Assets/Tokens/Tokens';
-import Discover from '@pages/Discover/Discover';
-import CreateCollection from '@pages/MyAssets/MintNft/CreateCollection';
-import LoadCollectionsData from '@pages/MyAssets/MintNft/LoadCollectionsData';
-import MintNft from '@pages/MyAssets/MintNft/MintNft';
-import MintNftIndex from '@pages/MyAssets/MintNft/MintNftIndex';
-import MyAssets from '@pages/MyAssets/MyAssets';
-import CreatePool from '@pages/MyAssets/Pools/CreatePool';
-import MyPools from '@pages/MyAssets/Pools/MyPools';
-import CollectionEdit from '@pages/Nfts/Collections/CollectionEdit';
-import Collections from '@pages/Nfts/Collections/Collections';
-import NftEdit from '@pages/Nfts/Nfts/NftEdit';
-import MyNfts from '@pages/Nfts/Nfts/Nfts';
-import ValidateSwap from '@pages/Swap/ValidateSwap';
-import Capi from '@pages/Capi';
+import Drops from '@pages/Assets/Nfts/Drops.tsx';
+import Nfts from '@pages/Assets/Nfts/Nfts.tsx';
+import Pools from '@pages/Assets/Pools/Pools.tsx';
+import ValidateAddLiquidity from '@pages/Assets/Pools/ValidateAddLiquidity.tsx';
+import Tokens from '@pages/Assets/Tokens/Tokens.tsx';
+import Discover from '@pages/Discover/Discover.tsx';
+import CreateCollection from '@pages/MyAssets/MintNft/CreateCollection.tsx';
+import LoadCollectionsData from '@pages/MyAssets/MintNft/LoadCollectionsData.tsx';
+import MintNft from '@pages/MyAssets/MintNft/MintNft.tsx';
+import MintNftIndex from '@pages/MyAssets/MintNft/MintNftIndex.tsx';
+import MyAssets from '@pages/MyAssets/MyAssets.tsx';
+import CreatePool from '@pages/MyAssets/Pools/CreatePool.tsx';
+import MyPools from '@pages/MyAssets/Pools/MyPools.tsx';
+import CollectionEdit from '@pages/Nfts/Collections/CollectionEdit.tsx';
+import Collections from '@pages/Nfts/Collections/Collections.tsx';
+import NftEdit from '@pages/Nfts/Nfts/NftEdit.tsx';
+import MyNfts from '@pages/Nfts/Nfts/Nfts.tsx';
+import ValidateSwap from '@pages/Swap/ValidateSwap.tsx';
 
 const SMainContainer = styled.main`
   color: ${({ theme }) => theme.textAndIconsPrimary};
@@ -44,7 +42,7 @@ const SMainContainer = styled.main`
   }
 `;
 
-const GlobalStyle = createGlobalStyle<{ theme: ThemeStyle }>`
+const GlobalStyle = createGlobalStyle`
   html, body {
     height: 100%;
   }
@@ -222,10 +220,6 @@ const App = () => (
         <Route path={routes.swap.index} element={<Outlet />}>
           <Route index element={<ValidateSwap />} />
           <Route path={routes.swap.assets()} element={<ValidateSwap />} />
-        </Route>
-
-        <Route path={routes.capi.index} element={<Outlet />}>
-          <Route index element={<Capi />} />
         </Route>
 
         <Route path='*' element={<Navigate to={routes.homepage} replace />} />

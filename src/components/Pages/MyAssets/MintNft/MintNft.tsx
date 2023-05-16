@@ -1,29 +1,28 @@
 import { BN } from '@polkadot/util';
 import { ChangeEvent, FormEvent, memo, useCallback, useEffect, useRef, useState } from 'react';
-import FormControl from 'react-bootstrap/esm/FormControl';
-import Stack from 'react-bootstrap/esm/Stack';
+import { FormControl, Stack } from 'react-bootstrap';
 import { Link, useParams } from 'react-router-dom';
 
-import { saveImageToIpfs } from '@api/pinata';
+import { saveImageToIpfs } from '@api/pinata.ts';
 
-import ActionButton from '@buttons/ActionButton';
+import ActionButton from '@buttons/ActionButton.tsx';
 
-import FileDropZone from '@common/FileDropZone';
-import ModalStatus from '@common/ModalStatus';
-import Radio from '@common/Radio';
-import ShowRestrictionMessage from '@common/ShowRestrictionMessage';
+import FileDropZone from '@common/FileDropZone.tsx';
+import ModalStatus from '@common/ModalStatus.tsx';
+import Radio from '@common/Radio.tsx';
+import ShowRestrictionMessage from '@common/ShowRestrictionMessage.tsx';
 
-import { useAccounts } from '@contexts/AccountsContext';
+import { useAccounts } from '@contexts/AccountsContext.tsx';
 
-import { RestrictionTypes } from '@helpers/constants';
-import { CollectionConfigJson, CollectionMetadataData, MintAccessNft } from '@helpers/interfaces';
-import { SFormBlock, SInfoRow, SPageControls } from '@helpers/reusableStyles';
-import { SFormLayout, SGroup, SLabel } from '@helpers/styledComponents';
-import { generateAssetId, getCleanFormattedBalance } from '@helpers/utilities';
+import { RestrictionTypes } from '@helpers/constants.ts';
+import { CollectionConfigJson, CollectionMetadataData, MintAccessNft } from '@helpers/interfaces.ts';
+import { SFormBlock, SInfoRow, SPageControls } from '@helpers/reusableStyles.ts';
+import { SFormLayout, SGroup, SLabel } from '@helpers/styledComponents.ts';
+import { generateAssetId, getCleanFormattedBalance } from '@helpers/utilities.ts';
 
-import { useCheckMintingEligibility } from '@hooks/useCheckMintingEligibility';
-import { useCollections } from '@hooks/useCollections';
-import { useNfts } from '@hooks/useNfts';
+import { useCheckMintingEligibility } from '@hooks/useCheckMintingEligibility.ts';
+import { useCollections } from '@hooks/useCollections.ts';
+import { useNfts } from '@hooks/useNfts.ts';
 
 const MintNft = () => {
   const { collectionId } = useParams();

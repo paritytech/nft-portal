@@ -1,14 +1,14 @@
 import { memo, useEffect } from 'react';
-import Stack from 'react-bootstrap/esm/Stack';
+import { Stack } from 'react-bootstrap';
 import { Link, useParams } from 'react-router-dom';
 
-import ActionButton from '@buttons/ActionButton';
+import ActionButton from '@buttons/ActionButton.tsx';
 
-import { routes } from '@helpers/routes';
+import { routes } from '@helpers/routes.ts';
 
-import { useNfts } from '@hooks/useNfts';
+import { useNfts } from '@hooks/useNfts.ts';
 
-import NftsView from './NftsView';
+import NftsView from './NftsView.tsx';
 
 const Nfts = () => {
   const { collectionId } = useParams();

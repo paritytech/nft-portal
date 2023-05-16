@@ -1,12 +1,12 @@
 import { truncate } from 'lodash';
 import { memo, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import styled from 'styled-components';
+import { styled } from 'styled-components';
 
-import ShowImage from '@common/ShowImage';
-import Step from '@common/Step';
+import ShowImage from '@common/ShowImage.tsx';
+import Step from '@common/Step.tsx';
 
-import { useCollections } from '@hooks/useCollections';
+import { useCollections } from '@hooks/useCollections.ts';
 
 const SMintNftSteps = styled.div`
   display: flex;

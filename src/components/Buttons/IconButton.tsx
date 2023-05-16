@@ -1,7 +1,7 @@
 import { ReactElement, memo } from 'react';
-import styled from 'styled-components';
+import { styled } from 'styled-components';
 
-import { CommonStyleProps } from '@helpers/interfaces';
+import { CommonStyleProps } from '@helpers/interfaces.ts';
 
 const SIconButton = styled.button`
   background-color: ${({ theme }) => theme.fill6};
