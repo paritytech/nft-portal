@@ -1,5 +1,5 @@
 import { StateRects } from '@popperjs/core';
-import { ReactElement, createFactory, memo } from 'react';
+import { ReactElement, memo } from 'react';
 import { FormControl } from 'react-bootstrap';
 import DatePicker from 'react-datepicker';
 
