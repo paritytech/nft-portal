@@ -1,16 +1,15 @@
 import { formatBalance } from '@polkadot/util';
 import { isEmpty } from 'lodash';
 import { memo } from 'react';
-import Card from 'react-bootstrap/Card';
+import { Card } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
+import { styled } from 'styled-components';
 
-import type { TokenMetadata } from '@helpers/interfaces';
-import { PoolInfo } from '@helpers/interfaces';
-import { SColumn, SContentBlock, SRow } from '@helpers/reusableStyles';
-import { routes } from '@helpers/routes';
-import { SCard, SCardEdit } from '@helpers/styledComponents';
-import { multiAssetToParam, sortStrings } from '@helpers/utilities';
+import type { PoolInfo, TokenMetadata } from '@helpers/interfaces.ts';
+import { SColumn, SContentBlock, SRow } from '@helpers/reusableStyles.ts';
+import { routes } from '@helpers/routes.ts';
+import { SCard, SCardEdit } from '@helpers/styledComponents.ts';
+import { multiAssetToParam, sortStrings } from '@helpers/utilities.ts';
 
 import PlusIcon from '@images/icons/plus.svg';
 

@@ -11,8 +11,10 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    "module": "esnext",
+    "allowImportingTsExtensions": true
   },
-  "include": ["./src/**/*", "./images.d.ts"],
+  "include": ["./src/**/*", "./declarations.d.ts"],
   "extends": "./tsconfig.paths.json"
 }

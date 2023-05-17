@@ -12,11 +12,11 @@ import { isEmpty } from 'lodash';
 import { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { useAccounts } from '@contexts/AccountsContext';
-import { useModalStatus } from '@contexts/ModalStatusContext';
+import { useAccounts } from '@contexts/AccountsContext.tsx';
+import { useModalStatus } from '@contexts/ModalStatusContext.tsx';
 
-import { ModalStatusTypes, MultiAssets, StatusMessages, SwapTypes } from '@helpers/constants';
-import { handleError } from '@helpers/handleError';
+import { ModalStatusTypes, MultiAssets, StatusMessages, SwapTypes } from '@helpers/constants.ts';
+import { handleError } from '@helpers/handleError.ts';
 import type {
   Chain,
   MultiAssetId,
@@ -29,10 +29,10 @@ import type {
   TokensDetailsMap,
   TokensDetailsRecords,
   TokensMetadataRecords,
-} from '@helpers/interfaces';
-import { TokenWithSupply } from '@helpers/interfaces';
-import { routes } from '@helpers/routes';
-import { multiAssetToParam, sortStrings, toMultiAsset } from '@helpers/utilities';
+} from '@helpers/interfaces.ts';
+import { TokenWithSupply } from '@helpers/interfaces.ts';
+import { routes } from '@helpers/routes.ts';
+import { multiAssetToParam, sortStrings, toMultiAsset } from '@helpers/utilities.ts';
 
 export const useAssets = () => {
   const navigate = useNavigate();

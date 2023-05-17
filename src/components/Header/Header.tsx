@@ -1,10 +1,10 @@
 import { memo } from 'react';
-import styled from 'styled-components';
+import { styled } from 'styled-components';
 
-import SelectChain from '@header/SelectChain';
+import SelectChain from '@header/SelectChain.tsx';
 
-import Connect from './Connect';
-import Navigation from './Navigation';
+import Connect from './Connect.tsx';
+import Navigation from './Navigation.tsx';
 
 const SHeader = styled.header`
   display: flex;

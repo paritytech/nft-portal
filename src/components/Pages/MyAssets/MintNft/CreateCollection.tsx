@@ -1,24 +1,23 @@
 import { ChangeEvent, FormEvent, memo, useCallback, useRef, useState } from 'react';
-import { FormControl } from 'react-bootstrap';
-import Collapse from 'react-bootstrap/esm/Collapse';
+import { Collapse, FormControl } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
+import { styled } from 'styled-components';
 
-import { saveImageToIpfs } from '@api/pinata';
+import { saveImageToIpfs } from '@api/pinata.ts';
 
-import ActionButton from '@buttons/ActionButton';
-import DateRangeButton from '@buttons/DateRangeButton';
-import IconButton from '@buttons/IconButton';
+import ActionButton from '@buttons/ActionButton.tsx';
+import DateRangeButton from '@buttons/DateRangeButton.tsx';
+import IconButton from '@buttons/IconButton.tsx';
 
-import Checkbox from '@common/Checkbox';
-import FileDropZone from '@common/FileDropZone';
-import ModalStatus from '@common/ModalStatus';
-import Radio from '@common/Radio';
+import Checkbox from '@common/Checkbox.tsx';
+import FileDropZone from '@common/FileDropZone.tsx';
+import ModalStatus from '@common/ModalStatus.tsx';
+import Radio from '@common/Radio.tsx';
 
-import { useAccounts } from '@contexts/AccountsContext';
+import { useAccounts } from '@contexts/AccountsContext.tsx';
 
-import { MintTypes } from '@helpers/constants';
-import { CollectionConfig, CollectionMetadataData, MintType } from '@helpers/interfaces';
+import { MintTypes } from '@helpers/constants.ts';
+import { CollectionConfig, CollectionMetadataData, MintType } from '@helpers/interfaces.ts';
 import {
   CssArrowDown,
   CssFontSemiBoldL,
@@ -26,8 +25,8 @@ import {
   SFormBlock,
   SInfoRow,
   SPageControls,
-} from '@helpers/reusableStyles';
-import { SFormLayout, SGroup, SLabel } from '@helpers/styledComponents';
+} from '@helpers/reusableStyles.ts';
+import { SFormLayout, SGroup, SLabel } from '@helpers/styledComponents.ts';
 import {
   convertToBitFlagValue,
   ellipseAddress,
@@ -35,9 +34,9 @@ import {
   pricePattern,
   unitToPlanck,
   wholeNumbersPattern,
-} from '@helpers/utilities';
+} from '@helpers/utilities.ts';
 
-import { useCollections } from '@hooks/useCollections';
+import { useCollections } from '@hooks/useCollections.ts';
 
 import DropdownIcon from '@images/icons/arrow.svg';
 import BackIcon from '@images/icons/back.svg';

@@ -1,7 +1,7 @@
 import { forwardRef, memo, useState } from 'react';
-import styled from 'styled-components';
+import { styled } from 'styled-components';
 
-import { CssInclusivelyHidden } from '@helpers/reusableStyles';
+import { CssInclusivelyHidden } from '@helpers/reusableStyles.ts';
 
 import ActiveCheckbox from '@images/icons/active-checkbox.svg';
 import EmptyCheckbox from '@images/icons/empty-checkbox.svg';

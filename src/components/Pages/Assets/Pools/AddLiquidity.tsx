@@ -2,22 +2,21 @@ import { BN, formatBalance } from '@polkadot/util';
 import type { ToBn } from '@polkadot/util/types';
 import { Decimal } from 'decimal.js';
 import { FormEvent, memo, useCallback, useEffect, useMemo, useState } from 'react';
-import Stack from 'react-bootstrap/Stack';
-import Form from 'react-bootstrap/esm/Form';
+import { Form, Stack } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
-import ActionButton from '@buttons/ActionButton';
+import ActionButton from '@buttons/ActionButton.tsx';
 
-import ModalStatus from '@common/ModalStatus';
-import Title from '@common/Title';
+import ModalStatus from '@common/ModalStatus.tsx';
+import Title from '@common/Title.tsx';
 
-import { useAccounts } from '@contexts/AccountsContext';
-import { useModalStatus } from '@contexts/ModalStatusContext';
+import { useAccounts } from '@contexts/AccountsContext.tsx';
+import { useModalStatus } from '@contexts/ModalStatusContext.tsx';
 
-import { ADD_LIQUIDITY_SLIPPAGE } from '@helpers/config';
-import { ModalStatusTypes, StatusMessages } from '@helpers/constants';
-import { MultiAssetId, PoolReserves, TokenMetadata } from '@helpers/interfaces';
-import { routes } from '@helpers/routes';
+import { ADD_LIQUIDITY_SLIPPAGE } from '@helpers/config.ts';
+import { ModalStatusTypes, StatusMessages } from '@helpers/constants.ts';
+import { MultiAssetId, PoolReserves, TokenMetadata } from '@helpers/interfaces.ts';
+import { routes } from '@helpers/routes.ts';
 import {
   applySlippage,
   calcExchangeRate,
@@ -26,9 +25,9 @@ import {
   getCleanFormattedBalance,
   pricePattern,
   unitToPlanck,
-} from '@helpers/utilities';
+} from '@helpers/utilities.ts';
 
-import { useAssets } from '@hooks/useAssets';
+import { useAssets } from '@hooks/useAssets.ts';
 
 interface AddLiquidityProps {
   asset1: MultiAssetId;

@@ -1,11 +1,11 @@
 import { memo } from 'react';
-import styled from 'styled-components';
+import { styled } from 'styled-components';
 
-import IconButton from '@buttons/IconButton';
+import IconButton from '@buttons/IconButton.tsx';
 
 import CrossIcon from '@images/icons/cross.svg';
 
-import ShowImage from './ShowImage';
+import ShowImage from './ShowImage.tsx';
 
 const SImg = styled.img`
   max-width: 100%;

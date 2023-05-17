@@ -1,9 +1,9 @@
 import { memo } from 'react';
 import { NavLink } from 'react-router-dom';
-import styled from 'styled-components';
+import { styled } from 'styled-components';
 
-import { CssFontBoldL, CssFontSemiBoldS } from '@helpers/reusableStyles';
-import { routes } from '@helpers/routes';
+import { CssFontBoldL, CssFontSemiBoldS } from '@helpers/reusableStyles.ts';
+import { routes } from '@helpers/routes.ts';
 
 import Logo from '@images/logo.svg';
 

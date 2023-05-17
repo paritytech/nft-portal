@@ -1,7 +1,7 @@
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
+import HtmlWebpackPlugin from 'html-webpack-plugin';
+import TsconfigPathsPlugin from 'tsconfig-paths-webpack-plugin';
 
-module.exports = {
+export default {
   module: {
     rules: [
       {
@@ -37,10 +37,20 @@ module.exports = {
   resolve: {
     extensions: ['.tsx', '.ts', '.js'],
     plugins: [new TsconfigPathsPlugin()],
+    fallback: {
+      crypto: 'crypto-browserify',
+      stream: 'stream-browserify',
+    },
+  },
+  externals: {
+    "node:net": {},
   },
   plugins: [
     new HtmlWebpackPlugin({
       template: './src/index.html',
     }),
   ],
+  experiments: {
+    topLevelAwait: true,
+  },
 };

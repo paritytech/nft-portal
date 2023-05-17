@@ -1,8 +1,8 @@
 import { ReactElement, memo } from 'react';
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
+import { styled } from 'styled-components';
 
-import ActionButton from '@buttons/ActionButton';
+import ActionButton from '@buttons/ActionButton.tsx';
 
 const SSectionTitle = styled.div`
   display: flex;

@@ -1,4 +1,4 @@
-import { CollectionMetadataData } from '@helpers/interfaces';
+import { CollectionMetadataData } from '@helpers/interfaces.ts';
 
 export const saveDataToIpfs = async (metadata: CollectionMetadataData): Promise<string> => {
   const data = JSON.stringify({

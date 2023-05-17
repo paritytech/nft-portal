@@ -1,9 +1,9 @@
 import { StateRects } from '@popperjs/core';
 import { ReactElement, memo } from 'react';
-import FormControl from 'react-bootstrap/esm/FormControl';
+import { FormControl } from 'react-bootstrap';
 import DatePicker from 'react-datepicker';
 
-import { SGroup, SLabel } from '@helpers/styledComponents';
+import { SGroup, SLabel } from '@helpers/styledComponents.ts';
 
 interface DateRangeButtonProps {
   startDate?: Date;

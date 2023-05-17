@@ -1,7 +1,7 @@
 import { FormEvent, ReactElement, memo } from 'react';
 
-import { CommonStyleProps } from '@helpers/interfaces';
-import { SActionButton } from '@helpers/reusableStyles';
+import { CommonStyleProps } from '@helpers/interfaces.ts';
+import { SActionButton } from '@helpers/reusableStyles.ts';
 
 interface ActionButtonProps extends CommonStyleProps {
   children: ReactElement | string;

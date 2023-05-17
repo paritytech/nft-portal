@@ -1,11 +1,11 @@
 import { memo, useCallback, useEffect, useState } from 'react';
 
-import { MultiAssetId } from '@helpers/interfaces';
-import { getPoolId } from '@helpers/utilities';
+import { MultiAssetId } from '@helpers/interfaces.ts';
+import { getPoolId } from '@helpers/utilities.ts';
 
-import { useAssets } from '@hooks/useAssets';
+import { useAssets } from '@hooks/useAssets.ts';
 
-import LoadSwapData from '@pages/Swap/LoadSwapData';
+import LoadSwapData from '@pages/Swap/LoadSwapData.tsx';
 
 const SwapWidget = () => {
   const { getDefaultPool } = useAssets();

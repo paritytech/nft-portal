@@ -1,13 +1,13 @@
 import { BaseWallet } from '@polkadot-onboard/core';
 import { memo, useCallback, useState } from 'react';
 
-import { useAccounts } from '@contexts/AccountsContext';
+import { useAccounts } from '@contexts/AccountsContext.tsx';
 
-import { ConnectModalSteps } from '@helpers/constants';
-import { SModal } from '@helpers/styledComponents';
+import { ConnectModalSteps } from '@helpers/constants.ts';
+import { SModal } from '@helpers/styledComponents.ts';
 
-import ConnectToAccount from './ConnectToAccount';
-import ConnectToWallet from './ConnectToWallet';
+import ConnectToAccount from './ConnectToAccount.tsx';
+import ConnectToWallet from './ConnectToWallet.tsx';
 
 interface ConnectModalProps {
   showWalletSelection: boolean;

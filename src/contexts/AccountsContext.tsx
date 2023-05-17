@@ -1,14 +1,14 @@
-import { Account, BaseWallet } from '@polkadot-onboard/core';
+import type { Account, BaseWallet } from '@polkadot-onboard/core';
 import { ApiPromise, WsProvider } from '@polkadot/api';
 import { ReactElement, createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { ThemeProvider } from 'styled-components';
 
-import { apiConfigRuntime, apiConfigTypes, chains } from '@helpers/config';
-import { ChainThemes } from '@helpers/constants';
-import { ActiveAccount, Chain, ThemeStyle } from '@helpers/interfaces';
-import { themes } from '@helpers/reusableStyles';
+import { apiConfigRuntime, apiConfigTypes, chains } from '@helpers/config.ts';
+import { ChainThemes } from '@helpers/constants.ts';
+import { ActiveAccount, Chain, ThemeStyle } from '@helpers/interfaces.ts';
+import { themes } from '@helpers/reusableStyles.ts';
 
-import { useLocalStorage } from '@hooks/useLocalStorage';
+import { useLocalStorage } from '@hooks/useLocalStorage.ts';
 
 interface AccountsContextProviderProps {
   children: ReactElement;

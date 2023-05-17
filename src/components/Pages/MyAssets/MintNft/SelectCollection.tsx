@@ -1,14 +1,14 @@
 import { truncate } from 'lodash';
 import { memo } from 'react';
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
+import { styled } from 'styled-components';
 
-import ActionButton from '@buttons/ActionButton';
-import IconArrowButton from '@buttons/IconArrowButton';
+import ActionButton from '@buttons/ActionButton.tsx';
+import IconArrowButton from '@buttons/IconArrowButton.tsx';
 
-import { CollectionMetadata } from '@helpers/interfaces';
-import { CssFontRegularM, CssFontSemiBoldXL } from '@helpers/reusableStyles';
-import { routes } from '@helpers/routes';
+import { CollectionMetadata } from '@helpers/interfaces.ts';
+import { CssFontRegularM, CssFontSemiBoldXL } from '@helpers/reusableStyles.ts';
+import { routes } from '@helpers/routes.ts';
 
 const SContainer = styled.div`
   width: 460px;

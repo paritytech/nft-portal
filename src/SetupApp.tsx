@@ -4,12 +4,12 @@ import { PolkadotWalletsContextProvider } from '@polkadot-onboard/react';
 import '@polkadot/api-augment';
 import { BrowserRouter } from 'react-router-dom';
 
-import { AccountsContextProvider } from '@contexts/AccountsContext';
-import { ModalStatusContextProvider } from '@contexts/ModalStatusContext';
+import { AccountsContextProvider } from '@contexts/AccountsContext.tsx';
+import { ModalStatusContextProvider } from '@contexts/ModalStatusContext.tsx';
 
-import { APP_NAME, extensionConfig } from '@helpers/config';
+import { APP_NAME, extensionConfig } from '@helpers/config.ts';
 
-import App from './App';
+import App from './App.tsx';
 
 const injectedWalletProvider = new InjectedWalletProvider(extensionConfig, APP_NAME);
 const walletAggregator = new WalletAggregator([injectedWalletProvider]);

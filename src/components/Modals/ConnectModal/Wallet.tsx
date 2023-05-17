@@ -1,16 +1,16 @@
 import { BaseWallet } from '@polkadot-onboard/core';
 import { memo, useEffect } from 'react';
-import styled from 'styled-components';
+import { styled } from 'styled-components';
 
-import ArrowButton from '@buttons/ArrowButton';
+import ArrowButton from '@buttons/ArrowButton.tsx';
 
-import ExtensionIcon from '@common/ExtensionIcon';
+import ExtensionIcon from '@common/ExtensionIcon.tsx';
 
-import { useAccounts } from '@contexts/AccountsContext';
+import { useAccounts } from '@contexts/AccountsContext.tsx';
 
-import { CssFontSemiBoldM } from '@helpers/reusableStyles';
+import { CssFontSemiBoldM } from '@helpers/reusableStyles.ts';
 
-import { useWalletAccounts } from '@hooks/useWalletAccounts';
+import { useWalletAccounts } from '@hooks/useWalletAccounts.ts';
 
 const SArrowButton = styled(ArrowButton)`
   margin-bottom: 8px;

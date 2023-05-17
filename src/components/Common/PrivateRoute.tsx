@@ -1,10 +1,10 @@
 import { ReactElement, memo } from 'react';
 import { Navigate } from 'react-router-dom';
-import styled from 'styled-components';
+import { styled } from 'styled-components';
 
-import { CssFontRegularXL, SConnectButton } from '@helpers/reusableStyles';
+import { CssFontRegularXL, SConnectButton } from '@helpers/reusableStyles.ts';
 
-import { useConnectToStoredAccount } from '@hooks/useConnectToStoredAccount';
+import { useConnectToStoredAccount } from '@hooks/useConnectToStoredAccount.ts';
 
 const SDoIt = styled.div`
   ${CssFontRegularXL}

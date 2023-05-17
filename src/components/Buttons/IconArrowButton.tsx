@@ -1,10 +1,10 @@
 import { ReactElement, memo } from 'react';
-import styled from 'styled-components';
+import { styled } from 'styled-components';
 
-import ShowImage from '@common/ShowImage';
+import ShowImage from '@common/ShowImage.tsx';
 
-import { CommonStyleProps } from '@helpers/interfaces';
-import { CssFontRegularL } from '@helpers/reusableStyles';
+import { CommonStyleProps } from '@helpers/interfaces.ts';
+import { CssFontRegularL } from '@helpers/reusableStyles.ts';
 
 import ArrowIcon from '@images/icons/arrow.svg';
 

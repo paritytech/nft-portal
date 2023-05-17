@@ -1,8 +1,8 @@
 import { ChangeEvent, memo } from 'react';
-import styled from 'styled-components';
+import { styled } from 'styled-components';
 
-import { CommonStyleProps } from '@helpers/interfaces';
-import { CssInclusivelyHidden } from '@helpers/reusableStyles';
+import { CommonStyleProps } from '@helpers/interfaces.ts';
+import { CssInclusivelyHidden } from '@helpers/reusableStyles.ts';
 
 import ActiveRadio from '@images/icons/active-radio.svg';
 import EmptyRadio from '@images/icons/empty-radio.svg';

@@ -1,8 +1,8 @@
 import { ReactElement, memo } from 'react';
-import styled from 'styled-components';
+import { styled } from 'styled-components';
 
-import { CommonStyleProps } from '@helpers/interfaces';
-import { CssFontRegularL } from '@helpers/reusableStyles';
+import { CommonStyleProps } from '@helpers/interfaces.ts';
+import { CssFontRegularL } from '@helpers/reusableStyles.ts';
 
 const SStep = styled.div`
   ${CssFontRegularL}
@@ -19,7 +19,7 @@ const SStep = styled.div`
   }
 
   &.disabled {
-    color ${({ theme }) => theme.textAndIconsDisabled};
+    color: ${({ theme }) => theme.textAndIconsDisabled};
   }
 
   img {

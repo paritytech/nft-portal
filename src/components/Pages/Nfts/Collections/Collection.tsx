@@ -1,14 +1,14 @@
 import { memo } from 'react';
-import Card from 'react-bootstrap/esm/Card';
+import { Card } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
-import ActionButton from '@buttons/ActionButton';
+import ActionButton from '@buttons/ActionButton.tsx';
 
-import ShowImage from '@common/ShowImage';
+import ShowImage from '@common/ShowImage.tsx';
 
-import { CollectionMetadata } from '@helpers/interfaces';
-import { routes } from '@helpers/routes';
-import { SCard, SCardEdit } from '@helpers/styledComponents';
+import { CollectionMetadata } from '@helpers/interfaces.ts';
+import { routes } from '@helpers/routes.ts';
+import { SCard, SCardEdit } from '@helpers/styledComponents.ts';
 
 import EditIcon from '@images/icons/edit.svg';
 

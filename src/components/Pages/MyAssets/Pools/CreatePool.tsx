@@ -2,22 +2,21 @@ import { formatBalance } from '@polkadot/util';
 import type { ToBn } from '@polkadot/util/types';
 import { isEmpty } from 'lodash';
 import { FormEvent, memo, useCallback, useEffect, useState } from 'react';
-import Stack from 'react-bootstrap/Stack';
-import Form from 'react-bootstrap/esm/Form';
+import { Form, Stack } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
-import ActionButton from '@buttons/ActionButton';
+import ActionButton from '@buttons/ActionButton.tsx';
 
-import ModalStatus from '@common/ModalStatus';
+import ModalStatus from '@common/ModalStatus.tsx';
 
-import { useAccounts } from '@contexts/AccountsContext';
-import { useModalStatus } from '@contexts/ModalStatusContext';
+import { useAccounts } from '@contexts/AccountsContext.tsx';
+import { useModalStatus } from '@contexts/ModalStatusContext.tsx';
 
-import { ModalStatusTypes, MultiAssets, StatusMessages } from '@helpers/constants';
-import { routes } from '@helpers/routes';
-import { toMultiAsset } from '@helpers/utilities';
+import { ModalStatusTypes, MultiAssets, StatusMessages } from '@helpers/constants.ts';
+import { routes } from '@helpers/routes.ts';
+import { toMultiAsset } from '@helpers/utilities.ts';
 
-import { useAssets } from '@hooks/useAssets';
+import { useAssets } from '@hooks/useAssets.ts';
 
 const CreatePool = () => {
   const { api } = useAccounts();

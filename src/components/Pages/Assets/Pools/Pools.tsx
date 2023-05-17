@@ -1,19 +1,19 @@
 import { memo, useEffect } from 'react';
-import Stack from 'react-bootstrap/Stack';
+import { Stack } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
-import ActionButton from '@buttons/ActionButton';
+import ActionButton from '@buttons/ActionButton.tsx';
 
-import Title from '@common/Title';
+import Title from '@common/Title.tsx';
 
-import { useAccounts } from '@contexts/AccountsContext';
+import { useAccounts } from '@contexts/AccountsContext.tsx';
 
-import { SContentBlockContainer } from '@helpers/reusableStyles';
-import { routes } from '@helpers/routes';
+import { SContentBlockContainer } from '@helpers/reusableStyles.ts';
+import { routes } from '@helpers/routes.ts';
 
-import { useAssets } from '@hooks/useAssets';
+import { useAssets } from '@hooks/useAssets.ts';
 
-import PoolsView from './PoolsView';
+import PoolsView from './PoolsView.tsx';
 
 const Pools = () => {
   const { activeAccount } = useAccounts();

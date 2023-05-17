@@ -1,9 +1,9 @@
 import { memo } from 'react';
 import { NavLink, Outlet } from 'react-router-dom';
-import styled from 'styled-components';
+import { styled } from 'styled-components';
 
-import { CssFontBoldXXL } from '@helpers/reusableStyles';
-import { routes } from '@helpers/routes';
+import { CssFontBoldXXL } from '@helpers/reusableStyles.ts';
+import { routes } from '@helpers/routes.ts';
 
 const SContentNavigation = styled.div`
   ${CssFontBoldXXL}

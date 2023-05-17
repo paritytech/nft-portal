@@ -1,8 +1,8 @@
 import { memo, useEffect } from 'react';
 
-import { useCollections } from '@hooks/useCollections';
+import { useCollections } from '@hooks/useCollections.ts';
 
-import SelectCollection from './SelectCollection';
+import SelectCollection from './SelectCollection.tsx';
 
 const LoadCollectionsData = () => {
   const { getCollectionsMetadata, collectionsMetadata } = useCollections();

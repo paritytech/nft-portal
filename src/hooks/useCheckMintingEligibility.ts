@@ -1,13 +1,13 @@
 import { useCallback, useEffect, useState } from 'react';
 
-import { useAccounts } from '@contexts/AccountsContext';
+import { useAccounts } from '@contexts/AccountsContext.tsx';
 
-import { MintTypes } from '@helpers/constants';
-import { CollectionConfigJson } from '@helpers/interfaces';
+import { MintTypes } from '@helpers/constants.ts';
+import { CollectionConfigJson } from '@helpers/interfaces.ts';
 
-import { useCollections } from './useCollections';
-import { useNfts } from './useNfts';
-import { useRestrictions } from './useRestrictions';
+import { useCollections } from './useCollections.ts';
+import { useNfts } from './useNfts.ts';
+import { useRestrictions } from './useRestrictions.tsx';
 
 export const useCheckMintingEligibility = (collectionId: string) => {
   const { api } = useAccounts();

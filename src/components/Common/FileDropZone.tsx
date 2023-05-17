@@ -1,12 +1,12 @@
 import { memo, useCallback, useEffect } from 'react';
 import { useDropzone } from 'react-dropzone';
-import styled from 'styled-components';
+import { styled } from 'styled-components';
 
-import { prefecthCid } from '@helpers/prefetchCid';
+import { prefecthCid } from '@helpers/prefetchCid.ts';
 
 import PlusIcon from '@images/icons/plus.svg';
 
-import ImagePreview from './ImagePreview';
+import ImagePreview from './ImagePreview.tsx';
 
 const SDropZone = styled.div`
   position: relative;

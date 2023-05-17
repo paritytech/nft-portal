@@ -1,17 +1,17 @@
 import { truncate } from 'lodash';
 import { memo, useState } from 'react';
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
+import { styled } from 'styled-components';
 
-import { useAccounts } from '@contexts/AccountsContext';
+import { useAccounts } from '@contexts/AccountsContext.tsx';
 
-import { SConnectButton } from '@helpers/reusableStyles';
-import { routes } from '@helpers/routes';
-import { ellipseAddress } from '@helpers/utilities';
+import { SConnectButton } from '@helpers/reusableStyles.ts';
+import { routes } from '@helpers/routes.ts';
+import { ellipseAddress } from '@helpers/utilities.ts';
 
-import { useConnectToStoredAccount } from '@hooks/useConnectToStoredAccount';
-import { useCopyToClipboard } from '@hooks/useCopyToClipboard';
-import { useOutsideClick } from '@hooks/useOutsideClick';
+import { useConnectToStoredAccount } from '@hooks/useConnectToStoredAccount.ts';
+import { useCopyToClipboard } from '@hooks/useCopyToClipboard.ts';
+import { useOutsideClick } from '@hooks/useOutsideClick.ts';
 
 import ArrowIcon from '@images/icons/arrow.svg';
 import CopyIcon from '@images/icons/copy.svg';
@@ -20,7 +20,7 @@ import NftIcon from '@images/icons/nft.svg';
 import PlusIcon from '@images/icons/plus.svg';
 import PoolIcon from '@images/icons/pool.svg';
 
-import ConnectModal from '@modals/ConnectModal/ConnectModal';
+import ConnectModal from '@modals/ConnectModal/ConnectModal.tsx';
 
 const SContainer = styled.div`
   position: relative;

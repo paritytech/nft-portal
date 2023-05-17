@@ -1,8 +1,8 @@
 import type { RegistryTypes } from '@polkadot/types-codec/types';
 import type { OverrideBundleType } from '@polkadot/types/types/registry';
 
-import { ChainNativeTokenNames, ChainThemes, ChainTitles, ExtensionIds } from './constants';
-import { Chain } from './interfaces';
+import { ChainNativeTokenNames, ChainThemes, ChainTitles, ExtensionIds } from './constants.ts';
+import { Chain } from './interfaces.ts';
 
 export const APP_NAME = 'assets-portal';
 export const IPFS_URL = 'https://gateway.pinata.cloud/ipfs/';

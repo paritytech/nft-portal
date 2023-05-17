@@ -1,5 +1,4 @@
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const Hash = require('ipfs-only-hash');
+import Hash from 'ipfs-only-hash';
 
 export const prefecthCid = async (file: File): Promise<{ cid: string; url: string }> => {
   const url = URL.createObjectURL(file);
