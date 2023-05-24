@@ -1,4 +1,4 @@
-import { local } from '@capi/localhost';
+import { local } from '@capi/local';
 import { ss58 } from 'capi';
 import { memo, useCallback } from 'react';
 
