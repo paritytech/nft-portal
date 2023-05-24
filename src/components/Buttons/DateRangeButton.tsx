@@ -81,6 +81,8 @@ const DateRangeButton = ({
     <>
       <SGroup>
         <SLabel>{labelStart}</SLabel>
+        {/* TODO DatePicker doesn't like "moduleResolution": "nodenext", created issue https://github.com/Hacker0x01/react-datepicker/issues/4039 */}
+        {/* @ts-ignore */}
         <DatePicker
           customInput={<FormControl type='text' />}
           placeholderText='Set start date'
@@ -101,6 +103,7 @@ const DateRangeButton = ({
 
       <SGroup>
         <SLabel>{labelEnd}</SLabel>
+        {/* @ts-ignore */}
         <DatePicker
           customInput={<FormControl type='text' />}
           placeholderText='Set end date'
