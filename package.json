@@ -7,13 +7,11 @@
   "main": "index.jsx",
   "scripts": {
     "start": "netlify dev",
-    "start-webpack": "webpack serve --config webpack.dev.js",
+    "start:webpack": "webpack serve --config webpack.dev.js",
     "build": "webpack --config webpack.prod.js",
     "format": "prettier --write \"./src/**/*.{ts,tsx}\"",
     "lint": "eslint src && tsc",
-    "sync1": "capi sync --package-json package.json",
-    "sync2": "capi sync node --runtime-config package.json --server https://capi.dev",
-    "sync3": "capi sync node --runtime-config package.json --server http://localhost:4646"
+    "sync": "capi sync node --runtime-config package.json --server https://capi.dev"
   },
   "repository": {
     "type": "git",
@@ -25,7 +23,7 @@
     "@polkadot-onboard/core": "0.0.10",
     "@polkadot-onboard/injected-wallets": "0.0.10",
     "@polkadot-onboard/react": "0.0.10",
-    "@polkadot/api": "10.6.1",
+    "@polkadot/api": "10.7.2",
     "@popperjs/core": "2.11.7",
     "axios": "1.3.4",
     "bootstrap": "5.2.3",
@@ -42,7 +40,8 @@
     "react-dropzone": "14.2.3",
     "react-is": "18.2.0",
     "react-router-dom": "6.10.0",
-    "styled-components": "6.0.0-rc.1"
+    "styled-components": "6.0.0-rc.1",
+    "@capi/local": "https://capi.dev/a9a14c8d47bb87ff/local.tar"
   },
   "devDependencies": {
     "@babel/core": "7.21.4",

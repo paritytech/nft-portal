@@ -39,6 +39,8 @@ export default {
   },
   externals: {
     'node:net': {},
+    'node:stream': {},
+    'node:fs/promises': {},
   },
   plugins: [
     new webpack.DefinePlugin({
