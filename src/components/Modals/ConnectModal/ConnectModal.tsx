@@ -1,4 +1,4 @@
-import { BaseWallet } from '@polkadot-onboard/core';
+import type { BaseWallet } from '@polkadot-onboard/core';
 import { memo, useCallback, useState } from 'react';
 
 import { useAccounts } from '@contexts/AccountsContext.tsx';

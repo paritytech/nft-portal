@@ -7,11 +7,11 @@
   "main": "index.jsx",
   "scripts": {
     "start": "netlify dev",
-    "start-webpack": "webpack serve --config webpack.dev.js",
+    "start:webpack": "webpack serve --config webpack.dev.js",
     "build": "webpack --config webpack.prod.js",
     "format": "prettier --write \"./src/**/*.{ts,tsx}\"",
     "lint": "eslint src && tsc",
-    "sync": "capi sync --package-json package.json"
+    "sync": "capi sync node --runtime-config package.json --server https://capi.dev"
   },
   "repository": {
     "type": "git",
@@ -20,15 +20,15 @@
   "author": "SaltyCucumber",
   "license": "MIT",
   "dependencies": {
-    "@polkadot-onboard/core": "0.0.9",
-    "@polkadot-onboard/injected-wallets": "0.0.9",
-    "@polkadot-onboard/react": "0.0.9",
-    "@polkadot/api": "10.6.1",
+    "@polkadot-onboard/core": "0.0.10",
+    "@polkadot-onboard/injected-wallets": "0.0.10",
+    "@polkadot-onboard/react": "0.0.10",
+    "@polkadot/api": "10.7.2",
     "@popperjs/core": "2.11.7",
     "axios": "1.3.4",
     "bootstrap": "5.2.3",
     "busboy": "1.6.0",
-    "capi": "0.1.0-beta.38",
+    "capi": "0.1.0-beta.40",
     "decimal.js": "10.4.3",
     "form-data": "4.0.0",
     "ipfs-only-hash": "4.0.0",
@@ -40,7 +40,8 @@
     "react-dropzone": "14.2.3",
     "react-is": "18.2.0",
     "react-router-dom": "6.10.0",
-    "styled-components": "6.0.0-rc.1"
+    "styled-components": "6.0.0-rc.1",
+    "@capi/local": "https://capi.dev/a9a14c8d47bb87ff/local.tar"
   },
   "devDependencies": {
     "@babel/core": "7.21.4",
@@ -54,8 +55,9 @@
     "@svgr/webpack": "8.0.1",
     "@trivago/prettier-plugin-sort-imports": "4.1.1",
     "@types/lodash": "4.14.194",
+    "@types/node": "20.2.3",
     "@types/react": "18.0.33",
-    "@types/react-datepicker": "4.10.0",
+    "@types/react-datepicker": "4.11.2",
     "@types/react-dom": "18.0.11",
     "@typescript-eslint/eslint-plugin": "5.57.1",
     "@typescript-eslint/parser": "5.57.1",
@@ -69,6 +71,7 @@
     "react-refresh": "0.14.0",
     "stream-browserify": "3.0.0",
     "style-loader": "3.3.2",
+    "ts-node": "10.9.1",
     "tsconfig-paths-webpack-plugin": "4.0.1",
     "typescript": "5.0.4",
     "webpack": "5.82.1",

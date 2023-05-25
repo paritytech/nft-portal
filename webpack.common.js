@@ -1,5 +1,6 @@
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import TsconfigPathsPlugin from 'tsconfig-paths-webpack-plugin';
+import webpack from 'webpack';
 
 export default {
   module: {
@@ -12,12 +13,6 @@ export default {
           options: {
             presets: ['@babel/preset-env', '@babel/preset-react', '@babel/preset-typescript'],
           },
-        },
-      },
-      {
-        test: /\.m?js$/,
-        resolve: {
-          fullySpecified: false,
         },
       },
       {
@@ -43,9 +38,19 @@ export default {
     },
   },
   externals: {
-    "node:net": {},
+    'node:net': {},
+    'node:stream': {},
+    'node:fs/promises': {},
   },
   plugins: [
+    new webpack.DefinePlugin({
+      process: {
+        env: {
+          CAPI_SERVER: JSON.stringify(process.env.CAPI_SERVER),
+          CAPI_TARGET: JSON.stringify(process.env.CAPI_TARGET),
+        },
+      },
+    }),
     new HtmlWebpackPlugin({
       template: './src/index.html',
     }),
