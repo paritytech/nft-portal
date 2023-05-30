@@ -21,7 +21,7 @@ const SArrowButton = styled.button`
     height: 24px;
   }
 
-  :hover {
+  &:hover {
     background-color: ${({ theme }) => theme.fill12};
   }
 `;

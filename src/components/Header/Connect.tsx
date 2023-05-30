@@ -76,7 +76,7 @@ const SSimpleAction = styled.div`
     min-width: 190px;
   }
 
-  :hover {
+  &:hover {
     cursor: pointer;
     text-decoration: underline;
   }

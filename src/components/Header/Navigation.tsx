@@ -19,7 +19,7 @@ const SLogoButton = styled(NavLink)`
   color: ${({ theme }) => theme.textAndIconsPrimary};
   text-decoration: none;
 
-  :hover {
+  &:hover {
     color: ${({ theme }) => theme.textAndIconsPrimary};
   }
 
@@ -45,7 +45,7 @@ const SNavigationButton = styled(NavLink)`
   border-radius: 32px;
 
   &.active,
-  :hover {
+  &:hover {
     color: ${({ theme }) => theme.textAndIconsPrimary};
   }
 

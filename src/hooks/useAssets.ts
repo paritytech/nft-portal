@@ -186,7 +186,7 @@ export const useAssets = () => {
               if (status.isInBlock) {
                 unsub();
 
-                events.some(({ event: { data, method } }) => {
+                events.some(({ event: { method } }) => {
                   if (method === 'SwapExecuted') {
                     setStatus({ type: ModalStatusTypes.COMPLETE, message: StatusMessages.SWAP_EXECUTED });
                     return true;

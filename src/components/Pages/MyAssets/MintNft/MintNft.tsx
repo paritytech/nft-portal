@@ -146,6 +146,7 @@ const MintNft = () => {
                 <SLabel>Select which NFT you want to use for the mint access</SLabel>
                 {ownedNftsFromAnotherCollection.map((ownedNft) => (
                   <Radio
+                    key={ownedNft}
                     name='mint-access'
                     label={ownedNft}
                     value={ownedNft}

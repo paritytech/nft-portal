@@ -32,7 +32,7 @@ const SIconArrowButton = styled.button`
     height: 40px;
   }
 
-  :hover {
+  &:hover {
     background-color: ${({ theme }) => theme.fill12};
   }
 `;

@@ -21,7 +21,7 @@ export const SCardEdit = styled(Card.Subtitle)`
     color: ${({ theme }) => theme.textAndIconsPrimary};
     text-decoration: none;
 
-    :hover {
+    &:hover {
       text-decoration: underline;
     }
 
@@ -84,15 +84,15 @@ export const SGroup = styled(FormGroup)`
 
     ${CssFormControl}
 
-    :hover {
+    &:hover {
       padding-top: 12px;
     }
 
-    :focus {
+    &:focus {
       padding-top: 14px;
     }
 
-    :hover:disabled {
+    &:hover:disabled {
       padding-top: 16px;
     }
   }
