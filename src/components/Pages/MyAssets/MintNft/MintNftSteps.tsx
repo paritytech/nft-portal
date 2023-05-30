@@ -17,9 +17,14 @@ const SSelectedCollection = styled.div`
   display: flex;
   align-items: center;
   gap: 12px;
+  height: 45px;
   padding: 0 2px 0 16px;
   background-color: ${({ theme }) => theme.fill6};
   border-radius: 24px;
+
+  .collection-name:last-child {
+    padding-right: 14px;
+  }
 `;
 
 const MintNftSteps = () => {
@@ -32,7 +37,7 @@ const MintNftSteps = () => {
 
   const selectedCollectionLabel = collectionMetadata ? (
     <SSelectedCollection>
-      {truncate(collectionMetadata.name, { length: 20 })}
+      <span className='collection-name'>{truncate(collectionMetadata.name, { length: 20 })}</span>
       {collectionMetadata?.image && <ShowImage imageCid={collectionMetadata.image} altText={collectionMetadata.name} />}
     </SSelectedCollection>
   ) : (

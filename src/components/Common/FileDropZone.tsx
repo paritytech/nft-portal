@@ -20,7 +20,7 @@ const SDropZone = styled.div`
   border-radius: 16px;
   outline: none;
 
-  :hover {
+  &:hover {
     background-color: ${({ theme }) => theme.appliedHover};
 
     img {

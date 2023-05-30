@@ -18,7 +18,7 @@ const SNavigationButton = styled(NavLink)`
   text-decoration: none;
 
   &.active,
-  :hover {
+  &:hover {
     color: ${({ theme }) => theme.textAndIconsPrimary};
   }
 `;

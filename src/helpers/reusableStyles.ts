@@ -115,12 +115,12 @@ export const CssFormControl = css`
   transition: none;
   outline: 0;
 
-  :hover {
+  &:hover {
     border: 4px solid ${({ theme }) => theme.fill12};
     padding-left: 20px;
   }
 
-  :focus {
+  &:focus {
     background-color: ${({ theme }) => theme.fill6};
     color: ${({ theme }) => theme.textAndIconsPrimary};
     border: 2px solid ${({ theme }) => theme.textAndIconsPrimary};
@@ -128,7 +128,7 @@ export const CssFormControl = css`
     box-shadow: none;
   }
 
-  :disabled {
+  &:disabled {
     background: none;
     padding-left: 23px;
     border: 1px solid ${({ theme }) => theme.fill12};
@@ -271,7 +271,7 @@ export const CssButtonMainStyles = css<CommonStyleProps>`
   color: ${({ theme, isDisabled }) => (isDisabled ? theme.textAndIconsDisabled : theme.forcedBlack)};
   background-color: ${({ theme, isDisabled }) => (isDisabled ? theme.fill8 : theme.appliedButtonMain)};
 
-  :hover {
+  &:hover {
     cursor: ${({ isDisabled }) => (isDisabled ? 'not-allowed' : 'pointer')};
     background-color: ${({ theme, isDisabled }) => (isDisabled ? theme.fill8 : theme.fill80)};
   }
@@ -291,7 +291,7 @@ export const CssButtonSecondaryStyles = css<CommonStyleProps>`
   color: ${({ theme, isDisabled }) => (isDisabled ? theme.fill25 : theme.textAndIconsPrimary)};
   background-color: ${({ theme, isDisabled }) => (isDisabled ? theme.fill24 : theme.forcedBlack)};
 
-  :hover {
+  &:hover {
     cursor: ${({ isDisabled }) => (isDisabled ? 'not-allowed' : 'pointer')};
     background-color: ${({ theme }) => theme.fill24};
   }
@@ -316,7 +316,7 @@ export const CssButtonTransparentStyles = css<CommonStyleProps>`
   color: ${({ theme, isDisabled }) => (isDisabled ? theme.textAndIconsDisabled : theme.forcedWhite)};
   background-color: ${({ theme }) => theme.fill6};
 
-  :hover {
+  &:hover {
     cursor: ${({ isDisabled }) => (isDisabled ? 'not-allowed' : 'pointer')};
     background-color: ${({ theme, isDisabled }) => (isDisabled ? theme.fill6 : theme.fill12)};
   }
@@ -346,7 +346,7 @@ export const CssButtonStrokeStyles = css<CommonStyleProps>`
   border: 1px solid ${({ theme }) => theme.appliedStroke};
   box-sizing: border-box;
 
-  :hover {
+  &:hover {
     cursor: ${({ isDisabled }) => (isDisabled ? 'not-allowed' : 'pointer')};
     background-color: ${({ theme, isDisabled }) => (isDisabled ? 'transparent' : theme.fill6)};
   }
@@ -420,7 +420,7 @@ export const SColumn = styled.section`
   flex: 1;
 `;
 
-export const SActionButton = styled.button`
+export const SActionButton = styled.button<CommonStyleProps>`
   padding: 0 16px;
   border-radius: 32px;
   border: none;

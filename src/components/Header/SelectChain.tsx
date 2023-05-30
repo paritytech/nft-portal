@@ -78,7 +78,7 @@ const SChainOption = styled.div`
   padding: 0 8px;
   gap: 8px;
 
-  :hover {
+  &:hover {
     background-color: ${({ theme }) => theme.appliedHover};
     border-radius: 32px;
     cursor: pointer;
