@@ -58,7 +58,7 @@ const IconArrowButton = ({ children, imageCid, action, className }: ArrowIconPro
   <SIconArrowButton onClick={action} className={className}>
     <SContent>
       {imageCid && <ShowImage imageCid={imageCid} altText='' />}
-      <span className='texter'>{children}</span>
+      <span>{children}</span>
     </SContent>
 
     <ArrowIcon className='arrow' />

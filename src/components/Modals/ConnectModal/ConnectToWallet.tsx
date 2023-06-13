@@ -5,13 +5,14 @@ import { styled } from 'styled-components';
 
 import IconButton from '@buttons/IconButton.tsx';
 
-import Title from '@common/Title.tsx';
+import { CssFontSemiBoldL } from '@helpers/reusableStyles.ts';
 
 import CrossIcon from '@images/icons/cross.svg';
 
 import Wallet from './Wallet.tsx';
 
-const STitle = styled(Title)`
+const SModalTitle = styled(ModalTitle)`
+  ${CssFontSemiBoldL}
   color: ${({ theme }) => theme.textAndIconsPrimary};
 `;
 
@@ -24,9 +25,7 @@ interface ConnectToWalletProps {
 const ConnectToWallet = ({ handleClose, wallets, changeStep }: ConnectToWalletProps) => (
   <>
     <ModalHeader className='border-0'>
-      <ModalTitle>
-        <STitle className='L'>Connect Wallet</STitle>
-      </ModalTitle>
+      <SModalTitle>Connect Wallet</SModalTitle>
       <IconButton icon={<CrossIcon />} action={handleClose} />
     </ModalHeader>
     <ModalBody>

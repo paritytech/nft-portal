@@ -15,8 +15,6 @@ export const mediaQueries = {
   desktop: `(min-width: ${deviceScreenSize.desktop})`,
 };
 
-export const CLEAN_BACKGROUND_CLASSNAME = 'no-gradient';
-
 // ============
 // THEME STYLES
 // ============
@@ -33,6 +31,7 @@ export const themes: Record<ChainThemes, ThemeStyle> = {
     textAndIconsDisabled: 'rgba(255, 255, 255, 0.27)',
 
     fill80: 'rgba(255, 255, 255, 0.8)',
+    fill48: 'rgba(255, 255, 255, 0.48)',
     fill30: 'rgba(255, 255, 255, 0.3)',
     fill25: 'rgba(255, 255, 255, 0.25)',
     fill24: 'rgba(255, 255, 255, 0.24)',
@@ -56,9 +55,9 @@ export const themes: Record<ChainThemes, ThemeStyle> = {
     forcedBlack: '#000000',
   },
   [ChainThemes.POLKADOT]: {
-    backgroundSystem: '#F3F3F2',
+    backgroundSystem: '#F5F4F4',
     backgroundPrimary: '#FFFFFF',
-    backgroundSecondary: '#FFFFFF',
+    backgroundSecondary: 'rgba(230, 0, 122, 0.15)',
     backgroundTertiary: '#FFFFFF',
 
     textAndIconsPrimary: '#000000',
@@ -67,6 +66,7 @@ export const themes: Record<ChainThemes, ThemeStyle> = {
     textAndIconsDisabled: 'rgba(0, 0, 0, 0.25)',
 
     fill80: 'rgba(0, 0, 0, 0.8)',
+    fill48: 'rgba(0, 0, 0, 0.48)',
     fill30: 'rgba(0, 0, 0, 0.3)',
     fill25: 'rgba(0, 0, 0, 0.25)',
     fill24: 'rgba(0, 0, 0, 0.24)',
@@ -94,6 +94,12 @@ export const themes: Record<ChainThemes, ThemeStyle> = {
 // ============
 // CSS SNIPPETS
 // ============
+export const CssArrowTertiary = css`
+  path {
+    fill: ${({ theme }) => theme.textAndIconsTertiary};
+  }
+`;
+
 export const CssArrowDown = css`
   width: 30px;
   height: 30px;
@@ -257,7 +263,7 @@ const CssCommonSizes = css`
   }
 
   &.S {
-    ${CssFontSemiBoldM}
+    ${CssFontRegularM}
     height: 48px;
   }
 
@@ -268,12 +274,12 @@ const CssCommonSizes = css`
 `;
 
 export const CssButtonMainStyles = css<CommonStyleProps>`
-  color: ${({ theme, isDisabled }) => (isDisabled ? theme.textAndIconsDisabled : theme.forcedBlack)};
-  background-color: ${({ theme, isDisabled }) => (isDisabled ? theme.fill8 : theme.appliedButtonMain)};
+  color: ${({ theme, isDisabled }) => (isDisabled ? theme.textAndIconsDisabled : theme.forcedWhite)};
+  background-color: ${({ theme, isDisabled }) => (isDisabled ? theme.fill6 : theme.appliedButtonMain)};
 
   &:hover {
     cursor: ${({ isDisabled }) => (isDisabled ? 'not-allowed' : 'pointer')};
-    background-color: ${({ theme, isDisabled }) => (isDisabled ? theme.fill8 : theme.fill80)};
+    background-color: ${({ theme, isDisabled }) => (isDisabled ? theme.fill6 : theme.fill48)};
   }
 
   a {
@@ -385,15 +391,31 @@ export const SConnectButton = styled.button`
   height: 48px;
   line-height: 48px;
   padding: 0 24px;
-  background-color: ${({ theme }) => theme.appliedButtonMain};
-  color: ${({ theme }) => theme.forcedBlack};
+  background-color: ${({ theme }) => theme.backgroundSecondary};
+  color: ${({ theme }) => theme.accentsPink};
   border: 0;
   border-radius: 32px;
 
+  &:hover {
+    height: 44px;
+    line-height: 44px;
+    padding: 0 22px;
+    border: 2px solid ${({ theme }) => theme.accentsPink};
+  }
+
   &.active {
-    padding: 0 8px;
+    padding: 0 20px 0 8px;
+    background-color: transparent;
+    color: ${({ theme }) => theme.textAndIconsPrimary};
+  }
+
+  &.active:hover,
+  &.actions-active {
+    height: 48px;
+    line-height: 48px;
+    padding: 0 20px 0 8px;
     background-color: ${({ theme }) => theme.fill6};
-    color: ${({ theme }) => theme.textAndIconsSecondary};
+    border: 0;
   }
 
   .identicon {

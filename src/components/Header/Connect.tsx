@@ -1,5 +1,5 @@
 import { truncate } from 'lodash';
-import { memo, useState } from 'react';
+import { memo, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { styled } from 'styled-components';
 
@@ -13,7 +13,6 @@ import { useConnectToStoredAccount } from '@hooks/useConnectToStoredAccount.ts';
 import { useCopyToClipboard } from '@hooks/useCopyToClipboard.ts';
 import { useOutsideClick } from '@hooks/useOutsideClick.ts';
 
-import ArrowIcon from '@images/icons/arrow.svg';
 import CopyIcon from '@images/icons/copy.svg';
 import IdenticonIcon from '@images/icons/identicon.svg';
 import NftIcon from '@images/icons/nft.svg';
@@ -108,6 +107,18 @@ const Connect = () => {
   const [isAccountActionsVisible, setIsAccountActionsVisible] = useState(false);
   const [copyToClipboard, buttonText] = useCopyToClipboard(activeAccount?.address || '', '', 'copied', 350);
 
+  useEffect(() => {
+    const connect = document.getElementById('connect');
+
+    if (connect !== null) {
+      if (isAccountActionsVisible) {
+        connect.classList.add('actions-active');
+      } else {
+        connect.classList.remove('actions-active');
+      }
+    }
+  }, [isAccountActionsVisible]);
+
   const handleClose = () => setShowWalletSelection(false);
   const handleShow = () => {
     if (activeAccount) {
@@ -135,7 +146,6 @@ const Connect = () => {
             <>
               <IdenticonIcon className='identicon' />
               <span>{truncate(activeAccount.name, { length: 16 }) || ellipseAddress(activeAccount.address)}</span>
-              <ArrowIcon className='arrow-down' />
             </>
           ) : (
             'Connect Wallet'

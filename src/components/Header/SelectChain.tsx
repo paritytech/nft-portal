@@ -1,4 +1,4 @@
-import { createElement, memo, useState } from 'react';
+import { createElement, memo, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
 
@@ -6,7 +6,7 @@ import { useAccounts } from '@contexts/AccountsContext.tsx';
 
 import { chains } from '@helpers/config.ts';
 import { Chain } from '@helpers/interfaces.ts';
-import { CssArrowDown, CssFontSemiBoldS } from '@helpers/reusableStyles.ts';
+import { CssArrowDown, CssArrowTertiary, CssFontSemiBoldS } from '@helpers/reusableStyles.ts';
 import { routes } from '@helpers/routes.ts';
 
 import { useOutsideClick } from '@hooks/useOutsideClick.ts';
@@ -14,6 +14,7 @@ import { useOutsideClick } from '@hooks/useOutsideClick.ts';
 import ArrowIcon from '@images/icons/arrow.svg';
 import Localhost from '@images/icons/chain-localhost.svg';
 import Westmint from '@images/icons/chain-westmint.svg';
+import TickIcon from '@images/icons/tick.svg';
 
 const ChainIcons = {
   localhost: Localhost,
@@ -33,11 +34,16 @@ const SCurrentChain = styled.button`
   height: 48px;
   align-items: center;
   padding: 0 8px;
-  background-color: ${({ theme }) => theme.fill6};
+  background-color: transparent;
   color: ${({ theme }) => theme.textAndIconsPrimary};
   border: 0;
   border-radius: 32px;
   gap: 10px;
+
+  &:hover,
+  &.chainlist-active {
+    background-color: ${({ theme }) => theme.appliedHover};
+  }
 
   span {
     ${CssFontSemiBoldS}
@@ -45,6 +51,7 @@ const SCurrentChain = styled.button`
   }
 
   .arrow-down {
+    ${CssArrowTertiary}
     ${CssArrowDown}
   }
 `;
@@ -59,7 +66,7 @@ const SChainList = styled.div`
 
   background-color: ${({ theme }) => theme.backgroundTertiary};
   color: ${({ theme }) => theme.textAndIconsPrimary};
-  border-radius: 16px;
+  border-radius: 12px;
   z-index: 1;
 
   &.showlist {
@@ -72,7 +79,8 @@ const SChainList = styled.div`
 const SChainOption = styled.div`
   ${CssFontSemiBoldS}
   display: flex;
-  min-width: 184px;
+  position: relative;
+  min-width: 221px;
   align-items: center;
   height: 48px;
   padding: 0 8px;
@@ -80,7 +88,7 @@ const SChainOption = styled.div`
 
   &:hover {
     background-color: ${({ theme }) => theme.appliedHover};
-    border-radius: 32px;
+    border-radius: 8px;
     cursor: pointer;
   }
 
@@ -90,11 +98,32 @@ const SChainOption = styled.div`
   }
 `;
 
+const SActiveChain = styled.div`
+  position: absolute;
+  right: 8px;
+
+  svg {
+    width: 24px;
+  }
+`;
+
 const SelectChain = () => {
   const navigate = useNavigate();
   const { storedChain, setStoredChain } = useAccounts();
   const [isChainListVisible, setIsChainListVisible] = useState(false);
   const dropdownRef = useOutsideClick(() => setIsChainListVisible(false));
+
+  useEffect(() => {
+    const currentChain = document.getElementById('current-chain');
+
+    if (currentChain !== null) {
+      if (isChainListVisible) {
+        currentChain.classList.add('chainlist-active');
+      } else {
+        currentChain.classList.remove('chainlist-active');
+      }
+    }
+  }, [isChainListVisible]);
 
   const toggleChainList = () => {
     setIsChainListVisible(!isChainListVisible);
@@ -112,9 +141,8 @@ const SelectChain = () => {
 
   return (
     <SContainer ref={dropdownRef}>
-      <SCurrentChain onClick={toggleChainList}>
+      <SCurrentChain id='current-chain' onClick={toggleChainList}>
         {createElement(ChainIcons[storedChain.title])}
-        <span>{storedChain.title}</span>
         <ArrowIcon className='arrow-down' />
       </SCurrentChain>
       <SChainList className={isChainListVisible ? 'showlist' : ''}>
@@ -122,6 +150,11 @@ const SelectChain = () => {
           <SChainOption onClick={() => selectChain(chain)} key={chain.title}>
             {createElement(ChainIcons[chain.title])}
             <span>{chain.title}</span>
+            {chain.title === storedChain.title && (
+              <SActiveChain>
+                <TickIcon />
+              </SActiveChain>
+            )}
           </SChainOption>
         ))}
       </SChainList>

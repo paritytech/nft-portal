@@ -51,7 +51,7 @@ export const AccountsContextProvider = ({ children }: AccountsContextProviderPro
   const [activeAccount, setActiveAccount] = useState<Account | null>(null);
   const [activeWallet, setActiveWallet] = useState<BaseWallet | null>(null);
   const [api, setApi] = useState<ApiPromise | null>(null);
-  const [theme, setTheme] = useState<ThemeStyle>(themes.kusama);
+  const [theme, setTheme] = useState<ThemeStyle>(themes.polkadot);
   const [storedActiveAccount, setStoredActiveAccount] = useLocalStorage<ActiveAccount | null>('activeAccount', null);
   const [storedChain, setStoredChain] = useLocalStorage<Chain | null>('chain', null);
 
@@ -75,7 +75,7 @@ export const AccountsContextProvider = ({ children }: AccountsContextProviderPro
         setTheme(themes.polkadot);
         break;
       default:
-        setTheme(themes.kusama);
+        setTheme(themes.polkadot);
     }
   }, []);
 

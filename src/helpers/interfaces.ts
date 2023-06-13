@@ -98,6 +98,7 @@ export interface ThemeStyle {
   textAndIconsDisabled: string;
 
   fill80: string;
+  fill48: string;
   fill30: string;
   fill25: string;
   fill24: string;

@@ -43,7 +43,7 @@ const SelectCollection = ({ collectionsMetadata }: SelectCollectionProps) => {
     return <>Gathering data... please wait</>;
   }
 
-  if (Array.isArray(collectionsMetadata) && collectionsMetadata.length !== 0) {
+  if (Array.isArray(collectionsMetadata) && collectionsMetadata.length === 0) {
     return (
       <SContainer>
         <SNote>

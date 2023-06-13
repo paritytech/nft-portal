@@ -7,7 +7,7 @@ import Title from '@common/Title.tsx';
 
 import Header from '@header/Header.tsx';
 
-import { CLEAN_BACKGROUND_CLASSNAME, mediaQueries } from '@helpers/reusableStyles.ts';
+import { mediaQueries } from '@helpers/reusableStyles.ts';
 import { routes } from '@helpers/routes.ts';
 
 import Drops from '@pages/Assets/Nfts/Drops.tsx';
@@ -52,13 +52,8 @@ const GlobalStyle = createGlobalStyle`
     padding: 16px 0 0;
     font-family: 'Inter', sans-serif;
     font-weight: 400;
-    background: radial-gradient(50% 50% at 50% 50%, #D43079 0%, rgba(212, 48, 121, 0.24) 0.01%, rgba(16, 16, 21, 0) 100%) 
-    ${({ theme }) => theme.backgroundSystem};
+    background: ${({ theme }) => theme.backgroundSystem};
     color: ${({ theme }) => theme.textAndIconsSecondary};
-
-    &.${CLEAN_BACKGROUND_CLASSNAME} {
-      background: ${({ theme }) => theme.backgroundSystem};
-    }
   }
 
   .modal-backdrop {

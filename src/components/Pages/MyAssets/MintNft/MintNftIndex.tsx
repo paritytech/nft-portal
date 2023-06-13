@@ -4,8 +4,6 @@ import { styled } from 'styled-components';
 
 import Title from '@common/Title.tsx';
 
-import { CLEAN_BACKGROUND_CLASSNAME } from '@helpers/reusableStyles.ts';
-
 import MintNftSteps from './MintNftSteps.tsx';
 
 const SSeparator = styled.div`
@@ -14,21 +12,13 @@ const SSeparator = styled.div`
   background: ${({ theme }) => theme.appliedSeparator};
 `;
 
-const MintNftIndex = () => {
-  useEffect(() => {
-    document.body.classList.add(CLEAN_BACKGROUND_CLASSNAME);
-
-    return () => document.body.classList.remove(CLEAN_BACKGROUND_CLASSNAME);
-  }, []);
-
-  return (
-    <>
-      <Title className='XXL'>Mint NFT</Title>
-      <MintNftSteps />
-      <SSeparator />
-      <Outlet />
-    </>
-  );
-};
+const MintNftIndex = () => (
+  <>
+    <Title className='XXL'>Mint NFT</Title>
+    <MintNftSteps />
+    <SSeparator />
+    <Outlet />
+  </>
+);
 
 export default memo(MintNftIndex);

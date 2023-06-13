@@ -10,7 +10,7 @@ import ExtensionIcon from '@common/ExtensionIcon.tsx';
 
 import { useAccounts } from '@contexts/AccountsContext.tsx';
 
-import { CssFontRegularM, CssFontRegularS } from '@helpers/reusableStyles.ts';
+import { CssFontRegularM, CssFontSemiBoldM, CssFontSemiBoldXS } from '@helpers/reusableStyles.ts';
 import { areEqualAddresses, ellipseAddress } from '@helpers/utilities.ts';
 
 import AccountIcon from '@images/icons/account.svg';
@@ -42,7 +42,7 @@ const SAccount = styled.div`
   align-items: start;
 
   .account-name {
-    ${CssFontRegularS}
+    ${CssFontSemiBoldXS}
     color: ${({ theme }) => theme.textAndIconsSecondary};
   }
 
@@ -71,9 +71,21 @@ const SActiveWallet = styled.div`
     left: 0;
   }
 
-  > svg {
-    width: 32px;
-    height: 32px;
+  .wallet-title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    padding: 4px 16px 4px 4px;
+    border: 1px solid ${({ theme }) => theme.appliedStroke};
+    border-radius: 36px;
+
+    ${CssFontSemiBoldM}
+
+    > svg {
+      width: 32px;
+      height: 32px;
+    }
   }
 `;
 
@@ -103,8 +115,10 @@ const ConnectToAccount = ({ handleClose, wallet, changeStep }: ConnectToAccountP
       <ModalBody>
         <SActiveWallet>
           <IconButton icon={<BackIcon />} action={changeStep} />
-          <ExtensionIcon extensionId={wallet.metadata.id} />
-          {wallet.metadata.title}
+          <div className='wallet-title'>
+            <ExtensionIcon extensionId={wallet.metadata.id} />
+            {wallet.metadata.title}
+          </div>
         </SActiveWallet>
 
         <SLabel>Select Account</SLabel>
