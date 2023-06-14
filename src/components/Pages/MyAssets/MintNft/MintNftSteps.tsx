@@ -50,7 +50,7 @@ const MintNftSteps = () => {
         {selectedCollectionLabel}
       </Step>
       <Step counter='2' className={collectionId ? 'active' : 'disabled'}>
-        Mint NFT
+        Create NFT
       </Step>
     </SMintNftSteps>
   );

@@ -220,7 +220,7 @@ const AddLiquidity = ({
                 withZero: false,
               })}{' '}
               <ActionButton
-                className='main XS'
+                className='main'
                 type='button'
                 action={() => onInput1Changed(getCleanFormattedBalance(asset1Balance as BN, asset1Metadata.decimals))}
               >
@@ -249,7 +249,7 @@ const AddLiquidity = ({
                 withZero: false,
               })}{' '}
               <ActionButton
-                className='main XS'
+                className='main'
                 type='button'
                 action={() => onInput2Changed(getCleanFormattedBalance(asset2Balance as BN, asset2Metadata.decimals))}
               >
@@ -266,17 +266,17 @@ const AddLiquidity = ({
 
         <Stack direction='horizontal' gap={2} className='justify-content-end'>
           <Link to={routes.discover.pools}>
-            <ActionButton type='button' className='secondary S'>
+            <ActionButton type='button' className='secondary'>
               Back
             </ActionButton>
           </Link>
           {activeAccount && (
-            <ActionButton type='submit' className='main S'>
+            <ActionButton type='submit' className='main'>
               Add
             </ActionButton>
           )}
           {!activeAccount && (
-            <ActionButton className='main S' isDisabled={true}>
+            <ActionButton className='main' isDisabled={true}>
               Please login
             </ActionButton>
           )}

@@ -35,7 +35,7 @@ const ModalStatus = () => {
         <Loader />
         <SStatusMessage>{status.message}</SStatusMessage>
         {showButton && (
-          <ActionButton action={concludeModalStatus} className='main S padding32'>
+          <ActionButton action={concludeModalStatus} className='main padding32'>
             OK
           </ActionButton>
         )}

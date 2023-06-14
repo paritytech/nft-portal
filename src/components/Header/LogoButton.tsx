@@ -10,11 +10,14 @@ import Logo from '@images/logo.svg';
 const SLogoButton = styled(NavLink)`
   display: flex;
   align-items: center;
+  padding: 8px 24px 8px 8px;
   color: ${({ theme }) => theme.textAndIconsPrimary};
   text-decoration: none;
+  border-radius: 40px;
 
   &:hover {
     color: ${({ theme }) => theme.textAndIconsPrimary};
+    background-color: ${({ theme }) => theme.appliedHover};
   }
 
   span {

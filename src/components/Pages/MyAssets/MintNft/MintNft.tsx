@@ -175,12 +175,12 @@ const MintNft = () => {
 
           <SPageControls>
             <Stack direction='horizontal' gap={3}>
-              <ActionButton type='submit' isDisabled={!isEligibleToMint} className='main L w-50'>
-                Mint NFT
+              <ActionButton type='submit' isDisabled={!isEligibleToMint} className='main w-50'>
+                Create NFT
               </ActionButton>
 
               <Link to='..' className='d-block w-50'>
-                <ActionButton type='button' className='secondary L w-100'>
+                <ActionButton type='button' className='secondary w-100'>
                   Back
                 </ActionButton>
               </Link>

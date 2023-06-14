@@ -35,7 +35,7 @@ const Collection = ({ collectionMetadata }: CollectionProps) => {
       </Card.Body>
       <Card.Footer className='text-center'>
         <Link to={routes.myAssets.nfts(id)}>
-          <ActionButton className='main S'>Show NFTs</ActionButton>
+          <ActionButton className='main'>Show NFTs</ActionButton>
         </Link>
       </Card.Footer>
     </SCard>

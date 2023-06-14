@@ -14,7 +14,7 @@ const SSeparator = styled.div`
 
 const MintNftIndex = () => (
   <>
-    <Title className='XXL'>Mint NFT</Title>
+    <Title className='XXL'>Create NFT</Title>
     <MintNftSteps />
     <SSeparator />
     <Outlet />

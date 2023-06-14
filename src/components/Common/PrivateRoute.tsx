@@ -34,9 +34,7 @@ const PrivateRoute = ({ children, redirectTo }: PrivateRouteProps) => {
     return (
       <>
         <SDoIt>Connect wallet to see your assets</SDoIt>
-        <SConnectButton onClick={() => connect?.click()} className='call-to-action'>
-          Connect Wallet
-        </SConnectButton>
+        <SConnectButton onClick={() => connect?.click()}>Connect Wallet</SConnectButton>
       </>
     );
   }

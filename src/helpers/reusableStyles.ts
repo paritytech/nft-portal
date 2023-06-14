@@ -48,6 +48,10 @@ export const themes: Record<ChainThemes, ThemeStyle> = {
     appliedButtonMain: '#FFFFFF',
 
     accentsPink: '#F272B6',
+    accentsPink15: 'rgba(230, 0, 122, 0.15)',
+    accentsPink32: 'rgba(230, 0, 122, 0.32)',
+    accentsPinkHover: '#D50071',
+    accentsPinkActive: '#C9006B',
     accentsRed: '#FE8D81',
     accentsGreen: '#56F39A',
 
@@ -57,7 +61,7 @@ export const themes: Record<ChainThemes, ThemeStyle> = {
   [ChainThemes.POLKADOT]: {
     backgroundSystem: '#F5F4F4',
     backgroundPrimary: '#FFFFFF',
-    backgroundSecondary: 'rgba(230, 0, 122, 0.15)',
+    backgroundSecondary: '#FFFFFF',
     backgroundTertiary: '#FFFFFF',
 
     textAndIconsPrimary: '#000000',
@@ -83,6 +87,10 @@ export const themes: Record<ChainThemes, ThemeStyle> = {
     appliedButtonMain: '#000000',
 
     accentsPink: '#E6007A',
+    accentsPink15: 'rgba(230, 0, 122, 0.15)',
+    accentsPink32: 'rgba(230, 0, 122, 0.32)',
+    accentsPinkHover: '#D50071',
+    accentsPinkActive: '#C9006B',
     accentsRed: '#FD4935',
     accentsGreen: '#48CC81',
 
@@ -105,12 +113,6 @@ export const CssArrowDown = css`
   height: 30px;
   rotate: 90deg;
   margin-top: 3px;
-`;
-
-export const CssCallToAction = css`
-  &.call-to-action {
-    box-shadow: 0 0 0 8px ${({ theme }) => theme.fill6};
-  }
 `;
 
 export const CssFormControl = css`
@@ -245,37 +247,11 @@ export const CssFontRegularS = css`
 `;
 
 // CSS SNIPPETS - BUTTONS
-const CssCommonSizes = css`
-  &.XL {
-    ${CssFontSemiBoldL}
-    height: 64px;
-  }
-
-  &.L {
-    ${CssFontSemiBoldS}
-    height: 72px;
-    border-radius: 40px;
-  }
-
-  &.M {
-    ${CssFontSemiBoldS}
-    height: 56px;
-  }
-
-  &.S {
-    ${CssFontRegularM}
-    height: 48px;
-  }
-
-  &.XS {
-    ${CssFontSemiBoldXS}
-    height: 24px;
-  }
-`;
-
 export const CssButtonMainStyles = css<CommonStyleProps>`
+  height: 48px;
   color: ${({ theme, isDisabled }) => (isDisabled ? theme.textAndIconsDisabled : theme.forcedWhite)};
   background-color: ${({ theme, isDisabled }) => (isDisabled ? theme.fill6 : theme.appliedButtonMain)};
+  ${CssFontRegularM}
 
   &:hover {
     cursor: ${({ isDisabled }) => (isDisabled ? 'not-allowed' : 'pointer')};
@@ -286,71 +262,43 @@ export const CssButtonMainStyles = css<CommonStyleProps>`
     text-decoration: none;
     color: ${({ theme, isDisabled }) => (isDisabled ? theme.textAndIconsDisabled : theme.forcedBlack)};
   }
-
-  ${CssCallToAction}
-
-  ${CssCommonSizes}
 `;
 
 export const CssButtonSecondaryStyles = css<CommonStyleProps>`
-  ${CssFontSemiBoldS}
-  color: ${({ theme, isDisabled }) => (isDisabled ? theme.fill25 : theme.textAndIconsPrimary)};
-  background-color: ${({ theme, isDisabled }) => (isDisabled ? theme.fill24 : theme.forcedBlack)};
+  height: 48px;
+  color: ${({ theme, isDisabled }) => (isDisabled ? theme.textAndIconsTertiary : theme.forcedWhite)};
+  background-color: ${({ theme, isDisabled }) => (isDisabled ? theme.fill6 : theme.accentsPink)};
+  border-radius: 32px;
+  ${CssFontRegularM}
 
   &:hover {
     cursor: ${({ isDisabled }) => (isDisabled ? 'not-allowed' : 'pointer')};
-    background-color: ${({ theme }) => theme.fill24};
+    background-color: ${({ theme }) => theme.accentsPinkHover};
+  }
+
+  &:active {
+    background-color: ${({ theme }) => theme.accentsPinkActive};
   }
 
   a {
     text-decoration: none;
     color: ${({ theme, isDisabled }) => (isDisabled ? theme.fill25 : theme.textAndIconsPrimary)};
   }
-
-  ${CssCommonSizes}
 `;
 
-export const CssButtonRoundedStyles = css<CommonStyleProps>`
-  ${CssButtonMainStyles}
-
-  border-radius: 12px;
-
-  ${CssCommonSizes}
-`;
-
-export const CssButtonTransparentStyles = css<CommonStyleProps>`
-  color: ${({ theme, isDisabled }) => (isDisabled ? theme.textAndIconsDisabled : theme.forcedWhite)};
-  background-color: ${({ theme }) => theme.fill6};
-
-  &:hover {
-    cursor: ${({ isDisabled }) => (isDisabled ? 'not-allowed' : 'pointer')};
-    background-color: ${({ theme, isDisabled }) => (isDisabled ? theme.fill6 : theme.fill12)};
-  }
-
-  a {
-    text-decoration: none;
-    color: ${({ theme, isDisabled }) => (isDisabled ? theme.textAndIconsDisabled : theme.forcedWhite)};
-  }
-
-  &.L {
-    ${CssFontSemiBoldS}
-    height: 64px;
-  }
-
-  &.S {
-    ${CssFontRegularS}
-    height: 36px;
-    color: ${({ theme, isDisabled }) => (isDisabled ? theme.textAndIconsDisabled : theme.textAndIconsSecondary)};
-  }
+export const CssButtonSecondaryKingStyles = css<CommonStyleProps>`
+  ${CssButtonSecondaryStyles}
+  height: 64px;
+  ${CssFontRegularL}
 `;
 
 export const CssButtonStrokeStyles = css<CommonStyleProps>`
-  ${CssFontSemiBoldM}
-  height: 64px;
+  height: 48px;
   color: ${({ theme, isDisabled }) => (isDisabled ? theme.textAndIconsDisabled : theme.textAndIconsSecondary)};
   background-color: transparent;
   border: 1px solid ${({ theme }) => theme.appliedStroke};
   box-sizing: border-box;
+  ${CssFontSemiBoldM}
 
   &:hover {
     cursor: ${({ isDisabled }) => (isDisabled ? 'not-allowed' : 'pointer')};
@@ -391,14 +339,13 @@ export const SConnectButton = styled.button`
   height: 48px;
   line-height: 48px;
   padding: 0 24px;
-  background-color: ${({ theme }) => theme.backgroundSecondary};
+  background-color: ${({ theme }) => theme.accentsPink15};
   color: ${({ theme }) => theme.accentsPink};
   border: 0;
   border-radius: 32px;
+  box-sizing: border-box;
 
   &:hover {
-    height: 44px;
-    line-height: 44px;
     padding: 0 22px;
     border: 2px solid ${({ theme }) => theme.accentsPink};
   }
@@ -414,19 +361,13 @@ export const SConnectButton = styled.button`
     height: 48px;
     line-height: 48px;
     padding: 0 20px 0 8px;
-    background-color: ${({ theme }) => theme.fill6};
+    background-color: ${({ theme }) => theme.appliedHover};
     border: 0;
-  }
-
-  .identicon {
-    width: 32px;
   }
 
   .arrow-down {
     ${CssArrowDown}
   }
-
-  ${CssCallToAction}
 `;
 
 export const SRow = styled.section`
@@ -455,12 +396,8 @@ export const SActionButton = styled.button<CommonStyleProps>`
     ${CssButtonSecondaryStyles}
   }
 
-  &.rounded {
-    ${CssButtonRoundedStyles}
-  }
-
-  &.transparent {
-    ${CssButtonTransparentStyles}
+  &.secondary-king {
+    ${CssButtonSecondaryKingStyles}
   }
 
   &.stroke {

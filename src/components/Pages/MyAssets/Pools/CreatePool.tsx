@@ -107,12 +107,12 @@ const CreatePool = () => {
           )}
           <Stack direction='horizontal' gap={2} className='justify-content-end'>
             <Link to={routes.discover.pools}>
-              <ActionButton type='button' className='secondary S'>
+              <ActionButton type='button' className='secondary'>
                 Back
               </ActionButton>
             </Link>
             {availableTokensLeft && (
-              <ActionButton type='submit' className='main S'>
+              <ActionButton type='submit' className='main'>
                 Create
               </ActionButton>
             )}

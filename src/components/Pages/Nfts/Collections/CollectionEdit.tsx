@@ -82,11 +82,11 @@ const CollectionEdit = () => {
           />
         </Form.Group>
         <Stack direction='horizontal' gap={2} className='justify-content-end'>
-          <ActionButton type='submit' className='main S'>
+          <ActionButton type='submit' className='main'>
             Submit metadata
           </ActionButton>
           <Link to='..'>
-            <ActionButton type='button' className='secondary S'>
+            <ActionButton type='button' className='secondary'>
               Back
             </ActionButton>
           </Link>

@@ -11,10 +11,12 @@ import { CssFontRegularM, CssFontSemiBoldXL } from '@helpers/reusableStyles.ts';
 import { routes } from '@helpers/routes.ts';
 
 const SContainer = styled.div`
-  width: 460px;
-  padding: 0 8px;
+  width: 394px;
+  padding: 32px;
   text-align: center;
   margin: 0 auto;
+  border: 1px solid ${({ theme }) => theme.appliedStroke};
+  border-radius: 24px;
 `;
 
 const SNote = styled.div`
@@ -25,12 +27,11 @@ const SNote = styled.div`
 const SChoose = styled.div`
   ${CssFontRegularM}
   margin: 24px 0;
-  color: ${({ theme }) => theme.textAndIconsSecondary};
+  color: ${({ theme }) => theme.textAndIconsPrimary};
 `;
 
 const SCollectionOption = styled(Link)`
   display: block;
-  margin-bottom: 16px;
   text-decoration: none;
 `;
 
@@ -53,7 +54,7 @@ const SelectCollection = ({ collectionsMetadata }: SelectCollectionProps) => {
           <br />a new one
         </SNote>
         <Link to={routes.myAssets.createCollection}>
-          <ActionButton className='main S call-to-action'>Create New Collection</ActionButton>
+          <ActionButton className='main'>Create New Collection</ActionButton>
         </Link>
       </SContainer>
     );
@@ -62,7 +63,7 @@ const SelectCollection = ({ collectionsMetadata }: SelectCollectionProps) => {
   return (
     <SContainer>
       <Link to={routes.myAssets.createCollection}>
-        <ActionButton className='main S call-to-action w-100'>Create New Collection</ActionButton>
+        <ActionButton className='secondary-king w-100'>Create New Collection</ActionButton>
       </Link>
       <SChoose>or select the created one</SChoose>
       {collectionsMetadata.map((collectionMetadata) => (

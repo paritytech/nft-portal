@@ -115,6 +115,10 @@ export interface ThemeStyle {
   appliedButtonMain: string;
 
   accentsPink: string;
+  accentsPink15: string;
+  accentsPink32: string;
+  accentsPinkHover: string;
+  accentsPinkActive: string;
   accentsRed: string;
   accentsGreen: string;
 

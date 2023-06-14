@@ -356,7 +356,7 @@ const CreateCollection = () => {
           </SFormBlock>
 
           <SPageControls>
-            <ActionButton type='submit' className='main S w-100'>
+            <ActionButton type='submit' className='main w-100'>
               Create collection
             </ActionButton>
           </SPageControls>

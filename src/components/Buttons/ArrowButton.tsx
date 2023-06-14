@@ -2,6 +2,7 @@ import { FormEvent, ReactElement, memo } from 'react';
 import { styled } from 'styled-components';
 
 import { CommonStyleProps } from '@helpers/interfaces.ts';
+import { handleActionClick } from '@helpers/utilities.ts';
 
 import ArrowIcon from '@images/icons/arrow.svg';
 
@@ -11,14 +12,14 @@ const SArrowButton = styled.button<CommonStyleProps>`
   align-items: center;
   width: 100%;
   min-height: 64px;
-  padding: 0 12px;
+  padding: 0 16px;
   background-color: ${({ theme }) => theme.forcedWhite};
   border: 1px solid ${({ theme }) => theme.appliedStroke};
   border-radius: 12px;
 
   .arrow {
-    width: 24px;
-    height: 24px;
+    width: 14px;
+    height: 14px;
 
     path {
       fill: ${({ theme }) => theme.textAndIconsTertiary};
@@ -40,25 +41,15 @@ interface ArrowIconProps extends CommonStyleProps {
   action?: () => void;
 }
 
-const ArrowButton = ({ children, action, className, isDisabled }: ArrowIconProps) => {
-  const handleClick = (event: FormEvent) => {
-    if (isDisabled) {
-      event.preventDefault();
-      return;
-    }
-
-    if (typeof action !== 'undefined') {
-      event.preventDefault();
-      action();
-    }
-  };
-
-  return (
-    <SArrowButton onClick={handleClick} className={className} isDisabled={isDisabled}>
-      {children}
-      <ArrowIcon className='arrow' />
-    </SArrowButton>
-  );
-};
+const ArrowButton = ({ children, action, className, isDisabled }: ArrowIconProps) => (
+  <SArrowButton
+    className={className}
+    isDisabled={isDisabled}
+    onClick={(event: FormEvent) => handleActionClick(event, isDisabled, action)}
+  >
+    {children}
+    <ArrowIcon className='arrow' />
+  </SArrowButton>
+);
 
 export default memo(ArrowButton);

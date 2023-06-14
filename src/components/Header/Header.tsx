@@ -32,7 +32,7 @@ const Header = () => (
     <LogoButton />
     <SConnectionBlock>
       <Link to={routes.myAssets.mintNftMain}>
-        <ActionButton className='main S'>Create NFT</ActionButton>
+        <ActionButton className='main'>Create NFT</ActionButton>
       </Link>
       <SelectChain />
       <Connect />

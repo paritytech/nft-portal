@@ -1,3 +1,5 @@
+import Identicon from '@polkadot/react-identicon';
+import { formatBalance } from '@polkadot/util';
 import { truncate } from 'lodash';
 import { memo, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -5,19 +7,19 @@ import { styled } from 'styled-components';
 
 import { useAccounts } from '@contexts/AccountsContext.tsx';
 
-import { SConnectButton } from '@helpers/reusableStyles.ts';
+import { CssFontRegularS, CssFontSemiBoldM, CssFontSemiBoldS, SConnectButton } from '@helpers/reusableStyles.ts';
 import { routes } from '@helpers/routes.ts';
 import { ellipseAddress } from '@helpers/utilities.ts';
 
+import { useAssets } from '@hooks/useAssets.ts';
 import { useConnectToStoredAccount } from '@hooks/useConnectToStoredAccount.ts';
 import { useCopyToClipboard } from '@hooks/useCopyToClipboard.ts';
 import { useOutsideClick } from '@hooks/useOutsideClick.ts';
 
 import CopyIcon from '@images/icons/copy.svg';
-import IdenticonIcon from '@images/icons/identicon.svg';
-import NftIcon from '@images/icons/nft.svg';
-import PlusIcon from '@images/icons/plus.svg';
-import PoolIcon from '@images/icons/pool.svg';
+import ExitIcon from '@images/icons/exit.svg';
+import HeartIcon from '@images/icons/heart.svg';
+import ImageIcon from '@images/icons/image.svg';
 
 import ConnectModal from '@modals/ConnectModal/ConnectModal.tsx';
 
@@ -41,8 +43,13 @@ const SAccountActions = styled.div`
     display: block;
   }
 
+  .regular {
+    ${CssFontRegularS}
+  }
+
   .highlighted {
     color: ${({ theme }) => theme.textAndIconsPrimary};
+    ${CssFontSemiBoldM}
   }
 
   a {
@@ -50,15 +57,18 @@ const SAccountActions = styled.div`
   }
 `;
 
+const STopInfo = styled.div`
+  padding: 0 8px;
+`;
+
 const SSeparator = styled.div`
   border-bottom: 1px solid ${({ theme }) => theme.appliedSeparator};
-  margin: 24px 0;
+  margin: 12px 0;
 `;
 
 const SActionBlock = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 12px;
 
   a {
     color: ${({ theme }) => theme.textAndIconsPrimary};
@@ -69,15 +79,21 @@ const SSimpleAction = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 8px;
   gap: 20px;
 
   span {
     min-width: 190px;
+    height: 40px;
+    color: ${({ theme }) => theme.textAndIconsPrimary};
+    ${CssFontSemiBoldS}
+    line-height: 40px;
   }
 
   &:hover {
     cursor: pointer;
-    text-decoration: underline;
+    background-color: ${({ theme }) => theme.appliedHover};
+    border-radius: 8px;
   }
 `;
 
@@ -92,6 +108,10 @@ const SIcon = styled.div`
 
   svg {
     width: 24px;
+
+    path {
+      fill: ${({ theme }) => theme.textAndIconsPrimary};
+    }
   }
 
   &.copied {
@@ -101,7 +121,8 @@ const SIcon = styled.div`
 
 const Connect = () => {
   const { activeAccount, wallets, isAutoConnectDone } = useConnectToStoredAccount();
-  const { setActiveAccount, setStoredActiveAccount } = useAccounts();
+  const { api, setActiveAccount, setStoredActiveAccount } = useAccounts();
+  const { getNativeBalance, nativeBalance } = useAssets();
   const dropdownRef = useOutsideClick(() => setIsAccountActionsVisible(false));
   const [showWalletSelection, setShowWalletSelection] = useState(false);
   const [isAccountActionsVisible, setIsAccountActionsVisible] = useState(false);
@@ -118,6 +139,10 @@ const Connect = () => {
       }
     }
   }, [isAccountActionsVisible]);
+
+  useEffect(() => {
+    getNativeBalance();
+  }, [getNativeBalance]);
 
   const handleClose = () => setShowWalletSelection(false);
   const handleShow = () => {
@@ -144,7 +169,7 @@ const Connect = () => {
         <SConnectButton id='connect' className={activeAccount !== null ? 'active' : ''} onClick={handleShow}>
           {activeAccount !== null ? (
             <>
-              <IdenticonIcon className='identicon' />
+              <Identicon value={activeAccount.address} size={32} />
               <span>{truncate(activeAccount.name, { length: 16 }) || ellipseAddress(activeAccount.address)}</span>
             </>
           ) : (
@@ -153,46 +178,48 @@ const Connect = () => {
         </SConnectButton>
 
         <SAccountActions className={isAccountActionsVisible ? 'active' : ''}>
-          {activeAccount !== null && activeAccount.name && (
-            <span className='highlighted'>{truncate(activeAccount.name, { length: 16 })}</span>
-          )}
-          <SSimpleAction onClick={copyToClipboard}>
-            <span>{ellipseAddress(activeAccount?.address, 4)}</span>
-            <SIcon className={buttonText || ''}>
-              <CopyIcon />
-            </SIcon>
-          </SSimpleAction>
-          <SSeparator />
-          <SActionBlock onClick={() => setIsAccountActionsVisible(false)}>
-            <Link to={routes.myAssets.mintNftMain}>
-              <SSimpleAction>
-                <span>Mint NFT</span>
-                <SIcon>
-                  <PlusIcon />
-                </SIcon>
-              </SSimpleAction>
-            </Link>
+          <STopInfo>
+            <div className='regular'>Your Balance</div>
+            <div className='highlighted'>
+              {nativeBalance &&
+                api &&
+                formatBalance(nativeBalance, { decimals: api.registry.chainDecimals[0], withZero: false })}
+            </div>
 
-            <Link to={routes.myAssets.createPool}>
-              <SSimpleAction>
-                <span>Create Liquidity Pool</span>
-                <SIcon>
-                  <PoolIcon />
-                </SIcon>
-              </SSimpleAction>
-            </Link>
+            <SSeparator />
+          </STopInfo>
+
+          <SActionBlock onClick={() => setIsAccountActionsVisible(false)}>
+            <SSimpleAction onClick={copyToClipboard}>
+              <span>Copy Wallet Address</span>
+              <SIcon className={buttonText || ''}>
+                <CopyIcon />
+              </SIcon>
+            </SSimpleAction>
 
             <Link to={routes.myAssets.collections}>
               <SSimpleAction>
                 <span>My Collections</span>
                 <SIcon>
-                  <NftIcon />
+                  <HeartIcon />
+                </SIcon>
+              </SSimpleAction>
+            </Link>
+
+            <Link to={routes.myAssets.mintNftMain}>
+              <SSimpleAction>
+                <span>Create NFT</span>
+                <SIcon>
+                  <ImageIcon />
                 </SIcon>
               </SSimpleAction>
             </Link>
 
             <SSimpleAction onClick={disconnect}>
               <span>Disconnect wallet</span>
+              <SIcon>
+                <ExitIcon />
+              </SIcon>
             </SSimpleAction>
           </SActionBlock>
         </SAccountActions>

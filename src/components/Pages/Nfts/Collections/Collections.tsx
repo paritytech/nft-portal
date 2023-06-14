@@ -22,7 +22,7 @@ const Collections = () => {
       <CollectionsView collectionsMetadata={collectionsMetadata} />
       <Stack direction='horizontal' gap={2} className='justify-content-end'>
         <Link to={routes.myAssets.createCollection}>
-          <ActionButton className='main S'>Create Collection</ActionButton>
+          <ActionButton className='main'>Create Collection</ActionButton>
         </Link>
       </Stack>
     </>
