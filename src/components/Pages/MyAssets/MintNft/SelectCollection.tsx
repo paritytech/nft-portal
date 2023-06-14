@@ -33,6 +33,10 @@ const SChoose = styled.div`
 const SCollectionOption = styled(Link)`
   display: block;
   text-decoration: none;
+
+  & + a {
+    margin-top: 8px;
+  }
 `;
 
 interface SelectCollectionProps {
