@@ -49,7 +49,7 @@ const GlobalStyle = createGlobalStyle`
 
   body {
     margin: 0;
-    padding: 16px 0 0;
+    padding: 24px 0 0;
     font-family: 'Inter', sans-serif;
     font-weight: 400;
     background: ${({ theme }) => theme.backgroundSystem};

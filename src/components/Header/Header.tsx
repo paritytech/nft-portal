@@ -16,9 +16,10 @@ const SHeader = styled.header`
   justify-content: space-between;
   align-items: center;
   background-color: ${({ theme }) => theme.backgroundPrimary};
+  border: 1px solid ${({ theme }) => theme.appliedStroke};
   border-radius: 48px;
   margin: 0 16px 16px;
-  padding: 8px 16px;
+  padding: 8px;
 `;
 
 const SConnectionBlock = styled.div`

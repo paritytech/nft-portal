@@ -1,4 +1,4 @@
-import { memo, useEffect } from 'react';
+import { memo } from 'react';
 import { Outlet } from 'react-router-dom';
 import { styled } from 'styled-components';
 
@@ -6,18 +6,17 @@ import Title from '@common/Title.tsx';
 
 import MintNftSteps from './MintNftSteps.tsx';
 
-const SSeparator = styled.div`
-  height: 1px;
-  margin: 40px 0;
-  background: ${({ theme }) => theme.appliedSeparator};
+const SOutlet = styled.div`
+  margin-top: 52px;
 `;
 
 const MintNftIndex = () => (
   <>
     <Title className='XXL'>Create NFT</Title>
     <MintNftSteps />
-    <SSeparator />
-    <Outlet />
+    <SOutlet>
+      <Outlet />
+    </SOutlet>
   </>
 );
 

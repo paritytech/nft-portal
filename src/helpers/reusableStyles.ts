@@ -116,31 +116,34 @@ export const CssArrowDown = css`
 `;
 
 export const CssFormControl = css`
-  background-color: ${({ theme }) => theme.fill6};
-  color: ${({ theme }) => theme.textAndIconsPrimary};
-  border: 0;
+  color: ${({ theme }) => theme.textAndIconsTertiary};
+  border: 1px solid ${({ theme }) => theme.appliedStroke};
+  border-radius: 8px;
   box-sizing: border-box;
   transition: none;
   outline: 0;
 
+  &::placeholder {
+    color: ${({ theme }) => theme.textAndIconsTertiary};
+  }
+
   &:hover {
-    border: 4px solid ${({ theme }) => theme.fill12};
-    padding-left: 20px;
+    border: 2px solid ${({ theme }) => theme.appliedStroke};
+    padding-left: 11px;
   }
 
   &:focus {
     background-color: ${({ theme }) => theme.fill6};
     color: ${({ theme }) => theme.textAndIconsPrimary};
     border: 2px solid ${({ theme }) => theme.textAndIconsPrimary};
-    padding-left: 22px;
+    padding-left: 11px;
     box-shadow: none;
   }
 
   &:disabled {
-    background: none;
-    padding-left: 23px;
-    border: 1px solid ${({ theme }) => theme.fill12};
-    color: ${({ theme }) => theme.textAndIconsDisabled};
+    background-color: ${({ theme }) => theme.fill6};
+    border: 0;
+    padding-left: 11px;
     cursor: not-allowed;
   }
 `;

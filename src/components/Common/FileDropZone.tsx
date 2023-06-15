@@ -36,6 +36,10 @@ const SDropZone = styled.div`
     width: 48px;
     height: 48px;
     margin-bottom: 8px;
+
+    path {
+      fill: ${({ theme }) => theme.textAndIconsTertiary};
+    }
   }
 `;
 

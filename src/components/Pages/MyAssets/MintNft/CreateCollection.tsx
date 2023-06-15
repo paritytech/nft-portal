@@ -48,8 +48,8 @@ const SHat = styled.div`
   margin-bottom: 48px;
 
   button {
-    width: 56px;
-    height: 56px;
+    width: 48px;
+    height: 48px;
   }
 `;
 
@@ -206,18 +206,6 @@ const CreateCollection = () => {
               setImageCid={setImageCid}
             />
           </SGroup>
-
-          <SInfoRow>
-            <span>Collection Owner</span>
-            <span>{ellipseAddress(activeAccount?.address)}</span>
-          </SInfoRow>
-
-          <SInfoRow>
-            <span>Collection Mint Price</span>
-            <span>
-              {price || '0'} {api.registry.chainTokens[0]}
-            </span>
-          </SInfoRow>
         </aside>
 
         <section>
@@ -236,8 +224,57 @@ const CreateCollection = () => {
           </SFormBlock>
 
           <SFormBlock>
+            <SGroup>
+              <SLabel>
+                Price <i>(optional)</i>
+              </SLabel>
+              <FormControl
+                type='text'
+                pattern={pricePattern(chainDecimals)}
+                title={`Please enter a number e.g. 10.25, max precision is ${chainDecimals} decimals after .`}
+                onChange={(event) => setPrice(event.target.value)}
+                placeholder='Set amount'
+              />
+            </SGroup>
+          </SFormBlock>
+
+          <SFormBlock>
+            <SGroup>
+              <SLabel>Mint type</SLabel>
+              <Radio
+                name='mint-type'
+                label='Only You Can Mint'
+                value={MintTypes.ISSUER}
+                onChange={mintTypeChangeHandler}
+                selectedValue={mintType}
+              />
+              <Radio
+                name='mint-type'
+                label='Everyone Can Mint'
+                value={MintTypes.PUBLIC}
+                onChange={mintTypeChangeHandler}
+                selectedValue={mintType}
+              />
+              <Radio
+                name='mint-type'
+                label='Holder of Other NFT Collection Can Mint'
+                value={MintTypes.HOLDER_OF}
+                onChange={mintTypeChangeHandler}
+                selectedValue={mintType}
+              />
+            </SGroup>
+
+            {mintType === MintTypes.HOLDER_OF && (
+              <SGroup>
+                <SLabel>Collection ID (must have a NFT from this collection)</SLabel>
+                <FormControl type='number' ref={holderOfCollectionIdRef} min={0} required />
+              </SGroup>
+            )}
+          </SFormBlock>
+
+          <SFormBlock>
             <SToggle type='button' onClick={() => setToggleCollectionSettings(!toggleCollectionSettings)}>
-              Collection settings <DropdownIcon className='arrow-down' />
+              Advanced settings <DropdownIcon className='arrow-down' />
             </SToggle>
             <Collapse in={toggleCollectionSettings}>
               <SToggleBlock>
@@ -261,6 +298,7 @@ const CreateCollection = () => {
                     a limited amount of time)
                   </SDescription>
                 </SGroup>
+
                 <SGroup>
                   <SLabel>
                     Max supply <i>(optional)</i>
@@ -270,60 +308,6 @@ const CreateCollection = () => {
                     ref={maxSupplyRef}
                     min={0}
                     pattern={wholeNumbersPattern}
-                    placeholder='Set amount'
-                  />
-                </SGroup>
-              </SToggleBlock>
-            </Collapse>
-          </SFormBlock>
-
-          <SFormBlock>
-            <SToggle type='button' onClick={() => setToggleMintSettings(!toggleMintSettings)}>
-              Mint settings <DropdownIcon className='arrow-down' />
-            </SToggle>
-            <Collapse in={toggleMintSettings}>
-              <SToggleBlock>
-                <SGroup>
-                  <SLabel>Mint type</SLabel>
-                  <Radio
-                    name='mint-type'
-                    label='Only You Can Mint'
-                    value={MintTypes.ISSUER}
-                    onChange={mintTypeChangeHandler}
-                    selectedValue={mintType}
-                  />
-                  <Radio
-                    name='mint-type'
-                    label='Everyone Can Mint'
-                    value={MintTypes.PUBLIC}
-                    onChange={mintTypeChangeHandler}
-                    selectedValue={mintType}
-                  />
-                  <Radio
-                    name='mint-type'
-                    label='Holder of Other NFT Collection Can Mint'
-                    value={MintTypes.HOLDER_OF}
-                    onChange={mintTypeChangeHandler}
-                    selectedValue={mintType}
-                  />
-                </SGroup>
-
-                {mintType === MintTypes.HOLDER_OF && (
-                  <SGroup>
-                    <SLabel>Collection ID (must have a NFT from this collection)</SLabel>
-                    <FormControl type='number' ref={holderOfCollectionIdRef} min={0} required />
-                  </SGroup>
-                )}
-
-                <SGroup>
-                  <SLabel>
-                    Price <i>(optional)</i>
-                  </SLabel>
-                  <FormControl
-                    type='text'
-                    pattern={pricePattern(chainDecimals)}
-                    title={`Please enter a number e.g. 10.25, max precision is ${chainDecimals} decimals after .`}
-                    onChange={(event) => setPrice(event.target.value)}
                     placeholder='Set amount'
                   />
                 </SGroup>
@@ -354,6 +338,18 @@ const CreateCollection = () => {
               </SToggleBlock>
             </Collapse>
           </SFormBlock>
+
+          <SInfoRow>
+            <span>Collection Owner</span>
+            <span>{ellipseAddress(activeAccount?.address)}</span>
+          </SInfoRow>
+
+          <SInfoRow>
+            <span>Collection Mint Price</span>
+            <span>
+              {price || '0'} {api.registry.chainTokens[0]}
+            </span>
+          </SInfoRow>
 
           <SPageControls>
             <ActionButton type='submit' className='main w-100'>

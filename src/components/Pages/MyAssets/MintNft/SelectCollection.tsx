@@ -7,11 +7,13 @@ import ActionButton from '@buttons/ActionButton.tsx';
 import IconArrowButton from '@buttons/IconArrowButton.tsx';
 
 import { CollectionMetadata } from '@helpers/interfaces.ts';
-import { CssFontRegularM, CssFontSemiBoldXL } from '@helpers/reusableStyles.ts';
+import { CssFontRegularM, CssFontSemiBoldL } from '@helpers/reusableStyles.ts';
 import { routes } from '@helpers/routes.ts';
 
+import CollectionIcon from '@images/icons/collection.svg';
+
 const SContainer = styled.div`
-  width: 394px;
+  width: 458px;
   padding: 32px;
   text-align: center;
   margin: 0 auto;
@@ -19,9 +21,25 @@ const SContainer = styled.div`
   border-radius: 24px;
 `;
 
+const SHugeIcon = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 136px;
+  height: 136px;
+  margin: 12px auto 32px;
+  background-color: ${({ theme }) => theme.fill6};
+  border-radius: 104px;
+
+  svg {
+    width: 72px;
+    height: 72px;
+  }
+`;
+
 const SNote = styled.div`
-  ${CssFontSemiBoldXL}
-  margin-bottom: 40px;
+  ${CssFontSemiBoldL}
+  margin-bottom: 32px;
 `;
 
 const SChoose = styled.div`
@@ -51,14 +69,14 @@ const SelectCollection = ({ collectionsMetadata }: SelectCollectionProps) => {
   if (Array.isArray(collectionsMetadata) && collectionsMetadata.length === 0) {
     return (
       <SContainer>
+        <SHugeIcon>
+          <CollectionIcon />
+        </SHugeIcon>
         <SNote>
-          You don&apos;t have any
-          <br />
-          collections yet, create
-          <br />a new one
+          You don&apos;t have any collections<br />yet, create a new one
         </SNote>
         <Link to={routes.myAssets.createCollection}>
-          <ActionButton className='main'>Create New Collection</ActionButton>
+          <ActionButton className='secondary-king w-100'>Create New Collection</ActionButton>
         </Link>
       </SContainer>
     );

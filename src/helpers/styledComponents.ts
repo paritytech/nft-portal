@@ -64,13 +64,12 @@ export const SFormLayout = styled(Form)`
 `;
 
 export const SGroup = styled(FormGroup)`
-  margin-bottom: 32px;
+  margin-bottom: 24px;
 
   input[type='text'],
   input[type='number'] {
-    height: 56px;
-    padding: 0 24px;
-    border-radius: 32px;
+    height: 48px;
+    padding: 0 12px;
 
     ${CssFormControl}
   }
@@ -78,29 +77,28 @@ export const SGroup = styled(FormGroup)`
   textarea {
     width: 100%;
     height: 128px;
-    padding: 16px 24px;
-    border-radius: 16px;
+    padding: 12px;
     resize: none;
 
     ${CssFormControl}
 
     &:hover {
-      padding-top: 12px;
+      padding-top: 11px;
     }
 
     &:focus {
-      padding-top: 14px;
+      padding-top: 11px;
     }
 
     &:hover:disabled {
-      padding-top: 16px;
+      padding-top: 12px;
     }
   }
 `;
 
 export const SLabel = styled(FormLabel)`
-  color: ${({ theme }) => theme.textAndIconsSecondary};
-  margin-bottom: 12px;
+  color: ${({ theme }) => theme.textAndIconsPrimary};
+  margin-bottom: 10px;
 
   &.bigger-margin {
     margin-bottom: 24px;
