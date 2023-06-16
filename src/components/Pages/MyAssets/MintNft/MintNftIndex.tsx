@@ -1,8 +1,10 @@
-import { memo } from 'react';
+import { memo, useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
 import { styled } from 'styled-components';
 
 import Title from '@common/Title.tsx';
+
+import { alternateBackground } from '@helpers/utilities.ts';
 
 import MintNftSteps from './MintNftSteps.tsx';
 
@@ -10,14 +12,20 @@ const SOutlet = styled.div`
   margin-top: 52px;
 `;
 
-const MintNftIndex = () => (
-  <>
-    <Title className='XXL'>Create NFT</Title>
-    <MintNftSteps />
-    <SOutlet>
-      <Outlet />
-    </SOutlet>
-  </>
-);
+const MintNftIndex = () => {
+  useEffect(() => {
+    return alternateBackground();
+  }, []);
+
+  return (
+    <>
+      <Title className='XXL'>Create NFT</Title>
+      <MintNftSteps />
+      <SOutlet>
+        <Outlet />
+      </SOutlet>
+    </>
+  );
+};
 
 export default memo(MintNftIndex);

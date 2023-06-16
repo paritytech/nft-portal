@@ -75,6 +75,12 @@ const SToggle = styled.button`
   }
 `;
 
+const SSeparator = styled.div`
+  height: 1px;
+  margin: 40px 0;
+  background: ${({ theme }) => theme.appliedSeparator};
+`;
+
 const SDescription = styled.p`
   margin: 12px 0 24px;
   color: ${({ theme }) => theme.textAndIconsTertiary};
@@ -94,9 +100,6 @@ const CreateCollection = () => {
   const unlockedAttributesRef = useRef<HTMLInputElement | null>(null);
   const unlockedMaxSupplyRef = useRef<HTMLInputElement | null>(null);
   const maxSupplyRef = useRef<HTMLInputElement | null>(null);
-  const transferrableItemRef = useRef<HTMLInputElement | null>(null);
-  const unlockedItemMetadataRef = useRef<HTMLInputElement | null>(null);
-  const unlockedItemAttributesRef = useRef<HTMLInputElement | null>(null);
   const holderOfCollectionIdRef = useRef<HTMLInputElement | null>(null);
   const [price, setPrice] = useState<string>('');
   const [imageCid, setImageCid] = useState<string>();
@@ -104,8 +107,7 @@ const CreateCollection = () => {
   const [startDate, setStartDate] = useState<Date>();
   const [endDate, setEndDate] = useState<Date>();
   const [mintType, setMintType] = useState<MintTypes>(MintTypes.ISSUER);
-  const [toggleCollectionSettings, setToggleCollectionSettings] = useState<boolean>(false);
-  const [toggleMintSettings, setToggleMintSettings] = useState<boolean>(false);
+  const [toggleAdvancedSettings, setToggleAdvancedSettings] = useState<boolean>(false);
 
   const submitCreateCollection = useCallback(
     async (event: FormEvent) => {
@@ -119,22 +121,13 @@ const CreateCollection = () => {
         unlockedMetadataRef.current !== null &&
         unlockedAttributesRef.current !== null &&
         unlockedMaxSupplyRef.current !== null &&
-        maxSupplyRef.current !== null &&
-        transferrableItemRef.current !== null &&
-        unlockedItemMetadataRef.current !== null &&
-        unlockedItemAttributesRef.current !== null
+        maxSupplyRef.current !== null
       ) {
         const settings = convertToBitFlagValue([
           transferrableItemsRef.current.checked,
           unlockedMetadataRef.current.checked,
           unlockedAttributesRef.current.checked,
           unlockedMaxSupplyRef.current.checked,
-        ]);
-
-        const defaultItemSettings = convertToBitFlagValue([
-          transferrableItemRef.current.checked,
-          unlockedItemMetadataRef.current.checked,
-          unlockedItemAttributesRef.current.checked,
         ]);
 
         const startBlock = await getBlockNumber(api, startDate?.getTime());
@@ -159,7 +152,7 @@ const CreateCollection = () => {
             price: price === '' ? undefined : unitToPlanck(price, api.registry.chainDecimals[0]),
             startBlock,
             endBlock,
-            defaultItemSettings,
+            defaultItemSettings: 0,
           },
         };
 
@@ -272,11 +265,13 @@ const CreateCollection = () => {
             )}
           </SFormBlock>
 
+          <SSeparator />
+
           <SFormBlock>
-            <SToggle type='button' onClick={() => setToggleCollectionSettings(!toggleCollectionSettings)}>
+            <SToggle type='button' onClick={() => setToggleAdvancedSettings(!toggleAdvancedSettings)}>
               Advanced settings <DropdownIcon className='arrow-down' />
             </SToggle>
-            <Collapse in={toggleCollectionSettings}>
+            <Collapse in={toggleAdvancedSettings}>
               <SToggleBlock>
                 <SGroup>
                   <Checkbox ref={transferrableItemsRef} label='Transferrable items' defaultChecked />
@@ -328,16 +323,11 @@ const CreateCollection = () => {
                     </>
                   }
                 />
-
-                <SGroup>
-                  <SLabel className='bigger-margin'>Default item settings</SLabel>
-                  <Checkbox ref={transferrableItemRef} label='Transferrable' defaultChecked />
-                  <Checkbox ref={unlockedItemMetadataRef} label='Unlocked metadata' defaultChecked />
-                  <Checkbox ref={unlockedItemAttributesRef} label='Unlocked attributes' defaultChecked />
-                </SGroup>
               </SToggleBlock>
             </Collapse>
           </SFormBlock>
+
+          <SSeparator />
 
           <SInfoRow>
             <span>Collection Owner</span>

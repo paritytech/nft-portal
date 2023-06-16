@@ -16,8 +16,8 @@ const SIconArrowButton = styled.button<CommonStyleProps>`
   width: 100%;
   height: 64px;
   padding: 8px 16px 8px 8px;
-  color: ${({ theme, isDisabled }) => (isDisabled ? theme.accentsPink32 : theme.accentsPink)};
-  background-color: ${({ theme }) => theme.accentsPink15};
+  color: ${({ theme, isDisabled }) => (isDisabled ? theme.appliedLightPinkBackground : theme.accentsPink)};
+  background-color: ${({ theme }) => theme.appliedLightPinkBackground};
   border: 0;
   border-radius: 48px;
   box-sizing: border-box;

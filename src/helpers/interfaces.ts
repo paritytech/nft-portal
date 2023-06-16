@@ -113,12 +113,11 @@ export interface ThemeStyle {
   appliedStroke: string;
   appliedSeparator: string;
   appliedButtonMain: string;
+  appliedLightPinkBackground: string;
+  appliedPinkHover: string;
+  appliedPinkActive: string;
 
   accentsPink: string;
-  accentsPink15: string;
-  accentsPink32: string;
-  accentsPinkHover: string;
-  accentsPinkActive: string;
   accentsRed: string;
   accentsGreen: string;
 

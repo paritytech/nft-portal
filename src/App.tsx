@@ -7,7 +7,7 @@ import Title from '@common/Title.tsx';
 
 import Header from '@header/Header.tsx';
 
-import { mediaQueries } from '@helpers/reusableStyles.ts';
+import { ALTERNATE_BACKGROUND_CLASSNAME, mediaQueries } from '@helpers/reusableStyles.ts';
 import { routes } from '@helpers/routes.ts';
 
 import Drops from '@pages/Assets/Nfts/Drops.tsx';
@@ -54,6 +54,10 @@ const GlobalStyle = createGlobalStyle`
     font-weight: 400;
     background: ${({ theme }) => theme.backgroundSystem};
     color: ${({ theme }) => theme.textAndIconsSecondary};
+
+    &.${ALTERNATE_BACKGROUND_CLASSNAME} {
+      background: ${({ theme }) => theme.backgroundPrimary};
+    }
   }
 
   .modal-backdrop {

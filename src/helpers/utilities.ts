@@ -8,6 +8,8 @@ import { FormEvent } from 'react';
 import { MultiAssets } from '@helpers/constants.ts';
 import { MultiAssetId, PoolId, PoolReserves } from '@helpers/interfaces.ts';
 
+import { ALTERNATE_BACKGROUND_CLASSNAME } from './reusableStyles.ts';
+
 export const ellipseAddress = (address = '', charCount = 4): string => {
   if (address === '') {
     return '';
@@ -207,4 +209,10 @@ export const handleActionClick = (event: FormEvent, isDisabled?: boolean, action
     event.preventDefault();
     action();
   }
+};
+
+export const alternateBackground = () => {
+  document.body.classList.add(ALTERNATE_BACKGROUND_CLASSNAME);
+
+  return () => document.body.classList.remove(ALTERNATE_BACKGROUND_CLASSNAME);
 };

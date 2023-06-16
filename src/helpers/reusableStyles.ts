@@ -15,6 +15,8 @@ export const mediaQueries = {
   desktop: `(min-width: ${deviceScreenSize.desktop})`,
 };
 
+export const ALTERNATE_BACKGROUND_CLASSNAME = 'pure-white';
+
 // ============
 // THEME STYLES
 // ============
@@ -46,12 +48,11 @@ export const themes: Record<ChainThemes, ThemeStyle> = {
     appliedStroke: 'rgba(255, 255, 255, 0.12)',
     appliedSeparator: 'rgba(255, 255, 255, 0.08)',
     appliedButtonMain: '#FFFFFF',
+    appliedLightPinkBackground: 'rgba(230, 0, 122, 0.15)',
+    appliedPinkHover: '#D50071',
+    appliedPinkActive: '#C9006B',
 
     accentsPink: '#F272B6',
-    accentsPink15: 'rgba(230, 0, 122, 0.15)',
-    accentsPink32: 'rgba(230, 0, 122, 0.32)',
-    accentsPinkHover: '#D50071',
-    accentsPinkActive: '#C9006B',
     accentsRed: '#FE8D81',
     accentsGreen: '#56F39A',
 
@@ -85,12 +86,11 @@ export const themes: Record<ChainThemes, ThemeStyle> = {
     appliedStroke: 'rgba(0, 0, 0, 0.12)',
     appliedSeparator: 'rgba(0, 0, 0, 0.08)',
     appliedButtonMain: '#000000',
+    appliedLightPinkBackground: 'rgba(230, 0, 122, 0.15)',
+    appliedPinkHover: '#D50071',
+    appliedPinkActive: '#C9006B',
 
     accentsPink: '#E6007A',
-    accentsPink15: 'rgba(230, 0, 122, 0.15)',
-    accentsPink32: 'rgba(230, 0, 122, 0.32)',
-    accentsPinkHover: '#D50071',
-    accentsPinkActive: '#C9006B',
     accentsRed: '#FD4935',
     accentsGreen: '#48CC81',
 
@@ -276,11 +276,11 @@ export const CssButtonSecondaryStyles = css<CommonStyleProps>`
 
   &:hover {
     cursor: ${({ isDisabled }) => (isDisabled ? 'not-allowed' : 'pointer')};
-    background-color: ${({ theme }) => theme.accentsPinkHover};
+    background-color: ${({ theme }) => theme.appliedPinkHover};
   }
 
   &:active {
-    background-color: ${({ theme }) => theme.accentsPinkActive};
+    background-color: ${({ theme }) => theme.appliedPinkActive};
   }
 
   a {
@@ -342,7 +342,7 @@ export const SConnectButton = styled.button`
   height: 48px;
   line-height: 48px;
   padding: 0 24px;
-  background-color: ${({ theme }) => theme.accentsPink15};
+  background-color: ${({ theme }) => theme.appliedLightPinkBackground};
   color: ${({ theme }) => theme.accentsPink};
   border: 0;
   border-radius: 32px;
@@ -428,6 +428,6 @@ export const SInfoRow = styled.div`
   margin-bottom: 16px;
 
   span:first-child {
-    color: ${({ theme }) => theme.textAndIconsSecondary};
+    color: ${({ theme }) => theme.textAndIconsTertiary};
   }
 `;

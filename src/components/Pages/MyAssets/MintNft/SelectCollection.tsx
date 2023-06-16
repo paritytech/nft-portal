@@ -73,7 +73,9 @@ const SelectCollection = ({ collectionsMetadata }: SelectCollectionProps) => {
           <CollectionIcon />
         </SHugeIcon>
         <SNote>
-          You don&apos;t have any collections<br />yet, create a new one
+          You don&apos;t have any collections
+          <br />
+          yet, create a new one
         </SNote>
         <Link to={routes.myAssets.createCollection}>
           <ActionButton className='secondary-king w-100'>Create New Collection</ActionButton>
