@@ -56,6 +56,7 @@ export const SFormLayout = styled(Form)`
 
   aside {
     min-width: 300px;
+    width: 300px;
   }
 
   section {

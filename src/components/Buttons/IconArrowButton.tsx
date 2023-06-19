@@ -16,7 +16,7 @@ const SIconArrowButton = styled.button<CommonStyleProps>`
   width: 100%;
   height: 64px;
   padding: 8px 16px 8px 8px;
-  color: ${({ theme, isDisabled }) => (isDisabled ? theme.appliedLightPinkBackground : theme.accentsPink)};
+  color: ${({ theme, disabled }) => (disabled ? theme.appliedLightPinkBackground : theme.accentsPink)};
   background-color: ${({ theme }) => theme.appliedLightPinkBackground};
   border: 0;
   border-radius: 48px;
@@ -24,9 +24,9 @@ const SIconArrowButton = styled.button<CommonStyleProps>`
 
   &:hover,
   &:active {
-    cursor: ${({ isDisabled }) => (isDisabled ? 'not-allowed' : 'pointer')};
-    padding: ${({ isDisabled }) => (isDisabled ? '8px 16px 8px 8px' : '8px 14px 8px 6px')};
-    border: ${({ theme, isDisabled }) => (isDisabled ? 0 : `2px solid ${theme.accentsPink}`)};
+    cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
+    padding: ${({ disabled }) => (disabled ? '8px 16px 8px 8px' : '8px 14px 8px 6px')};
+    border: ${({ theme, disabled }) => (disabled ? 0 : `2px solid ${theme.accentsPink}`)};
   }
 
   img {
@@ -62,11 +62,11 @@ interface ArrowIconProps extends CommonStyleProps {
   action?: () => void;
 }
 
-const IconArrowButton = ({ children, imageCid, action, className, isDisabled }: ArrowIconProps) => (
+const IconArrowButton = ({ children, imageCid, action, className, disabled }: ArrowIconProps) => (
   <SIconArrowButton
     className={className}
-    isDisabled={isDisabled}
-    onClick={(event: FormEvent) => handleActionClick(event, isDisabled, action)}
+    disabled={disabled}
+    onClick={(event: FormEvent) => handleActionClick(event, disabled, action)}
   >
     <SContent>
       {imageCid && <ShowImage imageCid={imageCid} altText='' />}

@@ -9,12 +9,12 @@ interface ActionButtonProps extends CommonStyleProps {
   action?: () => void;
 }
 
-const ActionButton = ({ children, type = 'button', action, className, isDisabled }: ActionButtonProps) => (
+const ActionButton = ({ children, type = 'button', action, className, disabled }: ActionButtonProps) => (
   <SActionButton
     type={type}
     className={className}
-    isDisabled={isDisabled}
-    onClick={(event: FormEvent) => handleActionClick(event, isDisabled, action)}
+    disabled={disabled}
+    onClick={(event: FormEvent) => handleActionClick(event, disabled, action)}
   >
     {children}
   </SActionButton>

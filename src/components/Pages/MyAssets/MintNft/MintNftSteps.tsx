@@ -17,9 +17,10 @@ const SSelectedCollection = styled.div`
   display: flex;
   align-items: center;
   gap: 12px;
-  height: 45px;
+  height: 40px;
   padding: 0 2px 0 16px;
-  background-color: ${({ theme }) => theme.fill6};
+  color: ${({ theme }) => theme.accentsPink};
+  background-color: ${({ theme }) => theme.appliedLightPinkBackground};
   border-radius: 24px;
 
   .collection-name:last-child {

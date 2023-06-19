@@ -21,7 +21,7 @@ import {
 // ==========
 export interface CommonStyleProps {
   className?: string;
-  isDisabled?: boolean;
+  disabled?: boolean;
   type?: 'button' | 'submit' | 'reset';
   required?: boolean;
 }

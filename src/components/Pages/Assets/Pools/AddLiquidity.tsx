@@ -276,7 +276,7 @@ const AddLiquidity = ({
             </ActionButton>
           )}
           {!activeAccount && (
-            <ActionButton className='main' isDisabled={true}>
+            <ActionButton className='main' disabled={true}>
               Please login
             </ActionButton>
           )}

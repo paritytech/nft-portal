@@ -102,17 +102,24 @@ export const themes: Record<ChainThemes, ThemeStyle> = {
 // ============
 // CSS SNIPPETS
 // ============
-export const CssArrowTertiary = css`
+export const CssArrowUp = css`
+  width: 24px;
+  height: 24px;
+  rotate: -90deg;
+
   path {
     fill: ${({ theme }) => theme.textAndIconsTertiary};
   }
 `;
 
 export const CssArrowDown = css`
-  width: 30px;
-  height: 30px;
+  width: 24px;
+  height: 24px;
   rotate: 90deg;
-  margin-top: 3px;
+
+  path {
+    fill: ${({ theme }) => theme.textAndIconsTertiary};
+  }
 `;
 
 export const CssFormControl = css`
@@ -252,30 +259,30 @@ export const CssFontRegularS = css`
 // CSS SNIPPETS - BUTTONS
 export const CssButtonMainStyles = css<CommonStyleProps>`
   height: 48px;
-  color: ${({ theme, isDisabled }) => (isDisabled ? theme.textAndIconsDisabled : theme.forcedWhite)};
-  background-color: ${({ theme, isDisabled }) => (isDisabled ? theme.fill6 : theme.appliedButtonMain)};
+  color: ${({ theme, disabled }) => (disabled ? theme.textAndIconsDisabled : theme.forcedWhite)};
+  background-color: ${({ theme, disabled }) => (disabled ? theme.fill6 : theme.appliedButtonMain)};
   ${CssFontRegularM}
 
   &:hover {
-    cursor: ${({ isDisabled }) => (isDisabled ? 'not-allowed' : 'pointer')};
-    background-color: ${({ theme, isDisabled }) => (isDisabled ? theme.fill6 : theme.fill48)};
+    cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
+    background-color: ${({ theme, disabled }) => (disabled ? theme.fill6 : theme.fill48)};
   }
 
   a {
     text-decoration: none;
-    color: ${({ theme, isDisabled }) => (isDisabled ? theme.textAndIconsDisabled : theme.forcedBlack)};
+    color: ${({ theme, disabled }) => (disabled ? theme.textAndIconsDisabled : theme.forcedBlack)};
   }
 `;
 
 export const CssButtonSecondaryStyles = css<CommonStyleProps>`
   height: 48px;
-  color: ${({ theme, isDisabled }) => (isDisabled ? theme.textAndIconsTertiary : theme.forcedWhite)};
-  background-color: ${({ theme, isDisabled }) => (isDisabled ? theme.fill6 : theme.accentsPink)};
+  color: ${({ theme, disabled }) => (disabled ? theme.textAndIconsTertiary : theme.forcedWhite)};
+  background-color: ${({ theme, disabled }) => (disabled ? theme.fill6 : theme.accentsPink)};
   border-radius: 32px;
   ${CssFontRegularM}
 
   &:hover {
-    cursor: ${({ isDisabled }) => (isDisabled ? 'not-allowed' : 'pointer')};
+    cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
     background-color: ${({ theme }) => theme.appliedPinkHover};
   }
 
@@ -285,7 +292,7 @@ export const CssButtonSecondaryStyles = css<CommonStyleProps>`
 
   a {
     text-decoration: none;
-    color: ${({ theme, isDisabled }) => (isDisabled ? theme.fill25 : theme.textAndIconsPrimary)};
+    color: ${({ theme, disabled }) => (disabled ? theme.fill25 : theme.textAndIconsPrimary)};
   }
 `;
 
@@ -297,20 +304,20 @@ export const CssButtonSecondaryKingStyles = css<CommonStyleProps>`
 
 export const CssButtonStrokeStyles = css<CommonStyleProps>`
   height: 48px;
-  color: ${({ theme, isDisabled }) => (isDisabled ? theme.textAndIconsDisabled : theme.textAndIconsSecondary)};
+  color: ${({ theme, disabled }) => (disabled ? theme.textAndIconsDisabled : theme.textAndIconsSecondary)};
   background-color: transparent;
   border: 1px solid ${({ theme }) => theme.appliedStroke};
   box-sizing: border-box;
-  ${CssFontSemiBoldM}
+  ${CssFontSemiBoldS}
 
   &:hover {
-    cursor: ${({ isDisabled }) => (isDisabled ? 'not-allowed' : 'pointer')};
-    background-color: ${({ theme, isDisabled }) => (isDisabled ? 'transparent' : theme.fill6)};
+    cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
+    background-color: ${({ theme, disabled }) => (disabled ? 'transparent' : theme.fill6)};
   }
 
   a {
     text-decoration: none;
-    color: ${({ theme, isDisabled }) => (isDisabled ? theme.textAndIconsDisabled : theme.textAndIconsSecondary)};
+    color: ${({ theme, disabled }) => (disabled ? theme.textAndIconsDisabled : theme.textAndIconsSecondary)};
   }
 `;
 
@@ -419,7 +426,6 @@ export const SFormBlock = styled.div`
 export const SPageControls = styled.div`
   padding-top: 40px;
   margin-bottom: 40px;
-  border-top: 1px solid ${({ theme }) => theme.appliedSeparator};
 `;
 
 export const SInfoRow = styled.div`

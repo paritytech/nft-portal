@@ -32,12 +32,13 @@ const SAccountActions = styled.div`
   position: absolute;
   top: 100%;
   right: 0;
-  margin-top: 12px;
+  margin-top: 16px;
   padding: 24px;
   background-color: ${({ theme }) => theme.backgroundTertiary};
   border-radius: 16px;
   z-index: 1;
   white-space: nowrap;
+  box-shadow: 0px 2px 8px ${({ theme }) => theme.fill25};
 
   &.active {
     display: block;

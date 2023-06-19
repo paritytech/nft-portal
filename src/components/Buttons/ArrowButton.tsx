@@ -27,11 +27,11 @@ const SArrowButton = styled.button<CommonStyleProps>`
   }
 
   span {
-    color: ${({ theme, isDisabled }) => (isDisabled ? theme.textAndIconsDisabled : theme.textAndIconsPrimary)};
+    color: ${({ theme, disabled }) => (disabled ? theme.textAndIconsDisabled : theme.textAndIconsPrimary)};
   }
 
   &:hover {
-    cursor: ${({ isDisabled }) => (isDisabled ? 'not-allowed' : 'pointer')};
+    cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
     background-color: ${({ theme }) => theme.fill6};
   }
 `;
@@ -41,11 +41,11 @@ interface ArrowIconProps extends CommonStyleProps {
   action?: () => void;
 }
 
-const ArrowButton = ({ children, action, className, isDisabled }: ArrowIconProps) => (
+const ArrowButton = ({ children, action, className, disabled }: ArrowIconProps) => (
   <SArrowButton
     className={className}
-    isDisabled={isDisabled}
-    onClick={(event: FormEvent) => handleActionClick(event, isDisabled, action)}
+    disabled={disabled}
+    onClick={(event: FormEvent) => handleActionClick(event, disabled, action)}
   >
     {children}
     <ArrowIcon className='arrow' />

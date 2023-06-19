@@ -6,7 +6,7 @@ import { useAccounts } from '@contexts/AccountsContext.tsx';
 
 import { chains } from '@helpers/config.ts';
 import { Chain } from '@helpers/interfaces.ts';
-import { CssArrowDown, CssArrowTertiary, CssFontSemiBoldS } from '@helpers/reusableStyles.ts';
+import { CssArrowDown, CssFontSemiBoldS } from '@helpers/reusableStyles.ts';
 import { routes } from '@helpers/routes.ts';
 
 import { useOutsideClick } from '@hooks/useOutsideClick.ts';
@@ -51,8 +51,8 @@ const SCurrentChain = styled.button`
   }
 
   .arrow-down {
-    ${CssArrowTertiary}
     ${CssArrowDown}
+    width: 18px;
   }
 `;
 

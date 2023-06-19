@@ -1,5 +1,5 @@
 import { ChangeEvent, FormEvent, memo, useCallback, useRef, useState } from 'react';
-import { Collapse, FormControl } from 'react-bootstrap';
+import { Collapse, FormControl, Stack } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { styled } from 'styled-components';
 
@@ -20,6 +20,7 @@ import { MintTypes } from '@helpers/constants.ts';
 import { CollectionConfig, CollectionMetadataData, MintType } from '@helpers/interfaces.ts';
 import {
   CssArrowDown,
+  CssArrowUp,
   CssFontSemiBoldL,
   CssFontSemiBoldXL,
   SFormBlock,
@@ -63,15 +64,43 @@ const SToggleBlock = styled.div`
 
 const SToggle = styled.button`
   ${CssFontSemiBoldL}
-
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
   padding: 0;
   border: 0;
   background: none;
   color: ${({ theme }) => theme.textAndIconsPrimary};
+`;
+
+const SToggleArrow = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 40px;
+  height: 40px;
+  border: 1px solid ${({ theme }) => theme.appliedStroke};
+  border-radius: 32px;
+
+  svg {
+    path {
+      fill: ${({ theme }) => theme.textAndIconsTertiary};
+    }
+  }
 
   .arrow-down {
     ${CssArrowDown}
-    margin: 0;
+  }
+
+  .arrow-up {
+    ${CssArrowUp}
+  }
+
+  .arrow-down,
+  .arrow-up {
+    width: 18px;
+    height: 18px;
   }
 `;
 
@@ -269,7 +298,10 @@ const CreateCollection = () => {
 
           <SFormBlock>
             <SToggle type='button' onClick={() => setToggleAdvancedSettings(!toggleAdvancedSettings)}>
-              Advanced settings <DropdownIcon className='arrow-down' />
+              Advanced settings
+              <SToggleArrow>
+                <DropdownIcon className={toggleAdvancedSettings ? 'arrow-up' : 'arrow-down'} />
+              </SToggleArrow>
             </SToggle>
             <Collapse in={toggleAdvancedSettings}>
               <SToggleBlock>
@@ -342,9 +374,16 @@ const CreateCollection = () => {
           </SInfoRow>
 
           <SPageControls>
-            <ActionButton type='submit' className='main w-100'>
-              Create collection
-            </ActionButton>
+            <Stack direction='horizontal' gap={3}>
+              <Link to='..' className='w-50'>
+                <ActionButton type='button' className='stroke w-100'>
+                  Back
+                </ActionButton>
+              </Link>
+              <ActionButton type='submit' className='secondary w-50'>
+                Create collection
+              </ActionButton>
+            </Stack>
           </SPageControls>
         </section>
       </SFormLayout>
