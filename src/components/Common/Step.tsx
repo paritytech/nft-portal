@@ -10,7 +10,7 @@ const SStep = styled.div`
   align-items: center;
   gap: 12px;
   color: ${({ theme }) => theme.textAndIconsSecondary};
-  padding: 4px 16px 4px 4px;
+  padding: 6px 16px 6px 6px;
   border: 1px solid ${({ theme }) => theme.appliedStroke};
   border-radius: 48px;
 
@@ -23,8 +23,8 @@ const SStep = styled.div`
   }
 
   img {
-    width: 40px;
-    height: 40px;
+    width: 32px;
+    height: 32px;
     border-radius: 24px;
   }
 
@@ -32,8 +32,8 @@ const SStep = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 40px;
-    height: 40px;
+    width: 36px;
+    height: 36px;
     background-color: ${({ theme }) => theme.fill6};
     border-radius: 32px;
   }
