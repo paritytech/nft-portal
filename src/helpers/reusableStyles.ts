@@ -4,14 +4,14 @@ import { ChainThemes } from './constants.ts';
 import { CommonStyleProps, ThemeStyle } from './interfaces.ts';
 
 export const deviceScreenSize = {
-  mobile: '480px',
-  tablet: '900px',
-  desktop: '1300px',
+  tablet: '720px',
+  laptop: '980px',
+  desktop: '1440px',
 };
 
 export const mediaQueries = {
-  mobile: `(min-width: ${deviceScreenSize.mobile})`,
   tablet: `(min-width: ${deviceScreenSize.tablet})`,
+  laptop: `(min-width: ${deviceScreenSize.laptop})`,
   desktop: `(min-width: ${deviceScreenSize.desktop})`,
 };
 
@@ -169,6 +169,7 @@ export const CssInclusivelyHidden = css`
 export const CssFontBoldXXL = css`
   font-family: 'Unbounded', cursive;
   font-size: 40px;
+  line-height: 48px;
   font-weight: 700;
 `;
 

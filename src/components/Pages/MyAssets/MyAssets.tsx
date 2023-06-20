@@ -1,4 +1,3 @@
-import SwapWidget from 'components/Widgets/SwapWidget.tsx';
 import { memo } from 'react';
 import { styled } from 'styled-components';
 
@@ -20,26 +19,29 @@ const SMainContent = styled.div`
   }
 `;
 
-const SSideContent = styled.aside`
-  flex-grow: 1;
-  max-width: 380px;
-`;
+// const SSideContent = styled.aside`
+//   flex-grow: 1;
+//   max-width: 380px;
+// `;
 
 const MyAssets = () => {
   return (
     <SMyAssets>
       <SMainContent>
         <section>
-          <SectionTitle title={<Title className='L'>My collections</Title>} route={routes.myAssets.collections} />
+          <SectionTitle
+            title={<Title className='secondary'>My collections</Title>}
+            route={routes.myAssets.collections}
+          />
         </section>
-        <section>
+        {/* <section>
           <SectionTitle title={<Title className='L'>My liquidity pools</Title>} route={routes.myAssets.pools} />
-        </section>
+        </section> */}
       </SMainContent>
 
-      <SSideContent>
+      {/* <SSideContent>
         <SwapWidget />
-      </SSideContent>
+      </SSideContent> */}
     </SMyAssets>
   );
 };

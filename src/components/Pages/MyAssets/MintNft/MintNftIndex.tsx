@@ -19,7 +19,7 @@ const MintNftIndex = () => {
 
   return (
     <>
-      <Title className='XXL'>Create NFT</Title>
+      <Title className='main'>Create NFT</Title>
       <MintNftSteps />
       <SOutlet>
         <Outlet />

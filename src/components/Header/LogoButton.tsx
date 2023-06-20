@@ -36,7 +36,7 @@ const LogoButton = () => (
   <SLogoButton to={routes.homepage}>
     <Logo />
     <SMeridian></SMeridian>
-    <span>NFT</span>
+    <span>NFT Portal</span>
   </SLogoButton>
 );
 

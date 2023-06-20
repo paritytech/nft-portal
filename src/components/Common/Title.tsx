@@ -2,24 +2,20 @@ import { ReactElement, memo } from 'react';
 import { styled } from 'styled-components';
 
 import { CommonStyleProps } from '@helpers/interfaces.ts';
-import { CssFontBoldL, CssFontBoldM, CssFontBoldXL, CssFontBoldXXL } from '@helpers/reusableStyles.ts';
+import { CssFontBoldL, CssFontBoldXL, CssFontBoldXXL, mediaQueries } from '@helpers/reusableStyles.ts';
 
 const STitle = styled.div`
-  &.XXL {
-    ${CssFontBoldXXL}
-    margin-bottom: 30px;
-  }
-
-  &.XL {
-    ${CssFontBoldXL}
-  }
-
-  &.L {
+  &.main {
     ${CssFontBoldL}
+    margin-bottom: 30px;
+
+    @media ${mediaQueries.tablet} {
+      ${CssFontBoldXXL}
+    }
   }
 
-  &.M {
-    ${CssFontBoldM}
+  &.secondary {
+    ${CssFontBoldXL}
   }
 `;
 
