@@ -17,6 +17,14 @@ const SIconButton = styled.button`
   svg {
     width: 24px;
     height: 24px;
+
+    path {
+      fill: ${({ theme }) => theme.forcedBlack};
+    }
+  }
+
+  &:hover {
+    background-color: ${({ theme }) => theme.fill12};
   }
 `;
 

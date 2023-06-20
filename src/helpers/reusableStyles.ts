@@ -4,18 +4,18 @@ import { ChainThemes } from './constants.ts';
 import { CommonStyleProps, ThemeStyle } from './interfaces.ts';
 
 export const deviceScreenSize = {
-  mobile: '480px',
-  tablet: '900px',
-  desktop: '1300px',
+  tablet: '720px',
+  laptop: '980px',
+  desktop: '1440px',
 };
 
 export const mediaQueries = {
-  mobile: `(min-width: ${deviceScreenSize.mobile})`,
   tablet: `(min-width: ${deviceScreenSize.tablet})`,
+  laptop: `(min-width: ${deviceScreenSize.laptop})`,
   desktop: `(min-width: ${deviceScreenSize.desktop})`,
 };
 
-export const CLEAN_BACKGROUND_CLASSNAME = 'no-gradient';
+export const ALTERNATE_BACKGROUND_CLASSNAME = 'pure-white';
 
 // ============
 // THEME STYLES
@@ -33,6 +33,7 @@ export const themes: Record<ChainThemes, ThemeStyle> = {
     textAndIconsDisabled: 'rgba(255, 255, 255, 0.27)',
 
     fill80: 'rgba(255, 255, 255, 0.8)',
+    fill48: 'rgba(255, 255, 255, 0.48)',
     fill30: 'rgba(255, 255, 255, 0.3)',
     fill25: 'rgba(255, 255, 255, 0.25)',
     fill24: 'rgba(255, 255, 255, 0.24)',
@@ -47,6 +48,9 @@ export const themes: Record<ChainThemes, ThemeStyle> = {
     appliedStroke: 'rgba(255, 255, 255, 0.12)',
     appliedSeparator: 'rgba(255, 255, 255, 0.08)',
     appliedButtonMain: '#FFFFFF',
+    appliedLightPinkBackground: 'rgba(230, 0, 122, 0.15)',
+    appliedPinkHover: '#D50071',
+    appliedPinkActive: '#C9006B',
 
     accentsPink: '#F272B6',
     accentsRed: '#FE8D81',
@@ -56,7 +60,7 @@ export const themes: Record<ChainThemes, ThemeStyle> = {
     forcedBlack: '#000000',
   },
   [ChainThemes.POLKADOT]: {
-    backgroundSystem: '#F3F3F2',
+    backgroundSystem: '#F5F4F4',
     backgroundPrimary: '#FFFFFF',
     backgroundSecondary: '#FFFFFF',
     backgroundTertiary: '#FFFFFF',
@@ -67,6 +71,7 @@ export const themes: Record<ChainThemes, ThemeStyle> = {
     textAndIconsDisabled: 'rgba(0, 0, 0, 0.25)',
 
     fill80: 'rgba(0, 0, 0, 0.8)',
+    fill48: 'rgba(0, 0, 0, 0.48)',
     fill30: 'rgba(0, 0, 0, 0.3)',
     fill25: 'rgba(0, 0, 0, 0.25)',
     fill24: 'rgba(0, 0, 0, 0.24)',
@@ -81,6 +86,9 @@ export const themes: Record<ChainThemes, ThemeStyle> = {
     appliedStroke: 'rgba(0, 0, 0, 0.12)',
     appliedSeparator: 'rgba(0, 0, 0, 0.08)',
     appliedButtonMain: '#000000',
+    appliedLightPinkBackground: 'rgba(230, 0, 122, 0.15)',
+    appliedPinkHover: '#D50071',
+    appliedPinkActive: '#C9006B',
 
     accentsPink: '#E6007A',
     accentsRed: '#FD4935',
@@ -94,45 +102,55 @@ export const themes: Record<ChainThemes, ThemeStyle> = {
 // ============
 // CSS SNIPPETS
 // ============
-export const CssArrowDown = css`
-  width: 30px;
-  height: 30px;
-  rotate: 90deg;
-  margin-top: 3px;
+export const CssArrowUp = css`
+  width: 24px;
+  height: 24px;
+  rotate: -90deg;
+
+  path {
+    fill: ${({ theme }) => theme.textAndIconsTertiary};
+  }
 `;
 
-export const CssCallToAction = css`
-  &.call-to-action {
-    box-shadow: 0 0 0 8px ${({ theme }) => theme.fill6};
+export const CssArrowDown = css`
+  width: 24px;
+  height: 24px;
+  rotate: 90deg;
+
+  path {
+    fill: ${({ theme }) => theme.textAndIconsTertiary};
   }
 `;
 
 export const CssFormControl = css`
-  background-color: ${({ theme }) => theme.fill6};
-  color: ${({ theme }) => theme.textAndIconsPrimary};
-  border: 0;
+  color: ${({ theme }) => theme.textAndIconsTertiary};
+  border: 1px solid ${({ theme }) => theme.appliedStroke};
+  border-radius: 8px;
   box-sizing: border-box;
   transition: none;
   outline: 0;
 
+  &::placeholder {
+    color: ${({ theme }) => theme.textAndIconsTertiary};
+  }
+
   &:hover {
-    border: 4px solid ${({ theme }) => theme.fill12};
-    padding-left: 20px;
+    border: 2px solid ${({ theme }) => theme.appliedStroke};
+    padding-left: 11px;
   }
 
   &:focus {
     background-color: ${({ theme }) => theme.fill6};
     color: ${({ theme }) => theme.textAndIconsPrimary};
     border: 2px solid ${({ theme }) => theme.textAndIconsPrimary};
-    padding-left: 22px;
+    padding-left: 11px;
     box-shadow: none;
   }
 
   &:disabled {
-    background: none;
-    padding-left: 23px;
-    border: 1px solid ${({ theme }) => theme.fill12};
-    color: ${({ theme }) => theme.textAndIconsDisabled};
+    background-color: ${({ theme }) => theme.fill6};
+    border: 0;
+    padding-left: 11px;
     cursor: not-allowed;
   }
 `;
@@ -151,6 +169,7 @@ export const CssInclusivelyHidden = css`
 export const CssFontBoldXXL = css`
   font-family: 'Unbounded', cursive;
   font-size: 40px;
+  line-height: 48px;
   font-weight: 700;
 `;
 
@@ -239,121 +258,67 @@ export const CssFontRegularS = css`
 `;
 
 // CSS SNIPPETS - BUTTONS
-const CssCommonSizes = css`
-  &.XL {
-    ${CssFontSemiBoldL}
-    height: 64px;
-  }
-
-  &.L {
-    ${CssFontSemiBoldS}
-    height: 72px;
-    border-radius: 40px;
-  }
-
-  &.M {
-    ${CssFontSemiBoldS}
-    height: 56px;
-  }
-
-  &.S {
-    ${CssFontSemiBoldM}
-    height: 48px;
-  }
-
-  &.XS {
-    ${CssFontSemiBoldXS}
-    height: 24px;
-  }
-`;
-
 export const CssButtonMainStyles = css<CommonStyleProps>`
-  color: ${({ theme, isDisabled }) => (isDisabled ? theme.textAndIconsDisabled : theme.forcedBlack)};
-  background-color: ${({ theme, isDisabled }) => (isDisabled ? theme.fill8 : theme.appliedButtonMain)};
+  height: 48px;
+  color: ${({ theme, disabled }) => (disabled ? theme.textAndIconsDisabled : theme.forcedWhite)};
+  background-color: ${({ theme, disabled }) => (disabled ? theme.fill6 : theme.appliedButtonMain)};
+  ${CssFontRegularM}
 
   &:hover {
-    cursor: ${({ isDisabled }) => (isDisabled ? 'not-allowed' : 'pointer')};
-    background-color: ${({ theme, isDisabled }) => (isDisabled ? theme.fill8 : theme.fill80)};
+    cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
+    background-color: ${({ theme, disabled }) => (disabled ? theme.fill6 : theme.fill48)};
   }
 
   a {
     text-decoration: none;
-    color: ${({ theme, isDisabled }) => (isDisabled ? theme.textAndIconsDisabled : theme.forcedBlack)};
+    color: ${({ theme, disabled }) => (disabled ? theme.textAndIconsDisabled : theme.forcedBlack)};
   }
-
-  ${CssCallToAction}
-
-  ${CssCommonSizes}
 `;
 
 export const CssButtonSecondaryStyles = css<CommonStyleProps>`
-  ${CssFontSemiBoldS}
-  color: ${({ theme, isDisabled }) => (isDisabled ? theme.fill25 : theme.textAndIconsPrimary)};
-  background-color: ${({ theme, isDisabled }) => (isDisabled ? theme.fill24 : theme.forcedBlack)};
+  height: 48px;
+  color: ${({ theme, disabled }) => (disabled ? theme.textAndIconsTertiary : theme.forcedWhite)};
+  background-color: ${({ theme, disabled }) => (disabled ? theme.fill6 : theme.accentsPink)};
+  border-radius: 32px;
+  ${CssFontRegularM}
 
   &:hover {
-    cursor: ${({ isDisabled }) => (isDisabled ? 'not-allowed' : 'pointer')};
-    background-color: ${({ theme }) => theme.fill24};
+    cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
+    background-color: ${({ theme }) => theme.appliedPinkHover};
+  }
+
+  &:active {
+    background-color: ${({ theme }) => theme.appliedPinkActive};
   }
 
   a {
     text-decoration: none;
-    color: ${({ theme, isDisabled }) => (isDisabled ? theme.fill25 : theme.textAndIconsPrimary)};
+    color: ${({ theme, disabled }) => (disabled ? theme.fill25 : theme.textAndIconsPrimary)};
   }
-
-  ${CssCommonSizes}
 `;
 
-export const CssButtonRoundedStyles = css<CommonStyleProps>`
-  ${CssButtonMainStyles}
-
-  border-radius: 12px;
-
-  ${CssCommonSizes}
-`;
-
-export const CssButtonTransparentStyles = css<CommonStyleProps>`
-  color: ${({ theme, isDisabled }) => (isDisabled ? theme.textAndIconsDisabled : theme.forcedWhite)};
-  background-color: ${({ theme }) => theme.fill6};
-
-  &:hover {
-    cursor: ${({ isDisabled }) => (isDisabled ? 'not-allowed' : 'pointer')};
-    background-color: ${({ theme, isDisabled }) => (isDisabled ? theme.fill6 : theme.fill12)};
-  }
-
-  a {
-    text-decoration: none;
-    color: ${({ theme, isDisabled }) => (isDisabled ? theme.textAndIconsDisabled : theme.forcedWhite)};
-  }
-
-  &.L {
-    ${CssFontSemiBoldS}
-    height: 64px;
-  }
-
-  &.S {
-    ${CssFontRegularS}
-    height: 36px;
-    color: ${({ theme, isDisabled }) => (isDisabled ? theme.textAndIconsDisabled : theme.textAndIconsSecondary)};
-  }
+export const CssButtonSecondaryKingStyles = css<CommonStyleProps>`
+  ${CssButtonSecondaryStyles}
+  height: 64px;
+  ${CssFontRegularL}
 `;
 
 export const CssButtonStrokeStyles = css<CommonStyleProps>`
-  ${CssFontSemiBoldM}
-  height: 64px;
-  color: ${({ theme, isDisabled }) => (isDisabled ? theme.textAndIconsDisabled : theme.textAndIconsSecondary)};
+  height: 48px;
+  color: ${({ theme, disabled }) => (disabled ? theme.textAndIconsDisabled : theme.textAndIconsSecondary)};
   background-color: transparent;
   border: 1px solid ${({ theme }) => theme.appliedStroke};
   box-sizing: border-box;
+  ${CssFontSemiBoldS}
 
   &:hover {
-    cursor: ${({ isDisabled }) => (isDisabled ? 'not-allowed' : 'pointer')};
-    background-color: ${({ theme, isDisabled }) => (isDisabled ? 'transparent' : theme.fill6)};
+    cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
+    background-color: ${({ theme, disabled }) => (disabled ? 'transparent' : theme.fill6)};
   }
 
   a {
     text-decoration: none;
-    color: ${({ theme, isDisabled }) => (isDisabled ? theme.textAndIconsDisabled : theme.textAndIconsSecondary)};
+    color: ${({ theme, disabled }) => (disabled ? theme.textAndIconsDisabled : theme.textAndIconsSecondary)};
   }
 `;
 
@@ -385,26 +350,35 @@ export const SConnectButton = styled.button`
   height: 48px;
   line-height: 48px;
   padding: 0 24px;
-  background-color: ${({ theme }) => theme.appliedButtonMain};
-  color: ${({ theme }) => theme.forcedBlack};
+  background-color: ${({ theme }) => theme.appliedLightPinkBackground};
+  color: ${({ theme }) => theme.accentsPink};
   border: 0;
   border-radius: 32px;
+  box-sizing: border-box;
 
-  &.active {
-    padding: 0 8px;
-    background-color: ${({ theme }) => theme.fill6};
-    color: ${({ theme }) => theme.textAndIconsSecondary};
+  &:hover {
+    padding: 0 22px;
+    border: 2px solid ${({ theme }) => theme.accentsPink};
   }
 
-  .identicon {
-    width: 32px;
+  &.active {
+    padding: 0 20px 0 8px;
+    background-color: transparent;
+    color: ${({ theme }) => theme.textAndIconsPrimary};
+  }
+
+  &.active:hover,
+  &.actions-active {
+    height: 48px;
+    line-height: 48px;
+    padding: 0 20px 0 8px;
+    background-color: ${({ theme }) => theme.appliedHover};
+    border: 0;
   }
 
   .arrow-down {
     ${CssArrowDown}
   }
-
-  ${CssCallToAction}
 `;
 
 export const SRow = styled.section`
@@ -433,12 +407,8 @@ export const SActionButton = styled.button<CommonStyleProps>`
     ${CssButtonSecondaryStyles}
   }
 
-  &.rounded {
-    ${CssButtonRoundedStyles}
-  }
-
-  &.transparent {
-    ${CssButtonTransparentStyles}
+  &.secondary-king {
+    ${CssButtonSecondaryKingStyles}
   }
 
   &.stroke {
@@ -457,7 +427,6 @@ export const SFormBlock = styled.div`
 export const SPageControls = styled.div`
   padding-top: 40px;
   margin-bottom: 40px;
-  border-top: 1px solid ${({ theme }) => theme.appliedSeparator};
 `;
 
 export const SInfoRow = styled.div`
@@ -466,6 +435,6 @@ export const SInfoRow = styled.div`
   margin-bottom: 16px;
 
   span:first-child {
-    color: ${({ theme }) => theme.textAndIconsSecondary};
+    color: ${({ theme }) => theme.textAndIconsTertiary};
   }
 `;

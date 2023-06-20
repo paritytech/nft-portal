@@ -17,9 +17,10 @@ const SSelectedCollection = styled.div`
   display: flex;
   align-items: center;
   gap: 12px;
-  height: 45px;
+  height: 36px;
   padding: 0 2px 0 16px;
-  background-color: ${({ theme }) => theme.fill6};
+  color: ${({ theme }) => theme.accentsPink};
+  background-color: ${({ theme }) => theme.appliedLightPinkBackground};
   border-radius: 24px;
 
   .collection-name:last-child {
@@ -50,7 +51,7 @@ const MintNftSteps = () => {
         {selectedCollectionLabel}
       </Step>
       <Step counter='2' className={collectionId ? 'active' : 'disabled'}>
-        Mint NFT
+        Create NFT
       </Step>
     </SMintNftSteps>
   );

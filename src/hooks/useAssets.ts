@@ -71,7 +71,7 @@ export const useAssets = () => {
                     if (poolId && poolId[0].eq(asset1) && poolId[1].eq(asset2)) {
                       setStatus({ type: ModalStatusTypes.COMPLETE, message: StatusMessages.POOL_LIQUIDITY_ADDED });
                       setAction(
-                        () => () => navigate(routes.swap.assets(multiAssetToParam(asset1), multiAssetToParam(asset2))),
+                        () => () => navigate(routes.homepage), // TODO add proper route, routes.swap.assets(multiAssetToParam(asset1), multiAssetToParam(asset2))
                       );
                       return true;
                     }
@@ -121,7 +121,7 @@ export const useAssets = () => {
                       setStatus({ type: ModalStatusTypes.COMPLETE, message: StatusMessages.POOL_CREATED });
                       setAction(
                         () => () =>
-                          navigate(routes.discover.addLiquidity(multiAssetToParam(token1), multiAssetToParam(token2))),
+                          navigate(routes.homepage), // TODO add proper route, routes.discover.addLiquidity(multiAssetToParam(token1), multiAssetToParam(token2))
                       );
                       return true;
                     }

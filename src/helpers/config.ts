@@ -14,13 +14,13 @@ export const chains: Chain[] = [
   {
     url: 'wss://westmint-rpc.polkadot.io',
     title: ChainTitles.WESTMINT,
-    theme: ChainThemes.KUSAMA,
+    theme: ChainThemes.POLKADOT,
     nativeTokenName: ChainNativeTokenNames.WESTMINT,
   },
   {
     url: 'ws://127.0.0.1:9944',
     title: ChainTitles.LOCALHOST,
-    theme: ChainThemes.KUSAMA,
+    theme: ChainThemes.POLKADOT,
     nativeTokenName: ChainNativeTokenNames.LOCALHOST,
   },
 ];

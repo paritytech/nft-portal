@@ -108,13 +108,6 @@ const MintNft = () => {
               setImageCid={setImageCid}
             />
           </SGroup>
-
-          <SInfoRow>
-            <span>Collection Mint Price</span>
-            <span>
-              {mintPrice} {api?.registry.chainTokens[0]}
-            </span>
-          </SInfoRow>
         </aside>
 
         <section>
@@ -173,17 +166,24 @@ const MintNft = () => {
             />
           </SFormBlock>
 
+          <SInfoRow>
+            <span>Mint Price</span>
+            <span>
+              {mintPrice} {api?.registry.chainTokens[0]}
+            </span>
+          </SInfoRow>
+
           <SPageControls>
             <Stack direction='horizontal' gap={3}>
-              <ActionButton type='submit' isDisabled={!isEligibleToMint} className='main L w-50'>
-                Mint NFT
-              </ActionButton>
-
-              <Link to='..' className='d-block w-50'>
-                <ActionButton type='button' className='secondary L w-100'>
+              <Link to='..' className='w-50'>
+                <ActionButton type='button' className='stroke w-100'>
                   Back
                 </ActionButton>
               </Link>
+
+              <ActionButton type='submit' disabled={!isEligibleToMint} className='secondary w-50'>
+                Create NFT
+              </ActionButton>
             </Stack>
           </SPageControls>
         </section>

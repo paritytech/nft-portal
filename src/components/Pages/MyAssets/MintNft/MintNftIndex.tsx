@@ -4,29 +4,26 @@ import { styled } from 'styled-components';
 
 import Title from '@common/Title.tsx';
 
-import { CLEAN_BACKGROUND_CLASSNAME } from '@helpers/reusableStyles.ts';
+import { alternateBackground } from '@helpers/utilities.ts';
 
 import MintNftSteps from './MintNftSteps.tsx';
 
-const SSeparator = styled.div`
-  height: 1px;
-  margin: 40px 0;
-  background: ${({ theme }) => theme.appliedSeparator};
+const SOutlet = styled.div`
+  margin-top: 52px;
 `;
 
 const MintNftIndex = () => {
   useEffect(() => {
-    document.body.classList.add(CLEAN_BACKGROUND_CLASSNAME);
-
-    return () => document.body.classList.remove(CLEAN_BACKGROUND_CLASSNAME);
+    return alternateBackground();
   }, []);
 
   return (
     <>
-      <Title className='XXL'>Mint NFT</Title>
+      <Title className='main'>Create NFT</Title>
       <MintNftSteps />
-      <SSeparator />
-      <Outlet />
+      <SOutlet>
+        <Outlet />
+      </SOutlet>
     </>
   );
 };

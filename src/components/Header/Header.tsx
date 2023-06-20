@@ -1,19 +1,25 @@
 import { memo } from 'react';
+import { Link } from 'react-router-dom';
 import { styled } from 'styled-components';
+
+import ActionButton from '@buttons/ActionButton.tsx';
 
 import SelectChain from '@header/SelectChain.tsx';
 
+import { routes } from '@helpers/routes.ts';
+
 import Connect from './Connect.tsx';
-import Navigation from './Navigation.tsx';
+import LogoButton from './LogoButton.tsx';
 
 const SHeader = styled.header`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: ${({ theme }) => theme.fill6};
-  border-radius: 32px;
+  background-color: ${({ theme }) => theme.backgroundPrimary};
+  border: 1px solid ${({ theme }) => theme.appliedStroke};
+  border-radius: 48px;
   margin: 0 16px 16px;
-  padding: 8px 16px;
+  padding: 8px;
 `;
 
 const SConnectionBlock = styled.div`
@@ -24,8 +30,11 @@ const SConnectionBlock = styled.div`
 
 const Header = () => (
   <SHeader>
-    <Navigation />
+    <LogoButton />
     <SConnectionBlock>
+      <Link to={routes.myAssets.mintNftMain}>
+        <ActionButton className='main'>Create NFT</ActionButton>
+      </Link>
       <SelectChain />
       <Connect />
     </SConnectionBlock>

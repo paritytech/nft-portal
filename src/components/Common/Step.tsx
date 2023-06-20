@@ -2,15 +2,15 @@ import { ReactElement, memo } from 'react';
 import { styled } from 'styled-components';
 
 import { CommonStyleProps } from '@helpers/interfaces.ts';
-import { CssFontRegularL } from '@helpers/reusableStyles.ts';
+import { CssFontSemiBoldS } from '@helpers/reusableStyles.ts';
 
 const SStep = styled.div`
-  ${CssFontRegularL}
+  ${CssFontSemiBoldS}
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 12px;
   color: ${({ theme }) => theme.textAndIconsSecondary};
-  padding: 8px 24px 8px 8px;
+  padding: 6px 16px 6px 6px;
   border: 1px solid ${({ theme }) => theme.appliedStroke};
   border-radius: 48px;
 
@@ -23,8 +23,8 @@ const SStep = styled.div`
   }
 
   img {
-    width: 40px;
-    height: 40px;
+    width: 32px;
+    height: 32px;
     border-radius: 24px;
   }
 
@@ -32,10 +32,14 @@ const SStep = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 44px;
-    height: 45px;
+    width: 36px;
+    height: 36px;
     background-color: ${({ theme }) => theme.fill6};
     border-radius: 32px;
+  }
+
+  &:has(.collection-name) {
+    padding-right: 4px;
   }
 `;
 

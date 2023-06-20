@@ -1,39 +1,47 @@
-import { ReactElement, memo } from 'react';
+import { FormEvent, ReactElement, memo } from 'react';
 import { styled } from 'styled-components';
 
 import ShowImage from '@common/ShowImage.tsx';
 
 import { CommonStyleProps } from '@helpers/interfaces.ts';
 import { CssFontRegularL } from '@helpers/reusableStyles.ts';
+import { handleActionClick } from '@helpers/utilities.ts';
 
 import ArrowIcon from '@images/icons/arrow.svg';
 
-const SIconArrowButton = styled.button`
+const SIconArrowButton = styled.button<CommonStyleProps>`
   display: flex;
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  height: 72px;
-  padding: 8px 14px 8px 8px;
-  color: ${({ theme }) => theme.textAndIconsPrimary};
-  background-color: ${({ theme }) => theme.fill10};
+  height: 64px;
+  padding: 8px 16px 8px 8px;
+  color: ${({ theme, disabled }) => (disabled ? theme.appliedLightPinkBackground : theme.accentsPink)};
+  background-color: ${({ theme }) => theme.appliedLightPinkBackground};
   border: 0;
   border-radius: 48px;
-  box-shadow: 0 0 0 4px ${({ theme }) => theme.fill6};
+  box-sizing: border-box;
+
+  &:hover,
+  &:active {
+    cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
+    padding: ${({ disabled }) => (disabled ? '8px 16px 8px 8px' : '8px 14px 8px 6px')};
+    border: ${({ theme, disabled }) => (disabled ? 0 : `2px solid ${theme.accentsPink}`)};
+  }
 
   img {
-    width: 56px;
-    height: 56px;
+    width: 48px;
+    height: 48px;
     border-radius: 32px;
   }
 
   .arrow {
-    width: 40px;
-    height: 40px;
-  }
+    width: 24px;
+    height: 24px;
 
-  &:hover {
-    background-color: ${({ theme }) => theme.fill12};
+    path {
+      fill: ${({ theme }) => theme.textAndIconsDisabled};
+    }
   }
 `;
 
@@ -54,11 +62,15 @@ interface ArrowIconProps extends CommonStyleProps {
   action?: () => void;
 }
 
-const IconArrowButton = ({ children, imageCid, action, className }: ArrowIconProps) => (
-  <SIconArrowButton onClick={action} className={className}>
+const IconArrowButton = ({ children, imageCid, action, className, disabled }: ArrowIconProps) => (
+  <SIconArrowButton
+    className={className}
+    disabled={disabled}
+    onClick={(event: FormEvent) => handleActionClick(event, disabled, action)}
+  >
     <SContent>
       {imageCid && <ShowImage imageCid={imageCid} altText='' />}
-      <span className='texter'>{children}</span>
+      <span>{children}</span>
     </SContent>
 
     <ArrowIcon className='arrow' />

@@ -3,9 +3,12 @@ import { AssetId } from '@polkadot/types/interfaces';
 import { BN, BN_ZERO, formatBalance } from '@polkadot/util';
 import { ToBn } from '@polkadot/util/types';
 import { Decimal } from 'decimal.js';
+import { FormEvent } from 'react';
 
 import { MultiAssets } from '@helpers/constants.ts';
 import { MultiAssetId, PoolId, PoolReserves } from '@helpers/interfaces.ts';
+
+import { ALTERNATE_BACKGROUND_CLASSNAME } from './reusableStyles.ts';
 
 export const ellipseAddress = (address = '', charCount = 4): string => {
   if (address === '') {
@@ -194,4 +197,22 @@ export const areEqualAddresses = (address1: string, address2: string) => {
   }
 
   return address1.toLowerCase() === address2.toLowerCase();
+};
+
+export const handleActionClick = (event: FormEvent, isDisabled?: boolean, action?: () => void) => {
+  if (isDisabled) {
+    event.preventDefault();
+    return;
+  }
+
+  if (typeof action !== 'undefined') {
+    event.preventDefault();
+    action();
+  }
+};
+
+export const alternateBackground = () => {
+  document.body.classList.add(ALTERNATE_BACKGROUND_CLASSNAME);
+
+  return () => document.body.classList.remove(ALTERNATE_BACKGROUND_CLASSNAME);
 };

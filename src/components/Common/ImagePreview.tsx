@@ -3,7 +3,7 @@ import { styled } from 'styled-components';
 
 import IconButton from '@buttons/IconButton.tsx';
 
-import CrossIcon from '@images/icons/cross.svg';
+import TrashIcon from '@images/icons/trash.svg';
 
 import ShowImage from './ShowImage.tsx';
 
@@ -16,6 +16,16 @@ const SClose = styled(IconButton)`
   top: 10px;
   right: 10px;
   background-color: ${({ theme }) => theme.appliedOverlay};
+
+  &:hover {
+    background-color: ${({ theme }) => theme.fill24};
+  }
+
+  svg {
+    path {
+      fill: ${({ theme }) => theme.forcedWhite};
+    }
+  }
 `;
 
 interface ImagePreviewProps {
@@ -33,7 +43,7 @@ const ImagePreview = ({ imageCid, imageSourceUrl, handleClose }: ImagePreviewPro
     return (
       <>
         <SImg src={imageSourceUrl} alt='preview' />
-        <SClose icon={<CrossIcon />} action={handleClose}></SClose>
+        <SClose icon={<TrashIcon />} action={handleClose}></SClose>
       </>
     );
   }
@@ -41,7 +51,7 @@ const ImagePreview = ({ imageCid, imageSourceUrl, handleClose }: ImagePreviewPro
   return (
     <>
       <ShowImage imageCid={imageCid} altText='preview' />
-      <SClose icon={<CrossIcon />} action={handleClose}></SClose>
+      <SClose icon={<TrashIcon />} action={handleClose}></SClose>
     </>
   );
 };

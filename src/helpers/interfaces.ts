@@ -21,7 +21,7 @@ import {
 // ==========
 export interface CommonStyleProps {
   className?: string;
-  isDisabled?: boolean;
+  disabled?: boolean;
   type?: 'button' | 'submit' | 'reset';
   required?: boolean;
 }
@@ -98,6 +98,7 @@ export interface ThemeStyle {
   textAndIconsDisabled: string;
 
   fill80: string;
+  fill48: string;
   fill30: string;
   fill25: string;
   fill24: string;
@@ -112,6 +113,9 @@ export interface ThemeStyle {
   appliedStroke: string;
   appliedSeparator: string;
   appliedButtonMain: string;
+  appliedLightPinkBackground: string;
+  appliedPinkHover: string;
+  appliedPinkActive: string;
 
   accentsPink: string;
   accentsRed: string;
