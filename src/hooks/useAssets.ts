@@ -120,8 +120,7 @@ export const useAssets = () => {
                     if (createdPoolId && createdPoolId[0].eq(token1) && createdPoolId[1].eq(token2)) {
                       setStatus({ type: ModalStatusTypes.COMPLETE, message: StatusMessages.POOL_CREATED });
                       setAction(
-                        () => () =>
-                          navigate(routes.homepage), // TODO add proper route, routes.discover.addLiquidity(multiAssetToParam(token1), multiAssetToParam(token2))
+                        () => () => navigate(routes.homepage), // TODO add proper route, routes.discover.addLiquidity(multiAssetToParam(token1), multiAssetToParam(token2))
                       );
                       return true;
                     }

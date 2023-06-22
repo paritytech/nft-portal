@@ -1,10 +1,4 @@
 import { memo, useEffect } from 'react';
-import { Stack } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
-
-import ActionButton from '@buttons/ActionButton.tsx';
-
-import { routes } from '@helpers/routes.ts';
 
 import { useCollections } from '@hooks/useCollections.ts';
 
@@ -17,16 +11,7 @@ const Collections = () => {
     getCollectionsMetadata();
   }, [getCollectionsMetadata]);
 
-  return (
-    <>
-      <CollectionsView collectionsMetadata={collectionsMetadata} />
-      <Stack direction='horizontal' gap={2} className='justify-content-end'>
-        <Link to={routes.myAssets.createCollection}>
-          <ActionButton className='main'>Create Collection</ActionButton>
-        </Link>
-      </Stack>
-    </>
-  );
+  return <CollectionsView collectionsMetadata={collectionsMetadata} />;
 };
 
 export default memo(Collections);
