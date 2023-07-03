@@ -1,14 +1,9 @@
-import type { RegistryTypes } from '@polkadot/types-codec/types';
-import type { OverrideBundleType } from '@polkadot/types/types/registry';
-
 import { ChainNativeTokenNames, ChainThemes, ChainTitles, ExtensionIds } from './constants.ts';
 import { Chain } from './interfaces.ts';
 
-export const APP_NAME = 'assets-portal';
+export const APP_NAME = 'nft-portal';
 export const IPFS_URL = 'https://gateway.pinata.cloud/ipfs/';
-export const ADD_LIQUIDITY_SLIPPAGE = 0.5; // 0.5%
 
-// TODO once we have design for light/polkadot-like theme then ChainThemes.POLKADOT should be set where appropriate
 // first chain in the list will be default chain
 export const chains: Chain[] = [
   {
@@ -55,87 +50,4 @@ export const extensionConfig = {
       },
     },
   ],
-};
-
-export const apiConfigRuntime: OverrideBundleType = {
-  spec: {
-    node: {
-      runtime: {
-        AssetConversionApi: [
-          {
-            methods: {
-              get_reserves: {
-                description: 'Get pool reserves',
-                params: [
-                  {
-                    name: 'asset1',
-                    type: 'PalletAssetConversionMultiAssetId',
-                  },
-                  {
-                    name: 'asset2',
-                    type: 'PalletAssetConversionMultiAssetId',
-                  },
-                ],
-                type: 'Option<(Balance,Balance)>',
-              },
-              quote_price_exact_tokens_for_tokens: {
-                description: 'Quote price: exact tokens for tokens',
-                params: [
-                  {
-                    name: 'asset1',
-                    type: 'PalletAssetConversionMultiAssetId',
-                  },
-                  {
-                    name: 'asset2',
-                    type: 'PalletAssetConversionMultiAssetId',
-                  },
-                  {
-                    name: 'amount',
-                    type: 'u128',
-                  },
-                  {
-                    name: 'include_fee',
-                    type: 'bool',
-                  },
-                ],
-                type: 'Option<(Balance)>',
-              },
-              quote_price_tokens_for_exact_tokens: {
-                description: 'Quote price: tokens for exact tokens',
-                params: [
-                  {
-                    name: 'asset1',
-                    type: 'PalletAssetConversionMultiAssetId',
-                  },
-                  {
-                    name: 'asset2',
-                    type: 'PalletAssetConversionMultiAssetId',
-                  },
-                  {
-                    name: 'amount',
-                    type: 'u128',
-                  },
-                  {
-                    name: 'include_fee',
-                    type: 'bool',
-                  },
-                ],
-                type: 'Option<(Balance)>',
-              },
-            },
-            version: 1,
-          },
-        ],
-      },
-    },
-  },
-};
-
-export const apiConfigTypes: RegistryTypes = {
-  PalletAssetConversionMultiAssetId: {
-    _enum: {
-      Native: null,
-      Asset: 'AssetId',
-    },
-  },
 };

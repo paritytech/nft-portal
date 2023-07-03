@@ -3,7 +3,7 @@ import { ApiPromise, WsProvider } from '@polkadot/api';
 import { ReactElement, createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { ThemeProvider } from 'styled-components';
 
-import { apiConfigRuntime, apiConfigTypes, chains } from '@helpers/config.ts';
+import { chains } from '@helpers/config.ts';
 import { ChainThemes } from '@helpers/constants.ts';
 import { ActiveAccount, Chain, ThemeStyle } from '@helpers/interfaces.ts';
 import { themes } from '@helpers/reusableStyles.ts';
@@ -62,7 +62,8 @@ export const AccountsContextProvider = ({ children }: AccountsContextProviderPro
       provider.disconnect();
       unsub();
     });
-    const api = await ApiPromise.create({ provider, typesBundle: apiConfigRuntime, types: apiConfigTypes });
+    const api = await ApiPromise.create({ provider });
+
     setApi(api);
   }, [storedChain]);
 

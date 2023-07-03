@@ -11,9 +11,9 @@ import { CssFontRegularS, CssFontSemiBoldM, CssFontSemiBoldS, SConnectButton } f
 import { routes } from '@helpers/routes.ts';
 import { ellipseAddress } from '@helpers/utilities.ts';
 
-import { useAssets } from '@hooks/useAssets.ts';
 import { useConnectToStoredAccount } from '@hooks/useConnectToStoredAccount.ts';
 import { useCopyToClipboard } from '@hooks/useCopyToClipboard.ts';
+import { useNativeBalance } from '@hooks/useNativeBalance.ts';
 import { useOutsideClick } from '@hooks/useOutsideClick.ts';
 
 import CopyIcon from '@images/icons/copy.svg';
@@ -123,7 +123,7 @@ const SIcon = styled.div`
 const Connect = () => {
   const { activeAccount, wallets, isAutoConnectDone } = useConnectToStoredAccount();
   const { api, setActiveAccount, setStoredActiveAccount } = useAccounts();
-  const { getNativeBalance, nativeBalance } = useAssets();
+  const nativeBalance = useNativeBalance();
   const dropdownRef = useOutsideClick(() => setIsAccountActionsVisible(false));
   const [showWalletSelection, setShowWalletSelection] = useState(false);
   const [isAccountActionsVisible, setIsAccountActionsVisible] = useState(false);
@@ -140,10 +140,6 @@ const Connect = () => {
       }
     }
   }, [isAccountActionsVisible]);
-
-  useEffect(() => {
-    getNativeBalance();
-  }, [getNativeBalance]);
 
   const handleClose = () => setShowWalletSelection(false);
   const handleShow = () => {
