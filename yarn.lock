@@ -1801,10 +1801,6 @@
   version "0.0.0-TODO"
   resolved "https://capi.dev/@v0.1.0-beta.40/a6371dd9c3e070f3/contracts-dev.tar#c904e29bc48bdce935c3e3702ec4df1c4d15f580"
 
-"@capi/local@https://capi.dev/a9a14c8d47bb87ff/local.tar":
-  version "0.0.0-TODO"
-  resolved "https://capi.dev/a9a14c8d47bb87ff/local.tar#32cfb8c331d5b823a794680004b759ca9e4e1717"
-
 "@capi/polkadot-dev@https://capi.dev/@v0.1.0-beta.40/a6371dd9c3e070f3/polkadot-dev.tar":
   version "0.0.0-TODO"
   resolved "https://capi.dev/@v0.1.0-beta.40/a6371dd9c3e070f3/polkadot-dev.tar#312c47d212ecbd4d6594874550feb22e689cea8d"
