@@ -1,15 +1,14 @@
 import { memo } from 'react';
 
-import { CollectionMetadata } from '@helpers/interfaces.ts';
 import { SContentBlockContainer } from '@helpers/reusableStyles.ts';
+
+import { useLoadCollectionsData } from '@hooks/useLoadCollectionsData.ts';
 
 import Collection from './Collection.tsx';
 
-interface CollectionsViewProps {
-  collectionsMetadata: CollectionMetadata[] | null;
-}
+const CollectionsView = () => {
+  const collectionsMetadata = useLoadCollectionsData();
 
-const CollectionsView = ({ collectionsMetadata }: CollectionsViewProps) => {
   if (collectionsMetadata === null) {
     return <>Gathering data... please wait</>;
   }

@@ -1,4 +1,4 @@
-import { memo, useEffect, useState } from 'react';
+import { memo } from 'react';
 import { Card } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
@@ -10,7 +10,7 @@ import { CssFontRegularS, CssFontSemiBoldL } from '@helpers/reusableStyles.ts';
 import { routes } from '@helpers/routes.ts';
 import { SCard } from '@helpers/styledComponents.ts';
 
-import { useNfts } from '@hooks/useNfts.ts';
+import { useCountOwnedNfts } from '@hooks/useCountOwnedNfts.ts';
 
 const SLinkCard = styled(SCard)`
   cursor: pointer;
@@ -35,29 +35,12 @@ interface CollectionProps {
 
 const Collection = ({ collectionMetadata }: CollectionProps) => {
   const { id, name, description, image } = collectionMetadata;
-  const { getOwnedNftIds } = useNfts(id);
+  const counter = useCountOwnedNfts(id);
   const navigate = useNavigate();
-  const [itemCounter, setItemCounter] = useState<number>();
 
   const goIntoCollection = () => {
     navigate(routes.myAssets.nfts(id));
   };
-
-  useEffect(() => {
-    const countOwnedItems = async () => {
-      const ownedNftIds = await getOwnedNftIds();
-
-      if (Array.isArray(ownedNftIds)) {
-        setItemCounter(ownedNftIds.length);
-      } else {
-        setItemCounter(0);
-      }
-    };
-
-    countOwnedItems();
-  }, []);
-
-  const counter = typeof itemCounter !== 'undefined' ? `${itemCounter} items` : '...';
 
   return (
     <SLinkCard onClick={goIntoCollection}>

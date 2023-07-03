@@ -6,9 +6,10 @@ import { styled } from 'styled-components';
 import ActionButton from '@buttons/ActionButton.tsx';
 import IconArrowButton from '@buttons/IconArrowButton.tsx';
 
-import { CollectionMetadata } from '@helpers/interfaces.ts';
 import { CssFontRegularM, CssFontSemiBoldL } from '@helpers/reusableStyles.ts';
 import { routes } from '@helpers/routes.ts';
+
+import { useLoadCollectionsData } from '@hooks/useLoadCollectionsData.ts';
 
 import CollectionIcon from '@images/icons/collection.svg';
 
@@ -57,11 +58,9 @@ const SCollectionOption = styled(Link)`
   }
 `;
 
-interface SelectCollectionProps {
-  collectionsMetadata: CollectionMetadata[] | null;
-}
+const SelectCollection = () => {
+  const collectionsMetadata = useLoadCollectionsData();
 
-const SelectCollection = ({ collectionsMetadata }: SelectCollectionProps) => {
   if (collectionsMetadata === null) {
     return <>Gathering data... please wait</>;
   }
