@@ -19,11 +19,6 @@ const SMainContent = styled.div`
   }
 `;
 
-// const SSideContent = styled.aside`
-//   flex-grow: 1;
-//   max-width: 380px;
-// `;
-
 const MyAssets = () => {
   return (
     <SMyAssets>
@@ -34,14 +29,7 @@ const MyAssets = () => {
             route={routes.myAssets.collections}
           />
         </section>
-        {/* <section>
-          <SectionTitle title={<Title className='L'>My liquidity pools</Title>} route={routes.myAssets.pools} />
-        </section> */}
       </SMainContent>
-
-      {/* <SSideContent>
-        <SwapWidget />
-      </SSideContent> */}
     </SMyAssets>
   );
 };

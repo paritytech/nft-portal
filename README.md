@@ -1,6 +1,6 @@
-# assets-portal
+# nft-portal
 
-currently published @ https://assets-portal.netlify.app
+currently published @ https://nft-portal.netlify.app
 
 ## Prerequisites to run locally
 install netlify CLI globally
