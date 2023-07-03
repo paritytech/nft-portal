@@ -23,6 +23,7 @@ const Nfts = () => {
   return (
     <>
       <NftsView nftsMetadata={nftsMetadata} />
+
       <Stack direction='horizontal' gap={2} className='justify-content-end'>
         <Link to={routes.myAssets.mintNft(collectionId)}>
           <ActionButton className='main'>Create NFT</ActionButton>

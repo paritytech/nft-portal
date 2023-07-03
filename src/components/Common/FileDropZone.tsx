@@ -16,12 +16,13 @@ const SDropZone = styled.div`
   align-items: center;
   max-width: 500px;
   min-height: 300px;
+  background-color: ${({ theme }) => theme.fill6};
   border: 1px solid ${({ theme }) => theme.appliedStroke};
   border-radius: 16px;
   outline: none;
 
   &:hover {
-    background-color: ${({ theme }) => theme.appliedHover};
+    background-color: ${({ theme }) => theme.fill12};
 
     img {
       z-index: -1;

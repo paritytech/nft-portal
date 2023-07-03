@@ -5,9 +5,9 @@ import { styled } from 'styled-components';
 import { CssFormControl } from './reusableStyles.ts';
 
 export const SCard = styled(Card)`
-  max-width: 364px;
-  background-color: ${({ theme }) => theme.fill6};
+  width: 340px;
   padding: 8px;
+  border: 1px solid ${({ theme }) => theme.appliedSeparator};
   border-radius: 16px;
 `;
 

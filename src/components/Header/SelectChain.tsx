@@ -63,7 +63,7 @@ const SChainList = styled.div`
   right: 0;
   margin-top: 12px;
   padding: 16px;
-
+  box-shadow: 0px 2px 8px ${({ theme }) => theme.fill25};
   background-color: ${({ theme }) => theme.backgroundTertiary};
   color: ${({ theme }) => theme.textAndIconsPrimary};
   border-radius: 12px;

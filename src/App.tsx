@@ -12,11 +12,11 @@ import { routes } from '@helpers/routes.ts';
 
 import Main from '@pages/Main/Main.tsx';
 import CollectionEdit from '@pages/MyAssets/Collections/CollectionEdit.tsx';
-import Collections from '@pages/MyAssets/Collections/Collections.tsx';
+import CollectionsView from '@pages/MyAssets/Collections/CollectionsView.tsx';
 import CreateCollection from '@pages/MyAssets/MintNft/CreateCollection.tsx';
-import LoadCollectionsData from '@pages/MyAssets/MintNft/LoadCollectionsData.tsx';
 import MintNft from '@pages/MyAssets/MintNft/MintNft.tsx';
 import MintNftIndex from '@pages/MyAssets/MintNft/MintNftIndex.tsx';
+import SelectCollection from '@pages/MyAssets/MintNft/SelectCollection.tsx';
 import MyAssets from '@pages/MyAssets/MyAssets.tsx';
 import NftEdit from '@pages/MyAssets/Nfts/NftEdit.tsx';
 import MyNfts from '@pages/MyAssets/Nfts/Nfts.tsx';
@@ -90,7 +90,7 @@ const App = () => (
               index
               element={
                 <PrivateRoute>
-                  <LoadCollectionsData />
+                  <SelectCollection />
                 </PrivateRoute>
               }
             />
@@ -121,7 +121,7 @@ const App = () => (
                 <>
                   <Title className='main'>My Collections</Title>
                   <PrivateRoute>
-                    <Collections />
+                    <CollectionsView />
                   </PrivateRoute>
                 </>
               }
