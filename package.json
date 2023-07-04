@@ -20,7 +20,6 @@
   "author": "SaltyCucumber",
   "license": "MIT",
   "dependencies": {
-    "@capi/local": "https://capi.dev/a9a14c8d47bb87ff/local.tar",
     "@polkadot-onboard/core": "0.0.10",
     "@polkadot-onboard/injected-wallets": "0.0.10",
     "@polkadot-onboard/react": "0.0.10",
@@ -46,11 +45,11 @@
   "devDependencies": {
     "@babel/core": "7.22.6",
     "@babel/plugin-syntax-flow": "7.22.5",
-    "@babel/plugin-transform-react-jsx": "7.22.3",
+    "@babel/plugin-transform-react-jsx": "7.22.5",
     "@babel/plugin-transform-runtime": "7.22.4",
-    "@babel/preset-env": "7.22.4",
-    "@babel/preset-react": "7.22.3",
-    "@babel/preset-typescript": "7.21.5",
+    "@babel/preset-env": "7.22.6",
+    "@babel/preset-react": "7.22.5",
+    "@babel/preset-typescript": "7.22.5",
     "@pmmmwh/react-refresh-webpack-plugin": "0.5.10",
     "@svgr/webpack": "8.0.1",
     "@trivago/prettier-plugin-sort-imports": "4.1.1",
