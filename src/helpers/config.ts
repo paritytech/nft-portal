@@ -4,7 +4,7 @@ import { Chain } from './interfaces.ts';
 export const APP_NAME = 'nft-portal';
 export const IPFS_URL = 'https://gateway.pinata.cloud/ipfs/';
 
-const triggerChange = 'TODO remove 1';
+const triggerChange = 'TODO remove 2';
 // first chain in the list will be default chain
 export const chains: Chain[] = [
   {
