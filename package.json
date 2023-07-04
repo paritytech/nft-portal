@@ -11,7 +11,7 @@
     "build": "webpack --config webpack.prod.js",
     "format": "prettier --write \"./src/**/*.{ts,tsx}\"",
     "lint": "eslint src && tsc",
-    "sync": "capi sync node --runtime-config package.json --server https://capi.dev"
+    "sync": "capi sync node --server https://capi.dev"
   },
   "repository": {
     "type": "git",
