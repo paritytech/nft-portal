@@ -1,3 +1,4 @@
+import type { CollectionConfig, MintType } from '@capi/local';
 import { ChangeEvent, FormEvent, memo, useCallback, useRef, useState } from 'react';
 import { Collapse, FormControl, Stack } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
@@ -17,7 +18,7 @@ import Radio from '@common/Radio.tsx';
 import { useAccounts } from '@contexts/AccountsContext.tsx';
 
 import { MintTypes } from '@helpers/constants.ts';
-import { CollectionConfig, CollectionMetadataData, MintType } from '@helpers/interfaces.ts';
+import { CollectionMetadataData } from '@helpers/interfaces.ts';
 import {
   CssArrowDown,
   CssArrowUp,
@@ -162,26 +163,33 @@ const CreateCollection = () => {
         const startBlock = await getBlockNumber(api, startDate?.getTime());
         const endBlock = await getBlockNumber(api, endDate?.getTime());
 
-        let mintTypeFinalized: MintType = mintType;
-        if (mintType === MintTypes.HOLDER_OF) {
+        const getHolderOf = () => {
           if (holderOfCollectionIdRef.current === null) {
             return;
           }
 
-          mintTypeFinalized = {
-            [MintTypes.HOLDER_OF]: holderOfCollectionIdRef.current.value,
+          return {
+            type: MintTypes.HOLDER_OF,
+            value: parseInt(holderOfCollectionIdRef.current.value),
           };
+        };
+
+        const mintTypeFinalized: MintType | undefined =
+          mintType === MintTypes.HOLDER_OF ? getHolderOf() : ({ type: mintType } as MintType.Issuer | MintType.Public);
+
+        if (typeof mintTypeFinalized === 'undefined') {
+          return;
         }
 
         const collectionConfig: CollectionConfig = {
-          settings,
+          settings: BigInt(settings),
           maxSupply: maxSupplyRef.current.value === '' ? undefined : parseInt(maxSupplyRef.current.value, 10),
           mintSettings: {
             mintType: mintTypeFinalized,
-            price: price === '' ? undefined : unitToPlanck(price, api.registry.chainDecimals[0]),
+            price: price === '' ? undefined : BigInt(unitToPlanck(price, api.registry.chainDecimals[0])),
             startBlock,
             endBlock,
-            defaultItemSettings: 0,
+            defaultItemSettings: BigInt(0),
           },
         };
 

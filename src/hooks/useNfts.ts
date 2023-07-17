@@ -77,6 +77,7 @@ export const useNfts = (collectionId: string) => {
         );
         if (Array.isArray(rawMetadata) && rawMetadata.length > 0) {
           const fetchCalls = rawMetadata.map((metadata) => {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             const primitiveMetadata = metadata.toPrimitive() as any;
             if (!primitiveMetadata?.data) {
               return null;
@@ -122,6 +123,7 @@ export const useNfts = (collectionId: string) => {
           const rawMetadata = await api.query.nfts.itemMetadataOf(collectionId, nftId);
 
           if (rawMetadata) {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             const primitiveMetadata = rawMetadata.toPrimitive() as any;
             if (!primitiveMetadata?.data) {
               return null;

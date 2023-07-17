@@ -40,18 +40,6 @@ export interface CollectionMetadataPrimitive {
   deposit: string;
 }
 
-export interface CollectionConfig {
-  settings: number;
-  maxSupply?: number;
-  mintSettings: {
-    mintType: MintType;
-    price?: string;
-    startBlock?: number;
-    endBlock?: number;
-    defaultItemSettings: number;
-  };
-}
-
 export interface CollectionConfigJson {
   settings: number;
   maxSupply: number | null;

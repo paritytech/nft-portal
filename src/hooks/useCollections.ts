@@ -1,5 +1,8 @@
+import { CollectionConfig, FrameSystemEvent, MultiAddress, PalletNftsEvent, RuntimeEvent, local } from '@capi/local';
 import { StorageKey, u32 } from '@polkadot/types';
 import { AccountId32 } from '@polkadot/types/interfaces';
+import { ss58 } from 'capi';
+import { signature } from 'capi/patterns/signature/statemint';
 import { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -11,16 +14,11 @@ import { useModalStatus } from '@contexts/ModalStatusContext.tsx';
 import { IPFS_URL } from '@helpers/config.ts';
 import { ModalStatusTypes, StatusMessages } from '@helpers/constants.ts';
 import { handleError } from '@helpers/handleError.ts';
-import {
-  CollectionConfig,
-  CollectionMetadata,
-  CollectionMetadataData,
-  CollectionMetadataPrimitive,
-} from '@helpers/interfaces.ts';
+import { CollectionMetadata, CollectionMetadataData, CollectionMetadataPrimitive } from '@helpers/interfaces.ts';
 import { routes } from '@helpers/routes.ts';
 
 export const useCollections = () => {
-  const { api, activeAccount, activeWallet } = useAccounts();
+  const { api, activeAccount, sender } = useAccounts();
   const navigate = useNavigate();
   const { openModalStatus, setStatus, setAction } = useModalStatus();
   const [collectionsMetadata, setCollectionsMetadata] = useState<CollectionMetadata[] | null>(null);
@@ -131,96 +129,123 @@ export const useCollections = () => {
   );
 
   const saveCollectionMetadata = useCallback(
-    async (collectionId: string, collectionMetadata: CollectionMetadataData) => {
-      if (api && activeAccount && activeWallet) {
+    async (collectionId: number, collectionMetadata: CollectionMetadataData) => {
+      if (activeAccount && sender) {
         setStatus({ type: ModalStatusTypes.INIT_TRANSACTION, message: StatusMessages.TRANSACTION_CONFIRM });
         openModalStatus();
 
         try {
           const metadataCid = await saveDataToIpfs(collectionMetadata);
 
-          const unsub = await api.tx.nfts
-            .setCollectionMetadata(collectionId, metadataCid)
-            .signAndSend(activeAccount.address, { signer: activeWallet.signer }, ({ events, status }) => {
-              if (status.isReady) {
+          const sent = local.Nfts.setCollectionMetadata({
+            collection: collectionId,
+            data: new TextEncoder().encode(metadataCid),
+          })
+            .signed(
+              signature({
+                sender,
+              }),
+            )
+            .sent()
+            .dbgStatus('Set collection metadata:');
+
+          sent
+            .transactionStatuses((status) => {
+              // TODO update to a specific method after merge of https://github.com/paritytech/capi/pull/1176
+              if (status === 'ready') {
                 setStatus({ type: ModalStatusTypes.IN_PROGRESS, message: StatusMessages.METADATA_UPDATING });
               }
 
-              if (status.isInBlock) {
-                unsub();
+              return false;
+            })
+            .run();
 
-                events.some(({ event: { method } }) => {
-                  if (method === 'ExtrinsicSuccess') {
-                    setStatus({ type: ModalStatusTypes.COMPLETE, message: StatusMessages.METADATA_UPDATED });
+          const inBlockEvents = await sent.inBlockEvents().run();
 
-                    setAction(() => () => navigate(routes.myAssets.mintNftMain));
+          inBlockEvents.some(({ event }) => {
+            if (RuntimeEvent.isNfts(event) && PalletNftsEvent.isCollectionMetadataSet(event.value)) {
+              setStatus({ type: ModalStatusTypes.COMPLETE, message: StatusMessages.METADATA_UPDATED });
 
-                    return true;
-                  }
+              setAction(() => () => navigate(routes.myAssets.mintNftMain));
 
-                  if (method === 'ExtrinsicFailed') {
-                    setStatus({ type: ModalStatusTypes.ERROR, message: StatusMessages.ACTION_FAILED });
+              return true;
+            }
 
-                    setAction(() => () => navigate(routes.myAssets.mintNftMain));
+            if (RuntimeEvent.isSystem(event) && FrameSystemEvent.isExtrinsicFailed(event.value)) {
+              setStatus({ type: ModalStatusTypes.ERROR, message: StatusMessages.ACTION_FAILED });
 
-                    return true;
-                  }
+              setAction(() => () => navigate(routes.myAssets.mintNftMain));
 
-                  return false;
-                });
-              }
-            });
+              return true;
+            }
+
+            return false;
+          });
         } catch (error) {
           setStatus({ type: ModalStatusTypes.ERROR, message: handleError(error) });
         }
       }
     },
-    [api, activeAccount, activeWallet, navigate, openModalStatus, setStatus, setAction],
+    [activeAccount, setStatus, openModalStatus, setAction, navigate, sender],
   );
 
   const createCollection = useCallback(
     async (collectionConfig: CollectionConfig, collectionMetadata: CollectionMetadataData) => {
-      if (api && activeAccount && activeWallet) {
+      if (activeAccount && sender) {
         setStatus({ type: ModalStatusTypes.INIT_TRANSACTION, message: StatusMessages.TRANSACTION_CONFIRM });
         openModalStatus();
 
         try {
-          const unsub = await api.tx.nfts
-            .create(activeAccount.address, collectionConfig)
-            .signAndSend(activeAccount.address, { signer: activeWallet.signer }, ({ events, status }) => {
-              if (status.isReady) {
+          const sent = local.Nfts.create({
+            config: collectionConfig,
+            admin: MultiAddress.Id(ss58.decode(activeAccount.address)[1]),
+          })
+            .signed(
+              signature({
+                sender,
+              }),
+            )
+            .sent()
+            .dbgStatus('Create collection:');
+
+          await sent
+            .transactionStatuses((status) => {
+              // TODO update to a specific method after merge of https://github.com/paritytech/capi/pull/1176
+              if (status === 'ready') {
                 setStatus({ type: ModalStatusTypes.IN_PROGRESS, message: StatusMessages.COLLECTION_CREATING });
               }
 
-              if (status.isInBlock) {
-                unsub();
+              return false;
+            })
+            .run();
 
-                events.some(({ event: { data, method } }) => {
-                  if (method === 'Created') {
-                    setStatus({ type: ModalStatusTypes.COMPLETE, message: StatusMessages.COLLECTION_CREATED });
+          // TODO change to inBlockEvents after https://github.com/paritytech/capi/issues/1194, https://github.com/paritytech/capi/issues/1134 are fixed
+          const inBlockEvents = await sent.finalizedEvents().run();
 
-                    const mintedCollectionId = data[0].toString();
-                    saveCollectionMetadata(mintedCollectionId, collectionMetadata);
+          inBlockEvents.some(({ event }) => {
+            if (RuntimeEvent.isNfts(event) && PalletNftsEvent.isCreated(event.value)) {
+              setStatus({ type: ModalStatusTypes.COMPLETE, message: StatusMessages.COLLECTION_CREATED });
 
-                    return true;
-                  }
+              const mintedCollectionId = event.value.collection;
+              saveCollectionMetadata(mintedCollectionId, collectionMetadata);
 
-                  if (method === 'ExtrinsicFailed') {
-                    setStatus({ type: ModalStatusTypes.ERROR, message: StatusMessages.ACTION_FAILED });
+              return true;
+            }
 
-                    return true;
-                  }
+            if (RuntimeEvent.isSystem(event) && FrameSystemEvent.isExtrinsicFailed(event.value)) {
+              setStatus({ type: ModalStatusTypes.ERROR, message: StatusMessages.ACTION_FAILED });
 
-                  return false;
-                });
-              }
-            });
+              return true;
+            }
+
+            return false;
+          });
         } catch (error) {
           setStatus({ type: ModalStatusTypes.ERROR, message: handleError(error) });
         }
       }
     },
-    [api, activeAccount, activeWallet, setStatus, openModalStatus, saveCollectionMetadata],
+    [activeAccount, setStatus, openModalStatus, saveCollectionMetadata, sender],
   );
 
   const getCollectionConfig = useCallback(

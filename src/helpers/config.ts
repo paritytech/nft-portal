@@ -6,12 +6,13 @@ export const IPFS_URL = 'https://gateway.pinata.cloud/ipfs/';
 
 // first chain in the list will be default chain
 export const chains: Chain[] = [
-  {
-    url: 'wss://westmint-rpc.polkadot.io',
-    title: ChainTitles.WESTMINT,
-    theme: ChainThemes.POLKADOT,
-    nativeTokenName: ChainNativeTokenNames.WESTMINT,
-  },
+  // TODO enable, once a capi sync build prepped for westmint
+  // {
+  //   url: 'wss://westmint-rpc.polkadot.io',
+  //   title: ChainTitles.WESTMINT,
+  //   theme: ChainThemes.POLKADOT,
+  //   nativeTokenName: ChainNativeTokenNames.WESTMINT,
+  // },
   {
     url: 'ws://127.0.0.1:9944',
     title: ChainTitles.LOCALHOST,

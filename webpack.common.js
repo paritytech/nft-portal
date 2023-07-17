@@ -32,15 +32,9 @@ export default {
   resolve: {
     extensions: ['.tsx', '.ts', '.js'],
     plugins: [new TsconfigPathsPlugin()],
-    fallback: {
-      crypto: 'crypto-browserify',
-      stream: 'stream-browserify',
-    },
   },
   externals: {
-    'node:net': {},
-    'node:stream': {},
-    'node:fs/promises': {},
+    'node:fs': {},
   },
   plugins: [
     new webpack.DefinePlugin({
@@ -55,7 +49,4 @@ export default {
       template: './src/index.html',
     }),
   ],
-  experiments: {
-    topLevelAwait: true,
-  },
 };
