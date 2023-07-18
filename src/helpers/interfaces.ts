@@ -115,10 +115,6 @@ export interface RestrictionMessage {
   message: string;
 }
 
-export interface MintAccessNft {
-  ownedItem: string;
-}
-
 // =====
 // TYPES
 // =====

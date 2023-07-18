@@ -1,3 +1,4 @@
+import { MintWitness } from '@capi/local';
 import { BN } from '@polkadot/util';
 import { ChangeEvent, FormEvent, memo, useCallback, useEffect, useRef, useState } from 'react';
 import { FormControl, Stack } from 'react-bootstrap';
@@ -15,7 +16,7 @@ import ShowRestrictionMessage from '@common/ShowRestrictionMessage.tsx';
 import { useAccounts } from '@contexts/AccountsContext.tsx';
 
 import { RestrictionTypes } from '@helpers/constants.ts';
-import { CollectionConfigJson, CollectionMetadataData, MintAccessNft } from '@helpers/interfaces.ts';
+import { CollectionConfigJson, CollectionMetadataData } from '@helpers/interfaces.ts';
 import { SFormBlock, SInfoRow, SPageControls } from '@helpers/reusableStyles.ts';
 import { SFormLayout, SGroup, SLabel } from '@helpers/styledComponents.ts';
 import { generateNftId, getCleanFormattedBalance } from '@helpers/utilities.ts';
@@ -36,7 +37,7 @@ const MintNft = () => {
     ownedNftsFromAnotherCollection,
     clearRestrictions,
   } = useCheckMintingEligibility(collectionId || '');
-  const [mintAccessNft, setMintAccessNft] = useState<MintAccessNft | null>(null);
+  const [mintAccessNft, setMintAccessNft] = useState<MintWitness>();
   const nftNameRef = useRef<HTMLInputElement>(null);
   const nftDescriptionRef = useRef<HTMLTextAreaElement>(null);
   const nftReceiverRef = useRef<HTMLInputElement>(null);
@@ -61,7 +62,7 @@ const MintNft = () => {
 
         if (isAvailable) {
           saveImageToIpfs(imageSourceUrl);
-          mintNft(nftId, nftReceiverRef.current.value, mintAccessNft, metadata);
+          mintNft(nftId, nftReceiverRef.current.value, metadata, mintAccessNft);
         }
       }
     },
@@ -144,9 +145,9 @@ const MintNft = () => {
                     label={ownedNft}
                     value={ownedNft}
                     onChange={(event: ChangeEvent<HTMLInputElement>) =>
-                      setMintAccessNft({ ownedItem: event.target.value })
+                      setMintAccessNft({ ownedItem: parseInt(event.target.value, 10) })
                     }
-                    selectedValue={mintAccessNft?.ownedItem || ''}
+                    selectedValue={mintAccessNft?.ownedItem.toString() || ''}
                     required
                   />
                 ))}

@@ -1,7 +1,7 @@
-import { CollectionConfig, FrameSystemEvent, MultiAddress, PalletNftsEvent, RuntimeEvent, local } from '@capi/local';
+import { CollectionConfig, FrameSystemEvent, PalletNftsEvent, RuntimeEvent, local } from '@capi/local';
 import { StorageKey, u32 } from '@polkadot/types';
 import { AccountId32 } from '@polkadot/types/interfaces';
-import { ss58 } from 'capi';
+import { SignerError, is } from 'capi';
 import { signature } from 'capi/patterns/signature/statemint';
 import { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -16,6 +16,7 @@ import { ModalStatusTypes, StatusMessages } from '@helpers/constants.ts';
 import { handleError } from '@helpers/handleError.ts';
 import { CollectionMetadata, CollectionMetadataData, CollectionMetadataPrimitive } from '@helpers/interfaces.ts';
 import { routes } from '@helpers/routes.ts';
+import { toMultiAddress, toUint8Array } from '@helpers/utilities.ts';
 
 export const useCollections = () => {
   const { api, activeAccount, sender } = useAccounts();
@@ -129,7 +130,7 @@ export const useCollections = () => {
   );
 
   const saveCollectionMetadata = useCallback(
-    async (collectionId: number, collectionMetadata: CollectionMetadataData) => {
+    async (collectionId: string, collectionMetadata: CollectionMetadataData) => {
       if (activeAccount && sender) {
         setStatus({ type: ModalStatusTypes.INIT_TRANSACTION, message: StatusMessages.TRANSACTION_CONFIRM });
         openModalStatus();
@@ -138,8 +139,8 @@ export const useCollections = () => {
           const metadataCid = await saveDataToIpfs(collectionMetadata);
 
           const sent = local.Nfts.setCollectionMetadata({
-            collection: collectionId,
-            data: new TextEncoder().encode(metadataCid),
+            collection: parseInt(collectionId, 10),
+            data: toUint8Array(metadataCid),
           })
             .signed(
               signature({
@@ -158,6 +159,7 @@ export const useCollections = () => {
 
               return false;
             })
+            .rehandle(is(SignerError), (error) => error.access('inner'))
             .run();
 
           const inBlockEvents = await sent.inBlockEvents().run();
@@ -166,7 +168,7 @@ export const useCollections = () => {
             if (RuntimeEvent.isNfts(event) && PalletNftsEvent.isCollectionMetadataSet(event.value)) {
               setStatus({ type: ModalStatusTypes.COMPLETE, message: StatusMessages.METADATA_UPDATED });
 
-              setAction(() => () => navigate(routes.myAssets.mintNftMain));
+              setAction(() => () => navigate(routes.myAssets.mintNft(collectionId)));
 
               return true;
             }
@@ -198,7 +200,7 @@ export const useCollections = () => {
         try {
           const sent = local.Nfts.create({
             config: collectionConfig,
-            admin: MultiAddress.Id(ss58.decode(activeAccount.address)[1]),
+            admin: toMultiAddress(activeAccount.address),
           })
             .signed(
               signature({
@@ -208,7 +210,7 @@ export const useCollections = () => {
             .sent()
             .dbgStatus('Create collection:');
 
-          await sent
+          sent
             .transactionStatuses((status) => {
               // TODO update to a specific method after merge of https://github.com/paritytech/capi/pull/1176
               if (status === 'ready') {
@@ -217,17 +219,18 @@ export const useCollections = () => {
 
               return false;
             })
+            .rehandle(is(SignerError), (error) => error.access('inner'))
             .run();
 
           // TODO change to inBlockEvents after https://github.com/paritytech/capi/issues/1194, https://github.com/paritytech/capi/issues/1134 are fixed
-          const inBlockEvents = await sent.finalizedEvents().run();
+          const inBlockEvents = await sent.inBlockEvents().run();
 
           inBlockEvents.some(({ event }) => {
             if (RuntimeEvent.isNfts(event) && PalletNftsEvent.isCreated(event.value)) {
               setStatus({ type: ModalStatusTypes.COMPLETE, message: StatusMessages.COLLECTION_CREATED });
 
               const mintedCollectionId = event.value.collection;
-              saveCollectionMetadata(mintedCollectionId, collectionMetadata);
+              saveCollectionMetadata(mintedCollectionId.toString(), collectionMetadata);
 
               return true;
             }

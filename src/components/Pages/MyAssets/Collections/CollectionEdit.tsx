@@ -33,7 +33,7 @@ const CollectionEdit = () => {
           image: imageCid,
         };
 
-        Promise.all([saveImageToIpfs(imageSourceUrl), saveCollectionMetadata(parseInt(collectionId), updatedMetadata)]);
+        Promise.all([saveImageToIpfs(imageSourceUrl), saveCollectionMetadata(collectionId, updatedMetadata)]);
       }
     },
     [collectionId, saveCollectionMetadata, imageSourceUrl, imageCid],

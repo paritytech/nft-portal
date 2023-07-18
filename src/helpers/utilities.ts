@@ -1,6 +1,8 @@
+import { MultiAddress } from '@capi/local';
 import { ApiPromise } from '@polkadot/api';
 import { BN, formatBalance } from '@polkadot/util';
 import { ToBn } from '@polkadot/util/types';
+import { ss58 } from 'capi';
 import { FormEvent } from 'react';
 
 import { ALTERNATE_BACKGROUND_CLASSNAME } from './reusableStyles.ts';
@@ -16,7 +18,7 @@ export const ellipseAddress = (address = '', charCount = 4): string => {
 // the values are flipped to opposite because in the nfts pallet we use bitflags
 // where we select what to disable, so in pallet true = disabled, false = enabled
 // in order to not confuse users, in UI we use normal logic and then flip values here
-export const convertToBitFlagValue = (values: boolean[]): number => {
+export const toBitFlag = (values: boolean[]): number => {
   const bitFlag = values
     .map((value) => +!value)
     .reverse()
@@ -24,6 +26,10 @@ export const convertToBitFlagValue = (values: boolean[]): number => {
 
   return parseInt(bitFlag, 2);
 };
+
+export const toMultiAddress = (address: string) => MultiAddress.Id(ss58.decode(address)[1]);
+
+export const toUint8Array = (data: string) => new TextEncoder().encode(data);
 
 export const getBlockNumber = async (api: ApiPromise, timestamp?: number): Promise<number | undefined> => {
   if (typeof timestamp === 'undefined') {
