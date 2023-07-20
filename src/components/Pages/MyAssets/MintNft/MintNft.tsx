@@ -36,7 +36,7 @@ const MintNft = () => {
     ownedNftsFromAnotherCollection,
     clearRestrictions,
   } = useCheckMintingEligibility(collectionId || '');
-  const [mintAccessNft, setMintAccessNft] = useState<MintAccessNft>();
+  const [mintAccessNft, setMintAccessNft] = useState<MintAccessNft | null>(null);
   const nftNameRef = useRef<HTMLInputElement>(null);
   const nftDescriptionRef = useRef<HTMLTextAreaElement>(null);
   const nftReceiverRef = useRef<HTMLInputElement>(null);

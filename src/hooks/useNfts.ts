@@ -146,8 +146,8 @@ export const useNfts = (collectionId: string) => {
   );
 
   const mintNft = useCallback(
-    async (nftId: string, nftReceiver: string, nftMetadata: NftMetadataData, mintAccessNft?: MintAccessNft) => {
-      if (api && activeAccount && activeWallet && collectionId && mintAccessNft) {
+    async (nftId: string, nftReceiver: string, nftMetadata: NftMetadataData, mintAccessNft: MintAccessNft | null) => {
+      if (api && activeAccount && activeWallet && collectionId) {
         setStatus({ type: ModalStatusTypes.INIT_TRANSACTION, message: StatusMessages.TRANSACTION_CONFIRM });
         openModalStatus();
 
