@@ -5,6 +5,7 @@ import { styled } from 'styled-components';
 import { useAccounts } from '@contexts/AccountsContext.tsx';
 
 import { chains } from '@helpers/config.ts';
+import { ChainTitles } from '@helpers/constants.ts';
 import { Chain } from '@helpers/interfaces.ts';
 import { CssArrowDown, CssFontSemiBoldS } from '@helpers/reusableStyles.ts';
 import { routes } from '@helpers/routes.ts';
@@ -13,12 +14,12 @@ import { useOutsideClick } from '@hooks/useOutsideClick.ts';
 
 import ArrowIcon from '@images/icons/arrow.svg';
 import Localhost from '@images/icons/chain-localhost.svg';
-import Westmint from '@images/icons/chain-westmint.svg';
+import WestendAssetHub from '@images/icons/chain-westmint.svg';
 import TickIcon from '@images/icons/tick.svg';
 
 const ChainIcons = {
-  localhost: Localhost,
-  westmint: Westmint,
+  [ChainTitles.LOCALHOST]: Localhost,
+  [ChainTitles.WESTEND_ASSET_HUB]: WestendAssetHub,
 };
 
 const SContainer = styled.div`

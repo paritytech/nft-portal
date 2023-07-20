@@ -1,16 +1,16 @@
 export enum ChainTitles {
   LOCALHOST = 'localhost',
-  WESTMINT = 'westmint',
+  WESTEND_ASSET_HUB = 'westend asset hub',
+}
+
+export enum ChainUrls {
+  LOCALHOST = 'ws://127.0.0.1:9944',
+  WESTEND_ASSET_HUB = 'wss://westend-asset-hub-rpc.polkadot.io',
 }
 
 export enum ChainThemes {
   KUSAMA = 'kusama',
   POLKADOT = 'polkadot',
-}
-
-export enum ChainNativeTokenNames {
-  LOCALHOST = 'Unit',
-  WESTMINT = 'Westend',
 }
 
 export enum RestrictionTypes {

@@ -2203,9 +2203,9 @@
   version "0.0.0-TODO"
   resolved "https://capi.dev/@v0.1.1-beta.1/7544978d8abdc81c/contracts-dev.tar#439db0b2eaf9cc22d08998f6ffb83bf7690b511c"
 
-"@capi/local@https://capi.dev/@v0.1.1-beta.1/6efa704e1a068823/local.tar":
+"@capi/local@https://capi.dev/@v0.1.1-beta.1/90104d29d0c7c23f/local.tar":
   version "0.0.0-TODO"
-  resolved "https://capi.dev/@v0.1.1-beta.1/6efa704e1a068823/local.tar#4b548aebcafe8c953771b4d1065fe3a7abdf19fd"
+  resolved "https://capi.dev/@v0.1.1-beta.1/90104d29d0c7c23f/local.tar#9141816ab3e27f4b70be38d5a430222847351bf3"
 
 "@capi/polkadot-dev@https://capi.dev/@v0.1.1-beta.1/7544978d8abdc81c/polkadot-dev.tar":
   version "0.0.0-TODO"
@@ -2246,6 +2246,10 @@
 "@capi/statemint@https://capi.dev/@v0.1.1-beta.1/7544978d8abdc81c/statemint.tar":
   version "0.0.0-TODO"
   resolved "https://capi.dev/@v0.1.1-beta.1/7544978d8abdc81c/statemint.tar#764fd8bf4ba8b5998d37343a16cdaae3707ff71d"
+
+"@capi/westend-asset-hub@https://capi.dev/@v0.1.1-beta.1/90104d29d0c7c23f/westend-asset-hub.tar":
+  version "0.0.0-TODO"
+  resolved "https://capi.dev/@v0.1.1-beta.1/90104d29d0c7c23f/westend-asset-hub.tar#c51cbb246a7be84ce5d75f0942d35d5011960bb3"
 
 "@capi/westend-dev@https://capi.dev/@v0.1.1-beta.1/7544978d8abdc81c/westend-dev.tar":
   version "0.0.0-TODO"

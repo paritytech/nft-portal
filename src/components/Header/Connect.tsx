@@ -180,7 +180,11 @@ const Connect = () => {
             <div className='highlighted'>
               {nativeBalance &&
                 api &&
-                formatBalance(nativeBalance, { decimals: api.registry.chainDecimals[0], withZero: false })}
+                formatBalance(nativeBalance, {
+                  decimals: api.registry.chainDecimals[0],
+                  withUnit: api.registry.chainTokens[0],
+                  forceUnit: '-',
+                })}
             </div>
 
             <SSeparator />

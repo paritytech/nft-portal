@@ -223,7 +223,7 @@ export const useCollections = () => {
             .run();
 
           // TODO change to inBlockEvents after https://github.com/paritytech/capi/issues/1194, https://github.com/paritytech/capi/issues/1134 are fixed
-          const inBlockEvents = await sent.inBlockEvents().run();
+          const inBlockEvents = await sent.finalizedEvents().run();
 
           inBlockEvents.some(({ event }) => {
             if (RuntimeEvent.isNfts(event) && PalletNftsEvent.isCreated(event.value)) {

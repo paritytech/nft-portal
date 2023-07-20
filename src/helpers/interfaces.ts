@@ -1,5 +1,4 @@
 import {
-  ChainNativeTokenNames,
   ChainThemes,
   ChainTitles,
   MintTypes,
@@ -63,7 +62,6 @@ export interface Chain {
   url: string;
   title: ChainTitles;
   theme: ChainThemes;
-  nativeTokenName: ChainNativeTokenNames;
 }
 
 export interface ThemeStyle {

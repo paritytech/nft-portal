@@ -20,7 +20,8 @@
   "author": "SaltyCucumber",
   "license": "MIT",
   "dependencies": {
-    "@capi/local": "https://capi.dev/@v0.1.1-beta.1/6efa704e1a068823/local.tar",
+    "@capi/local": "https://capi.dev/@v0.1.1-beta.1/90104d29d0c7c23f/local.tar",
+    "@capi/westend-asset-hub": "https://capi.dev/@v0.1.1-beta.1/90104d29d0c7c23f/westend-asset-hub.tar",
     "@polkadot-onboard/core": "0.0.10",
     "@polkadot-onboard/injected-wallets": "0.0.10",
     "@polkadot-onboard/react": "0.0.10",
