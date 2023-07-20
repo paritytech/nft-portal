@@ -1,8 +1,5 @@
-import { local } from '@capi/local';
 import type { Account, BaseWallet } from '@polkadot-onboard/core';
 import { ApiPromise, WsProvider } from '@polkadot/api';
-import { Chain as CapiChain, ExtrinsicSender, FrameMetadata, ValueRune } from 'capi';
-import { pjsSender } from 'capi/patterns/compat/pjs_sender';
 import { ReactElement, createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { ThemeProvider } from 'styled-components';
 
@@ -25,7 +22,6 @@ interface AccountsContextProps {
   setActiveAccount: (value: Account | null) => void;
   setActiveWallet: (value: BaseWallet) => void;
   api: ApiPromise | null;
-  sender?: ValueRune<ExtrinsicSender<CapiChain<FrameMetadata>>>;
   storedActiveAccount: ActiveAccount | null;
   setStoredActiveAccount: (value: ActiveAccount | null) => void;
   storedChain: Chain | null;
@@ -41,7 +37,6 @@ export const AccountsContextProvider = ({ children }: AccountsContextProviderPro
   const [activeAccount, setActiveAccount] = useState<Account | null>(null);
   const [activeWallet, setActiveWallet] = useState<BaseWallet | null>(null);
   const [api, setApi] = useState<ApiPromise | null>(null);
-  const [sender, setSender] = useState<ValueRune<ExtrinsicSender<CapiChain<FrameMetadata>>>>();
   const [theme, setTheme] = useState<ThemeStyle>(themes.polkadot);
   const [storedActiveAccount, setStoredActiveAccount] = useLocalStorage<ActiveAccount | null>('activeAccount', null);
   const [storedChain, setStoredChain] = useLocalStorage<Chain | null>('chain', null);
@@ -84,17 +79,6 @@ export const AccountsContextProvider = ({ children }: AccountsContextProviderPro
     handleChainChange();
   }, [handleChainChange, storedChain]);
 
-  useEffect(() => {
-    const setupSender = () => {
-      if (activeWallet?.signer && activeAccount) {
-        // TODO take dynamically the correct capi instance
-        setSender(pjsSender(local, activeWallet.signer)(activeAccount.address));
-      }
-    };
-
-    setupSender();
-  }, [activeWallet, activeAccount]);
-
   const contextData = useMemo(
     () => ({
       availableAccounts,
@@ -104,7 +88,6 @@ export const AccountsContextProvider = ({ children }: AccountsContextProviderPro
       setActiveAccount,
       setActiveWallet,
       api,
-      sender,
       storedActiveAccount,
       setStoredActiveAccount,
       storedChain,
@@ -116,7 +99,6 @@ export const AccountsContextProvider = ({ children }: AccountsContextProviderPro
       activeWallet,
       setAvailableAccounts,
       api,
-      sender,
       storedActiveAccount,
       setStoredActiveAccount,
       storedChain,

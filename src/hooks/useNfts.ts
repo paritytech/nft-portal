@@ -1,8 +1,5 @@
-import { FrameSystemEvent, MintWitness, PalletNftsEvent, RuntimeEvent, local } from '@capi/local';
 import { StorageKey, u32 } from '@polkadot/types';
 import { AccountId32 } from '@polkadot/types/interfaces';
-import { Rune, SignerError, is } from 'capi';
-import { signature } from 'capi/patterns/signature/statemint';
 import { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -14,12 +11,11 @@ import { useModalStatus } from '@contexts/ModalStatusContext.tsx';
 import { IPFS_URL } from '@helpers/config.ts';
 import { ModalStatusTypes, StatusMessages } from '@helpers/constants.ts';
 import { handleError } from '@helpers/handleError.ts';
-import { NftMetadata, NftMetadataData } from '@helpers/interfaces.ts';
+import { MintAccessNft, NftMetadata, NftMetadataData } from '@helpers/interfaces.ts';
 import { routes } from '@helpers/routes.ts';
-import { toMultiAddress, toUint8Array } from '@helpers/utilities.ts';
 
 export const useNfts = (collectionId: string) => {
-  const { api, activeAccount, activeWallet, sender } = useAccounts();
+  const { api, activeAccount, activeWallet } = useAccounts();
   const navigate = useNavigate();
   const { openModalStatus, setStatus, setAction } = useModalStatus();
   const [nftsMetadata, setNftsMetadata] = useState<NftMetadata[] | null>(null);
@@ -150,78 +146,55 @@ export const useNfts = (collectionId: string) => {
   );
 
   const mintNft = useCallback(
-    async (nftId: string, nftReceiver: string, nftMetadata: NftMetadataData, mintAccessNft?: MintWitness) => {
-      if (activeAccount && collectionId && sender) {
+    async (nftId: string, nftReceiver: string, nftMetadata: NftMetadataData, mintAccessNft?: MintAccessNft) => {
+      if (api && activeAccount && activeWallet && collectionId && mintAccessNft) {
         setStatus({ type: ModalStatusTypes.INIT_TRANSACTION, message: StatusMessages.TRANSACTION_CONFIRM });
         openModalStatus();
 
         try {
           const metadataCid = await saveDataToIpfs(nftMetadata);
-          const parsedCollectionId = parseInt(collectionId, 10);
-          const parsedNftId = parseInt(nftId, 10);
+          const mintTx = api.tx.nfts.mint(collectionId, nftId, nftReceiver, mintAccessNft);
+          const setMetadataTx = api.tx.nfts.setMetadata(collectionId, nftId, metadataCid);
+          const txBatch = api.tx.utility.batchAll([mintTx, setMetadataTx]);
 
-          const sent = local.Utility.batchAll({
-            calls: Rune.array([
-              local.Nfts.mint({
-                collection: parsedCollectionId,
-                item: parsedNftId,
-                mintTo: toMultiAddress(nftReceiver),
-                witnessData: mintAccessNft,
-              }),
-              local.Nfts.setMetadata({
-                collection: parsedCollectionId,
-                item: parsedNftId,
-                data: toUint8Array(metadataCid),
-              }),
-            ]),
-          })
-            .signed(
-              signature({
-                sender,
-              }),
-            )
-            .sent()
-            .dbgStatus('Mint NFT:');
-
-          sent
-            .transactionStatuses((status) => {
-              // TODO update to a specific method after merge of https://github.com/paritytech/capi/pull/1176
-              if (status === 'ready') {
+          const unsub = await txBatch.signAndSend(
+            activeAccount.address,
+            { signer: activeWallet.signer },
+            ({ status, events }) => {
+              if (status.isReady) {
                 setStatus({ type: ModalStatusTypes.IN_PROGRESS, message: StatusMessages.NFT_MINTING });
               }
 
-              return false;
-            })
-            .rehandle(is(SignerError), (error) => error.access('inner'))
-            .run();
+              if (status.isInBlock) {
+                unsub();
 
-          const inBlockEvents = await sent.inBlockEvents().run();
+                events.some(({ event: { method } }) => {
+                  if (method === 'ExtrinsicSuccess') {
+                    setStatus({ type: ModalStatusTypes.COMPLETE, message: StatusMessages.NFT_MINTED });
+                    setAction(() => () => {
+                      navigate(routes.myAssets.nfts(collectionId));
+                    });
 
-          inBlockEvents.some(({ event }) => {
-            if (RuntimeEvent.isNfts(event) && PalletNftsEvent.isItemMetadataSet(event.value)) {
-              setStatus({ type: ModalStatusTypes.COMPLETE, message: StatusMessages.NFT_MINTED });
+                    return true;
+                  }
 
-              setAction(() => () => {
-                navigate(routes.myAssets.nfts(collectionId));
-              });
+                  if (method === 'ExtrinsicFailed') {
+                    setStatus({ type: ModalStatusTypes.ERROR, message: StatusMessages.ACTION_FAILED });
 
-              return true;
-            }
+                    return true;
+                  }
 
-            if (RuntimeEvent.isSystem(event) && FrameSystemEvent.isExtrinsicFailed(event.value)) {
-              setStatus({ type: ModalStatusTypes.ERROR, message: StatusMessages.ACTION_FAILED });
-
-              return true;
-            }
-
-            return false;
-          });
+                  return false;
+                });
+              }
+            },
+          );
         } catch (error) {
           setStatus({ type: ModalStatusTypes.ERROR, message: handleError(error) });
         }
       }
     },
-    [activeAccount, collectionId, sender, setStatus, openModalStatus, setAction, navigate],
+    [api, activeAccount, activeWallet, collectionId, setStatus, openModalStatus, setAction, navigate],
   );
 
   const saveNftMetadata = useCallback(

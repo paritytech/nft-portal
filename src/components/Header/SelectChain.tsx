@@ -14,6 +14,7 @@ import { useOutsideClick } from '@hooks/useOutsideClick.ts';
 
 import ArrowIcon from '@images/icons/arrow.svg';
 import Localhost from '@images/icons/chain-localhost.svg';
+// TODO need new icon for westend assethub and rename
 import WestendAssetHub from '@images/icons/chain-westmint.svg';
 import TickIcon from '@images/icons/tick.svg';
 

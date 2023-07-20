@@ -1,6 +1,5 @@
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import TsconfigPathsPlugin from 'tsconfig-paths-webpack-plugin';
-import webpack from 'webpack';
 
 export default {
   module: {
@@ -33,18 +32,7 @@ export default {
     extensions: ['.tsx', '.ts', '.js'],
     plugins: [new TsconfigPathsPlugin()],
   },
-  externals: {
-    'node:fs': {},
-  },
   plugins: [
-    new webpack.DefinePlugin({
-      process: {
-        env: {
-          CAPI_SERVER: JSON.stringify(process.env.CAPI_SERVER),
-          CAPI_TARGET: JSON.stringify(process.env.CAPI_TARGET),
-        },
-      },
-    }),
     new HtmlWebpackPlugin({
       template: './src/index.html',
     }),

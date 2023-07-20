@@ -15,6 +15,6 @@
     "module": "ESNext",
     "allowImportingTsExtensions": true
   },
-  "include": ["./src/**/*", "./declarations.d.ts", "./nets.ts"],
+  "include": ["./src/**/*", "./declarations.d.ts"],
   "extends": "./tsconfig.paths.json"
 }

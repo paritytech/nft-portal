@@ -1,4 +1,3 @@
-import type { CollectionConfig, MintType } from '@capi/local';
 import { ChangeEvent, FormEvent, memo, useCallback, useRef, useState } from 'react';
 import { Collapse, FormControl, Stack } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
@@ -18,7 +17,7 @@ import Radio from '@common/Radio.tsx';
 import { useAccounts } from '@contexts/AccountsContext.tsx';
 
 import { MintTypes } from '@helpers/constants.ts';
-import { CollectionMetadataData } from '@helpers/interfaces.ts';
+import { CollectionConfig, CollectionMetadataData, MintType } from '@helpers/interfaces.ts';
 import {
   CssArrowDown,
   CssArrowUp,
@@ -163,33 +162,26 @@ const CreateCollection = () => {
         const startBlock = await getBlockNumber(api, startDate?.getTime());
         const endBlock = await getBlockNumber(api, endDate?.getTime());
 
-        const getHolderOf = () => {
+        let mintTypeFinalized: MintType = mintType;
+        if (mintType === MintTypes.HOLDER_OF) {
           if (holderOfCollectionIdRef.current === null) {
             return;
           }
 
-          return {
-            type: MintTypes.HOLDER_OF,
-            value: parseInt(holderOfCollectionIdRef.current.value, 10),
+          mintTypeFinalized = {
+            [MintTypes.HOLDER_OF]: holderOfCollectionIdRef.current.value,
           };
-        };
-
-        const mintTypeFinalized: MintType | undefined =
-          mintType === MintTypes.HOLDER_OF ? getHolderOf() : ({ type: mintType } as MintType.Issuer | MintType.Public);
-
-        if (typeof mintTypeFinalized === 'undefined') {
-          return;
         }
 
         const collectionConfig: CollectionConfig = {
-          settings: BigInt(settings),
+          settings,
           maxSupply: maxSupplyRef.current.value === '' ? undefined : parseInt(maxSupplyRef.current.value, 10),
           mintSettings: {
             mintType: mintTypeFinalized,
-            price: price === '' ? undefined : BigInt(unitToPlanck(price, api.registry.chainDecimals[0])),
+            price: price === '' ? undefined : unitToPlanck(price, api.registry.chainDecimals[0]),
             startBlock,
             endBlock,
-            defaultItemSettings: BigInt(0),
+            defaultItemSettings: 0,
           },
         };
 

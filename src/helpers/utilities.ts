@@ -1,8 +1,6 @@
-import { MultiAddress } from '@capi/local';
 import { ApiPromise } from '@polkadot/api';
 import { BN, formatBalance } from '@polkadot/util';
 import { ToBn } from '@polkadot/util/types';
-import { ss58 } from 'capi';
 import { FormEvent } from 'react';
 
 import { ALTERNATE_BACKGROUND_CLASSNAME } from './reusableStyles.ts';
@@ -26,8 +24,6 @@ export const toBitFlag = (values: boolean[]): number => {
 
   return parseInt(bitFlag, 2);
 };
-
-export const toMultiAddress = (address: string) => MultiAddress.Id(ss58.decode(address)[1]);
 
 export const toUint8Array = (data: string) => new TextEncoder().encode(data);
 
