@@ -152,7 +152,6 @@ export const useCollections = () => {
                 events.some(({ event: { method } }) => {
                   if (method === 'ExtrinsicSuccess') {
                     setStatus({ type: ModalStatusTypes.COMPLETE, message: StatusMessages.METADATA_UPDATED });
-
                     setAction(() => () => navigate(routes.myAssets.mintNftMain));
 
                     return true;
@@ -160,7 +159,6 @@ export const useCollections = () => {
 
                   if (method === 'ExtrinsicFailed') {
                     setStatus({ type: ModalStatusTypes.ERROR, message: StatusMessages.ACTION_FAILED });
-
                     setAction(() => () => navigate(routes.myAssets.mintNftMain));
 
                     return true;
@@ -175,7 +173,7 @@ export const useCollections = () => {
         }
       }
     },
-    [api, activeAccount, activeWallet, navigate, openModalStatus, setStatus, setAction],
+    [api, activeAccount, activeWallet, setStatus, openModalStatus, setAction, navigate],
   );
 
   const createCollection = useCallback(
@@ -194,11 +192,9 @@ export const useCollections = () => {
 
               if (status.isInBlock) {
                 unsub();
-
                 events.some(({ event: { data, method } }) => {
                   if (method === 'Created') {
                     setStatus({ type: ModalStatusTypes.COMPLETE, message: StatusMessages.COLLECTION_CREATED });
-
                     const mintedCollectionId = data[0].toString();
                     saveCollectionMetadata(mintedCollectionId, collectionMetadata);
 

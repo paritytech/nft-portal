@@ -77,6 +77,7 @@ export const useNfts = (collectionId: string) => {
         );
         if (Array.isArray(rawMetadata) && rawMetadata.length > 0) {
           const fetchCalls = rawMetadata.map((metadata) => {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             const primitiveMetadata = metadata.toPrimitive() as any;
             if (!primitiveMetadata?.data) {
               return null;
@@ -122,6 +123,7 @@ export const useNfts = (collectionId: string) => {
           const rawMetadata = await api.query.nfts.itemMetadataOf(collectionId, nftId);
 
           if (rawMetadata) {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             const primitiveMetadata = rawMetadata.toPrimitive() as any;
             if (!primitiveMetadata?.data) {
               return null;
@@ -144,7 +146,7 @@ export const useNfts = (collectionId: string) => {
   );
 
   const mintNft = useCallback(
-    async (nftId: string, nftReceiver: string, mintAccessNft: MintAccessNft | null, nftMetadata: NftMetadataData) => {
+    async (nftId: string, nftReceiver: string, nftMetadata: NftMetadataData, mintAccessNft: MintAccessNft | null) => {
       if (api && activeAccount && activeWallet && collectionId) {
         setStatus({ type: ModalStatusTypes.INIT_TRANSACTION, message: StatusMessages.TRANSACTION_CONFIRM });
         openModalStatus();
@@ -169,7 +171,6 @@ export const useNfts = (collectionId: string) => {
                 events.some(({ event: { method } }) => {
                   if (method === 'ExtrinsicSuccess') {
                     setStatus({ type: ModalStatusTypes.COMPLETE, message: StatusMessages.NFT_MINTED });
-
                     setAction(() => () => {
                       navigate(routes.myAssets.nfts(collectionId));
                     });
@@ -193,7 +194,7 @@ export const useNfts = (collectionId: string) => {
         }
       }
     },
-    [api, activeAccount, activeWallet, collectionId, navigate, openModalStatus, setStatus, setAction],
+    [api, activeAccount, activeWallet, collectionId, setStatus, openModalStatus, setAction, navigate],
   );
 
   const saveNftMetadata = useCallback(

@@ -16,17 +16,7 @@ interface ModalStatusContextProps {
   setAction: (value?: () => void) => void;
 }
 
-/* eslint-disable @typescript-eslint/no-empty-function */
-const ModalStatusContext = createContext<ModalStatusContextProps>({
-  openModalStatus: () => {},
-  isModalVisible: false,
-  status: null,
-  setStatus: () => {},
-  resetModalStatus: () => {},
-  concludeModalStatus: () => {},
-  setAction: () => {},
-});
-/* eslint-enable @typescript-eslint/no-empty-function */
+const ModalStatusContext = createContext<ModalStatusContextProps>(undefined!);
 
 export const useModalStatus = () => useContext(ModalStatusContext);
 

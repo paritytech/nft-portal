@@ -1,17 +1,8 @@
-import type { Option, StorageKey } from '@polkadot/types';
-import type { Enum, Struct } from '@polkadot/types-codec';
-import type { ITuple } from '@polkadot/types-codec/types';
-import type { AssetId } from '@polkadot/types/interfaces';
-import type { PalletAssetsAssetDetails, PalletAssetsAssetMetadata } from '@polkadot/types/lookup';
-import type { BN } from '@polkadot/util';
-
 import {
-  ChainNativeTokenNames,
   ChainThemes,
   ChainTitles,
   MintTypes,
   ModalStatusTypes,
-  MultiAssets,
   RestrictionTypes,
   StatusMessages,
 } from './constants.ts';
@@ -83,7 +74,6 @@ export interface Chain {
   url: string;
   title: ChainTitles;
   theme: ChainThemes;
-  nativeTokenName: ChainNativeTokenNames;
 }
 
 export interface ThemeStyle {
@@ -139,52 +129,9 @@ export interface MintAccessNft {
   ownedItem: string;
 }
 
-export interface TokenMetadata extends TokenMetadataInfo {
-  id: MultiAssetId;
-}
-
-export interface TokenMetadataInfo {
-  name: string;
-  symbol: string;
-  decimals: number;
-}
-
-export interface TokenWithSupply extends TokenMetadata {
-  supply: BN | null;
-}
-
-export interface PalletAssetConversionPoolInfo extends Struct {
-  readonly lpToken: AssetId;
-}
-
-export interface MultiAssetId extends Enum {
-  readonly isNative: boolean;
-  readonly isAsset: boolean;
-  readonly asAsset: AssetId;
-  readonly type: MultiAssets;
-}
-
-export interface PoolInfo {
-  poolId: PalletAssetConversionPoolId;
-  lpToken: AssetId;
-  reserves: PoolReserves;
-}
-
 // =====
 // TYPES
 // =====
 export type MintType = MintTypes | { [MintTypes.HOLDER_OF]: string };
 
 export type MintTypeJson = Record<'public' | 'issuer' | 'holderOf', null | number>;
-
-export type PoolReserves = [BN, BN];
-
-export type PoolId = [MultiAssetId, MultiAssetId];
-
-export type PalletAssetConversionPoolId = ITuple<[MultiAssetId, MultiAssetId]>;
-
-export type TokensMetadataRecords = [StorageKey<[AssetId]>, PalletAssetsAssetMetadata][];
-
-export type TokensDetailsRecords = Option<PalletAssetsAssetDetails>[];
-
-export type TokensDetailsMap = Map<number, PalletAssetsAssetDetails | null>;

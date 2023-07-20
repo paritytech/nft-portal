@@ -28,21 +28,7 @@ interface AccountsContextProps {
   setStoredChain: (value: Chain | null) => void;
 }
 
-/* eslint-disable @typescript-eslint/no-empty-function */
-const AccountsContext = createContext<AccountsContextProps>({
-  availableAccounts: null,
-  activeAccount: null,
-  activeWallet: null,
-  setAvailableAccounts: () => {},
-  setActiveAccount: () => {},
-  setActiveWallet: () => {},
-  api: null,
-  storedActiveAccount: null,
-  setStoredActiveAccount: () => {},
-  storedChain: null,
-  setStoredChain: () => {},
-});
-/* eslint-enable @typescript-eslint/no-empty-function */
+const AccountsContext = createContext<AccountsContextProps>(undefined!);
 
 export const useAccounts = () => useContext(AccountsContext);
 

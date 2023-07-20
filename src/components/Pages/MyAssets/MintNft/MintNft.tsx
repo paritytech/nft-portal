@@ -18,7 +18,7 @@ import { RestrictionTypes } from '@helpers/constants.ts';
 import { CollectionConfigJson, CollectionMetadataData, MintAccessNft } from '@helpers/interfaces.ts';
 import { SFormBlock, SInfoRow, SPageControls } from '@helpers/reusableStyles.ts';
 import { SFormLayout, SGroup, SLabel } from '@helpers/styledComponents.ts';
-import { generateAssetId, getCleanFormattedBalance } from '@helpers/utilities.ts';
+import { generateNftId, getCleanFormattedBalance } from '@helpers/utilities.ts';
 
 import { useCheckMintingEligibility } from '@hooks/useCheckMintingEligibility.ts';
 import { useCollections } from '@hooks/useCollections.ts';
@@ -50,7 +50,7 @@ const MintNft = () => {
       clearRestrictions();
 
       if (collectionId && nftNameRef.current !== null && nftReceiverRef.current !== null) {
-        const nftId = generateAssetId().toString();
+        const nftId = generateNftId().toString();
         const isAvailable = await checkAvailabilityRestriction(nftId);
 
         const metadata: CollectionMetadataData = {
@@ -61,7 +61,7 @@ const MintNft = () => {
 
         if (isAvailable) {
           saveImageToIpfs(imageSourceUrl);
-          mintNft(nftId, nftReceiverRef.current.value, mintAccessNft, metadata);
+          mintNft(nftId, nftReceiverRef.current.value, metadata, mintAccessNft);
         }
       }
     },

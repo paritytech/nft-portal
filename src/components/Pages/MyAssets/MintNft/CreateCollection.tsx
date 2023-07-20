@@ -29,10 +29,10 @@ import {
 } from '@helpers/reusableStyles.ts';
 import { SFormLayout, SGroup, SLabel } from '@helpers/styledComponents.ts';
 import {
-  convertToBitFlagValue,
   ellipseAddress,
   getBlockNumber,
   pricePattern,
+  toBitFlag,
   unitToPlanck,
   wholeNumbersPattern,
 } from '@helpers/utilities.ts';
@@ -152,7 +152,7 @@ const CreateCollection = () => {
         unlockedMaxSupplyRef.current !== null &&
         maxSupplyRef.current !== null
       ) {
-        const settings = convertToBitFlagValue([
+        const settings = toBitFlag([
           transferrableItemsRef.current.checked,
           unlockedMetadataRef.current.checked,
           unlockedAttributesRef.current.checked,

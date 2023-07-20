@@ -1,16 +1,16 @@
 export enum ChainTitles {
   LOCALHOST = 'localhost',
-  WESTMINT = 'westmint',
+  WESTEND_ASSET_HUB = 'westend asset hub',
+}
+
+export enum ChainUrls {
+  LOCALHOST = 'ws://127.0.0.1:9944',
+  WESTEND_ASSET_HUB = 'wss://westend-asset-hub-rpc.polkadot.io',
 }
 
 export enum ChainThemes {
   KUSAMA = 'kusama',
   POLKADOT = 'polkadot',
-}
-
-export enum ChainNativeTokenNames {
-  LOCALHOST = 'Unit',
-  WESTMINT = 'Westend',
 }
 
 export enum RestrictionTypes {
@@ -36,27 +36,12 @@ export enum StatusMessages {
   NFT_MINTING = 'Minting NFT, please wait',
   TRANSACTION_CANCELED = 'Transaction was canceled',
   TRANSACTION_CONFIRM = 'Please confirm transaction in your wallet',
-  POOL_CREATION = 'Creating pool, please wait',
-  POOL_CREATED = 'Pool created!',
-  POOL_INSUFFICIENT_BALANCE_FOR_DEPOSIT = 'Your account`s balance is bellow the required pool creation fee',
-  POOL_MIN_LIQUIDITY_ERROR = 'You need to provide at least {amount} for empty pool',
-  POOL_ADDING_LIQUIDITY = 'Adding liquidity, please wait',
-  POOL_AMOUNT_TOO_HIGH = 'The amount you entered is higher than your balance',
-  POOL_LIQUIDITY_ADDED = 'Liquidity added!',
-  POOL_SWAP_MAX_AMOUNT_ERROR = 'You can`t swap more than {amount}',
-  SWAP_EXECUTING = 'Submitting swap details, please wait',
-  SWAP_EXECUTED = 'Swap was successfully executed!',
 }
 
 export enum MintTypes {
   ISSUER = 'Issuer',
   PUBLIC = 'Public',
   HOLDER_OF = 'HolderOf',
-}
-
-export enum MultiAssets {
-  NATIVE = 'Native',
-  ASSET = 'Asset',
 }
 
 export enum ConnectModalSteps {
@@ -67,9 +52,4 @@ export enum ConnectModalSteps {
 export enum ExtensionIds {
   POLKADOTJS = 'polkadot-js',
   TALISMAN = 'talisman',
-}
-
-export enum SwapTypes {
-  EXACT_SEND,
-  EXACT_RECEIVE,
 }
