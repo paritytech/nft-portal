@@ -1,5 +1,9 @@
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import TsconfigPathsPlugin from 'tsconfig-paths-webpack-plugin';
+import webpack from 'webpack';
+import dotenv from 'dotenv';
+
+const reactEnvVars = Object.keys(dotenv.config().parsed).filter(envVar => envVar.startsWith('REACT_APP'));
 
 export default {
   module: {
@@ -36,5 +40,6 @@ export default {
     new HtmlWebpackPlugin({
       template: './src/index.html',
     }),
+    new webpack.EnvironmentPlugin(reactEnvVars),
   ],
 };

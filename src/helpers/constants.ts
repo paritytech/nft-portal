@@ -1,11 +1,17 @@
 export enum ChainTitles {
-  LOCALHOST = 'localhost',
+  POLKADOT_ASSET_HUB = 'polkadot asset hub',
+  KUSAMA_ASSET_HUB = 'kusama asset hub',
   WESTEND_ASSET_HUB = 'westend asset hub',
+  ROCOCO_ASSET_HUB = 'rococo asset hub',
+  LOCALHOST = 'localhost',
 }
 
 export enum ChainUrls {
-  LOCALHOST = 'ws://127.0.0.1:9944',
+  POLKADOT_ASSET_HUB = 'wss://polkadot-asset-hub-rpc.polkadot.io',
+  KUSAMA_ASSET_HUB = 'wss://kusama-asset-hub-rpc.polkadot.io',
   WESTEND_ASSET_HUB = 'wss://westend-asset-hub-rpc.polkadot.io',
+  ROCOCO_ASSET_HUB = 'wss://rococo-asset-hub-rpc.polkadot.io',
+  LOCALHOST = 'ws://127.0.0.1:9944',
 }
 
 export enum ChainThemes {
