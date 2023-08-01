@@ -13,14 +13,19 @@ import { routes } from '@helpers/routes.ts';
 import { useOutsideClick } from '@hooks/useOutsideClick.ts';
 
 import ArrowIcon from '@images/icons/arrow.svg';
+import KusamaAssetHub from '@images/icons/chain-kusama-asset-hub.svg';
 import Localhost from '@images/icons/chain-localhost.svg';
-// TODO need new icon for westend assethub and rename
-import WestendAssetHub from '@images/icons/chain-westmint.svg';
+import PolkadotAssetHub from '@images/icons/chain-polkadot-asset-hub.svg';
+import RococoAssetHub from '@images/icons/chain-rococo-asset-hub.svg';
+import WestendAssetHub from '@images/icons/chain-westend-asset-hub.svg';
 import TickIcon from '@images/icons/tick.svg';
 
 const ChainIcons = {
-  [ChainTitles.LOCALHOST]: Localhost,
+  [ChainTitles.POLKADOT_ASSET_HUB]: PolkadotAssetHub,
+  [ChainTitles.KUSAMA_ASSET_HUB]: KusamaAssetHub,
   [ChainTitles.WESTEND_ASSET_HUB]: WestendAssetHub,
+  [ChainTitles.ROCOCO_ASSET_HUB]: RococoAssetHub,
+  [ChainTitles.LOCALHOST]: Localhost,
 };
 
 const SContainer = styled.div`
