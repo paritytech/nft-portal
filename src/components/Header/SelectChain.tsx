@@ -87,7 +87,7 @@ const SChainOption = styled.div`
   ${CssFontSemiBoldS}
   display: flex;
   position: relative;
-  min-width: 221px;
+  min-width: 240px;
   align-items: center;
   height: 48px;
   padding: 0 8px;

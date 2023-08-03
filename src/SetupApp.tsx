@@ -1,9 +1,10 @@
 import { WalletAggregator } from '@polkadot-onboard/core';
 import { InjectedWalletProvider } from '@polkadot-onboard/injected-wallets';
 import { PolkadotWalletsContextProvider } from '@polkadot-onboard/react';
-import { WalletConnectProvider } from '@polkadot-onboard/wallet-connect';
 import '@polkadot/api-augment';
 import { BrowserRouter } from 'react-router-dom';
+
+import { WalletConnectProvider } from '@common/WalletConnect/wallet-connect.ts';
 
 import { AccountsContextProvider } from '@contexts/AccountsContext.tsx';
 import { ModalStatusContextProvider } from '@contexts/ModalStatusContext.tsx';

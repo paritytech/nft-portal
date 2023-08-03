@@ -40,7 +40,7 @@ interface WalletProps {
 
 const Wallet = ({ wallet, changeStep }: WalletProps) => {
   const { setActiveWallet, setAvailableAccounts } = useAccounts();
-  const { walletAccounts, connectToWallet } = useWalletAccounts(wallet);
+  const { walletAccounts, connectToWallet } = useWalletAccounts();
 
   useEffect(() => {
     if (walletAccounts) {

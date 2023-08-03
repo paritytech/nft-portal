@@ -55,6 +55,7 @@ const GlobalStyle = createGlobalStyle`
 
   .modal-backdrop {
     background-color: ${({ theme }) => theme.appliedOverlay};
+    z-index: 2;
 
     &.show {
       opacity: 1;

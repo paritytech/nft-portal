@@ -35,6 +35,8 @@ export const SCardEdit = styled(Card.Subtitle)`
 `;
 
 export const SModal = styled(Modal)`
+  z-index: 2;
+
   .modal-content {
     border-radius: 16px;
     background-color: ${({ theme }) => theme.backgroundTertiary};

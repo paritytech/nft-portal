@@ -122,7 +122,7 @@ const ConnectToAccount = ({ handleClose, wallet, changeStep }: ConnectToAccountP
         </SActiveWallet>
 
         <SLabel>Select Account</SLabel>
-        {availableAccounts ? (
+        {availableAccounts && availableAccounts.length > 0 ? (
           availableAccounts.map((account: Account) => (
             <SArrowButton key={account.address} action={() => connectToAccount(account.address)}>
               <SContent>

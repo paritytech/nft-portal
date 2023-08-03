@@ -58,4 +58,5 @@ export enum ConnectModalSteps {
 export enum ExtensionIds {
   POLKADOTJS = 'polkadot-js',
   TALISMAN = 'talisman',
+  WALLET_CONNECT = 'wallet-connect',
 }
