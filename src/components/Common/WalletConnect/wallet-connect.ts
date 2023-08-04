@@ -25,6 +25,7 @@ class WalletConnectWallet implements BaseWallet {
   client: Client.default | undefined;
   signer: Signer | undefined;
   session: SessionTypes.Struct | undefined;
+  walletConnectModal: WalletConnectModal;
 
   constructor(config: WalletConnectConfiguration, appName: string) {
     if (!config.chainIds || config.chainIds.length === 0) config.chainIds = [POLKADOT_CHAIN_ID];
@@ -63,9 +64,17 @@ class WalletConnectWallet implements BaseWallet {
   async connect() {
     this.reset();
 
-    const client = await SignClient.init(this.config);
+    this.client = await SignClient.init(this.config);
 
-    const walletConnectModal = new WalletConnectModal({
+    this.client.on('session_delete', () => {
+      this.reset();
+
+      if (this.config.onSessionDelete) {
+        this.config.onSessionDelete();
+      }
+    });
+
+    this.walletConnectModal = new WalletConnectModal({
       projectId: this.config.projectId,
       chains: this.config.chainIds,
     });
@@ -74,37 +83,55 @@ class WalletConnectWallet implements BaseWallet {
       requiredNamespaces: {
         polkadot: {
           chains: this.config.chainIds,
-          accounts: [],
+          methods: ['polkadot_signTransaction', 'polkadot_signMessage'],
+          events: [],
+        },
+      },
+      optionalNamespaces: {
+        polkadot: {
+          chains: this.config.optionalChainIds,
           methods: ['polkadot_signTransaction', 'polkadot_signMessage'],
           events: [],
         },
       },
     };
 
-    const { uri, approval } = await client.connect(namespaces);
+    const lastKeyIndex = this.client.session.getAll().length - 1;
+    const lastSession = this.client.session.getAll()[lastKeyIndex];
+
+    if (lastSession) {
+      return new Promise<void>((resolve) => {
+        this.session = lastSession;
+        this.signer = new WalletConnectSigner(this.client!, lastSession);
+        resolve();
+      });
+    }
+
+    const { uri, approval } = await this.client.connect(namespaces);
 
     return new Promise<void>((resolve, reject) => {
       if (uri) {
-        walletConnectModal.openModal({ uri });
+        this.walletConnectModal.openModal({ uri });
       }
 
-      walletConnectModal.subscribeModal((state: ModalState) => {
+      const unsubscribeModal = this.walletConnectModal.subscribeModal((state: ModalState) => {
         if (state.open === false) {
+          unsubscribeModal();
           resolve();
         }
       });
 
       approval()
         .then((session) => {
-          this.client = client;
           this.session = session;
-          this.signer = new WalletConnectSigner(client, session);
+          this.signer = new WalletConnectSigner(this.client!, session);
+
           resolve();
         })
         .catch((error) => {
           reject(error);
         })
-        .finally(() => walletConnectModal.closeModal());
+        .finally(() => this.walletConnectModal.closeModal());
     });
   }
 
@@ -118,6 +145,7 @@ class WalletConnectWallet implements BaseWallet {
         },
       });
     }
+
     this.reset();
   }
 

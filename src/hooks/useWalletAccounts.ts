@@ -11,7 +11,12 @@ export const useWalletAccounts = () => {
         return;
       }
 
-      await wallet.connect();
+      try {
+        await wallet.connect();
+      } catch (error) {
+        //
+      }
+
       const accounts = await wallet.getAccounts();
       setWalletAccounts([...accounts]);
     },

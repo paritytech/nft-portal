@@ -6,4 +6,6 @@ export type PolkadotNamespaceChainId = `polkadot:${string}`;
 
 export interface WalletConnectConfiguration extends SignClientTypes.Options {
   chainIds?: PolkadotNamespaceChainId[];
+  optionalChainIds?: PolkadotNamespaceChainId[];
+  onSessionDelete?: () => void;
 }

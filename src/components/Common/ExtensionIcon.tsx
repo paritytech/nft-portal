@@ -3,6 +3,7 @@ import { memo } from 'react';
 import { ExtensionIds } from '@helpers/constants.ts';
 
 import PolkadotjsIcon from '@images/icons/polkadotjs.svg';
+import SubWalletIcon from '@images/icons/sub-wallet.svg';
 import TalismanIcon from '@images/icons/talisman.svg';
 import WalletConnectIcon from '@images/icons/wallet-connect.svg';
 
@@ -15,6 +16,8 @@ const ExtensionIcon = ({ extensionId }: ExtensionIconProps) => {
     switch (extensionId) {
       case ExtensionIds.POLKADOTJS:
         return <PolkadotjsIcon />;
+      case ExtensionIds.SUB_WALLET:
+        return <SubWalletIcon />;
       case ExtensionIds.TALISMAN:
         return <TalismanIcon />;
       case ExtensionIds.WALLET_CONNECT:
