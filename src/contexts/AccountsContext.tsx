@@ -15,17 +15,20 @@ interface AccountsContextProviderProps {
 }
 
 interface AccountsContextProps {
-  availableAccounts: Account[] | null;
   activeAccount: Account | null;
   activeWallet: BaseWallet | null;
-  setAvailableAccounts: (value: Account[] | null) => void;
+  api: ApiPromise | null;
+  availableAccounts: Account[] | null;
+  isAccountActionsVisible: boolean;
+  onWalletDisconnect: () => void;
   setActiveAccount: (value: Account | null) => void;
   setActiveWallet: (value: BaseWallet) => void;
-  api: ApiPromise | null;
-  storedActiveAccount: ActiveAccount | null;
+  setAvailableAccounts: (value: Account[] | null) => void;
+  setIsAccountActionsVisible: (value: boolean) => void;
   setStoredActiveAccount: (value: ActiveAccount | null) => void;
-  storedChain: Chain | null;
   setStoredChain: (value: Chain | null) => void;
+  storedActiveAccount: ActiveAccount | null;
+  storedChain: Chain | null;
 }
 
 const AccountsContext = createContext<AccountsContextProps>(undefined!);
@@ -40,6 +43,7 @@ export const AccountsContextProvider = ({ children }: AccountsContextProviderPro
   const [theme, setTheme] = useState<ThemeStyle>(themes.polkadot);
   const [storedActiveAccount, setStoredActiveAccount] = useLocalStorage<ActiveAccount | null>('activeAccount', null);
   const [storedChain, setStoredChain] = useLocalStorage<Chain | null>('chain', null);
+  const [isAccountActionsVisible, setIsAccountActionsVisible] = useState(false);
 
   const setupApi = useCallback(async () => {
     const chain = storedChain || chains[0];
@@ -75,34 +79,49 @@ export const AccountsContextProvider = ({ children }: AccountsContextProviderPro
     }
   }, [setStoredChain, setupApi, setupTheme, storedChain]);
 
+  const onWalletDisconnect = useCallback(() => {
+    activeWallet?.disconnect();
+    setActiveAccount(null);
+    setStoredActiveAccount(null);
+    setIsAccountActionsVisible(false);
+  }, [activeWallet, setStoredActiveAccount]);
+
   useEffect(() => {
     handleChainChange();
   }, [handleChainChange, storedChain]);
 
   const contextData = useMemo(
     () => ({
-      availableAccounts,
       activeAccount,
       activeWallet,
-      setAvailableAccounts,
+      api,
+      availableAccounts,
+      isAccountActionsVisible,
+      onWalletDisconnect,
       setActiveAccount,
       setActiveWallet,
-      api,
-      storedActiveAccount,
+      setAvailableAccounts,
+      setIsAccountActionsVisible,
       setStoredActiveAccount,
-      storedChain,
       setStoredChain,
+      storedActiveAccount,
+      storedChain,
     }),
     [
-      availableAccounts,
       activeAccount,
       activeWallet,
-      setAvailableAccounts,
       api,
-      storedActiveAccount,
+      availableAccounts,
+      isAccountActionsVisible,
+      onWalletDisconnect,
+      setActiveAccount,
+      setActiveWallet,
+      setAvailableAccounts,
+      setIsAccountActionsVisible,
       setStoredActiveAccount,
-      storedChain,
       setStoredChain,
+      storedActiveAccount,
+      storedChain,
     ],
   );
 

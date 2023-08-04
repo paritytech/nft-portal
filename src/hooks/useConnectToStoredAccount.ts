@@ -11,11 +11,16 @@ export const useConnectToStoredAccount = () => {
   const [isAutoConnectDone, setIsAutoConnectDone] = useState(false);
 
   const connectToStoredAccount = useCallback(async () => {
-    if (storedActiveAccount !== null && Array.isArray(wallets) && wallets.length > 0) {
+    if (activeAccount === null && storedActiveAccount !== null && Array.isArray(wallets) && wallets.length > 0) {
       const foundWallet = wallets.find((wallet) => wallet.metadata.title === storedActiveAccount.wallet);
 
       if (foundWallet) {
-        await foundWallet.connect();
+        try {
+          await foundWallet.connect();
+        } catch (error) {
+          //
+        }
+
         const accounts = await foundWallet.getAccounts();
         const foundAccount = accounts.find((account) =>
           areEqualAddresses(account.address, storedActiveAccount.account),
@@ -30,7 +35,7 @@ export const useConnectToStoredAccount = () => {
     if (Array.isArray(wallets)) {
       setIsAutoConnectDone(true);
     }
-  }, [storedActiveAccount, wallets, setActiveAccount, setActiveWallet]);
+  }, [activeAccount, storedActiveAccount, wallets, setActiveAccount, setActiveWallet]);
 
   useEffect(() => {
     connectToStoredAccount();

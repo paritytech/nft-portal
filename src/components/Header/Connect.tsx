@@ -122,11 +122,10 @@ const SIcon = styled.div`
 
 const Connect = () => {
   const { activeAccount, wallets, isAutoConnectDone } = useConnectToStoredAccount();
-  const { api, setActiveAccount, setStoredActiveAccount } = useAccounts();
+  const { api, isAccountActionsVisible, onWalletDisconnect, setIsAccountActionsVisible } = useAccounts();
   const nativeBalance = useNativeBalance();
   const dropdownRef = useOutsideClick(() => setIsAccountActionsVisible(false));
   const [showWalletSelection, setShowWalletSelection] = useState(false);
-  const [isAccountActionsVisible, setIsAccountActionsVisible] = useState(false);
   const [copyToClipboard, buttonText] = useCopyToClipboard(activeAccount?.address || '', '', 'copied', 350);
 
   useEffect(() => {
@@ -148,12 +147,6 @@ const Connect = () => {
     } else {
       setShowWalletSelection(true);
     }
-  };
-
-  const disconnect = () => {
-    setActiveAccount(null);
-    setStoredActiveAccount(null);
-    setIsAccountActionsVisible(false);
   };
 
   if (!Array.isArray(wallets) || isAutoConnectDone === false) {
@@ -216,7 +209,7 @@ const Connect = () => {
               </SSimpleAction>
             </Link>
 
-            <SSimpleAction onClick={disconnect}>
+            <SSimpleAction onClick={onWalletDisconnect}>
               <span>Disconnect wallet</span>
               <SIcon>
                 <ExitIcon />
