@@ -44,7 +44,9 @@ const MintNft = () => {
   const { ref } = useZxing({
     onResult(result) {
       setScanResult(result.getText());
-      nftReceiverRef.current.value = result.getText();
+      if (nftReceiverRef.current !== null) {
+        nftReceiverRef.current.value = result.getText();
+      }
     },
   });
 
