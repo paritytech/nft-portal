@@ -115,6 +115,10 @@ const MintNft = () => {
           <SGroup>
             <SLabel>Recipient Wallet QR Code Scanner</SLabel>
             <video ref={ref} width="100%" />
+            <p>
+              <span>Last wallet address scan result:</span>
+              <span>{scanResult}</span>
+            </p>
           </SGroup>
         </aside>
         <section>
