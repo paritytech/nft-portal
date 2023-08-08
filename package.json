@@ -1,7 +1,6 @@
 {
   "name": "nft-portal",
   "type": "module",
-  "sideEffects": false,
   "version": "1.0.0",
   "description": "",
   "main": "index.jsx",
@@ -14,7 +13,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/SaltyCucumber/assets-portal.git"
+    "url": "git+https://github.com/paritytech/nft-portal.git"
   },
   "author": "SaltyCucumber",
   "license": "MIT",
