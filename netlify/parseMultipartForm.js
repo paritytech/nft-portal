@@ -28,4 +28,4 @@ export function parseMultipartForm(event) {
 
     busboy.end(Buffer.from(event.body, 'base64'));
   });
-};
+}
