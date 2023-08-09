@@ -2,20 +2,26 @@ import { BN } from '@polkadot/util';
 import { ChangeEvent, FormEvent, memo, useCallback, useEffect, useRef, useState } from 'react';
 import { FormControl, Stack } from 'react-bootstrap';
 import { Link, useParams } from 'react-router-dom';
+
 import { useZxing } from "react-zxing";
 
 import { saveImageToIpfs } from '@api/pinata.ts';
+
 import ActionButton from '@buttons/ActionButton.tsx';
+
 import FileDropZone from '@common/FileDropZone.tsx';
 import ModalStatus from '@common/ModalStatus.tsx';
 import Radio from '@common/Radio.tsx';
 import ShowRestrictionMessage from '@common/ShowRestrictionMessage.tsx';
+
 import { useAccounts } from '@contexts/AccountsContext.tsx';
+
 import { RestrictionTypes } from '@helpers/constants.ts';
 import { CollectionConfigJson, CollectionMetadataData, MintAccessNft } from '@helpers/interfaces.ts';
 import { SFormBlock, SInfoRow, SPageControls } from '@helpers/reusableStyles.ts';
 import { SFormLayout, SGroup, SLabel } from '@helpers/styledComponents.ts';
 import { generateNftId, getCleanFormattedBalance } from '@helpers/utilities.ts';
+
 import { useCheckMintingEligibility } from '@hooks/useCheckMintingEligibility.ts';
 import { useCollections } from '@hooks/useCollections.ts';
 import { useNfts } from '@hooks/useNfts.ts';
