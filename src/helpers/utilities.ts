@@ -3,6 +3,7 @@ import { BN, formatBalance } from '@polkadot/util';
 import { ToBn } from '@polkadot/util/types';
 import { FormEvent } from 'react';
 
+import { IPFS_NATIVE_SCHEME } from './config.ts';
 import { ALTERNATE_BACKGROUND_CLASSNAME } from './reusableStyles.ts';
 
 export const ellipseAddress = (address = '', charCount = 4): string => {
@@ -93,4 +94,13 @@ export const alternateBackground = () => {
   document.body.classList.add(ALTERNATE_BACKGROUND_CLASSNAME);
 
   return () => document.body.classList.remove(ALTERNATE_BACKGROUND_CLASSNAME);
+};
+
+export const getCidUrl = (cid: string) => `${IPFS_NATIVE_SCHEME}${cid}`;
+export const getCidHash = (cid: string) => {
+  if (typeof cid === 'string' && cid.startsWith(IPFS_NATIVE_SCHEME)) {
+    return cid.replace(IPFS_NATIVE_SCHEME, '');
+  }
+
+  return cid;
 };
