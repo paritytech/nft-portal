@@ -15,6 +15,6 @@
     "module": "ESNext",
     "allowImportingTsExtensions": true
   },
-  "include": ["./src/**/*", "./declarations.d.ts"],
+  "include": ["./src/**/*", "./declarations.d.ts", "node_modules/qr-scanner/types/*.d.ts"],
   "extends": "./tsconfig.paths.json"
 }

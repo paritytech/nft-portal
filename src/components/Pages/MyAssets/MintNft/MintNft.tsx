@@ -1,9 +1,11 @@
 import { BN } from '@polkadot/util';
 import { ChangeEvent, FormEvent, memo, useCallback, useEffect, useRef, useState } from 'react';
-import { FormControl, Stack } from 'react-bootstrap';
+import { FormControl, Stack, Modal } from 'react-bootstrap';
 import { Link, useParams } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faQrcode } from '@fortawesome/free-solid-svg-icons';
 
-import { useZxing } from "react-zxing";
+import QRScanner from '../../../Modals/QrScanner/QrScanner.tsx';
 
 import { saveImageToIpfs } from '@api/pinata.ts';
 
@@ -46,15 +48,25 @@ const MintNft = () => {
   const [imageSourceUrl, setImageSourceUrl] = useState<string>();
   const [mintPrice, setMintPrice] = useState<string>();
 
-  const [scanResult, setScanResult] = useState<string | null>(null);
-  const { ref } = useZxing({
-    onResult(result) {
-      setScanResult(result.getText());
-      if (nftReceiverRef.current !== null) {
-        nftReceiverRef.current.value = result.getText();
-      }
-    },
-  });
+  const [isOpen, setOpen] = useState(false);
+
+  const handleModalOpen = () => {
+    setOpen(!isOpen);
+    console.log(isOpen);
+  };
+
+  const closeModal = () => {
+    setOpen(false);
+  };
+
+  const handleScan = (result: string) => {
+    if (nftReceiverRef.current) {
+      nftReceiverRef.current.value = result;
+      setOpen(false);
+    }
+  };
+
+  const qrScanner = isOpen ? <QRScanner onScan={handleScan} /> : null;
 
   const submitMintNft = useCallback(
     async (event: FormEvent) => {
@@ -100,12 +112,18 @@ const MintNft = () => {
     getPrice();
   }, [api, collectionId, getCollectionConfig]);
 
+
   if (activeAccount === null) {
     return null;
   }
 
   return (
     <>
+      <Modal show={isOpen} onHide={closeModal}>
+        <Modal.Body>
+          {qrScanner}
+        </Modal.Body>
+      </Modal>
       <ModalStatus />
       <SFormLayout onSubmit={submitMintNft}>
         <aside>
@@ -120,14 +138,6 @@ const MintNft = () => {
               setImageCid={setImageCid}
             />
           </SGroup>
-          <SGroup>
-            <SLabel>Recipient Wallet QR Code Scanner</SLabel>
-            <video ref={ref} width="100%" />
-            <p>
-              <span>Last scan result:</span>
-              <span>{scanResult}</span>
-            </p>
-          </SGroup>
         </aside>
         <section>
           <SFormBlock>
@@ -136,7 +146,12 @@ const MintNft = () => {
               <FormControl type='text' ref={nftNameRef} placeholder='Enter NFT Name' required />
             </SGroup>
             <SGroup>
-              <SLabel>Mint To</SLabel>
+              <SLabel>
+                Mint To
+                <span onClick={handleModalOpen} style={{cursor: 'pointer', marginLeft: '8px'}}>
+                  <FontAwesomeIcon icon={faQrcode} />
+                </span>
+              </SLabel>
               <FormControl
                 type='text'
                 ref={nftReceiverRef}

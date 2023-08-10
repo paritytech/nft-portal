@@ -2,6 +2,7 @@ import HtmlWebpackPlugin from 'html-webpack-plugin';
 import TsconfigPathsPlugin from 'tsconfig-paths-webpack-plugin';
 import webpack from 'webpack';
 import dotenv from 'dotenv';
+import CopyWebpackPlugin from 'copy-webpack-plugin';
 
 const reactEnvVars = Object.keys(dotenv.config().parsed).filter(envVar => envVar.startsWith('REACT_APP'));
 
@@ -39,6 +40,14 @@ export default {
   plugins: [
     new HtmlWebpackPlugin({
       template: './src/index.html',
+    }),
+    new CopyWebpackPlugin({
+      patterns: [
+          {
+              from: 'node_modules/qr-scanner/qr-scanner-worker.min.js',
+              to: './'
+          }
+      ]
     }),
     new webpack.EnvironmentPlugin(reactEnvVars),
   ],
