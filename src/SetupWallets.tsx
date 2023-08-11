@@ -1,10 +1,8 @@
 import { WalletAggregator } from '@polkadot-onboard/core';
 import { InjectedWalletProvider } from '@polkadot-onboard/injected-wallets';
 import { PolkadotWalletsContextProvider } from '@polkadot-onboard/react';
+import { WalletConnectProvider } from '@polkadot-onboard/wallet-connect';
 import { useEffect, useState } from 'react';
-
-// TODO update @polkadot-onboard/wallet-connect library with this code
-import { WalletConnectProvider } from '@common/WalletConnect/wallet-connect.ts';
 
 import { useAccounts } from '@contexts/AccountsContext.tsx';
 

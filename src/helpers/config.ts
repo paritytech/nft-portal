@@ -1,4 +1,4 @@
-import { WalletConnectConfiguration } from '@common/WalletConnect/types.ts';
+import { WalletConnectConfiguration } from '@polkadot-onboard/wallet-connect';
 
 import { ChainThemes, ChainTitles, ChainUrls, ExtensionIds } from './constants.ts';
 import { Chain } from './interfaces.ts';
