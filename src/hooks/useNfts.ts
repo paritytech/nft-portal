@@ -8,11 +8,12 @@ import { saveDataToIpfs } from '@api/pinata.ts';
 import { useAccounts } from '@contexts/AccountsContext.tsx';
 import { useModalStatus } from '@contexts/ModalStatusContext.tsx';
 
-import { IPFS_URL } from '@helpers/config.ts';
+import { IPFS_GATEWAY } from '@helpers/config.ts';
 import { ModalStatusTypes, StatusMessages } from '@helpers/constants.ts';
 import { handleError } from '@helpers/handleError.ts';
 import { MintAccessNft, NftMetadata, NftMetadataData } from '@helpers/interfaces.ts';
 import { routes } from '@helpers/routes.ts';
+import { getCidHash, getCidUrl } from '@helpers/utilities.ts';
 
 export const useNfts = (collectionId: string) => {
   const { api, activeAccount, activeWallet } = useAccounts();
@@ -83,7 +84,7 @@ export const useNfts = (collectionId: string) => {
               return null;
             }
 
-            return fetch(`${IPFS_URL}${primitiveMetadata.data}`);
+            return fetch(`${IPFS_GATEWAY}${getCidHash(primitiveMetadata.data)}`);
           });
 
           const fetchedData = await Promise.all(fetchCalls);
@@ -92,8 +93,8 @@ export const useNfts = (collectionId: string) => {
           metadata = parsedData.map((data, index) => ({
             id: ownedNftIds[index],
             name: data?.name,
-            description: data?.description || null,
-            image: data?.image || null,
+            description: data?.description,
+            image: getCidHash(data?.image),
           }));
         }
 
@@ -129,9 +130,12 @@ export const useNfts = (collectionId: string) => {
               return null;
             }
 
-            const fetchedData = await fetch(`${IPFS_URL}${primitiveMetadata.data}`);
+            const fetchedData = await fetch(`${IPFS_GATEWAY}${getCidHash(primitiveMetadata.data)}`);
 
             metadata = await fetchedData.json();
+            if (metadata?.image) {
+              metadata.image = getCidHash(metadata.image);
+            }
           }
 
           setNftMetadata(metadata);
@@ -152,7 +156,11 @@ export const useNfts = (collectionId: string) => {
         openModalStatus();
 
         try {
-          const metadataCid = await saveDataToIpfs(nftMetadata);
+          if (nftMetadata.image) {
+            nftMetadata.image = getCidUrl(nftMetadata.image);
+          }
+          const cid = await saveDataToIpfs(nftMetadata);
+          const metadataCid = getCidUrl(cid);
           const mintTx = api.tx.nfts.mint(collectionId, nftId, nftReceiver, mintAccessNft);
           const setMetadataTx = api.tx.nfts.setMetadata(collectionId, nftId, metadataCid);
           const txBatch = api.tx.utility.batchAll([mintTx, setMetadataTx]);
@@ -204,7 +212,11 @@ export const useNfts = (collectionId: string) => {
         openModalStatus();
 
         try {
-          const metadataCid = await saveDataToIpfs(nftMetadata);
+          if (nftMetadata.image) {
+            nftMetadata.image = getCidUrl(nftMetadata.image);
+          }
+          const cid = await saveDataToIpfs(nftMetadata);
+          const metadataCid = getCidUrl(cid);
 
           const unsub = await api.tx.nfts
             .setMetadata(collectionId, nftId, metadataCid)
