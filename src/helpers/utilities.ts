@@ -98,7 +98,11 @@ export const alternateBackground = () => {
 
 export const getCidUrl = (cid: string) => `${IPFS_NATIVE_SCHEME}${cid}`;
 export const getCidHash = (cid: string) => {
-  if (typeof cid === 'string' && cid.startsWith(IPFS_NATIVE_SCHEME)) {
+  if (typeof cid === 'undefined') {
+    return cid;
+  }
+
+  if (cid.startsWith(IPFS_NATIVE_SCHEME)) {
     return cid.replace(IPFS_NATIVE_SCHEME, '');
   }
 
