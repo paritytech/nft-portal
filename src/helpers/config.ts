@@ -4,7 +4,8 @@ import { ChainThemes, ChainTitles, ChainUrls, ExtensionIds } from './constants.t
 import { Chain } from './interfaces.ts';
 
 export const APP_NAME = 'nft-portal';
-export const IPFS_URL = 'https://gateway.pinata.cloud/ipfs/';
+export const IPFS_GATEWAY = process.env.REACT_APP_IPFS_GATEWAY;
+export const IPFS_NATIVE_SCHEME = 'ipfs://';
 
 // first chain in the list will be default chain
 export const chains: Chain[] = [

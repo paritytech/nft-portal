@@ -8,7 +8,7 @@ import { saveDataToIpfs } from '@api/pinata.ts';
 import { useAccounts } from '@contexts/AccountsContext.tsx';
 import { useModalStatus } from '@contexts/ModalStatusContext.tsx';
 
-import { IPFS_URL } from '@helpers/config.ts';
+import { IPFS_GATEWAY } from '@helpers/config.ts';
 import { ModalStatusTypes, StatusMessages } from '@helpers/constants.ts';
 import { handleError } from '@helpers/handleError.ts';
 import {
@@ -18,6 +18,7 @@ import {
   CollectionMetadataPrimitive,
 } from '@helpers/interfaces.ts';
 import { routes } from '@helpers/routes.ts';
+import { getCidHash, getCidUrl } from '@helpers/utilities.ts';
 
 export const useCollections = () => {
   const { api, activeAccount, activeWallet } = useAccounts();
@@ -68,7 +69,7 @@ export const useCollections = () => {
               return null;
             }
 
-            return fetch(`${IPFS_URL}${primitiveMetadata.data}`);
+            return fetch(`${IPFS_GATEWAY}${getCidHash(primitiveMetadata.data)}`);
           });
 
           const fetchedData = await Promise.all(fetchCalls);
@@ -77,8 +78,8 @@ export const useCollections = () => {
           metadata = parsedData.map((data, index) => ({
             id: ownedCollectionIds[index],
             name: data?.name,
-            description: data?.description || null,
-            image: data?.image || null,
+            description: data?.description,
+            image: getCidHash(data?.image),
           }));
         }
 
@@ -112,9 +113,12 @@ export const useCollections = () => {
               return null;
             }
 
-            const fetchedData = await fetch(`${IPFS_URL}${primitiveMetadata.data}`);
+            const fetchedData = await fetch(`${IPFS_GATEWAY}${getCidHash(primitiveMetadata.data)}`);
 
             metadata = await fetchedData.json();
+            if (metadata?.image) {
+              metadata.image = getCidHash(metadata.image);
+            }
           }
 
           setCollectionMetadata(metadata);
@@ -137,7 +141,11 @@ export const useCollections = () => {
         openModalStatus();
 
         try {
-          const metadataCid = await saveDataToIpfs(collectionMetadata);
+          if (collectionMetadata.image) {
+            collectionMetadata.image = getCidUrl(collectionMetadata.image);
+          }
+          const cid = await saveDataToIpfs(collectionMetadata);
+          const metadataCid = getCidUrl(cid);
 
           const unsub = await api.tx.nfts
             .setCollectionMetadata(collectionId, metadataCid)
