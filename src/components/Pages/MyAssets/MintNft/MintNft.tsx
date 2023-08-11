@@ -1,11 +1,8 @@
 import { BN } from '@polkadot/util';
 import { ChangeEvent, FormEvent, memo, useCallback, useEffect, useRef, useState } from 'react';
-import { FormControl, Stack, Modal } from 'react-bootstrap';
+import { FormControl, Stack } from 'react-bootstrap';
 import { Link, useParams } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faQrcode } from '@fortawesome/free-solid-svg-icons';
-
-import QRScanner from '../../../Modals/QrScanner/QrScanner.tsx';
+import { styled } from 'styled-components';
 
 import { saveImageToIpfs } from '@api/pinata.ts';
 
@@ -28,6 +25,27 @@ import { useCheckMintingEligibility } from '@hooks/useCheckMintingEligibility.ts
 import { useCollections } from '@hooks/useCollections.ts';
 import { useNfts } from '@hooks/useNfts.ts';
 
+import QRCodeIcon from '@images/icons/qr-code.svg';
+
+import QRScannerModal from '@modals/QRScannerModal/QRScannerModal.tsx';
+
+const MintToInput = styled.div`
+  position: relative;
+
+  input[type='text'] {
+    padding-right: 50px;
+  }
+
+  svg {
+    position: absolute;
+    top: 8px;
+    right: 10px;
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+  }
+`;
+
 const MintNft = () => {
   const { collectionId } = useParams();
   const { getCollectionConfig } = useCollections();
@@ -47,26 +65,22 @@ const MintNft = () => {
   const [imageCid, setImageCid] = useState<string | undefined>();
   const [imageSourceUrl, setImageSourceUrl] = useState<string>();
   const [mintPrice, setMintPrice] = useState<string>();
+  const [isQRCodeScannerOpen, setIsQRCodeScannerOpen] = useState(false);
 
-  const [isOpen, setOpen] = useState(false);
-
-  const handleModalOpen = () => {
-    setOpen(!isOpen);
-    console.log(isOpen);
+  const handleShow = () => {
+    setIsQRCodeScannerOpen(!isQRCodeScannerOpen);
   };
 
-  const closeModal = () => {
-    setOpen(false);
+  const handleClose = () => {
+    setIsQRCodeScannerOpen(false);
   };
 
-  const handleScan = (result: string) => {
+  const handleScan = (address: string) => {
     if (nftReceiverRef.current) {
-      nftReceiverRef.current.value = result;
-      setOpen(false);
+      nftReceiverRef.current.value = address;
+      setIsQRCodeScannerOpen(false);
     }
   };
-
-  const qrScanner = isOpen ? <QRScanner onScan={handleScan} /> : null;
 
   const submitMintNft = useCallback(
     async (event: FormEvent) => {
@@ -112,18 +126,13 @@ const MintNft = () => {
     getPrice();
   }, [api, collectionId, getCollectionConfig]);
 
-
   if (activeAccount === null) {
     return null;
   }
 
   return (
     <>
-      <Modal show={isOpen} onHide={closeModal}>
-        <Modal.Body>
-          {qrScanner}
-        </Modal.Body>
-      </Modal>
+      <QRScannerModal isOpen={isQRCodeScannerOpen} onClose={handleClose} onScan={handleScan} />
       <ModalStatus />
       <SFormLayout onSubmit={submitMintNft}>
         <aside>
@@ -139,32 +148,36 @@ const MintNft = () => {
             />
           </SGroup>
         </aside>
+
         <section>
           <SFormBlock>
             <SGroup>
               <SLabel>Name</SLabel>
               <FormControl type='text' ref={nftNameRef} placeholder='Enter NFT Name' required />
             </SGroup>
+
             <SGroup>
               <SLabel>
-                Mint To
-                <span onClick={handleModalOpen} style={{cursor: 'pointer', marginLeft: '8px'}}>
-                  <FontAwesomeIcon icon={faQrcode} />
-                </span>
+                <span>Mint To</span>
               </SLabel>
-              <FormControl
-                type='text'
-                ref={nftReceiverRef}
-                placeholder='Receiver Wallet'
-                defaultValue={activeAccount.address}
-              />
+              <MintToInput>
+                <FormControl
+                  type='text'
+                  ref={nftReceiverRef}
+                  placeholder='Receiver Wallet'
+                  defaultValue={activeAccount.address}
+                />
+                <QRCodeIcon onClick={handleShow} />
+              </MintToInput>
             </SGroup>
+
             <SGroup>
               <SLabel>
                 Description <i>(optional)</i>
               </SLabel>
               <FormControl as='textarea' rows={3} ref={nftDescriptionRef} placeholder='Enter NFT Description' />
             </SGroup>
+
             {Array.isArray(ownedNftsFromAnotherCollection) && ownedNftsFromAnotherCollection.length > 0 && (
               <SGroup>
                 <SLabel>Select which NFT you want to use for the mint access</SLabel>
@@ -183,6 +196,7 @@ const MintNft = () => {
                 ))}
               </SGroup>
             )}
+
             <ShowRestrictionMessage
               restrictionsMessages={restrictionMessages}
               restrictionType={RestrictionTypes.MUST_BE_HOLDER_OF}
@@ -196,12 +210,14 @@ const MintNft = () => {
               restrictionType={RestrictionTypes.NFT_TAKEN}
             />
           </SFormBlock>
+
           <SInfoRow>
             <span>Mint Price</span>
             <span>
               {mintPrice} {api?.registry.chainTokens[0]}
             </span>
           </SInfoRow>
+
           <SPageControls>
             <Stack direction='horizontal' gap={3}>
               <Link to='..' className='w-50'>

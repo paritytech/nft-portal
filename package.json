@@ -18,9 +18,6 @@
   "author": "SaltyCucumber",
   "license": "MIT",
   "dependencies": {
-    "@fortawesome/fontawesome-svg-core": "6.4.2",
-    "@fortawesome/free-solid-svg-icons": "6.4.2",
-    "@fortawesome/react-fontawesome": "0.2.0",
     "@polkadot-onboard/core": "0.0.10",
     "@polkadot-onboard/injected-wallets": "0.0.10",
     "@polkadot-onboard/react": "0.0.10",
@@ -33,9 +30,7 @@
     "axios": "1.4.0",
     "bootstrap": "5.3.0",
     "busboy": "1.6.0",
-    "copy-webpack-plugin": "11.0.0",
     "dotenv": "16.3.1",
-    "font-awesome": "4.7.0",
     "form-data": "4.0.0",
     "ipfs-only-hash": "4.0.0",
     "lodash": "4.17.21",
@@ -45,7 +40,6 @@
     "react-datepicker": "4.16.0",
     "react-dom": "18.2.0",
     "react-dropzone": "14.2.3",
-    "react-fontawesome": "1.7.1",
     "react-router-dom": "6.14.2",
     "styled-components": "6.0.4"
   },
