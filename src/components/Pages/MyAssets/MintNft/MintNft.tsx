@@ -2,6 +2,7 @@ import { BN } from '@polkadot/util';
 import { ChangeEvent, FormEvent, memo, useCallback, useEffect, useRef, useState } from 'react';
 import { FormControl, Stack } from 'react-bootstrap';
 import { Link, useParams } from 'react-router-dom';
+import { styled } from 'styled-components';
 
 import { saveImageToIpfs } from '@api/pinata.ts';
 
@@ -24,6 +25,27 @@ import { useCheckMintingEligibility } from '@hooks/useCheckMintingEligibility.ts
 import { useCollections } from '@hooks/useCollections.ts';
 import { useNfts } from '@hooks/useNfts.ts';
 
+import QRCodeIcon from '@images/icons/qr-code.svg';
+
+import QRScannerModal from '@modals/QRScannerModal/QRScannerModal.tsx';
+
+const MintToInput = styled.div`
+  position: relative;
+
+  input[type='text'] {
+    padding-right: 50px;
+  }
+
+  svg {
+    position: absolute;
+    top: 8px;
+    right: 10px;
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+  }
+`;
+
 const MintNft = () => {
   const { collectionId } = useParams();
   const { getCollectionConfig } = useCollections();
@@ -43,6 +65,22 @@ const MintNft = () => {
   const [imageCid, setImageCid] = useState<string | undefined>();
   const [imageSourceUrl, setImageSourceUrl] = useState<string>();
   const [mintPrice, setMintPrice] = useState<string>();
+  const [isQRCodeScannerOpen, setIsQRCodeScannerOpen] = useState(false);
+
+  const handleShow = () => {
+    setIsQRCodeScannerOpen(!isQRCodeScannerOpen);
+  };
+
+  const handleClose = () => {
+    setIsQRCodeScannerOpen(false);
+  };
+
+  const handleScan = (address: string) => {
+    if (nftReceiverRef.current) {
+      nftReceiverRef.current.value = address;
+      setIsQRCodeScannerOpen(false);
+    }
+  };
 
   const submitMintNft = useCallback(
     async (event: FormEvent) => {
@@ -94,6 +132,7 @@ const MintNft = () => {
 
   return (
     <>
+      <QRScannerModal isOpen={isQRCodeScannerOpen} onClose={handleClose} onScan={handleScan} />
       <ModalStatus />
       <SFormLayout onSubmit={submitMintNft}>
         <aside>
@@ -118,13 +157,18 @@ const MintNft = () => {
             </SGroup>
 
             <SGroup>
-              <SLabel>Mint To</SLabel>
-              <FormControl
-                type='text'
-                ref={nftReceiverRef}
-                placeholder='Receiver Wallet'
-                defaultValue={activeAccount.address}
-              />
+              <SLabel>
+                <span>Mint To</span>
+              </SLabel>
+              <MintToInput>
+                <FormControl
+                  type='text'
+                  ref={nftReceiverRef}
+                  placeholder='Receiver Wallet'
+                  defaultValue={activeAccount.address}
+                />
+                <QRCodeIcon onClick={handleShow} />
+              </MintToInput>
             </SGroup>
 
             <SGroup>
@@ -152,6 +196,7 @@ const MintNft = () => {
                 ))}
               </SGroup>
             )}
+
             <ShowRestrictionMessage
               restrictionsMessages={restrictionMessages}
               restrictionType={RestrictionTypes.MUST_BE_HOLDER_OF}
@@ -180,7 +225,6 @@ const MintNft = () => {
                   Back
                 </ActionButton>
               </Link>
-
               <ActionButton type='submit' disabled={!isEligibleToMint} className='secondary w-50'>
                 Create NFT
               </ActionButton>
