@@ -6,6 +6,7 @@ import ActionButton from '@buttons/ActionButton.tsx';
 
 import SelectChain from '@header/SelectChain.tsx';
 
+import { mediaQueries } from '@helpers/reusableStyles.ts';
 import { routes } from '@helpers/routes.ts';
 
 import Connect from './Connect.tsx';
@@ -28,13 +29,21 @@ const SConnectionBlock = styled.div`
   gap: 10px;
 `;
 
+const SLink = styled(Link)`
+  display: none;
+
+  @media ${mediaQueries.laptop} {
+    display: block;
+  }
+`;
+
 const Header = () => (
   <SHeader>
     <LogoButton />
     <SConnectionBlock>
-      <Link to={routes.myAssets.mintNftMain}>
+      <SLink to={routes.myAssets.mintNftMain}>
         <ActionButton className='main'>Create NFT</ActionButton>
-      </Link>
+      </SLink>
       <SelectChain />
       <Connect />
     </SConnectionBlock>
