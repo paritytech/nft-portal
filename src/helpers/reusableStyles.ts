@@ -3,16 +3,10 @@ import { css, styled } from 'styled-components';
 import { ChainThemes } from './constants.ts';
 import { CommonStyleProps, ThemeStyle } from './interfaces.ts';
 
-export const deviceScreenSize = {
-  tablet: '720px',
-  laptop: '980px',
-  desktop: '1440px',
-};
-
 export const mediaQueries = {
-  tablet: `(min-width: ${deviceScreenSize.tablet})`,
-  laptop: `(min-width: ${deviceScreenSize.laptop})`,
-  desktop: `(min-width: ${deviceScreenSize.desktop})`,
+  tablet: '(min-width: 720px)',
+  laptop: '(min-width: 980px)',
+  desktop: '(min-width: 1440px)',
 };
 
 export const ALTERNATE_BACKGROUND_CLASSNAME = 'pure-white';
@@ -345,12 +339,12 @@ export const SContentBlock = styled.div`
 export const SConnectButton = styled.button`
   ${CssFontSemiBoldS}
   display: flex;
-  align-items: center;
   gap: 10px;
-  height: 48px;
-  line-height: 48px;
+  align-items: center;
   padding: 0 24px;
   background-color: ${({ theme }) => theme.appliedLightPinkBackground};
+  height: 48px;
+  line-height: 48px;
   color: ${({ theme }) => theme.accentsPink};
   border: 0;
   border-radius: 32px;
@@ -358,26 +352,87 @@ export const SConnectButton = styled.button`
 
   &:hover {
     padding: 0 22px;
+    background-color: ${({ theme }) => theme.appliedLightPinkBackground};
     border: 2px solid ${({ theme }) => theme.accentsPink};
   }
 
   &.active {
-    padding: 0 20px 0 8px;
+    height: 40px;
+    line-height: 40px;
     background-color: transparent;
+    padding: 0 4px;
     color: ${({ theme }) => theme.textAndIconsPrimary};
+
+    @media ${mediaQueries.tablet} {
+      height: 48px;
+      line-height: 48px;
+      padding: 0 20px 0 8px;
+    }
+
+    span {
+      display: none;
+
+      @media ${mediaQueries.tablet} {
+        display: inline;
+      }
+    }
+
+    &:hover {
+      background-color: ${({ theme }) => theme.appliedHover};
+
+      @media ${mediaQueries.laptop} {
+        background-color: ${({ theme }) => theme.appliedLightPinkBackground};
+        border: 2px solid ${({ theme }) => theme.accentsPink};
+      }
+    }
   }
 
   &.active:hover,
   &.actions-active {
-    height: 48px;
-    line-height: 48px;
-    padding: 0 20px 0 8px;
     background-color: ${({ theme }) => theme.appliedHover};
     border: 0;
   }
 
-  .arrow-down {
-    ${CssArrowDown}
+  &.disconnected {
+    height: 40px;
+    line-height: 40px;
+    background-color: transparent;
+    padding: 0 4px;
+
+    @media ${mediaQueries.laptop} {
+      height: 48px;
+      line-height: 48px;
+      padding: 0 24px;
+      background-color: ${({ theme }) => theme.appliedLightPinkBackground};
+    }
+
+    &:hover {
+      background-color: ${({ theme }) => theme.appliedHover};
+      border: 0;
+
+      @media ${mediaQueries.laptop} {
+        padding: 0 22px;
+        background-color: ${({ theme }) => theme.appliedLightPinkBackground};
+        border: 2px solid ${({ theme }) => theme.accentsPink};
+      }
+    }
+
+    span {
+      display: none;
+
+      @media ${mediaQueries.laptop} {
+        display: block;
+      }
+    }
+
+    svg {
+      width: 32px;
+      height: 32px;
+
+      @media ${mediaQueries.laptop} {
+        display: none;
+      }
+    }
   }
 `;
 

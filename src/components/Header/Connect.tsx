@@ -17,6 +17,7 @@ import { useNativeBalance } from '@hooks/useNativeBalance.ts';
 import { useOutsideClick } from '@hooks/useOutsideClick.ts';
 
 import CopyIcon from '@images/icons/copy.svg';
+import DisconnectedIcon from '@images/icons/disconnected.svg';
 import ExitIcon from '@images/icons/exit.svg';
 import HeartIcon from '@images/icons/heart.svg';
 import ImageIcon from '@images/icons/image.svg';
@@ -156,14 +157,21 @@ const Connect = () => {
   return (
     <>
       <SContainer ref={dropdownRef}>
-        <SConnectButton id='connect' className={activeAccount !== null ? 'active' : ''} onClick={handleShow}>
+        <SConnectButton
+          id='connect'
+          className={activeAccount !== null ? 'active' : 'disconnected'}
+          onClick={handleShow}
+        >
           {activeAccount !== null ? (
             <>
               <Identicon value={activeAccount.address} size={32} />
               <span>{truncate(activeAccount.name, { length: 16 }) || ellipseAddress(activeAccount.address)}</span>
             </>
           ) : (
-            'Connect Wallet'
+            <>
+              <span>Connect Wallet</span>
+              <DisconnectedIcon />
+            </>
           )}
         </SConnectButton>
 

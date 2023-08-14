@@ -1,0 +1,22 @@
+<svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="16" cy="16" r="16" fill="white" />
+  <circle cx="16" cy="16" r="2.25" fill="black" fill-opacity="0.25" />
+  <circle cx="5.75" cy="16" r="2.25" fill="black" fill-opacity="0.25" />
+  <circle cx="26.125" cy="16" r="2.25" fill="black" fill-opacity="0.25" />
+  <circle cx="16" cy="4.25" r="2.25" fill="black" fill-opacity="0.25" />
+  <circle cx="16" cy="27.75" r="2.25" fill="black" fill-opacity="0.25" />
+  <circle cx="16" cy="10.125" r="2.25" fill="black" fill-opacity="0.25" />
+  <circle cx="16" cy="21.875" r="2.25" fill="black" fill-opacity="0.25" />
+  <circle cx="5.75" cy="10.125" r="2.25" fill="black" fill-opacity="0.25" />
+  <circle cx="5.75" cy="21.875" r="2.25" fill="black" fill-opacity="0.25" />
+  <circle cx="26.125" cy="10.125" r="2.25" fill="black" fill-opacity="0.25" />
+  <circle cx="26.125" cy="21.875" r="2.25" fill="black" fill-opacity="0.25" />
+  <circle cx="21.125" cy="19" r="2.25" fill="black" fill-opacity="0.25" />
+  <circle cx="21.125" cy="7.25" r="2.25" fill="black" fill-opacity="0.25" />
+  <circle cx="21.125" cy="13.125" r="2.25" fill="black" fill-opacity="0.25" />
+  <circle cx="21.125" cy="24.875" r="2.25" fill="black" fill-opacity="0.25" />
+  <circle cx="10.875" cy="19" r="2.25" fill="black" fill-opacity="0.25" />
+  <circle cx="10.875" cy="7.25" r="2.25" fill="black" fill-opacity="0.25" />
+  <circle cx="10.875" cy="13.125" r="2.25" fill="black" fill-opacity="0.25" />
+  <circle cx="10.875" cy="24.875" r="2.25" fill="black" fill-opacity="0.25" />
+</svg>

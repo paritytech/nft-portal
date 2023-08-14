@@ -23,6 +23,7 @@ const ConnectModal = ({ showWalletSelection, handleClose, wallets }: ConnectModa
     switch (activeStep) {
       case ConnectModalSteps.CONNECT_TO_ACCOUNT:
         if (activeWallet === null) {
+          setActiveStep(ConnectModalSteps.CONNECT_TO_WALLET);
           return null;
         }
         return (

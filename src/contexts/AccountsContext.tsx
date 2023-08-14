@@ -82,6 +82,7 @@ export const AccountsContextProvider = ({ children }: AccountsContextProviderPro
   const onWalletDisconnect = useCallback(() => {
     activeWallet?.disconnect();
     setActiveAccount(null);
+    setActiveWallet(null);
     setStoredActiveAccount(null);
     setIsAccountActionsVisible(false);
   }, [activeWallet, setStoredActiveAccount]);
