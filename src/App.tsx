@@ -23,11 +23,13 @@ import MyNfts from '@pages/MyAssets/Nfts/Nfts.tsx';
 
 const SMainContainer = styled.main`
   width: 100%;
+  padding: 0 25px;
   color: ${({ theme }) => theme.textAndIconsPrimary};
-  margin: 0 auto;
+
 
   @media ${mediaQueries.laptop} {
     width: 900px;
+    margin: 0 auto;
   }
 
   @media ${mediaQueries.desktop} {

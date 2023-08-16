@@ -21,7 +21,7 @@ const ShowImage = ({ imageCid, altText }: ShowImageProps) => {
   if (!imageCid) {
     return (
       <SImg>
-        <Card.Img className='rounded-bottom-0' src='https://placehold.co/250' alt='placeholder image' />
+        <Card.Img className='rounded-bottom-0' src='https://placehold.co/312?text=no image' alt='placeholder image' />
       </SImg>
     );
   }
