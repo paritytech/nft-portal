@@ -96,9 +96,16 @@ export const alternateBackground = () => {
   return () => document.body.classList.remove(ALTERNATE_BACKGROUND_CLASSNAME);
 };
 
-export const getCidUrl = (cid: string) => `${IPFS_NATIVE_SCHEME}${cid}`;
+export const getCidUrl = (cid: string) => {
+  if (typeof cid !== 'string') {
+    return cid;
+  }
+
+  return `${IPFS_NATIVE_SCHEME}${cid}`;
+}
+
 export const getCidHash = (cid: string) => {
-  if (typeof cid === 'undefined') {
+  if (typeof cid !== 'string') {
     return cid;
   }
 
