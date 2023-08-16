@@ -26,7 +26,6 @@ const SMainContainer = styled.main`
   padding: 0 25px;
   color: ${({ theme }) => theme.textAndIconsPrimary};
 
-
   @media ${mediaQueries.laptop} {
     width: 900px;
     margin: 0 auto;

@@ -4,12 +4,12 @@ import { Link, useParams } from 'react-router-dom';
 
 import ActionButton from '@buttons/ActionButton.tsx';
 
+import { SPageControls } from '@helpers/reusableStyles.ts';
 import { routes } from '@helpers/routes.ts';
 
 import { useNfts } from '@hooks/useNfts.ts';
 
 import NftsView from './NftsView.tsx';
-import { SPageControls } from '@helpers/reusableStyles.ts';
 
 const Nfts = () => {
   const { collectionId } = useParams();
