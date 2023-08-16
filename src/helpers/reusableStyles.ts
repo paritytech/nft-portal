@@ -322,9 +322,24 @@ export const CssButtonStrokeStyles = css<CommonStyleProps>`
 export const SContentBlockContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
-  gap: 14px;
+  justify-content: center;
+  gap: 20px;
   margin-bottom: 20px;
   padding-bottom: 20px;
+
+  @media ${mediaQueries.tablet} {
+    justify-content: space-between;
+    gap: 10px;
+  }
+
+  @media ${mediaQueries.laptop} {
+    justify-content: space-between;
+    gap: 20px;
+  }
+
+  @media ${mediaQueries.desktop} {
+    justify-content: normal;
+  }
 `;
 
 export const SContentBlock = styled.div`
@@ -480,8 +495,13 @@ export const SFormBlock = styled.div`
 `;
 
 export const SPageControls = styled.div`
-  padding-top: 40px;
-  margin-bottom: 40px;
+  max-width: 360px;
+  padding: 40px 0;
+  margin: 0 auto;
+
+  @media ${mediaQueries.tablet} {
+    margin: 0 0 0 auto;
+  }
 `;
 
 export const SInfoRow = styled.div`

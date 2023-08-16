@@ -4,6 +4,7 @@ import { Link, useParams } from 'react-router-dom';
 
 import ActionButton from '@buttons/ActionButton.tsx';
 
+import { SPageControls } from '@helpers/reusableStyles.ts';
 import { routes } from '@helpers/routes.ts';
 
 import { useNfts } from '@hooks/useNfts.ts';
@@ -24,16 +25,18 @@ const Nfts = () => {
     <>
       <NftsView nftsMetadata={nftsMetadata} />
 
-      <Stack direction='horizontal' gap={2} className='justify-content-end'>
-        <Link to={routes.myAssets.mintNft(collectionId)}>
-          <ActionButton className='main'>Create NFT</ActionButton>
-        </Link>
-        <Link to='..'>
-          <ActionButton type='button' className='secondary'>
-            Back
-          </ActionButton>
-        </Link>
-      </Stack>
+      <SPageControls>
+        <Stack direction='horizontal' gap={3}>
+          <Link to='..' className='w-25'>
+            <ActionButton type='button' className='stroke w-100'>
+              Back
+            </ActionButton>
+          </Link>
+          <Link to={routes.myAssets.mintNft(collectionId)} className='w-75'>
+            <ActionButton className='secondary w-100'>Create NFT</ActionButton>
+          </Link>
+        </Stack>
+      </SPageControls>
     </>
   );
 };
