@@ -102,7 +102,7 @@ export const getCidUrl = (cid: string) => {
   }
 
   return `${IPFS_NATIVE_SCHEME}${cid}`;
-}
+};
 
 export const getCidHash = (cid: string) => {
   if (typeof cid !== 'string') {
