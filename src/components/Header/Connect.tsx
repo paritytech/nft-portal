@@ -1,9 +1,10 @@
-import Identicon from '@polkadot/react-identicon';
 import { formatBalance } from '@polkadot/util';
 import { truncate } from 'lodash';
 import { memo, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { styled } from 'styled-components';
+
+import Identicon from '@common/Identicon.tsx';
 
 import { useAccounts } from '@contexts/AccountsContext.tsx';
 
@@ -164,7 +165,7 @@ const Connect = () => {
         >
           {activeAccount !== null ? (
             <>
-              <Identicon value={activeAccount.address} size={32} />
+              <Identicon data={activeAccount.address} />
               <span>{truncate(activeAccount.name, { length: 16 }) || ellipseAddress(activeAccount.address)}</span>
             </>
           ) : (
