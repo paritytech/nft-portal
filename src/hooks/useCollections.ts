@@ -144,6 +144,7 @@ export const useCollections = () => {
           if (collectionMetadata.image) {
             collectionMetadata.image = getCidUrl(collectionMetadata.image);
           }
+
           const cid = await saveDataToIpfs(collectionMetadata);
           const metadataCid = getCidUrl(cid);
 
