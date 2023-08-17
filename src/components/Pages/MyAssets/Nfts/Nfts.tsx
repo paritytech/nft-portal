@@ -33,7 +33,7 @@ const Nfts = () => {
             </ActionButton>
           </Link>
           <Link to={routes.myAssets.mintNft(collectionId)} className='w-75'>
-            <ActionButton className='secondary w-100'>Create NFT</ActionButton>
+            <ActionButton className='main w-100'>Create NFT</ActionButton>
           </Link>
         </Stack>
       </SPageControls>

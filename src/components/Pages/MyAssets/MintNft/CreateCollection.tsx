@@ -375,12 +375,12 @@ const CreateCollection = () => {
 
           <SPageControls>
             <Stack direction='horizontal' gap={3}>
-              <Link to='..' className='w-50'>
+              <Link to='..' className='w-25'>
                 <ActionButton type='button' className='stroke w-100'>
                   Back
                 </ActionButton>
               </Link>
-              <ActionButton type='submit' className='secondary w-50'>
+              <ActionButton type='submit' className='main w-75'>
                 Create collection
               </ActionButton>
             </Stack>
