@@ -14,7 +14,7 @@ import { useLoadCollectionsData } from '@hooks/useLoadCollectionsData.ts';
 import CollectionIcon from '@images/icons/collection.svg';
 
 const SContainer = styled.div`
-  width: 458px;
+  max-width: 458px;
   padding: 32px;
   text-align: center;
   margin: 0 auto;
@@ -77,7 +77,7 @@ const SelectCollection = () => {
           yet, create a new one
         </SNote>
         <Link to={routes.myAssets.createCollection}>
-          <ActionButton className='secondary-king w-100'>Create New Collection</ActionButton>
+          <ActionButton className='main-king w-100'>Create New Collection</ActionButton>
         </Link>
       </SContainer>
     );
@@ -86,7 +86,7 @@ const SelectCollection = () => {
   return (
     <SContainer>
       <Link to={routes.myAssets.createCollection}>
-        <ActionButton className='secondary-king w-100'>Create New Collection</ActionButton>
+        <ActionButton className='main-king w-100'>Create New Collection</ActionButton>
       </Link>
       <SChoose>or select the created one</SChoose>
       {collectionsMetadata.map((collectionMetadata) => (

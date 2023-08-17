@@ -254,23 +254,6 @@ export const CssFontRegularS = css`
 // CSS SNIPPETS - BUTTONS
 export const CssButtonMainStyles = css<CommonStyleProps>`
   height: 48px;
-  color: ${({ theme, disabled }) => (disabled ? theme.textAndIconsDisabled : theme.forcedWhite)};
-  background-color: ${({ theme, disabled }) => (disabled ? theme.fill6 : theme.appliedButtonMain)};
-  ${CssFontRegularM}
-
-  &:hover {
-    cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
-    background-color: ${({ theme, disabled }) => (disabled ? theme.fill6 : theme.fill48)};
-  }
-
-  a {
-    text-decoration: none;
-    color: ${({ theme, disabled }) => (disabled ? theme.textAndIconsDisabled : theme.forcedBlack)};
-  }
-`;
-
-export const CssButtonSecondaryStyles = css<CommonStyleProps>`
-  height: 48px;
   color: ${({ theme, disabled }) => (disabled ? theme.textAndIconsTertiary : theme.forcedWhite)};
   background-color: ${({ theme, disabled }) => (disabled ? theme.fill6 : theme.accentsPink)};
   border-radius: 32px;
@@ -291,10 +274,27 @@ export const CssButtonSecondaryStyles = css<CommonStyleProps>`
   }
 `;
 
-export const CssButtonSecondaryKingStyles = css<CommonStyleProps>`
-  ${CssButtonSecondaryStyles}
+export const CssButtonMainKingStyles = css<CommonStyleProps>`
+  ${CssButtonMainStyles}
   height: 64px;
   ${CssFontRegularL}
+`;
+
+export const CssButtonSecondaryStyles = css<CommonStyleProps>`
+  height: 48px;
+  color: ${({ theme, disabled }) => (disabled ? theme.textAndIconsDisabled : theme.forcedWhite)};
+  background-color: ${({ theme, disabled }) => (disabled ? theme.fill6 : theme.appliedButtonMain)};
+  ${CssFontRegularM}
+
+  &:hover {
+    cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
+    background-color: ${({ theme, disabled }) => (disabled ? theme.fill6 : theme.fill48)};
+  }
+
+  a {
+    text-decoration: none;
+    color: ${({ theme, disabled }) => (disabled ? theme.textAndIconsDisabled : theme.forcedBlack)};
+  }
 `;
 
 export const CssButtonStrokeStyles = css<CommonStyleProps>`
@@ -473,12 +473,12 @@ export const SActionButton = styled.button<CommonStyleProps>`
     ${CssButtonMainStyles}
   }
 
-  &.secondary {
-    ${CssButtonSecondaryStyles}
+  &.main-king {
+    ${CssButtonMainKingStyles}
   }
 
-  &.secondary-king {
-    ${CssButtonSecondaryKingStyles}
+  &.secondary {
+    ${CssButtonSecondaryStyles}
   }
 
   &.stroke {
@@ -492,6 +492,10 @@ export const SActionButton = styled.button<CommonStyleProps>`
 
 export const SFormBlock = styled.div`
   margin-bottom: 40px;
+`;
+
+export const SH2 = styled.h2`
+  ${CssFontSemiBoldM}
 `;
 
 export const SPageControls = styled.div`
@@ -511,5 +515,13 @@ export const SInfoRow = styled.div`
 
   span:first-child {
     color: ${({ theme }) => theme.textAndIconsTertiary};
+  }
+`;
+
+export const SAside = styled.aside`
+  display: none;
+
+  @media ${mediaQueries.tablet} {
+    display: block;
   }
 `;

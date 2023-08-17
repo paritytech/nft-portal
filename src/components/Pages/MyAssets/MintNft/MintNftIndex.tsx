@@ -4,12 +4,17 @@ import { styled } from 'styled-components';
 
 import Title from '@common/Title.tsx';
 
+import { mediaQueries } from '@helpers/reusableStyles.ts';
 import { alternateBackground } from '@helpers/utilities.ts';
 
 import MintNftSteps from './MintNftSteps.tsx';
 
 const SOutlet = styled.div`
-  margin-top: 52px;
+  margin-top: 40px;
+
+  @media ${mediaQueries.tablet} {
+    margin-top: 52px;
+  }
 `;
 
 const MintNftIndex = () => {

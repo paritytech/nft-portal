@@ -115,3 +115,11 @@ export const SLabel = styled(FormLabel)`
     margin-bottom: 24px;
   }
 `;
+
+export const SImageSelection = styled(SGroup)`
+  display: block;
+
+  @media ${mediaQueries.tablet} {
+    display: none;
+  }
+`;

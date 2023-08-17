@@ -17,8 +17,8 @@ import { useAccounts } from '@contexts/AccountsContext.tsx';
 
 import { RestrictionTypes } from '@helpers/constants.ts';
 import { CollectionConfigJson, CollectionMetadataData, MintAccessNft } from '@helpers/interfaces.ts';
-import { SFormBlock, SInfoRow, SPageControls } from '@helpers/reusableStyles.ts';
-import { SFormLayout, SGroup, SLabel } from '@helpers/styledComponents.ts';
+import { SAside, SFormBlock, SInfoRow, SPageControls } from '@helpers/reusableStyles.ts';
+import { SFormLayout, SGroup, SImageSelection, SLabel } from '@helpers/styledComponents.ts';
 import { generateNftId, getCleanFormattedBalance } from '@helpers/utilities.ts';
 
 import { useCheckMintingEligibility } from '@hooks/useCheckMintingEligibility.ts';
@@ -32,7 +32,7 @@ import QRScannerModal from '@modals/QRScannerModal/QRScannerModal.tsx';
 const MintToInput = styled.div`
   position: relative;
 
-  input[type='text'] {
+  .form-control[type='text'] {
     padding-right: 50px;
   }
 
@@ -135,7 +135,7 @@ const MintNft = () => {
       <QRScannerModal isOpen={isQRCodeScannerOpen} onClose={handleClose} onScan={handleScan} />
       <ModalStatus />
       <SFormLayout onSubmit={submitMintNft}>
-        <aside>
+        <SAside>
           <SGroup>
             <SLabel>
               Media <i>(optional)</i>
@@ -147,7 +147,7 @@ const MintNft = () => {
               setImageCid={setImageCid}
             />
           </SGroup>
-        </aside>
+        </SAside>
 
         <section>
           <SFormBlock>
@@ -177,6 +177,20 @@ const MintNft = () => {
               </SLabel>
               <FormControl as='textarea' rows={3} ref={nftDescriptionRef} placeholder='Enter NFT Description' />
             </SGroup>
+
+            <SImageSelection>
+              <SGroup>
+                <SLabel>
+                  Media <i>(optional)</i>
+                </SLabel>
+                <FileDropZone
+                  imageSourceUrl={imageSourceUrl}
+                  setImageSourceUrl={setImageSourceUrl}
+                  imageCid={imageCid}
+                  setImageCid={setImageCid}
+                />
+              </SGroup>
+            </SImageSelection>
 
             {Array.isArray(ownedNftsFromAnotherCollection) && ownedNftsFromAnotherCollection.length > 0 && (
               <SGroup>
@@ -220,12 +234,12 @@ const MintNft = () => {
 
           <SPageControls>
             <Stack direction='horizontal' gap={3}>
-              <Link to='..' className='w-50'>
+              <Link to='..' className='w-25'>
                 <ActionButton type='button' className='stroke w-100'>
                   Back
                 </ActionButton>
               </Link>
-              <ActionButton type='submit' disabled={!isEligibleToMint} className='secondary w-50'>
+              <ActionButton type='submit' disabled={!isEligibleToMint} className='main w-75'>
                 Create NFT
               </ActionButton>
             </Stack>

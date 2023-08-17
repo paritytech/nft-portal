@@ -22,12 +22,14 @@ import {
   CssArrowDown,
   CssArrowUp,
   CssFontSemiBoldL,
-  CssFontSemiBoldXL,
+  CssFontSemiBoldM,
+  SAside,
   SFormBlock,
   SInfoRow,
   SPageControls,
+  mediaQueries,
 } from '@helpers/reusableStyles.ts';
-import { SFormLayout, SGroup, SLabel } from '@helpers/styledComponents.ts';
+import { SFormLayout, SGroup, SImageSelection, SLabel } from '@helpers/styledComponents.ts';
 import {
   ellipseAddress,
   getBlockNumber,
@@ -46,16 +48,29 @@ const SHat = styled.div`
   display: flex;
   align-items: center;
   gap: 16px;
-  margin-bottom: 48px;
+  margin-bottom: 40px;
+
+  @media ${mediaQueries.tablet} {
+    margin-bottom: 48px;
+  }
 
   button {
-    width: 48px;
-    height: 48px;
+    width: 32px;
+    height: 32px;
+
+    @media ${mediaQueries.tablet} {
+      width: 48px;
+      height: 48px;
+    }
   }
 `;
 
 const STitle = styled.div`
-  ${CssFontSemiBoldXL}
+  ${CssFontSemiBoldM}
+
+  @media ${mediaQueries.tablet} {
+    ${CssFontSemiBoldL}
+  }
 `;
 
 const SToggleBlock = styled.div`
@@ -216,7 +231,7 @@ const CreateCollection = () => {
       </SHat>
 
       <SFormLayout onSubmit={submitCreateCollection}>
-        <aside>
+        <SAside>
           <SGroup>
             <SLabel>
               Media <i>(optional)</i>
@@ -228,7 +243,7 @@ const CreateCollection = () => {
               setImageCid={setImageCid}
             />
           </SGroup>
-        </aside>
+        </SAside>
 
         <section>
           <SFormBlock>
@@ -244,6 +259,18 @@ const CreateCollection = () => {
               <FormControl as='textarea' ref={collectionDescriptionRef} placeholder='Enter Collection Description' />
             </SGroup>
           </SFormBlock>
+
+          <SImageSelection>
+            <SLabel>
+              Media <i>(optional)</i>
+            </SLabel>
+            <FileDropZone
+              imageSourceUrl={imageSourceUrl}
+              setImageSourceUrl={setImageSourceUrl}
+              imageCid={imageCid}
+              setImageCid={setImageCid}
+            />
+          </SImageSelection>
 
           <SFormBlock>
             <SGroup>
@@ -375,12 +402,12 @@ const CreateCollection = () => {
 
           <SPageControls>
             <Stack direction='horizontal' gap={3}>
-              <Link to='..' className='w-50'>
+              <Link to='..' className='w-25'>
                 <ActionButton type='button' className='stroke w-100'>
                   Back
                 </ActionButton>
               </Link>
-              <ActionButton type='submit' className='secondary w-50'>
+              <ActionButton type='submit' className='main w-75'>
                 Create collection
               </ActionButton>
             </Stack>

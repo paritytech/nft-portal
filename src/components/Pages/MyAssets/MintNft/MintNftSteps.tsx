@@ -6,11 +6,17 @@ import { styled } from 'styled-components';
 import ShowImage from '@common/ShowImage.tsx';
 import Step from '@common/Step.tsx';
 
+import { mediaQueries } from '@helpers/reusableStyles.ts';
+
 import { useCollections } from '@hooks/useCollections.ts';
 
 const SMintNftSteps = styled.div`
-  display: flex;
-  gap: 8px;
+  display: inline-block;
+
+  @media ${mediaQueries.tablet} {
+    display: flex;
+    gap: 8px;
+  }
 `;
 
 const SSelectedCollection = styled.div`

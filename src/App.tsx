@@ -17,7 +17,6 @@ import CreateCollection from '@pages/MyAssets/MintNft/CreateCollection.tsx';
 import MintNft from '@pages/MyAssets/MintNft/MintNft.tsx';
 import MintNftIndex from '@pages/MyAssets/MintNft/MintNftIndex.tsx';
 import SelectCollection from '@pages/MyAssets/MintNft/SelectCollection.tsx';
-import MyAssets from '@pages/MyAssets/MyAssets.tsx';
 import NftEdit from '@pages/MyAssets/Nfts/NftEdit.tsx';
 import MyNfts from '@pages/MyAssets/Nfts/Nfts.tsx';
 
@@ -75,17 +74,7 @@ const App = () => (
         </Route>
 
         <Route path={routes.myAssets.index} element={<Outlet />}>
-          <Route
-            index
-            element={
-              <>
-                <Title className='main'>My Assets</Title>
-                <PrivateRoute>
-                  <MyAssets />
-                </PrivateRoute>
-              </>
-            }
-          />
+          <Route index element={<Navigate to={routes.myAssets.mintNftMain} replace />} />
 
           <Route path={routes.myAssets.mintNftMain} element={<MintNftIndex />}>
             <Route

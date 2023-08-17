@@ -10,6 +10,7 @@ import FileDropZone from '@common/FileDropZone.tsx';
 import ModalStatus from '@common/ModalStatus.tsx';
 
 import { CollectionMetadataData } from '@helpers/interfaces.ts';
+import { SH2, SPageControls } from '@helpers/reusableStyles.ts';
 
 import { useCollections } from '@hooks/useCollections.ts';
 
@@ -56,7 +57,7 @@ const CollectionEdit = () => {
   return (
     <>
       <ModalStatus />
-      <h2>NFT collection ID #{collectionId} metadata:</h2>
+      <SH2>NFT collection ID #{collectionId}</SH2>
 
       <Form onSubmit={submitMetadata}>
         <Form.Group className='mb-3'>
@@ -81,16 +82,19 @@ const CollectionEdit = () => {
             setImageCid={setImageCid}
           />
         </Form.Group>
-        <Stack direction='horizontal' gap={2} className='justify-content-end'>
-          <ActionButton type='submit' className='main'>
-            Submit metadata
-          </ActionButton>
-          <Link to='..'>
-            <ActionButton type='button' className='secondary'>
-              Back
+
+        <SPageControls>
+          <Stack direction='horizontal' gap={3}>
+            <Link to='..' className='w-25'>
+              <ActionButton type='button' className='stroke w-100'>
+                Back
+              </ActionButton>
+            </Link>
+            <ActionButton type='submit' className='main w-75'>
+              Submit metadata
             </ActionButton>
-          </Link>
-        </Stack>
+          </Stack>
+        </SPageControls>
       </Form>
     </>
   );

@@ -2,6 +2,7 @@ import { StateRects } from '@popperjs/core';
 import { ReactElement, memo } from 'react';
 import { FormControl } from 'react-bootstrap';
 import DatePicker from 'react-datepicker';
+import { styled } from 'styled-components';
 
 import { SGroup, SLabel } from '@helpers/styledComponents.ts';
 
@@ -13,6 +14,12 @@ interface DateRangeButtonProps {
   setEndDate: (value: Date) => void;
   labelEnd: string | ReactElement;
 }
+
+const SDatePickerGroup = styled(SGroup)`
+  .react-datepicker-wrapper {
+    width: 100%;
+  }
+`;
 
 const popperModifiers = [
   {
@@ -79,7 +86,7 @@ const DateRangeButton = ({
 
   return (
     <>
-      <SGroup>
+      <SDatePickerGroup>
         <SLabel>{labelStart}</SLabel>
         {/* TODO DatePicker doesn't like "moduleResolution": "nodenext", created issue https://github.com/Hacker0x01/react-datepicker/issues/4039 */}
         {/* @ts-ignore */}
@@ -99,9 +106,9 @@ const DateRangeButton = ({
           minTime={setMinStartTime(startDate || new Date())}
           maxTime={setMaxStartTime(endDate)}
         />
-      </SGroup>
+      </SDatePickerGroup>
 
-      <SGroup>
+      <SDatePickerGroup>
         <SLabel>{labelEnd}</SLabel>
         {/* @ts-ignore */}
         <DatePicker
@@ -120,7 +127,7 @@ const DateRangeButton = ({
           minTime={setMinEndTime(endDate || new Date())}
           maxTime={maxTime}
         />
-      </SGroup>
+      </SDatePickerGroup>
     </>
   );
 };
