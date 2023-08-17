@@ -14,7 +14,7 @@ import { useLoadCollectionsData } from '@hooks/useLoadCollectionsData.ts';
 import CollectionIcon from '@images/icons/collection.svg';
 
 const SContainer = styled.div`
-  width: 458px;
+  max-width: 458px;
   padding: 32px;
   text-align: center;
   margin: 0 auto;

@@ -517,3 +517,11 @@ export const SInfoRow = styled.div`
     color: ${({ theme }) => theme.textAndIconsTertiary};
   }
 `;
+
+export const SAside = styled.aside`
+  display: none;
+
+  @media ${mediaQueries.tablet} {
+    display: block;
+  }
+`;

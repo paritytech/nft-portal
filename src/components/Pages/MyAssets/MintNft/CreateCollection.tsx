@@ -23,11 +23,12 @@ import {
   CssArrowUp,
   CssFontSemiBoldL,
   CssFontSemiBoldXL,
+  SAside,
   SFormBlock,
   SInfoRow,
   SPageControls,
 } from '@helpers/reusableStyles.ts';
-import { SFormLayout, SGroup, SLabel } from '@helpers/styledComponents.ts';
+import { SFormLayout, SGroup, SImageSelection, SLabel } from '@helpers/styledComponents.ts';
 import {
   ellipseAddress,
   getBlockNumber,
@@ -216,7 +217,7 @@ const CreateCollection = () => {
       </SHat>
 
       <SFormLayout onSubmit={submitCreateCollection}>
-        <aside>
+        <SAside>
           <SGroup>
             <SLabel>
               Media <i>(optional)</i>
@@ -228,7 +229,7 @@ const CreateCollection = () => {
               setImageCid={setImageCid}
             />
           </SGroup>
-        </aside>
+        </SAside>
 
         <section>
           <SFormBlock>
@@ -244,6 +245,18 @@ const CreateCollection = () => {
               <FormControl as='textarea' ref={collectionDescriptionRef} placeholder='Enter Collection Description' />
             </SGroup>
           </SFormBlock>
+
+          <SImageSelection>
+            <SLabel>
+              Media <i>(optional)</i>
+            </SLabel>
+            <FileDropZone
+              imageSourceUrl={imageSourceUrl}
+              setImageSourceUrl={setImageSourceUrl}
+              imageCid={imageCid}
+              setImageCid={setImageCid}
+            />
+          </SImageSelection>
 
           <SFormBlock>
             <SGroup>
