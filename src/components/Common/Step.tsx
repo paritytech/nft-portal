@@ -2,7 +2,7 @@ import { ReactElement, memo } from 'react';
 import { styled } from 'styled-components';
 
 import { CommonStyleProps } from '@helpers/interfaces.ts';
-import { CssFontSemiBoldS } from '@helpers/reusableStyles.ts';
+import { CssFontSemiBoldS, mediaQueries } from '@helpers/reusableStyles.ts';
 
 const SStep = styled.div`
   ${CssFontSemiBoldS}
@@ -13,6 +13,15 @@ const SStep = styled.div`
   padding: 6px 16px 6px 6px;
   border: 1px solid ${({ theme }) => theme.appliedStroke};
   border-radius: 48px;
+  margin-bottom: 8px;
+
+  @media ${mediaQueries.tablet} {
+    margin-bottom: 0;
+  }
+
+  &:last-child {
+    margin-bottom: 0;
+  }
 
   &.active {
     color: ${({ theme }) => theme.textAndIconsPrimary};

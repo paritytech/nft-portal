@@ -22,11 +22,12 @@ import {
   CssArrowDown,
   CssArrowUp,
   CssFontSemiBoldL,
-  CssFontSemiBoldXL,
+  CssFontSemiBoldM,
   SAside,
   SFormBlock,
   SInfoRow,
   SPageControls,
+  mediaQueries,
 } from '@helpers/reusableStyles.ts';
 import { SFormLayout, SGroup, SImageSelection, SLabel } from '@helpers/styledComponents.ts';
 import {
@@ -47,16 +48,29 @@ const SHat = styled.div`
   display: flex;
   align-items: center;
   gap: 16px;
-  margin-bottom: 48px;
+  margin-bottom: 40px;
+
+  @media ${mediaQueries.tablet} {
+    margin-bottom: 48px;
+  }
 
   button {
-    width: 48px;
-    height: 48px;
+    width: 32px;
+    height: 32px;
+
+    @media ${mediaQueries.tablet} {
+      width: 48px;
+      height: 48px;
+    }
   }
 `;
 
 const STitle = styled.div`
-  ${CssFontSemiBoldXL}
+  ${CssFontSemiBoldM}
+
+  @media ${mediaQueries.tablet} {
+    ${CssFontSemiBoldL}
+  }
 `;
 
 const SToggleBlock = styled.div`
