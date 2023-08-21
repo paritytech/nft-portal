@@ -275,7 +275,7 @@ const CreateCollection = () => {
           <SFormBlock>
             <SGroup>
               <SLabel>
-                Price <i>(optional)</i>
+                Mint price <i>(optional)</i>
               </SLabel>
               <FormControl
                 type='text'
@@ -292,21 +292,21 @@ const CreateCollection = () => {
               <SLabel>Mint type</SLabel>
               <Radio
                 name='mint-type'
-                label='Only You Can Mint'
+                label='Private - only Issuer can mint'
                 value={MintTypes.ISSUER}
                 onChange={mintTypeChangeHandler}
                 selectedValue={mintType}
               />
               <Radio
                 name='mint-type'
-                label='Everyone Can Mint'
+                label='Public - everyone can mint'
                 value={MintTypes.PUBLIC}
                 onChange={mintTypeChangeHandler}
                 selectedValue={mintType}
               />
               <Radio
                 name='mint-type'
-                label='Holder of Other NFT Collection Can Mint'
+                label='Gated - user will need to hold an NFT in a specific collection'
                 value={MintTypes.HOLDER_OF}
                 onChange={mintTypeChangeHandler}
                 selectedValue={mintType}
@@ -339,7 +339,7 @@ const CreateCollection = () => {
                   </SDescription>
 
                   <Checkbox ref={unlockedMetadataRef} label='Unlocked metadata' defaultChecked />
-                  <SDescription>When disabled, the metadata will be locked</SDescription>
+                  <SDescription>When disabled, the collection metadata will be locked</SDescription>
 
                   <Checkbox ref={unlockedAttributesRef} label='Unlocked attributes' defaultChecked />
                   <SDescription>
@@ -355,7 +355,7 @@ const CreateCollection = () => {
 
                 <SGroup>
                   <SLabel>
-                    Max supply <i>(optional)</i>
+                    Max supply (<i>optional</i>), leave empty to have unlimited supply
                   </SLabel>
                   <FormControl
                     type='number'

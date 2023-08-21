@@ -17,7 +17,7 @@ import { useAccounts } from '@contexts/AccountsContext.tsx';
 
 import { RestrictionTypes } from '@helpers/constants.ts';
 import { CollectionConfigJson, CollectionMetadataData, NftWitnessData } from '@helpers/interfaces.ts';
-import { SAside, SFormBlock, SInfoRow, SPageControls } from '@helpers/reusableStyles.ts';
+import { CssFontSemiBoldL, SAside, SFormBlock, SInfoRow, SPageControls } from '@helpers/reusableStyles.ts';
 import { SFormLayout, SGroup, SImageSelection, SLabel } from '@helpers/styledComponents.ts';
 import { generateNftId, getCleanFormattedBalance } from '@helpers/utilities.ts';
 
@@ -44,6 +44,10 @@ const MintToInput = styled.div`
     height: 32px;
     cursor: pointer;
   }
+`;
+
+const SMintPrice = styled.div`
+  ${CssFontSemiBoldL}
 `;
 
 const MintNft = () => {
@@ -228,12 +232,10 @@ const MintNft = () => {
           {nftWitnessData?.mintPrice && nftWitnessData.mintPrice !== '0' && (
             <SInfoRow>
               <span>Mint Price</span>
-              <span>
-                <b>
-                  {api && getCleanFormattedBalance(new BN(nftWitnessData.mintPrice), api.registry.chainDecimals[0])}{' '}
-                  {api?.registry.chainTokens[0]}
-                </b>
-              </span>
+              <SMintPrice>
+                {api && getCleanFormattedBalance(new BN(nftWitnessData.mintPrice), api.registry.chainDecimals[0])}{' '}
+                {api?.registry.chainTokens[0]}
+              </SMintPrice>
             </SInfoRow>
           )}
 
