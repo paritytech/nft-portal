@@ -224,19 +224,21 @@ const MintNft = () => {
             />
           </SFormBlock>
 
-          <SInfoRow>
-            <span>Mint Price</span>
-            <span>
-              <b>
-                {api &&
-                  getCleanFormattedBalance(
-                    new BN(nftWitnessData?.mintPrice || '0'),
-                    api.registry.chainDecimals[0],
-                  )}{' '}
-                {api?.registry.chainTokens[0]}
-              </b>
-            </span>
-          </SInfoRow>
+          {nftWitnessData?.mintPrice && (
+            <SInfoRow>
+              <span>Mint Price</span>
+              <span>
+                <b>
+                  {api &&
+                    getCleanFormattedBalance(
+                      new BN(nftWitnessData?.mintPrice || '0'),
+                      api.registry.chainDecimals[0],
+                    )}{' '}
+                  {api?.registry.chainTokens[0]}
+                </b>
+              </span>
+            </SInfoRow>
+          )}
 
           <SPageControls>
             <Stack direction='horizontal' gap={3}>
