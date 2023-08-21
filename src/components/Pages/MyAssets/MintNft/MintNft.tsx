@@ -227,10 +227,10 @@ const MintNft = () => {
             />
           </SFormBlock>
 
-          {nftWitnessData?.mintPrice && nftWitnessData.mintPrice !== '0' && (
+          {nftWitnessData?.mintPrice && nftWitnessData.mintPrice !== '0' && api && (
             <SInfoRow>
               <span>Mint Price</span>
-              <SMintPrice>{api && planckToUnit(nftWitnessData.mintPrice, api, true)}</SMintPrice>
+              <SMintPrice>{planckToUnit(nftWitnessData.mintPrice, api, true)}</SMintPrice>
             </SInfoRow>
           )}
 
