@@ -126,7 +126,7 @@ export interface RestrictionMessage {
 }
 
 export interface NftWitnessData {
-  mintPrice: string;
+  mintPrice?: string;
   ownedItem?: string;
 }
 

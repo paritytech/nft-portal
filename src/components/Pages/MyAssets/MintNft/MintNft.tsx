@@ -19,7 +19,7 @@ import { RestrictionTypes } from '@helpers/constants.ts';
 import { CollectionConfigJson, CollectionMetadataData, NftWitnessData } from '@helpers/interfaces.ts';
 import { SAside, SFormBlock, SInfoRow, SPageControls } from '@helpers/reusableStyles.ts';
 import { SFormLayout, SGroup, SImageSelection, SLabel } from '@helpers/styledComponents.ts';
-import { generateNftId, getCleanFormattedBalance, unitToPlanck } from '@helpers/utilities.ts';
+import { generateNftId, getCleanFormattedBalance } from '@helpers/utilities.ts';
 
 import { useCheckMintingEligibility } from '@hooks/useCheckMintingEligibility.ts';
 import { useCollections } from '@hooks/useCollections.ts';
@@ -113,7 +113,7 @@ const MintNft = () => {
         if (rawConfig) {
           const jsonConfig = rawConfig.toJSON() as unknown as CollectionConfigJson;
 
-          setNftWitnessData((prevState) => ({ ...prevState, mintPrice: jsonConfig.mintSettings.price || '0' }));
+          setNftWitnessData((prevState) => ({ ...prevState, mintPrice: jsonConfig.mintSettings.price ?? undefined }));
         }
       }
     };
@@ -199,7 +199,7 @@ const MintNft = () => {
                       value={ownedNft}
                       onChange={(event: ChangeEvent<HTMLInputElement>) =>
                         setNftWitnessData((prevState) => ({
-                          mintPrice: prevState?.mintPrice || unitToPlanck('0', api.registry.chainDecimals[0]),
+                          ...prevState,
                           ownedItem: event.target.value,
                         }))
                       }
@@ -229,8 +229,10 @@ const MintNft = () => {
             <span>
               <b>
                 {api &&
-                  nftWitnessData?.mintPrice &&
-                  getCleanFormattedBalance(new BN(nftWitnessData.mintPrice), api.registry.chainDecimals[0])}{' '}
+                  getCleanFormattedBalance(
+                    new BN(nftWitnessData?.mintPrice || '0'),
+                    api.registry.chainDecimals[0],
+                  )}{' '}
                 {api?.registry.chainTokens[0]}
               </b>
             </span>
