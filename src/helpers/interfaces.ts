@@ -125,8 +125,9 @@ export interface RestrictionMessage {
   message: string;
 }
 
-export interface MintAccessNft {
-  ownedItem: string;
+export interface NftWitnessData {
+  mintPrice: string;
+  ownedItem?: string;
 }
 
 // =====

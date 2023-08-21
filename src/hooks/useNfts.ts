@@ -11,7 +11,7 @@ import { useModalStatus } from '@contexts/ModalStatusContext.tsx';
 import { IPFS_GATEWAY } from '@helpers/config.ts';
 import { ModalStatusTypes, StatusMessages } from '@helpers/constants.ts';
 import { handleError } from '@helpers/handleError.ts';
-import { MintAccessNft, NftMetadata, NftMetadataData } from '@helpers/interfaces.ts';
+import { NftMetadata, NftMetadataData, NftWitnessData } from '@helpers/interfaces.ts';
 import { routes } from '@helpers/routes.ts';
 import { getCidHash, getCidUrl } from '@helpers/utilities.ts';
 
@@ -150,7 +150,7 @@ export const useNfts = (collectionId: string) => {
   );
 
   const mintNft = useCallback(
-    async (nftId: string, nftReceiver: string, nftMetadata: NftMetadataData, mintAccessNft: MintAccessNft | null) => {
+    async (nftId: string, nftReceiver: string, nftMetadata: NftMetadataData, nftWitnessData: NftWitnessData) => {
       if (api && activeAccount && activeWallet && collectionId) {
         setStatus({ type: ModalStatusTypes.INIT_TRANSACTION, message: StatusMessages.TRANSACTION_CONFIRM });
         openModalStatus();
@@ -161,7 +161,7 @@ export const useNfts = (collectionId: string) => {
           }
           const cid = await saveDataToIpfs(nftMetadata);
           const metadataCid = getCidUrl(cid);
-          const mintTx = api.tx.nfts.mint(collectionId, nftId, nftReceiver, mintAccessNft);
+          const mintTx = api.tx.nfts.mint(collectionId, nftId, nftReceiver, nftWitnessData);
           const setMetadataTx = api.tx.nfts.setMetadata(collectionId, nftId, metadataCid);
           const txBatch = api.tx.utility.batchAll([mintTx, setMetadataTx]);
 

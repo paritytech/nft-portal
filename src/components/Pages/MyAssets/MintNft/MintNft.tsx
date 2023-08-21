@@ -16,10 +16,10 @@ import ShowRestrictionMessage from '@common/ShowRestrictionMessage.tsx';
 import { useAccounts } from '@contexts/AccountsContext.tsx';
 
 import { RestrictionTypes } from '@helpers/constants.ts';
-import { CollectionConfigJson, CollectionMetadataData, MintAccessNft } from '@helpers/interfaces.ts';
+import { CollectionConfigJson, CollectionMetadataData, NftWitnessData } from '@helpers/interfaces.ts';
 import { SAside, SFormBlock, SInfoRow, SPageControls } from '@helpers/reusableStyles.ts';
 import { SFormLayout, SGroup, SImageSelection, SLabel } from '@helpers/styledComponents.ts';
-import { generateNftId, getCleanFormattedBalance } from '@helpers/utilities.ts';
+import { generateNftId, getCleanFormattedBalance, unitToPlanck } from '@helpers/utilities.ts';
 
 import { useCheckMintingEligibility } from '@hooks/useCheckMintingEligibility.ts';
 import { useCollections } from '@hooks/useCollections.ts';
@@ -58,13 +58,12 @@ const MintNft = () => {
     ownedNftsFromAnotherCollection,
     clearRestrictions,
   } = useCheckMintingEligibility(collectionId || '');
-  const [mintAccessNft, setMintAccessNft] = useState<MintAccessNft | null>(null);
+  const [nftWitnessData, setNftWitnessData] = useState<NftWitnessData>();
   const nftNameRef = useRef<HTMLInputElement>(null);
   const nftDescriptionRef = useRef<HTMLTextAreaElement>(null);
   const nftReceiverRef = useRef<HTMLInputElement>(null);
   const [imageCid, setImageCid] = useState<string | undefined>();
   const [imageSourceUrl, setImageSourceUrl] = useState<string>();
-  const [mintPrice, setMintPrice] = useState<string>();
   const [isQRCodeScannerOpen, setIsQRCodeScannerOpen] = useState(false);
 
   const handleShow = () => {
@@ -87,7 +86,7 @@ const MintNft = () => {
       event.preventDefault();
       clearRestrictions();
 
-      if (collectionId && nftNameRef.current !== null && nftReceiverRef.current !== null) {
+      if (collectionId && nftNameRef.current !== null && nftReceiverRef.current !== null && nftWitnessData) {
         const nftId = generateNftId().toString();
         const isAvailable = await checkAvailabilityRestriction(nftId);
 
@@ -99,11 +98,11 @@ const MintNft = () => {
 
         if (isAvailable) {
           saveImageToIpfs(imageSourceUrl);
-          mintNft(nftId, nftReceiverRef.current.value, metadata, mintAccessNft);
+          mintNft(nftId, nftReceiverRef.current.value, metadata, nftWitnessData);
         }
       }
     },
-    [clearRestrictions, collectionId, checkAvailabilityRestriction, imageCid, imageSourceUrl, mintNft, mintAccessNft],
+    [clearRestrictions, collectionId, checkAvailabilityRestriction, imageCid, imageSourceUrl, mintNft, nftWitnessData],
   );
 
   useEffect(() => {
@@ -113,12 +112,8 @@ const MintNft = () => {
 
         if (rawConfig) {
           const jsonConfig = rawConfig.toJSON() as unknown as CollectionConfigJson;
-          const price = getCleanFormattedBalance(
-            new BN(jsonConfig.mintSettings.price || '0'),
-            api.registry.chainDecimals[0],
-          );
 
-          setMintPrice(price);
+          setNftWitnessData((prevState) => ({ ...prevState, mintPrice: jsonConfig.mintSettings.price || '0' }));
         }
       }
     };
@@ -195,19 +190,23 @@ const MintNft = () => {
             {Array.isArray(ownedNftsFromAnotherCollection) && ownedNftsFromAnotherCollection.length > 0 && (
               <SGroup>
                 <SLabel>Select which NFT you want to use for the mint access</SLabel>
-                {ownedNftsFromAnotherCollection.map((ownedNft) => (
-                  <Radio
-                    key={ownedNft}
-                    name='mint-access'
-                    label={ownedNft}
-                    value={ownedNft}
-                    onChange={(event: ChangeEvent<HTMLInputElement>) =>
-                      setMintAccessNft({ ownedItem: event.target.value })
-                    }
-                    selectedValue={mintAccessNft?.ownedItem || ''}
-                    required
-                  />
-                ))}
+                {api &&
+                  ownedNftsFromAnotherCollection.map((ownedNft) => (
+                    <Radio
+                      key={ownedNft}
+                      name='mint-access'
+                      label={ownedNft}
+                      value={ownedNft}
+                      onChange={(event: ChangeEvent<HTMLInputElement>) =>
+                        setNftWitnessData((prevState) => ({
+                          mintPrice: prevState?.mintPrice || unitToPlanck('0', api.registry.chainDecimals[0]),
+                          ownedItem: event.target.value,
+                        }))
+                      }
+                      selectedValue={nftWitnessData?.ownedItem || ''}
+                      required
+                    />
+                  ))}
               </SGroup>
             )}
 
@@ -228,7 +227,12 @@ const MintNft = () => {
           <SInfoRow>
             <span>Mint Price</span>
             <span>
-              {mintPrice} {api?.registry.chainTokens[0]}
+              <b>
+                {api &&
+                  nftWitnessData?.mintPrice &&
+                  getCleanFormattedBalance(new BN(nftWitnessData.mintPrice), api.registry.chainDecimals[0])}{' '}
+                {api?.registry.chainTokens[0]}
+              </b>
             </span>
           </SInfoRow>
 
