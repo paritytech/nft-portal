@@ -112,8 +112,9 @@ const MintNft = () => {
 
         if (rawConfig) {
           const jsonConfig = rawConfig.toJSON() as unknown as CollectionConfigJson;
+          const price = jsonConfig.mintSettings.price !== null ? jsonConfig.mintSettings.price.toString() : undefined;
 
-          setNftWitnessData((prevState) => ({ ...prevState, mintPrice: jsonConfig.mintSettings.price ?? undefined }));
+          setNftWitnessData((prevState) => ({ ...prevState, mintPrice: price }));
         }
       }
     };
@@ -224,16 +225,12 @@ const MintNft = () => {
             />
           </SFormBlock>
 
-          {nftWitnessData?.mintPrice && (
+          {nftWitnessData?.mintPrice && nftWitnessData.mintPrice !== '0' && (
             <SInfoRow>
               <span>Mint Price</span>
               <span>
                 <b>
-                  {api &&
-                    getCleanFormattedBalance(
-                      new BN(nftWitnessData?.mintPrice || '0'),
-                      api.registry.chainDecimals[0],
-                    )}{' '}
+                  {api && getCleanFormattedBalance(new BN(nftWitnessData.mintPrice), api.registry.chainDecimals[0])}{' '}
                   {api?.registry.chainTokens[0]}
                 </b>
               </span>
