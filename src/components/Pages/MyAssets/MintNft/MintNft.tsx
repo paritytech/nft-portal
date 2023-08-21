@@ -1,4 +1,3 @@
-import { BN } from '@polkadot/util';
 import { ChangeEvent, FormEvent, memo, useCallback, useEffect, useRef, useState } from 'react';
 import { FormControl, Stack } from 'react-bootstrap';
 import { Link, useParams } from 'react-router-dom';
@@ -19,7 +18,7 @@ import { RestrictionTypes } from '@helpers/constants.ts';
 import { CollectionConfigJson, CollectionMetadataData, NftWitnessData } from '@helpers/interfaces.ts';
 import { CssFontSemiBoldL, SAside, SFormBlock, SInfoRow, SPageControls } from '@helpers/reusableStyles.ts';
 import { SFormLayout, SGroup, SImageSelection, SLabel } from '@helpers/styledComponents.ts';
-import { generateNftId, getCleanFormattedBalance } from '@helpers/utilities.ts';
+import { generateNftId, planckToUnit } from '@helpers/utilities.ts';
 
 import { useCheckMintingEligibility } from '@hooks/useCheckMintingEligibility.ts';
 import { useCollections } from '@hooks/useCollections.ts';
@@ -111,7 +110,7 @@ const MintNft = () => {
 
   useEffect(() => {
     const getPrice = async () => {
-      if (api && collectionId) {
+      if (collectionId) {
         const rawConfig = await getCollectionConfig(collectionId);
 
         if (rawConfig) {
@@ -124,7 +123,7 @@ const MintNft = () => {
     };
 
     getPrice();
-  }, [api, collectionId, getCollectionConfig]);
+  }, [collectionId, getCollectionConfig]);
 
   if (activeAccount === null) {
     return null;
@@ -195,23 +194,22 @@ const MintNft = () => {
             {Array.isArray(ownedNftsFromAnotherCollection) && ownedNftsFromAnotherCollection.length > 0 && (
               <SGroup>
                 <SLabel>Select which NFT you want to use for the mint access</SLabel>
-                {api &&
-                  ownedNftsFromAnotherCollection.map((ownedNft) => (
-                    <Radio
-                      key={ownedNft}
-                      name='mint-access'
-                      label={ownedNft}
-                      value={ownedNft}
-                      onChange={(event: ChangeEvent<HTMLInputElement>) =>
-                        setNftWitnessData((prevState) => ({
-                          ...prevState,
-                          ownedItem: event.target.value,
-                        }))
-                      }
-                      selectedValue={nftWitnessData?.ownedItem || ''}
-                      required
-                    />
-                  ))}
+                {ownedNftsFromAnotherCollection.map((ownedNft) => (
+                  <Radio
+                    key={ownedNft}
+                    name='mint-access'
+                    label={ownedNft}
+                    value={ownedNft}
+                    onChange={(event: ChangeEvent<HTMLInputElement>) =>
+                      setNftWitnessData((prevState) => ({
+                        ...prevState,
+                        ownedItem: event.target.value,
+                      }))
+                    }
+                    selectedValue={nftWitnessData?.ownedItem || ''}
+                    required
+                  />
+                ))}
               </SGroup>
             )}
 
@@ -232,10 +230,7 @@ const MintNft = () => {
           {nftWitnessData?.mintPrice && nftWitnessData.mintPrice !== '0' && (
             <SInfoRow>
               <span>Mint Price</span>
-              <SMintPrice>
-                {api && getCleanFormattedBalance(new BN(nftWitnessData.mintPrice), api.registry.chainDecimals[0])}{' '}
-                {api?.registry.chainTokens[0]}
-              </SMintPrice>
+              <SMintPrice>{api && planckToUnit(nftWitnessData.mintPrice, api, true)}</SMintPrice>
             </SInfoRow>
           )}
 

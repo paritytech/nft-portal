@@ -57,6 +57,16 @@ export const unitToPlanck = (units: string, decimals: number): string => {
   return `${whole}${decimal.padEnd(decimals, '0')}`.replace(/^0+/, '');
 };
 
+export const planckToUnit = (planck: string, api: ApiPromise, withSymbol: boolean = false) => {
+  const formattedBalance = getCleanFormattedBalance(new BN(planck), api.registry.chainDecimals[0]);
+
+  if (withSymbol) {
+    return `${formattedBalance} ${api.registry.chainTokens[0]}`;
+  }
+
+  return formattedBalance;
+};
+
 export const generateNftId = (): number => {
   return Math.floor(Date.now() / 1000);
 };

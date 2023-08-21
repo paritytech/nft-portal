@@ -111,7 +111,7 @@ export const useCheckMintingEligibility = (collectionId: string) => {
 
   const checkEligibilityToMint = useCallback(
     async () => {
-      if (api && collectionId) {
+      if (collectionId) {
         const rawConfig = await getCollectionConfig(collectionId);
         if (rawConfig) {
           const config = rawConfig.toJSON() as unknown as CollectionConfigJson;
@@ -128,7 +128,7 @@ export const useCheckMintingEligibility = (collectionId: string) => {
     },
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [api, collectionId],
+    [collectionId],
   );
 
   useEffect(() => {
