@@ -119,8 +119,16 @@ export const getCidHash = (cid: string) => {
     return cid;
   }
 
-  if (cid.startsWith(IPFS_NATIVE_SCHEME)) {
-    return cid.replace(IPFS_NATIVE_SCHEME, '');
+  // handle V0 CID
+  const matchCidV0 = cid.match(/Qm[A-Za-z0-9]{44}(?![A-Za-z0-9])/);
+  if (matchCidV0 !== null) {
+    return matchCidV0[0];
+  }
+
+  // handle V1 CID
+  const matchCidV1 = cid.match(/[a-z0-9]{59}(?![A-Za-z0-9])/);
+  if (matchCidV1 !== null) {
+    return matchCidV1[0];
   }
 
   return cid;
