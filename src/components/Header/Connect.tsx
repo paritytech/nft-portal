@@ -125,7 +125,7 @@ const SIcon = styled.div`
 const Connect = () => {
   const { activeAccount, wallets, isAutoConnectDone } = useConnectToStoredAccount();
   const { api, isAccountActionsVisible, onWalletDisconnect, setIsAccountActionsVisible } = useAccounts();
-  const nativeBalance = useNativeBalance();
+  const { nativeBalance, getNativeBalance } = useNativeBalance();
   const dropdownRef = useOutsideClick(() => setIsAccountActionsVisible(false));
   const [showWalletSelection, setShowWalletSelection] = useState(false);
   const [copyToClipboard, buttonText] = useCopyToClipboard(activeAccount?.address || '', '', 'copied', 350);
@@ -146,6 +146,7 @@ const Connect = () => {
   const handleShow = () => {
     if (activeAccount) {
       setIsAccountActionsVisible(!isAccountActionsVisible);
+      getNativeBalance();
     } else {
       setShowWalletSelection(true);
     }

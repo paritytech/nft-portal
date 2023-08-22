@@ -1,4 +1,3 @@
-import { BN } from '@polkadot/util';
 import { ChangeEvent, FormEvent, memo, useCallback, useEffect, useRef, useState } from 'react';
 import { FormControl, Stack } from 'react-bootstrap';
 import { Link, useParams } from 'react-router-dom';
@@ -16,10 +15,10 @@ import ShowRestrictionMessage from '@common/ShowRestrictionMessage.tsx';
 import { useAccounts } from '@contexts/AccountsContext.tsx';
 
 import { RestrictionTypes } from '@helpers/constants.ts';
-import { CollectionConfigJson, CollectionMetadataData, MintAccessNft } from '@helpers/interfaces.ts';
-import { SAside, SFormBlock, SInfoRow, SPageControls } from '@helpers/reusableStyles.ts';
+import { CollectionConfigJson, CollectionMetadataData, NftWitnessData } from '@helpers/interfaces.ts';
+import { CssFontSemiBoldL, SAside, SFormBlock, SInfoRow, SPageControls } from '@helpers/reusableStyles.ts';
 import { SFormLayout, SGroup, SImageSelection, SLabel } from '@helpers/styledComponents.ts';
-import { generateNftId, getCleanFormattedBalance } from '@helpers/utilities.ts';
+import { generateNftId, planckToUnit } from '@helpers/utilities.ts';
 
 import { useCheckMintingEligibility } from '@hooks/useCheckMintingEligibility.ts';
 import { useCollections } from '@hooks/useCollections.ts';
@@ -46,6 +45,10 @@ const MintToInput = styled.div`
   }
 `;
 
+const SMintPrice = styled.div`
+  ${CssFontSemiBoldL}
+`;
+
 const MintNft = () => {
   const { collectionId } = useParams();
   const { getCollectionConfig } = useCollections();
@@ -58,13 +61,12 @@ const MintNft = () => {
     ownedNftsFromAnotherCollection,
     clearRestrictions,
   } = useCheckMintingEligibility(collectionId || '');
-  const [mintAccessNft, setMintAccessNft] = useState<MintAccessNft | null>(null);
+  const [nftWitnessData, setNftWitnessData] = useState<NftWitnessData>();
   const nftNameRef = useRef<HTMLInputElement>(null);
   const nftDescriptionRef = useRef<HTMLTextAreaElement>(null);
   const nftReceiverRef = useRef<HTMLInputElement>(null);
   const [imageCid, setImageCid] = useState<string | undefined>();
   const [imageSourceUrl, setImageSourceUrl] = useState<string>();
-  const [mintPrice, setMintPrice] = useState<string>();
   const [isQRCodeScannerOpen, setIsQRCodeScannerOpen] = useState(false);
 
   const handleShow = () => {
@@ -87,7 +89,7 @@ const MintNft = () => {
       event.preventDefault();
       clearRestrictions();
 
-      if (collectionId && nftNameRef.current !== null && nftReceiverRef.current !== null) {
+      if (collectionId && nftNameRef.current !== null && nftReceiverRef.current !== null && nftWitnessData) {
         const nftId = generateNftId().toString();
         const isAvailable = await checkAvailabilityRestriction(nftId);
 
@@ -99,32 +101,29 @@ const MintNft = () => {
 
         if (isAvailable) {
           saveImageToIpfs(imageSourceUrl);
-          mintNft(nftId, nftReceiverRef.current.value, metadata, mintAccessNft);
+          mintNft(nftId, nftReceiverRef.current.value, metadata, nftWitnessData);
         }
       }
     },
-    [clearRestrictions, collectionId, checkAvailabilityRestriction, imageCid, imageSourceUrl, mintNft, mintAccessNft],
+    [clearRestrictions, collectionId, checkAvailabilityRestriction, imageCid, imageSourceUrl, mintNft, nftWitnessData],
   );
 
   useEffect(() => {
     const getPrice = async () => {
-      if (api && collectionId) {
+      if (collectionId) {
         const rawConfig = await getCollectionConfig(collectionId);
 
         if (rawConfig) {
           const jsonConfig = rawConfig.toJSON() as unknown as CollectionConfigJson;
-          const price = getCleanFormattedBalance(
-            new BN(jsonConfig.mintSettings.price || '0'),
-            api.registry.chainDecimals[0],
-          );
+          const price = jsonConfig.mintSettings.price !== null ? jsonConfig.mintSettings.price.toString() : undefined;
 
-          setMintPrice(price);
+          setNftWitnessData((prevState) => ({ ...prevState, mintPrice: price }));
         }
       }
     };
 
     getPrice();
-  }, [api, collectionId, getCollectionConfig]);
+  }, [collectionId, getCollectionConfig]);
 
   if (activeAccount === null) {
     return null;
@@ -202,9 +201,12 @@ const MintNft = () => {
                     label={ownedNft}
                     value={ownedNft}
                     onChange={(event: ChangeEvent<HTMLInputElement>) =>
-                      setMintAccessNft({ ownedItem: event.target.value })
+                      setNftWitnessData((prevState) => ({
+                        ...prevState,
+                        ownedItem: event.target.value,
+                      }))
                     }
-                    selectedValue={mintAccessNft?.ownedItem || ''}
+                    selectedValue={nftWitnessData?.ownedItem || ''}
                     required
                   />
                 ))}
@@ -225,12 +227,12 @@ const MintNft = () => {
             />
           </SFormBlock>
 
-          <SInfoRow>
-            <span>Mint Price</span>
-            <span>
-              {mintPrice} {api?.registry.chainTokens[0]}
-            </span>
-          </SInfoRow>
+          {nftWitnessData?.mintPrice && nftWitnessData.mintPrice !== '0' && api && (
+            <SInfoRow>
+              <span>Mint Price</span>
+              <SMintPrice>{planckToUnit(nftWitnessData.mintPrice, api, true)}</SMintPrice>
+            </SInfoRow>
+          )}
 
           <SPageControls>
             <Stack direction='horizontal' gap={3}>
