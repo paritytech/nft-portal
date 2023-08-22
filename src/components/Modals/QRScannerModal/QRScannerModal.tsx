@@ -49,14 +49,16 @@ const QRScannerModal = ({ onScan, isOpen, onClose }: QRScannerModalProps) => {
         },
       );
 
-      qrScanner.start();
+      qrScanner.start().catch(() => {
+        onClose();
+      });
 
       return () => {
         qrScanner.stop();
         qrScanner.destroy();
       };
     }
-  }, [onScan]);
+  }, [onClose, onScan]);
 
   return (
     <QRModal centered show={isOpen} onHide={onClose}>
