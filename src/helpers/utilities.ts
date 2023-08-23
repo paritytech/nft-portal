@@ -3,7 +3,7 @@ import { BN, formatBalance } from '@polkadot/util';
 import { ToBn } from '@polkadot/util/types';
 import { FormEvent } from 'react';
 
-import { IPFS_NATIVE_SCHEME } from './config.ts';
+import { IPFS_GATEWAY, IPFS_NATIVE_SCHEME } from './config.ts';
 import { ALTERNATE_BACKGROUND_CLASSNAME } from './reusableStyles.ts';
 
 export const ellipseAddress = (address = '', charCount = 4): string => {
@@ -107,7 +107,7 @@ export const alternateBackground = () => {
 };
 
 export const getCidUrl = (cid: string) => {
-  if (typeof cid !== 'string') {
+  if (typeof cid !== 'string' || cid.startsWith('http')) {
     return cid;
   }
 
@@ -115,7 +115,7 @@ export const getCidUrl = (cid: string) => {
 };
 
 export const getCidHash = (cid: string) => {
-  if (typeof cid !== 'string') {
+  if (typeof cid !== 'string' || cid.startsWith('http')) {
     return cid;
   }
 
@@ -132,4 +132,12 @@ export const getCidHash = (cid: string) => {
   }
 
   return cid;
+};
+
+export const getFetchableUrl = (cid: string) => {
+  if (cid.startsWith('http')) {
+    return cid;
+  }
+
+  return `${IPFS_GATEWAY}${getCidHash(cid)}`;
 };

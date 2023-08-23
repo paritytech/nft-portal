@@ -10,7 +10,8 @@
     "build": "webpack --config webpack.prod.js",
     "format": "prettier --write \"./src/**/*.{ts,tsx}\"",
     "lint": "eslint src && tsc",
-    "test": "jest"
+    "test": "jest",
+    "validate": "yarn format && yarn lint && yarn test"
   },
   "repository": {
     "type": "git",

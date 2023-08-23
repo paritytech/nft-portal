@@ -8,7 +8,6 @@ import { saveDataToIpfs } from '@api/pinata.ts';
 import { useAccounts } from '@contexts/AccountsContext.tsx';
 import { useModalStatus } from '@contexts/ModalStatusContext.tsx';
 
-import { IPFS_GATEWAY } from '@helpers/config.ts';
 import { ModalStatusTypes, StatusMessages } from '@helpers/constants.ts';
 import { handleError } from '@helpers/handleError.ts';
 import {
@@ -18,7 +17,7 @@ import {
   CollectionMetadataPrimitive,
 } from '@helpers/interfaces.ts';
 import { routes } from '@helpers/routes.ts';
-import { getCidHash, getCidUrl } from '@helpers/utilities.ts';
+import { getCidHash, getCidUrl, getFetchableUrl } from '@helpers/utilities.ts';
 
 export const useCollections = () => {
   const { api, activeAccount, activeWallet } = useAccounts();
@@ -69,7 +68,7 @@ export const useCollections = () => {
               return null;
             }
 
-            return fetch(`${IPFS_GATEWAY}${getCidHash(primitiveMetadata.data)}`);
+            return fetch(getFetchableUrl(primitiveMetadata.data));
           });
 
           const fetchedData = await Promise.all(fetchCalls);
@@ -113,7 +112,7 @@ export const useCollections = () => {
               return null;
             }
 
-            const fetchedData = await fetch(`${IPFS_GATEWAY}${getCidHash(primitiveMetadata.data)}`);
+            const fetchedData = await fetch(getFetchableUrl(primitiveMetadata.data));
 
             metadata = await fetchedData.json();
             if (metadata?.image) {

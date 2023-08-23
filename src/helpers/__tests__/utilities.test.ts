@@ -7,14 +7,14 @@ describe('getCidHash', () => {
   test.each([
     // handle V0 CID
     [cidV0, cidV0],
-    [`http(s)://${cidV0}/file(.json)`, cidV0],
+    [`https://${cidV0}/file.json`, `https://${cidV0}/file.json`],
     [`ipfs://ipfs/${cidV0}`, cidV0],
     [`ipfs://${cidV0}`, cidV0],
     [`/ipfs/${cidV0}`, cidV0],
-    
+
     // handle V1 CID
     [cidV1, cidV1],
-    [`http(s)://${cidV1}/file(.json)`, cidV1],
+    [`https://${cidV1}/file.json`, `https://${cidV1}/file.json`],
     [`ipfs://ipfs/${cidV1}`, cidV1],
     [`ipfs://${cidV1}`, cidV1],
     [`/ipfs/${cidV1}`, cidV1],
