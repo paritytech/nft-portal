@@ -2,7 +2,7 @@ import { memo } from 'react';
 import { Card } from 'react-bootstrap';
 import { styled } from 'styled-components';
 
-import { IPFS_GATEWAY } from '@helpers/config.ts';
+import { getFetchableUrl } from '@helpers/utilities.ts';
 
 const SImg = styled.div`
   img {
@@ -28,7 +28,7 @@ const ShowImage = ({ imageCid, altText }: ShowImageProps) => {
 
   return (
     <SImg>
-      <Card.Img src={`${IPFS_GATEWAY}${imageCid}`} alt={altText} />
+      <Card.Img src={getFetchableUrl(imageCid)} alt={altText} />
     </SImg>
   );
 };
