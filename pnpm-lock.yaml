@@ -100,6 +100,9 @@ devDependencies:
   '@babel/preset-typescript':
     specifier: 7.22.5
     version: 7.22.5(@babel/core@7.22.10)
+  '@babel/runtime':
+    specifier: 7.22.10
+    version: 7.22.10
   '@pmmmwh/react-refresh-webpack-plugin':
     specifier: 0.5.11
     version: 0.5.11(react-refresh@0.14.0)(webpack-dev-server@4.15.1)(webpack@5.88.2)
