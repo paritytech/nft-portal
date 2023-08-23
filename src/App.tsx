@@ -1,4 +1,3 @@
-import '@polkadot/api-augment';
 import { Navigate, Outlet, Route, Routes } from 'react-router-dom';
 import { createGlobalStyle, styled } from 'styled-components';
 
