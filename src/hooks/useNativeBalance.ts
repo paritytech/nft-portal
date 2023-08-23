@@ -1,4 +1,4 @@
-import type { PalletBalancesAccountData } from '@polkadot/types/lookup';
+import type { FrameSystemAccountInfo } from '@polkadot/types/lookup';
 import { BN } from '@polkadot/util';
 import { useCallback, useEffect, useState } from 'react';
 
@@ -11,8 +11,8 @@ export const useNativeBalance = () => {
   const getNativeBalance = useCallback(async () => {
     if (api && activeAccount) {
       try {
-        const { data: balance } = await api.query.system.account(activeAccount.address);
-        setNativeBalance((balance as PalletBalancesAccountData).free.toBn());
+        const { data: balance} : FrameSystemAccountInfo = await api.query.system.account(activeAccount.address);
+        setNativeBalance(balance.free.toBn());
       } catch (error) {
         //
       }
