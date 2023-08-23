@@ -1,5 +1,3 @@
-import { StorageKey, u32 } from '@polkadot/types';
-import { AccountId32 } from '@polkadot/types/interfaces';
 import { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -24,7 +22,7 @@ export const useNfts = (collectionId: string) => {
 
   const getNftIds = useCallback(async () => {
     if (api) {
-      const results: StorageKey<[u32, u32]>[] = await api.query.nfts.item.keys(collectionId);
+      const results = await api.query.nfts.item.keys(collectionId);
 
       const nftIds = results
         .map(({ args: [, nftId] }) => nftId)
@@ -39,10 +37,7 @@ export const useNfts = (collectionId: string) => {
     async (specifiedCollectionId = '') => {
       if (api && activeAccount && collectionId) {
         const collectionIdParam = specifiedCollectionId || collectionId;
-        const results: StorageKey<[AccountId32, u32, u32]>[] = await api.query.nfts.account.keys(
-          activeAccount.address,
-          collectionIdParam,
-        );
+        const results = await api.query.nfts.account.keys(activeAccount.address, collectionIdParam);
 
         const nftIds = results
           .map(({ args: [, , nftId] }) => nftId)
