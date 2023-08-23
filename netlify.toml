@@ -1,10 +1,10 @@
 [dev]
-  command="yarn start:webpack"
+  command="pnpm start:webpack"
   targetPort=3000
   port=8888
 
 [build]
-  command="yarn test && yarn lint && yarn build"
+  command="pnpm test && pnpm lint && pnpm build"
   publish="build"
 
 [[redirects]]

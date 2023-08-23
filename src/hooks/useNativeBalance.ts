@@ -11,7 +11,7 @@ export const useNativeBalance = () => {
   const getNativeBalance = useCallback(async () => {
     if (api && activeAccount) {
       try {
-        const { data: balance} : FrameSystemAccountInfo = await api.query.system.account(activeAccount.address);
+        const { data: balance }: FrameSystemAccountInfo = await api.query.system.account(activeAccount.address);
         setNativeBalance(balance.free.toBn());
       } catch (error) {
         //
