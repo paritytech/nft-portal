@@ -2,6 +2,14 @@
 /build
 .env.development
 
+# yarn
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
+
 # Local Netlify folder
 .netlify
 
