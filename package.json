@@ -11,7 +11,7 @@
     "format": "prettier --write \"./src/**/*.{ts,tsx}\"",
     "lint": "eslint src && tsc",
     "test": "jest",
-    "validate": "yarn format && yarn lint && yarn test"
+    "validate": "pnpm format && pnpm lint && pnpm test"
   },
   "repository": {
     "type": "git",
@@ -25,6 +25,8 @@
     "@polkadot-onboard/react": "0.2.0",
     "@polkadot-onboard/wallet-connect": "0.2.0",
     "@polkadot/api": "10.9.1",
+    "@polkadot/api-augment": "10.9.1",
+    "@polkadot/util": "12.4.2",
     "@popperjs/core": "2.11.8",
     "axios": "1.4.0",
     "bootstrap": "5.3.1",
@@ -51,7 +53,9 @@
     "@babel/preset-env": "7.22.10",
     "@babel/preset-react": "7.22.5",
     "@babel/preset-typescript": "7.22.5",
+    "@babel/runtime": "7.22.10",
     "@pmmmwh/react-refresh-webpack-plugin": "0.5.11",
+    "@polkadot/types": "10.9.1",
     "@svgr/webpack": "8.1.0",
     "@trivago/prettier-plugin-sort-imports": "4.2.0",
     "@types/jest": "29.5.4",
@@ -79,6 +83,5 @@
     "webpack-cli": "5.1.4",
     "webpack-dev-server": "4.15.1",
     "webpack-merge": "5.9.0"
-  },
-  "packageManager": "yarn@3.6.2"
+  }
 }
