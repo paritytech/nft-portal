@@ -1,6 +1,6 @@
 import { css, styled } from 'styled-components';
 
-import { ChainThemes } from './constants.ts';
+import { ChainThemes } from './config.ts';
 import { CommonStyleProps, ThemeStyle } from './interfaces.ts';
 
 export const mediaQueries = {

@@ -5,7 +5,8 @@ import {
   ModalStatusTypes,
   RestrictionTypes,
   StatusMessages,
-} from './constants.ts';
+  ViewAsSettings,
+} from './config.ts';
 
 // ==========
 // INTERFACES
@@ -15,6 +16,7 @@ export interface CommonStyleProps {
   disabled?: boolean;
   type?: 'button' | 'submit' | 'reset';
   required?: boolean;
+  title?: string;
 }
 export interface CollectionMetadata extends CollectionMetadataData {
   id: string;
@@ -128,6 +130,10 @@ export interface RestrictionMessage {
 export interface NftWitnessData {
   mintPrice?: string;
   ownedItem?: string;
+}
+
+export interface UiSettings {
+  viewAs: ViewAsSettings;
 }
 
 // =====

@@ -6,7 +6,7 @@ import { saveDataToIpfs } from '@api/pinata.ts';
 import { useAccounts } from '@contexts/AccountsContext.tsx';
 import { useModalStatus } from '@contexts/ModalStatusContext.tsx';
 
-import { ModalStatusTypes, StatusMessages } from '@helpers/constants.ts';
+import { ModalStatusTypes, StatusMessages } from '@helpers/config.ts';
 import { handleError } from '@helpers/handleError.ts';
 import { NftMetadata, NftMetadataData, NftWitnessData } from '@helpers/interfaces.ts';
 import { routes } from '@helpers/routes.ts';

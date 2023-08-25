@@ -4,8 +4,7 @@ import { styled } from 'styled-components';
 
 import { useAccounts } from '@contexts/AccountsContext.tsx';
 
-import { chains } from '@helpers/config.ts';
-import { ChainTitles } from '@helpers/constants.ts';
+import { ChainTitles, chains } from '@helpers/config.ts';
 import { Chain } from '@helpers/interfaces.ts';
 import { CssArrowDown, CssFontSemiBoldS } from '@helpers/reusableStyles.ts';
 import { routes } from '@helpers/routes.ts';

@@ -1,4 +1,4 @@
-import { StatusMessages } from './constants.ts';
+import { StatusMessages } from './config.ts';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const handleError = (error: any) => {

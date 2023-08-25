@@ -3,8 +3,7 @@ import { ApiPromise, WsProvider } from '@polkadot/api';
 import { ReactElement, createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { ThemeProvider } from 'styled-components';
 
-import { chains } from '@helpers/config.ts';
-import { ChainThemes } from '@helpers/constants.ts';
+import { ChainThemes, chains } from '@helpers/config.ts';
 import { ActiveAccount, Chain, ThemeStyle } from '@helpers/interfaces.ts';
 import { themes } from '@helpers/reusableStyles.ts';
 

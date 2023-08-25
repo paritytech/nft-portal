@@ -1,6 +1,6 @@
 import { memo } from 'react';
 
-import { ExtensionIds } from '@helpers/constants.ts';
+import { ExtensionIds } from '@helpers/config.ts';
 
 import PolkadotjsIcon from '@images/icons/polkadotjs.svg';
 import SubWalletIcon from '@images/icons/sub-wallet.svg';

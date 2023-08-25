@@ -6,7 +6,7 @@ import ActionButton from '@buttons/ActionButton.tsx';
 
 import { useModalStatus } from '@contexts/ModalStatusContext.tsx';
 
-import { ModalStatusTypes } from '@helpers/constants.ts';
+import { ModalStatusTypes } from '@helpers/config.ts';
 import { SModal } from '@helpers/styledComponents.ts';
 
 import Loader from './Loader.tsx';

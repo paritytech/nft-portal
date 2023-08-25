@@ -1,6 +1,6 @@
 import { memo } from 'react';
 
-import { RestrictionTypes } from '@helpers/constants.ts';
+import { RestrictionTypes } from '@helpers/config.ts';
 import { RestrictionMessage } from '@helpers/interfaces.ts';
 
 interface ShowRestrictionMessageProps {

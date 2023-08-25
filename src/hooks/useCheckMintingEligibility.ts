@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 
 import { useAccounts } from '@contexts/AccountsContext.tsx';
 
-import { MintTypes } from '@helpers/constants.ts';
+import { MintTypes } from '@helpers/config.ts';
 import { CollectionConfigJson } from '@helpers/interfaces.ts';
 
 import { useCollections } from './useCollections.ts';

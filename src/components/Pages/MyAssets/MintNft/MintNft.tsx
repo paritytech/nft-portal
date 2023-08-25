@@ -14,7 +14,7 @@ import ShowRestrictionMessage from '@common/ShowRestrictionMessage.tsx';
 
 import { useAccounts } from '@contexts/AccountsContext.tsx';
 
-import { RestrictionTypes } from '@helpers/constants.ts';
+import { RestrictionTypes } from '@helpers/config.ts';
 import { CollectionConfigJson, CollectionMetadataData, NftWitnessData } from '@helpers/interfaces.ts';
 import { CssFontSemiBoldL, SAside, SFormBlock, SInfoRow, SPageControls } from '@helpers/reusableStyles.ts';
 import { SFormLayout, SGroup, SImageSelection, SLabel } from '@helpers/styledComponents.ts';

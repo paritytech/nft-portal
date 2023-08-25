@@ -16,7 +16,7 @@ import Radio from '@common/Radio.tsx';
 
 import { useAccounts } from '@contexts/AccountsContext.tsx';
 
-import { MintTypes } from '@helpers/constants.ts';
+import { MintTypes } from '@helpers/config.ts';
 import { CollectionConfig, CollectionMetadataData, MintType } from '@helpers/interfaces.ts';
 import {
   CssArrowDown,

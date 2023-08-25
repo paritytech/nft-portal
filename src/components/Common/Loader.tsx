@@ -3,7 +3,7 @@ import { styled } from 'styled-components';
 
 import { useModalStatus } from '@contexts/ModalStatusContext.tsx';
 
-import { ModalStatusTypes } from '@helpers/constants.ts';
+import { ModalStatusTypes } from '@helpers/config.ts';
 
 import PolkadotIcon from '@images/icons/polkadot.svg';
 
