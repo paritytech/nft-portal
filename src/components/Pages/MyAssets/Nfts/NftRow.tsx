@@ -10,6 +10,10 @@ import { routes } from '@helpers/routes.ts';
 
 import EditIcon from '@images/icons/edit.svg';
 
+const SCol = styled.td`
+  vertical-align: top;
+`;
+
 const STableImage = styled.td`
   width: 100px;
 `;
@@ -23,12 +27,8 @@ const SDesc = styled.div`
 `;
 
 const SLink = styled(Link)`
-  position: relative;
-
   svg {
-    position: absolute;
-    top: -3px;
-    right: -40px;
+    vertical-align: top;
     width: 20px;
     height: 20px;
   }
@@ -47,16 +47,16 @@ const NftRow = ({ nftMetadata }: NftRowProps) => {
       <STableImage>
         <ShowImage imageCid={image} altText={description} />
       </STableImage>
-      <td>
-        <div>
-          ID #{id}
-          <SLink to={routes.myAssets.nftEdit(collectionId, id)}>
-            <EditIcon />
-          </SLink>
-        </div>
+      <SCol>
+        <div>ID #{id}</div>
         <SName>{name}</SName>
         <SDesc>{description}</SDesc>
-      </td>
+      </SCol>
+      <SCol>
+        <SLink to={routes.myAssets.nftEdit(collectionId, id)}>
+          <EditIcon />
+        </SLink>
+      </SCol>
     </tr>
   );
 };
