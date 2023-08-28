@@ -27,6 +27,10 @@ const SIconButton = styled.button`
   &.active {
     background-color: ${({ theme }) => theme.fill12};
   }
+
+  &.no-bg:not(:hover) {
+    background-color: transparent;
+  }
 `;
 
 interface IconButtonProps extends CommonStyleProps {

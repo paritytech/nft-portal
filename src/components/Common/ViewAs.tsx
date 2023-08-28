@@ -33,13 +33,13 @@ const ViewAs = ({ handleChange, uiSettings }: ViewAsProps) => {
     <SViewAs>
       <IconButton
         title='Tile view'
-        className={uiSettings.viewAs === ViewAsSettings.TILES ? 'active' : ''}
+        className={uiSettings.viewAs === ViewAsSettings.TILES ? 'active' : 'no-bg'}
         icon={<ViewTileIcon />}
         action={() => changeView(ViewAsSettings.TILES)}
       />
       <IconButton
         title='Table view'
-        className={uiSettings.viewAs === ViewAsSettings.TABLE ? 'active' : ''}
+        className={uiSettings.viewAs === ViewAsSettings.TABLE ? 'active' : 'no-bg'}
         icon={<ViewTableIcon />}
         action={() => changeView(ViewAsSettings.TABLE)}
       />

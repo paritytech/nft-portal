@@ -10,11 +10,11 @@ import { SCard, SCardEdit } from '@helpers/styledComponents.ts';
 
 import EditIcon from '@images/icons/edit.svg';
 
-interface NftProps {
+interface NftTileProps {
   nftMetadata: NftMetadata;
 }
 
-const Nft = ({ nftMetadata }: NftProps) => {
+const NftTile = ({ nftMetadata }: NftTileProps) => {
   const { collectionId } = useParams();
   const { id, name, description, image } = nftMetadata;
 
@@ -23,7 +23,7 @@ const Nft = ({ nftMetadata }: NftProps) => {
       <ShowImage imageCid={image} altText={description} />
       <Card.Body>
         <SCardEdit className='text-muted'>
-          <span>NFT ID #{id}</span>
+          <span>ID #{id}</span>
           <Link to={routes.myAssets.nftEdit(collectionId, id)}>
             Edit
             <EditIcon />
@@ -36,4 +36,4 @@ const Nft = ({ nftMetadata }: NftProps) => {
   );
 };
 
-export default memo(Nft);
+export default memo(NftTile);
