@@ -3,7 +3,7 @@ import { styled } from 'styled-components';
 
 import IconButton from '@buttons/IconButton.tsx';
 
-import { ViewAsSettings } from '@helpers/config.ts';
+import { ViewAsOptions } from '@helpers/config.ts';
 import { UiSettings } from '@helpers/interfaces.ts';
 
 import ViewTableIcon from '@images/icons/view-table.svg';
@@ -23,7 +23,7 @@ interface ViewAsProps {
 
 const ViewAs = ({ handleChange, uiSettings }: ViewAsProps) => {
   const changeView = useCallback(
-    (selectedView: ViewAsSettings) => {
+    (selectedView: ViewAsOptions) => {
       handleChange((prevState) => ({ ...prevState, viewAs: selectedView }));
     },
     [handleChange],
@@ -33,15 +33,15 @@ const ViewAs = ({ handleChange, uiSettings }: ViewAsProps) => {
     <SViewAs>
       <IconButton
         title='Tile view'
-        className={uiSettings.viewAs === ViewAsSettings.TILES ? 'active' : 'no-bg'}
+        className={uiSettings.viewAs === ViewAsOptions.TILES ? 'active' : 'no-bg'}
         icon={<ViewTileIcon />}
-        action={() => changeView(ViewAsSettings.TILES)}
+        action={() => changeView(ViewAsOptions.TILES)}
       />
       <IconButton
         title='Table view'
-        className={uiSettings.viewAs === ViewAsSettings.TABLE ? 'active' : 'no-bg'}
+        className={uiSettings.viewAs === ViewAsOptions.TABLE ? 'active' : 'no-bg'}
         icon={<ViewTableIcon />}
-        action={() => changeView(ViewAsSettings.TABLE)}
+        action={() => changeView(ViewAsOptions.TABLE)}
       />
     </SViewAs>
   );

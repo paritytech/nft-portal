@@ -3,7 +3,7 @@ import { styled } from 'styled-components';
 
 import ViewAs from '@common/ViewAs.tsx';
 
-import { ViewAsSettings, defaultUiSettings } from '@helpers/config.ts';
+import { ViewAsOptions, defaultUiSettings } from '@helpers/config.ts';
 import { UiSettings } from '@helpers/interfaces.ts';
 import { SContentBlockContainer } from '@helpers/reusableStyles.ts';
 
@@ -35,7 +35,7 @@ const CollectionsView = () => {
     <>
       <ViewAs handleChange={setUiSettings} uiSettings={uiSettings} />
       <SContentBlockContainer>
-        {uiSettings.viewAs === ViewAsSettings.TABLE && (
+        {uiSettings.viewAs === ViewAsOptions.TABLE && (
           <STable>
             <tbody>
               {collectionsMetadata.map((collectionMetadata) => (
@@ -45,7 +45,7 @@ const CollectionsView = () => {
           </STable>
         )}
 
-        {uiSettings.viewAs === ViewAsSettings.TILES &&
+        {uiSettings.viewAs === ViewAsOptions.TILES &&
           collectionsMetadata.map((collectionMetadata) => (
             <CollectionTile key={collectionMetadata.id} collectionMetadata={collectionMetadata} />
           ))}

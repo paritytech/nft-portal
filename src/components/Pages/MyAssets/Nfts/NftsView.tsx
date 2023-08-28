@@ -3,7 +3,7 @@ import { styled } from 'styled-components';
 
 import ViewAs from '@common/ViewAs.tsx';
 
-import { ViewAsSettings, defaultUiSettings } from '@helpers/config.ts';
+import { ViewAsOptions, defaultUiSettings } from '@helpers/config.ts';
 import { NftMetadata, UiSettings } from '@helpers/interfaces.ts';
 import { SContentBlockContainer } from '@helpers/reusableStyles.ts';
 
@@ -37,7 +37,7 @@ const NftsView = ({ nftsMetadata }: NftsViewProps) => {
     <>
       <ViewAs handleChange={setUiSettings} uiSettings={uiSettings} />
       <SContentBlockContainer>
-        {uiSettings.viewAs === ViewAsSettings.TABLE && (
+        {uiSettings.viewAs === ViewAsOptions.TABLE && (
           <STable>
             <tbody>
               {nftsMetadata.map((nftMetadata) => (
@@ -47,7 +47,7 @@ const NftsView = ({ nftsMetadata }: NftsViewProps) => {
           </STable>
         )}
 
-        {uiSettings.viewAs === ViewAsSettings.TILES &&
+        {uiSettings.viewAs === ViewAsOptions.TILES &&
           nftsMetadata.map((nftMetadata) => <NftTile key={nftMetadata.id} nftMetadata={nftMetadata} />)}
       </SContentBlockContainer>
     </>

@@ -5,7 +5,7 @@ import {
   ModalStatusTypes,
   RestrictionTypes,
   StatusMessages,
-  ViewAsSettings,
+  ViewAsOptions,
 } from './config.ts';
 
 // ==========
@@ -133,7 +133,7 @@ export interface NftWitnessData {
 }
 
 export interface UiSettings {
-  viewAs: ViewAsSettings;
+  viewAs: ViewAsOptions;
 }
 
 // =====
