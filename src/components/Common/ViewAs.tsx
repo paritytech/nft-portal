@@ -6,8 +6,8 @@ import IconButton from '@buttons/IconButton.tsx';
 import { ViewAsOptions } from '@helpers/config.ts';
 import { UiSettings } from '@helpers/interfaces.ts';
 
+import ViewCardIcon from '@images/icons/view-card.svg';
 import ViewTableIcon from '@images/icons/view-table.svg';
-import ViewTileIcon from '@images/icons/view-tile.svg';
 
 const SViewAs = styled.div`
   display: flex;
@@ -32,10 +32,10 @@ const ViewAs = ({ handleChange, uiSettings }: ViewAsProps) => {
   return (
     <SViewAs>
       <IconButton
-        title='Tile view'
-        className={uiSettings.viewAs === ViewAsOptions.TILES ? 'active' : 'no-bg'}
-        icon={<ViewTileIcon />}
-        action={() => changeView(ViewAsOptions.TILES)}
+        title='Card view'
+        className={uiSettings.viewAs === ViewAsOptions.CARDS ? 'active' : 'no-bg'}
+        icon={<ViewCardIcon />}
+        action={() => changeView(ViewAsOptions.CARDS)}
       />
       <IconButton
         title='Table view'

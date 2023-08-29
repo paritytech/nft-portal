@@ -29,11 +29,11 @@ const SLinkCard = styled(SCard)`
   }
 `;
 
-interface CollectionTileProps {
+interface CollectionCardProps {
   collectionMetadata: CollectionMetadata;
 }
 
-const CollectionTile = ({ collectionMetadata }: CollectionTileProps) => {
+const CollectionCard = ({ collectionMetadata }: CollectionCardProps) => {
   const { id, name, description, image } = collectionMetadata;
   const counter = useCountOwnedNfts(id);
   const navigate = useNavigate();
@@ -53,4 +53,4 @@ const CollectionTile = ({ collectionMetadata }: CollectionTileProps) => {
   );
 };
 
-export default memo(CollectionTile);
+export default memo(CollectionCard);

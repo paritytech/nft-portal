@@ -1,6 +1,7 @@
 import { memo } from 'react';
 import { styled } from 'styled-components';
 
+import Title from '@common/Title.tsx';
 import ViewAs from '@common/ViewAs.tsx';
 
 import { ViewAsOptions, defaultUiSettings } from '@helpers/config.ts';
@@ -10,8 +11,8 @@ import { SContentBlockContainer } from '@helpers/reusableStyles.ts';
 import { useLoadCollectionsData } from '@hooks/useLoadCollectionsData.ts';
 import { useLocalStorage } from '@hooks/useLocalStorage.ts';
 
+import CollectionCard from './CollectionCard.tsx';
 import CollectionRow from './CollectionRow.tsx';
-import CollectionTile from './CollectionTile.tsx';
 
 const STable = styled.table`
   td {
@@ -33,6 +34,7 @@ const CollectionsView = () => {
 
   return (
     <>
+      <Title className='main'>My Collections</Title>
       <ViewAs handleChange={setUiSettings} uiSettings={uiSettings} />
       <SContentBlockContainer>
         {uiSettings.viewAs === ViewAsOptions.TABLE && (
@@ -45,9 +47,9 @@ const CollectionsView = () => {
           </STable>
         )}
 
-        {uiSettings.viewAs === ViewAsOptions.TILES &&
+        {uiSettings.viewAs === ViewAsOptions.CARDS &&
           collectionsMetadata.map((collectionMetadata) => (
-            <CollectionTile key={collectionMetadata.id} collectionMetadata={collectionMetadata} />
+            <CollectionCard key={collectionMetadata.id} collectionMetadata={collectionMetadata} />
           ))}
       </SContentBlockContainer>
     </>

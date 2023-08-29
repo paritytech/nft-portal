@@ -2,7 +2,6 @@ import { Navigate, Outlet, Route, Routes } from 'react-router-dom';
 import { createGlobalStyle, styled } from 'styled-components';
 
 import PrivateRoute from '@common/PrivateRoute.tsx';
-import Title from '@common/Title.tsx';
 
 import Header from '@header/Header.tsx';
 
@@ -108,24 +107,18 @@ const App = () => (
             <Route
               index
               element={
-                <>
-                  <Title className='main'>My Collections</Title>
-                  <PrivateRoute>
-                    <CollectionsView />
-                  </PrivateRoute>
-                </>
+                <PrivateRoute>
+                  <CollectionsView />
+                </PrivateRoute>
               }
             />
 
             <Route
               path={routes.myAssets.collectionEdit()}
               element={
-                <>
-                  <Title className='main'>Edit Collection Metadata</Title>
-                  <PrivateRoute redirectTo={routes.myAssets.collections}>
-                    <CollectionEdit />
-                  </PrivateRoute>
-                </>
+                <PrivateRoute redirectTo={routes.myAssets.collections}>
+                  <CollectionEdit />
+                </PrivateRoute>
               }
             />
 
@@ -133,24 +126,18 @@ const App = () => (
               <Route
                 index
                 element={
-                  <>
-                    <Title className='main'>NFTs</Title>
-                    <PrivateRoute redirectTo={routes.myAssets.collections}>
-                      <MyNfts />
-                    </PrivateRoute>
-                  </>
+                  <PrivateRoute redirectTo={routes.myAssets.collections}>
+                    <MyNfts />
+                  </PrivateRoute>
                 }
               />
 
               <Route
                 path={routes.myAssets.nftEdit()}
                 element={
-                  <>
-                    <Title className='main'>Edit NFT metadata</Title>
-                    <PrivateRoute redirectTo={routes.myAssets.collections}>
-                      <NftEdit />
-                    </PrivateRoute>
-                  </>
+                  <PrivateRoute redirectTo={routes.myAssets.collections}>
+                    <NftEdit />
+                  </PrivateRoute>
                 }
               />
             </Route>

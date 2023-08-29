@@ -10,11 +10,11 @@ import { SCard, SCardEdit } from '@helpers/styledComponents.ts';
 
 import EditIcon from '@images/icons/edit.svg';
 
-interface NftTileProps {
+interface NftCardProps {
   nftMetadata: NftMetadata;
 }
 
-const NftTile = ({ nftMetadata }: NftTileProps) => {
+const NftCard = ({ nftMetadata }: NftCardProps) => {
   const { collectionId } = useParams();
   const { id, name, description, image } = nftMetadata;
 
@@ -36,4 +36,4 @@ const NftTile = ({ nftMetadata }: NftTileProps) => {
   );
 };
 
-export default memo(NftTile);
+export default memo(NftCard);

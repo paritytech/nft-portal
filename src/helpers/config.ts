@@ -67,14 +67,14 @@ export enum ExtensionIds {
 }
 
 export enum ViewAsOptions {
+  CARDS = 'cards',
   TABLE = 'table',
-  TILES = 'tiles',
 }
 
 export const APP_NAME = 'nft-portal';
 export const IPFS_GATEWAY = process.env.REACT_APP_IPFS_GATEWAY;
 export const IPFS_NATIVE_SCHEME = 'ipfs://';
-export const defaultUiSettings = { viewAs: ViewAsOptions.TILES };
+export const defaultUiSettings = { viewAs: ViewAsOptions.CARDS };
 
 // first chain in the list will be default chain
 export const chains: Chain[] = [

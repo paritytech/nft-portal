@@ -9,8 +9,8 @@ import { SContentBlockContainer } from '@helpers/reusableStyles.ts';
 
 import { useLocalStorage } from '@hooks/useLocalStorage.ts';
 
+import NftCard from './NftCard.tsx';
 import NftRow from './NftRow.tsx';
-import NftTile from './NftTile.tsx';
 
 const STable = styled.table`
   td {
@@ -47,8 +47,8 @@ const NftsView = ({ nftsMetadata }: NftsViewProps) => {
           </STable>
         )}
 
-        {uiSettings.viewAs === ViewAsOptions.TILES &&
-          nftsMetadata.map((nftMetadata) => <NftTile key={nftMetadata.id} nftMetadata={nftMetadata} />)}
+        {uiSettings.viewAs === ViewAsOptions.CARDS &&
+          nftsMetadata.map((nftMetadata) => <NftCard key={nftMetadata.id} nftMetadata={nftMetadata} />)}
       </SContentBlockContainer>
     </>
   );
