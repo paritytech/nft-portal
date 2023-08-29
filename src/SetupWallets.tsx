@@ -15,13 +15,14 @@ const SetupWallets = () => {
   const [walletAggregator, setWalletAggregator] = useState<WalletAggregator>();
 
   useEffect(() => {
-    document.querySelector('wcm-modal')?.remove();
-    walletConnectParams.onSessionDelete = onWalletDisconnect;
-    const injectedWalletProvider = new InjectedWalletProvider(extensionConfig, APP_NAME);
-    const walletConnectProvider = new WalletConnectProvider(walletConnectParams, APP_NAME);
-
-    setWalletAggregator(new WalletAggregator([injectedWalletProvider, walletConnectProvider]));
-  }, [onWalletDisconnect]);
+      document.querySelector('wcm-modal')?.remove();
+      walletConnectParams.onSessionDelete = onWalletDisconnect;
+      const injectedWalletProvider = new InjectedWalletProvider(extensionConfig, APP_NAME);
+      const walletConnectProvider = new WalletConnectProvider(walletConnectParams, APP_NAME);
+  
+      setWalletAggregator(new WalletAggregator([injectedWalletProvider, walletConnectProvider]));
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   if (!walletAggregator) {
     return null;
