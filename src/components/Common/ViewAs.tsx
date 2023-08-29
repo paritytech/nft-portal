@@ -32,7 +32,7 @@ const ViewAs = ({ handleChange, uiSettings }: ViewAsProps) => {
   return (
     <SViewAs>
       <IconButton
-        title='Card view'
+        title='Cards view'
         className={uiSettings.viewAs === ViewAsOptions.CARDS ? 'active' : 'no-bg'}
         icon={<ViewCardIcon />}
         action={() => changeView(ViewAsOptions.CARDS)}

@@ -37,6 +37,9 @@ const NftsView = ({ nftsMetadata }: NftsViewProps) => {
     <>
       <ViewAs handleChange={setUiSettings} uiSettings={uiSettings} />
       <SContentBlockContainer>
+        {uiSettings.viewAs === ViewAsOptions.CARDS &&
+          nftsMetadata.map((nftMetadata) => <NftCard key={nftMetadata.id} nftMetadata={nftMetadata} />)}
+
         {uiSettings.viewAs === ViewAsOptions.TABLE && (
           <STable>
             <tbody>
@@ -46,9 +49,6 @@ const NftsView = ({ nftsMetadata }: NftsViewProps) => {
             </tbody>
           </STable>
         )}
-
-        {uiSettings.viewAs === ViewAsOptions.CARDS &&
-          nftsMetadata.map((nftMetadata) => <NftCard key={nftMetadata.id} nftMetadata={nftMetadata} />)}
       </SContentBlockContainer>
     </>
   );

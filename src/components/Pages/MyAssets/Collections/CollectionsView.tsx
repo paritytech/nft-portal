@@ -37,6 +37,11 @@ const CollectionsView = () => {
       <Title className='main'>My Collections</Title>
       <ViewAs handleChange={setUiSettings} uiSettings={uiSettings} />
       <SContentBlockContainer>
+        {uiSettings.viewAs === ViewAsOptions.CARDS &&
+          collectionsMetadata.map((collectionMetadata) => (
+            <CollectionCard key={collectionMetadata.id} collectionMetadata={collectionMetadata} />
+          ))}
+
         {uiSettings.viewAs === ViewAsOptions.TABLE && (
           <STable>
             <tbody>
@@ -46,11 +51,6 @@ const CollectionsView = () => {
             </tbody>
           </STable>
         )}
-
-        {uiSettings.viewAs === ViewAsOptions.CARDS &&
-          collectionsMetadata.map((collectionMetadata) => (
-            <CollectionCard key={collectionMetadata.id} collectionMetadata={collectionMetadata} />
-          ))}
       </SContentBlockContainer>
     </>
   );
