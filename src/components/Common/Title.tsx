@@ -5,17 +5,26 @@ import { CommonStyleProps } from '@helpers/interfaces.ts';
 import { CssFontBoldL, CssFontBoldXL, CssFontBoldXXL, mediaQueries } from '@helpers/reusableStyles.ts';
 
 const STitle = styled.div`
-  &.main {
+  &.main,
+  a {
     ${CssFontBoldL}
-    margin-bottom: 30px;
 
     @media ${mediaQueries.tablet} {
       ${CssFontBoldXXL}
     }
   }
 
+  &.main {
+    margin-bottom: 30px;
+  }
+
   &.secondary {
     ${CssFontBoldXL}
+  }
+
+  a {
+    color: ${({ theme }) => theme.textAndIconsPrimary};
+    text-decoration: none;
   }
 `;
 

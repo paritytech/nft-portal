@@ -3,7 +3,7 @@ import { memo, useCallback, useState } from 'react';
 
 import { useAccounts } from '@contexts/AccountsContext.tsx';
 
-import { ConnectModalSteps } from '@helpers/constants.ts';
+import { ConnectModalSteps } from '@helpers/config.ts';
 import { SModal } from '@helpers/styledComponents.ts';
 
 import ConnectToAccount from './ConnectToAccount.tsx';

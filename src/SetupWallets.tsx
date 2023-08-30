@@ -21,7 +21,8 @@ const SetupWallets = () => {
     const walletConnectProvider = new WalletConnectProvider(walletConnectParams, APP_NAME);
 
     setWalletAggregator(new WalletAggregator([injectedWalletProvider, walletConnectProvider]));
-  }, [onWalletDisconnect]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   if (!walletAggregator) {
     return null;

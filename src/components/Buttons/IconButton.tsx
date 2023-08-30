@@ -23,8 +23,13 @@ const SIconButton = styled.button`
     }
   }
 
-  &:hover {
+  &:hover,
+  &.active {
     background-color: ${({ theme }) => theme.fill12};
+  }
+
+  &.no-bg:not(:hover) {
+    background-color: transparent;
   }
 `;
 
@@ -33,8 +38,8 @@ interface IconButtonProps extends CommonStyleProps {
   action?: (event: React.MouseEvent<HTMLElement>) => void;
 }
 
-const IconButton = ({ icon, action, className }: IconButtonProps) => (
-  <SIconButton className={className} onClick={action}>
+const IconButton = ({ icon, action, className, title }: IconButtonProps) => (
+  <SIconButton className={className} onClick={action} title={title}>
     {icon}
   </SIconButton>
 );

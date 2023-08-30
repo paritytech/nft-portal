@@ -8,6 +8,7 @@ import ActionButton from '@buttons/ActionButton.tsx';
 
 import FileDropZone from '@common/FileDropZone.tsx';
 import ModalStatus from '@common/ModalStatus.tsx';
+import Title from '@common/Title.tsx';
 
 import { CollectionMetadataData } from '@helpers/interfaces.ts';
 import { SH2, SPageControls } from '@helpers/reusableStyles.ts';
@@ -56,6 +57,7 @@ const CollectionEdit = () => {
 
   return (
     <>
+      <Title className='main'>Edit Collection Metadata</Title>
       <ModalStatus />
       <SH2>NFT collection ID #{collectionId}</SH2>
 
