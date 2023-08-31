@@ -1,14 +1,14 @@
 import { memo } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { styled } from 'styled-components';
 
 import ShowImage from '@common/ShowImage.tsx';
 
+import { ViewType } from '@helpers/config.ts';
 import { NftMetadata } from '@helpers/interfaces.ts';
 import { CssFontRegularS, CssFontSemiBoldL } from '@helpers/reusableStyles.ts';
-import { routes } from '@helpers/routes.ts';
 
-import EditIcon from '@images/icons/edit.svg';
+import ActionBlock from './ActionBlock.tsx';
 
 const SCol = styled.td`
   vertical-align: top;
@@ -26,19 +26,16 @@ const SDesc = styled.div`
   ${CssFontRegularS};
 `;
 
-const SLink = styled(Link)`
-  svg {
-    vertical-align: top;
-    width: 20px;
-    height: 20px;
-  }
+const SActionBlock = styled.td`
+  vertical-align: middle;
 `;
 
 interface NftRowProps {
   nftMetadata: NftMetadata;
+  viewType: ViewType;
 }
 
-const NftRow = ({ nftMetadata }: NftRowProps) => {
+const NftRow = ({ nftMetadata, viewType }: NftRowProps) => {
   const { collectionId } = useParams();
   const { id, name, description, image } = nftMetadata;
 
@@ -52,11 +49,9 @@ const NftRow = ({ nftMetadata }: NftRowProps) => {
         <SName>{name}</SName>
         <SDesc>{description}</SDesc>
       </SCol>
-      <SCol>
-        <SLink to={routes.myAssets.nftEdit(collectionId, id)}>
-          <EditIcon />
-        </SLink>
-      </SCol>
+      <SActionBlock>
+        <ActionBlock viewType={viewType} collectionId={collectionId} nftId={id} />
+      </SActionBlock>
     </tr>
   );
 };

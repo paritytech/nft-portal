@@ -3,12 +3,13 @@ import { Link, useParams } from 'react-router-dom';
 
 import Title from '@common/Title.tsx';
 
+import { ViewType } from '@helpers/config.ts';
 import { routes } from '@helpers/routes.ts';
 
 import { useCollections } from '@hooks/useCollections.ts';
 import { useNfts } from '@hooks/useNfts.ts';
 
-import OwnedNftsView from './OwnedNftsView.tsx';
+import NftsView from '../Nfts/NftsView.tsx';
 
 const OwnedNfts = () => {
   const { collectionId } = useParams();
@@ -27,7 +28,7 @@ const OwnedNfts = () => {
       <Title className='main'>
         <Link to={routes.homepage}>{collectionMetadata ? collectionMetadata.name : ''}</Link>
       </Title>
-      <OwnedNftsView nftsMetadata={nftsMetadata} />
+      <NftsView nftsMetadata={nftsMetadata} viewType={ViewType.READ} />
     </>
   );
 };

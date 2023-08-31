@@ -6,6 +6,7 @@ import ActionButton from '@buttons/ActionButton.tsx';
 
 import Title from '@common/Title.tsx';
 
+import { ViewType } from '@helpers/config.ts';
 import { SPageControls } from '@helpers/reusableStyles.ts';
 import { routes } from '@helpers/routes.ts';
 
@@ -31,7 +32,7 @@ const Nfts = () => {
       <Title className='main'>
         <Link to='..'>{collectionMetadata ? collectionMetadata.name : ''}</Link>
       </Title>
-      <NftsView nftsMetadata={nftsMetadata} />
+      <NftsView nftsMetadata={nftsMetadata} viewType={ViewType.EDIT} />
 
       <SPageControls>
         <Stack direction='horizontal' gap={3}>

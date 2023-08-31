@@ -36,29 +36,6 @@ export const SLinkCard = styled(SCard)`
   }
 `;
 
-export const SCardEdit = styled(Card.Subtitle)`
-  display: flex;
-  justify-content: space-between;
-
-  a {
-    position: relative;
-    padding-right: 6px;
-    color: ${({ theme }) => theme.textAndIconsPrimary};
-    text-decoration: none;
-
-    &:hover {
-      text-decoration: underline;
-    }
-
-    svg {
-      width: 15px;
-      position: absolute;
-      top: -2px;
-      right: -12px;
-    }
-  }
-`;
-
 export const SModal = styled(Modal)`
   z-index: 2;
 
