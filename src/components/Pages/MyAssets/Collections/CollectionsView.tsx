@@ -1,4 +1,5 @@
 import { memo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
 
 import Title from '@common/Title.tsx';
@@ -7,6 +8,7 @@ import ViewAs from '@common/ViewAs.tsx';
 import { ViewAsOptions, defaultUiSettings } from '@helpers/config.ts';
 import { UiSettings } from '@helpers/interfaces.ts';
 import { SContentBlockContainer } from '@helpers/reusableStyles.ts';
+import { routes } from '@helpers/routes.ts';
 
 import { useLoadCollectionsData } from '@hooks/useLoadCollectionsData.ts';
 import { useLocalStorage } from '@hooks/useLocalStorage.ts';
@@ -21,6 +23,7 @@ const STable = styled.table`
 `;
 
 const CollectionsView = () => {
+  const navigate = useNavigate();
   const collectionsMetadata = useLoadCollectionsData();
   const [uiSettings, setUiSettings] = useLocalStorage<UiSettings>('ui-settings', defaultUiSettings);
 
@@ -39,7 +42,11 @@ const CollectionsView = () => {
       <SContentBlockContainer>
         {uiSettings.viewAs === ViewAsOptions.CARDS &&
           collectionsMetadata.map((collectionMetadata) => (
-            <CollectionCard key={collectionMetadata.id} collectionMetadata={collectionMetadata} />
+            <CollectionCard
+              key={collectionMetadata.id}
+              collectionMetadata={collectionMetadata}
+              openCollection={() => navigate(routes.myAssets.nfts(collectionMetadata.id))}
+            />
           ))}
 
         {uiSettings.viewAs === ViewAsOptions.TABLE && (

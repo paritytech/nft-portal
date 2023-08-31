@@ -35,12 +35,12 @@ const CollectionRow = ({ collectionMetadata }: CollectionRowProps) => {
   const counter = useCountOwnedNfts(id);
   const navigate = useNavigate();
 
-  const goIntoCollection = () => {
+  const openCollection = () => {
     navigate(routes.myAssets.nfts(id));
   };
 
   return (
-    <SRow onClick={goIntoCollection}>
+    <SRow onClick={openCollection}>
       <STableImage>
         <ShowImage imageCid={image} altText={description} />
       </STableImage>

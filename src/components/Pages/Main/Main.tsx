@@ -5,6 +5,8 @@ import Title from '@common/Title.tsx';
 
 import { CssFontRegularL, CssFontRegularM, mediaQueries } from '@helpers/reusableStyles.ts';
 
+import MyNfts from './MyNfts.tsx';
+
 const STitle = styled(Title)`
   max-width: 320px;
   margin: 0 auto;
@@ -23,7 +25,7 @@ const SIntroText = styled.p`
   ${CssFontRegularM}
 
   max-width: 320px;
-  margin: 0 auto;
+  margin: 0 auto 40px;
   text-align: center;
   color: ${({ theme }) => theme.textAndIconsSecondary};
 
@@ -41,16 +43,15 @@ const SIntroText = styled.p`
   }
 `;
 
-const Main = () => {
-  return (
-    <>
-      <STitle className='main'>Unleashing Polkadot Creative Potential</STitle>
-      <SIntroText>
-        Whether you&apos;re an artist seeking to venture into the world of NFTs or a marketplace/developer aiming to
-        integrate NFT functionality into your projects, this portal is your one-stop destination
-      </SIntroText>
-    </>
-  );
-};
+const Main = () => (
+  <>
+    <STitle className='main'>Unleashing Polkadot Creative Potential</STitle>
+    <SIntroText>
+      Whether you&apos;re an artist seeking to venture into the world of NFTs or a marketplace/developer aiming to
+      integrate NFT functionality into your projects, this portal is your one-stop destination
+    </SIntroText>
+    <MyNfts />
+  </>
+);
 
 export default memo(Main);

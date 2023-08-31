@@ -17,7 +17,7 @@ import { useNfts } from '@hooks/useNfts.ts';
 
 const NftEdit = () => {
   const { collectionId, nftId } = useParams();
-  const { getNftMetadata, saveNftMetadata, nftMetadata, isNftDataLoading } = useNfts(collectionId || '');
+  const { getNftMetadata, saveNftMetadata, nftMetadata, isNftDataLoading } = useNfts(collectionId);
   const nftNameRef = useRef<HTMLInputElement>(null);
   const nftDescriptionRef = useRef<HTMLTextAreaElement>(null);
   const [imageCid, setImageCid] = useState<string>();

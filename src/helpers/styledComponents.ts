@@ -2,7 +2,7 @@
 import { Card, Form, FormGroup, FormLabel, Modal } from 'react-bootstrap';
 import { styled } from 'styled-components';
 
-import { CssFormControl, mediaQueries } from './reusableStyles.ts';
+import { CssFontRegularS, CssFontSemiBoldL, CssFormControl, mediaQueries } from './reusableStyles.ts';
 
 export const SCard = styled(Card)`
   width: 360px;
@@ -16,6 +16,23 @@ export const SCard = styled(Card)`
 
   @media ${mediaQueries.laptop} {
     width: 360px;
+  }
+`;
+
+export const SLinkCard = styled(SCard)`
+  cursor: pointer;
+
+  .card-img {
+    border-radius: 12px;
+  }
+
+  .card-title {
+    ${CssFontSemiBoldL}
+  }
+
+  .card-text {
+    ${CssFontRegularS}
+    color: ${({ theme }) => theme.textAndIconsTertiary}
   }
 `;
 

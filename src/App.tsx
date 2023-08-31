@@ -16,7 +16,9 @@ import MintNft from '@pages/MyAssets/MintNft/MintNft.tsx';
 import MintNftIndex from '@pages/MyAssets/MintNft/MintNftIndex.tsx';
 import SelectCollection from '@pages/MyAssets/MintNft/SelectCollection.tsx';
 import NftEdit from '@pages/MyAssets/Nfts/NftEdit.tsx';
-import MyNfts from '@pages/MyAssets/Nfts/Nfts.tsx';
+import Nfts from '@pages/MyAssets/Nfts/Nfts.tsx';
+import OwnedNft from '@pages/MyAssets/OwnedNfts/OwnedNft.tsx';
+import OwnedNfts from '@pages/MyAssets/OwnedNfts/OwnedNfts.tsx';
 
 const SMainContainer = styled.main`
   width: 100%;
@@ -122,12 +124,30 @@ const App = () => (
               }
             />
 
+            <Route
+              path={routes.myAssets.ownedNfts()}
+              element={
+                <PrivateRoute redirectTo={routes.homepage}>
+                  <OwnedNfts />
+                </PrivateRoute>
+              }
+            />
+
+            <Route
+              path={routes.myAssets.ownedNft()}
+              element={
+                <PrivateRoute redirectTo={routes.homepage}>
+                  <OwnedNft />
+                </PrivateRoute>
+              }
+            />
+
             <Route path={routes.myAssets.nfts()} element={<Outlet />}>
               <Route
                 index
                 element={
                   <PrivateRoute redirectTo={routes.myAssets.collections}>
-                    <MyNfts />
+                    <Nfts />
                   </PrivateRoute>
                 }
               />

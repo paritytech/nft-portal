@@ -17,7 +17,7 @@ import NftsView from './NftsView.tsx';
 const Nfts = () => {
   const { collectionId } = useParams();
   const { getCollectionMetadata, collectionMetadata } = useCollections();
-  const { getNftsMetadata, nftsMetadata } = useNfts(collectionId || '');
+  const { getNftsMetadata, nftsMetadata } = useNfts(collectionId);
 
   useEffect(() => {
     if (collectionId) {

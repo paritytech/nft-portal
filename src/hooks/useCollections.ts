@@ -25,7 +25,8 @@ export const useCollections = () => {
   const [collectionMetadata, setCollectionMetadata] = useState<CollectionMetadata | null>(null);
   const [isCollectionDataLoading, setIsCollectionDataLoading] = useState(false);
 
-  const getCollectionIds = useCallback(async () => {
+  // gets IDs of collections that user created
+  const getOwnedCollectionIds = useCallback(async () => {
     if (api && activeAccount) {
       const results = await api.query.nfts.collectionAccount.keys(activeAccount.address);
 
@@ -42,61 +43,80 @@ export const useCollections = () => {
     return null;
   }, [api, activeAccount]);
 
-  const getCollectionsMetadata = useCallback(async () => {
-    if (api) {
-      setIsCollectionDataLoading(true);
+  // gets IDs of collections where user owns at least one NFT
+  const getCollectionIds = useCallback(async () => {
+    if (api && activeAccount) {
+      const results = await api.query.nfts.account.keys(activeAccount.address);
 
-      try {
-        let metadata: CollectionMetadata[] = [];
+      const collectionIds = results
+        .map(({ args: [, collectionId] }) => collectionId)
+        .sort((a, b) => a.cmp(b))
+        .map((collectionId) => collectionId.toString());
 
-        const ownedCollectionIds = await getCollectionIds();
-        if (!ownedCollectionIds) {
-          setCollectionsMetadata(metadata);
-          return;
-        }
+      const distinctCollectionIds = [...new Set(collectionIds)];
 
-        const rawMetadata = await api.query.nfts.collectionMetadataOf.multi(ownedCollectionIds);
-
-        if (Array.isArray(rawMetadata) && rawMetadata.length > 0) {
-          const fetchCalls = rawMetadata.map((metadata) => {
-            const primitiveMetadata = metadata.toPrimitive() as unknown as CollectionMetadataPrimitive;
-            if (!primitiveMetadata?.data) {
-              return null;
-            }
-
-            return fetch(getFetchableUrl(primitiveMetadata.data));
-          });
-
-          const fetchedData = await Promise.all(fetchCalls);
-          const parsedData = await Promise.all(fetchedData.map((data) => (data !== null ? data.json() : null)));
-
-          metadata = parsedData.map((data, index) => ({
-            id: ownedCollectionIds[index],
-            name: data?.name,
-            description: data?.description,
-            image: getCidHash(data?.image),
-          }));
-        }
-
-        setCollectionsMetadata(metadata);
-      } catch (error) {
-        //
-      } finally {
-        setIsCollectionDataLoading(false);
-      }
+      return distinctCollectionIds;
     }
-  }, [api, getCollectionIds]);
+  }, [api, activeAccount]);
+
+  const getCollectionsMetadata = useCallback(
+    async (owned: boolean = true) => {
+      if (api) {
+        setIsCollectionDataLoading(true);
+
+        try {
+          let metadata: CollectionMetadata[] = [];
+
+          const collectionIds = owned ? await getOwnedCollectionIds() : await getCollectionIds();
+          if (!collectionIds) {
+            setCollectionsMetadata(metadata);
+            return;
+          }
+
+          const rawMetadata = await api.query.nfts.collectionMetadataOf.multi(collectionIds);
+
+          if (Array.isArray(rawMetadata) && rawMetadata.length > 0) {
+            const fetchCalls = rawMetadata.map((metadata) => {
+              const primitiveMetadata = metadata.toPrimitive() as unknown as CollectionMetadataPrimitive;
+              if (!primitiveMetadata?.data) {
+                return null;
+              }
+
+              return fetch(getFetchableUrl(primitiveMetadata.data));
+            });
+
+            const fetchedData = await Promise.all(fetchCalls);
+            const parsedData = await Promise.all(fetchedData.map((data) => (data !== null ? data.json() : null)));
+
+            metadata = parsedData.map((data, index) => ({
+              id: collectionIds[index],
+              name: data?.name,
+              description: data?.description,
+              image: getCidHash(data?.image),
+            }));
+          }
+
+          setCollectionsMetadata(metadata);
+        } catch (error) {
+          //
+        } finally {
+          setIsCollectionDataLoading(false);
+        }
+      }
+    },
+    [api, getOwnedCollectionIds, getCollectionIds],
+  );
 
   const getCollectionMetadata = useCallback(
-    async (collectionId: string) => {
+    async (collectionId: string, owned: boolean = true) => {
       if (api && collectionId) {
         setIsCollectionDataLoading(true);
 
         try {
           let metadata: CollectionMetadata | null = null;
 
-          const ownedCollectionIds = await getCollectionIds();
-          if (!ownedCollectionIds || !ownedCollectionIds.includes(collectionId)) {
+          const collectionIds = owned ? await getOwnedCollectionIds() : await getCollectionIds();
+          if (!collectionIds || !collectionIds.includes(collectionId)) {
             return;
           }
 
@@ -126,7 +146,7 @@ export const useCollections = () => {
         setCollectionMetadata(null);
       }
     },
-    [api, getCollectionIds],
+    [api, getOwnedCollectionIds, getCollectionIds],
   );
 
   const saveCollectionMetadata = useCallback(

@@ -52,7 +52,7 @@ const SMintPrice = styled.div`
 const MintNft = () => {
   const { collectionId } = useParams();
   const { getCollectionConfig } = useCollections();
-  const { mintNft } = useNfts(collectionId || '');
+  const { mintNft } = useNfts(collectionId);
   const { api, activeAccount } = useAccounts();
   const {
     restrictionMessages,

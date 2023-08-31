@@ -12,7 +12,7 @@ import { useRestrictions } from './useRestrictions.tsx';
 export const useCheckMintingEligibility = (collectionId: string) => {
   const { api } = useAccounts();
   const { getCollectionConfig } = useCollections();
-  const { getNft, getNftIds, getOwnedNftIds } = useNfts(collectionId);
+  const { getNft, getNftIds, getOwnedNftIdsOfCollection } = useNfts(collectionId);
   const { nftTaken, allNftsMinted, mustBeHolderOf, restrictionMessages, clearRestrictions } = useRestrictions();
   const [isEligibleToMint, setIsEligibleToMint] = useState(false);
   const [ownedNftsFromAnotherCollection, setOwnedNftsFromAnotherCollection] = useState<string[] | null>(null);
@@ -57,7 +57,7 @@ export const useCheckMintingEligibility = (collectionId: string) => {
         ) {
           const holderOfCollectionId = config.mintSettings.mintType.holderOf.toString();
 
-          const ownedNftIds = await getOwnedNftIds(holderOfCollectionId);
+          const ownedNftIds = await getOwnedNftIdsOfCollection(holderOfCollectionId);
           const availableForClaimingNfts: string[] = [];
 
           // filter out nfts that were already used to claim
@@ -106,7 +106,7 @@ export const useCheckMintingEligibility = (collectionId: string) => {
         return false;
       }
     },
-    [api, collectionId, mustBeHolderOf, getOwnedNftIds],
+    [api, collectionId, mustBeHolderOf, getOwnedNftIdsOfCollection],
   );
 
   const checkEligibilityToMint = useCallback(
