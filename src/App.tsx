@@ -124,23 +124,25 @@ const App = () => (
               }
             />
 
-            <Route
-              path={routes.myAssets.ownedNfts()}
-              element={
-                <PrivateRoute redirectTo={routes.homepage}>
-                  <OwnedNfts />
-                </PrivateRoute>
-              }
-            />
+            <Route path={routes.myAssets.ownedNfts()} element={<Outlet />}>
+              <Route
+                index
+                element={
+                  <PrivateRoute>
+                    <OwnedNfts />
+                  </PrivateRoute>
+                }
+              />
 
-            <Route
-              path={routes.myAssets.ownedNft()}
-              element={
-                <PrivateRoute redirectTo={routes.homepage}>
-                  <OwnedNft />
-                </PrivateRoute>
-              }
-            />
+              <Route
+                path={routes.myAssets.ownedNft()}
+                element={
+                  <PrivateRoute redirectTo={routes.homepage}>
+                    <OwnedNft />
+                  </PrivateRoute>
+                }
+              />
+            </Route>
 
             <Route path={routes.myAssets.nfts()} element={<Outlet />}>
               <Route

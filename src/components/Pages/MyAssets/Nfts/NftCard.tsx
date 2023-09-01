@@ -7,6 +7,7 @@ import ShowImage from '@common/ShowImage.tsx';
 
 import { ViewType } from '@helpers/config.ts';
 import { NftMetadata } from '@helpers/interfaces.ts';
+import { SItemName } from '@helpers/reusableStyles.ts';
 import { SCard } from '@helpers/styledComponents.ts';
 
 import ActionBlock from './ActionBlock.tsx';
@@ -34,7 +35,7 @@ const NftCard = ({ nftMetadata, viewType }: NftCardProps) => {
       <ShowImage imageCid={image} altText={description} />
       <Card.Body>
         <div>ID #{id}</div>
-        <Card.Title>{name}</Card.Title>
+        <SItemName>{name}</SItemName>
         <Card.Text>{description}</Card.Text>
         <SActionBlock>
           <ActionBlock viewType={viewType} collectionId={collectionId} nftId={id} />

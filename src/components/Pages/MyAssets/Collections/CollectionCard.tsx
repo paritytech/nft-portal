@@ -4,6 +4,7 @@ import { Card } from 'react-bootstrap';
 import ShowImage from '@common/ShowImage.tsx';
 
 import { CollectionMetadata } from '@helpers/interfaces.ts';
+import { SItemDescription, SItemName } from '@helpers/reusableStyles.ts';
 import { SLinkCard } from '@helpers/styledComponents.ts';
 
 import { useCountOwnedNfts } from '@hooks/useCountOwnedNfts.ts';
@@ -21,8 +22,8 @@ const CollectionCard = ({ collectionMetadata, openCollection }: CollectionCardPr
     <SLinkCard onClick={openCollection}>
       <ShowImage imageCid={image} altText={description} />
       <Card.Body>
-        <Card.Title>{name}</Card.Title>
-        <Card.Text>{counter}</Card.Text>
+        <SItemName>{name}</SItemName>
+        <SItemDescription>{counter}</SItemDescription>
       </Card.Body>
     </SLinkCard>
   );

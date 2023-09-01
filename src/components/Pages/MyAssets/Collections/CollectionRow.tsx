@@ -5,25 +5,13 @@ import { styled } from 'styled-components';
 import ShowImage from '@common/ShowImage.tsx';
 
 import { CollectionMetadata } from '@helpers/interfaces.ts';
-import { CssFontRegularS, CssFontSemiBoldL } from '@helpers/reusableStyles.ts';
+import { SItemDescription, SItemImage, SItemName } from '@helpers/reusableStyles.ts';
 import { routes } from '@helpers/routes.ts';
 
 import { useCountOwnedNfts } from '@hooks/useCountOwnedNfts.ts';
 
 const SRow = styled.tr`
   cursor: pointer;
-`;
-
-const STableImage = styled.td`
-  width: 100px;
-`;
-
-const SName = styled.div`
-  ${CssFontSemiBoldL};
-`;
-
-const SCounter = styled.div`
-  ${CssFontRegularS};
 `;
 
 interface CollectionRowProps {
@@ -41,12 +29,12 @@ const CollectionRow = ({ collectionMetadata }: CollectionRowProps) => {
 
   return (
     <SRow onClick={openCollection}>
-      <STableImage>
+      <SItemImage>
         <ShowImage imageCid={image} altText={description} />
-      </STableImage>
+      </SItemImage>
       <td>
-        <SName>{name}</SName>
-        <SCounter>{counter}</SCounter>
+        <SItemName>{name}</SItemName>
+        <SItemDescription>{counter}</SItemDescription>
       </td>
     </SRow>
   );

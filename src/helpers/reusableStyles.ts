@@ -451,19 +451,6 @@ export const SConnectButton = styled.button`
   }
 `;
 
-export const SRow = styled.section`
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  height: 30px;
-`;
-
-export const SColumn = styled.section`
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-`;
-
 export const SActionButton = styled.button<CommonStyleProps>`
   padding: 0 16px;
   border-radius: 32px;
@@ -524,4 +511,16 @@ export const SAside = styled.aside`
   @media ${mediaQueries.tablet} {
     display: block;
   }
+`;
+
+export const SItemImage = styled.td`
+  width: 100px;
+`;
+
+export const SItemName = styled.div`
+  ${CssFontSemiBoldL};
+`;
+
+export const SItemDescription = styled.div`
+  ${CssFontRegularS};
 `;

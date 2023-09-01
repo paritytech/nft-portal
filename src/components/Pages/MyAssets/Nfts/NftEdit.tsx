@@ -57,9 +57,11 @@ const NftEdit = () => {
 
   return (
     <>
-      <Title className='main'>Edit NFT metadata</Title>
+      <Title className='main'>
+        <Link to='..'>Edit NFT metadata</Link>
+      </Title>
       <ModalStatus />
-      <SH2>NFT ID #{nftId}</SH2>
+      <SH2>ID #{nftId}</SH2>
 
       <Form onSubmit={submitMetadata}>
         <Form.Group className='mb-3'>

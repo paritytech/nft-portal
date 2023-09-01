@@ -57,7 +57,9 @@ const CollectionEdit = () => {
 
   return (
     <>
-      <Title className='main'>Edit Collection Metadata</Title>
+      <Title className='main'>
+        <Link to='..'>Edit Collection Metadata</Link>
+      </Title>
       <ModalStatus />
       <SH2>NFT collection ID #{collectionId}</SH2>
 

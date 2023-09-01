@@ -6,24 +6,12 @@ import ShowImage from '@common/ShowImage.tsx';
 
 import { ViewType } from '@helpers/config.ts';
 import { NftMetadata } from '@helpers/interfaces.ts';
-import { CssFontRegularS, CssFontSemiBoldL } from '@helpers/reusableStyles.ts';
+import { SItemDescription, SItemImage, SItemName } from '@helpers/reusableStyles.ts';
 
 import ActionBlock from './ActionBlock.tsx';
 
 const SCol = styled.td`
   vertical-align: top;
-`;
-
-const STableImage = styled.td`
-  width: 100px;
-`;
-
-const SName = styled.div`
-  ${CssFontSemiBoldL};
-`;
-
-const SDesc = styled.div`
-  ${CssFontRegularS};
 `;
 
 const SActionBlock = styled.td`
@@ -41,13 +29,13 @@ const NftRow = ({ nftMetadata, viewType }: NftRowProps) => {
 
   return (
     <tr>
-      <STableImage>
+      <SItemImage>
         <ShowImage imageCid={image} altText={description} />
-      </STableImage>
+      </SItemImage>
       <SCol>
         <div>ID #{id}</div>
-        <SName>{name}</SName>
-        <SDesc>{description}</SDesc>
+        <SItemName>{name}</SItemName>
+        <SItemDescription>{description}</SItemDescription>
       </SCol>
       <SActionBlock>
         <ActionBlock viewType={viewType} collectionId={collectionId} nftId={id} />

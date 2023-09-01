@@ -15,7 +15,7 @@ export const routes = {
     collectionEdit: (collectionId: string = COLLECTION_ID_PARAM) => `/my-assets/collections/edit/${collectionId}`,
     ownedNfts: (collectionId: string = COLLECTION_ID_PARAM) => `/my-assets/collections/${collectionId}/owned-nfts`,
     ownedNft: (collectionId: string = COLLECTION_ID_PARAM, nftId: string = NFT_ID_PARAM) =>
-      `/my-assets/collections/${collectionId}/owned-nft/${nftId}`,
+      `/my-assets/collections/${collectionId}/owned-nfts/${nftId}`,
     nfts: (collectionId: string = COLLECTION_ID_PARAM) => `/my-assets/collections/${collectionId}/nfts`,
     nftEdit: (collectionId: string = COLLECTION_ID_PARAM, nftId: string = NFT_ID_PARAM) =>
       `/my-assets/collections/${collectionId}/nfts/edit/${nftId}`,
