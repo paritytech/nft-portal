@@ -53,9 +53,7 @@ export const useCollections = () => {
         .sort((a, b) => a.cmp(b))
         .map((collectionId) => collectionId.toString());
 
-      const distinctCollectionIds = [...new Set(collectionIds)];
-
-      return distinctCollectionIds;
+      return [...new Set(collectionIds)];
     }
   }, [api, activeAccount]);
 

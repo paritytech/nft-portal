@@ -28,7 +28,7 @@ const MyNfts = () => {
   }
 
   if (!collectionsMetadata || isCollectionDataLoading) {
-    return <Loader isSpinning={true} />;
+    return <Loader isSpinning />;
   }
 
   if (collectionsMetadata.length === 0) {
