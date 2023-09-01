@@ -4,8 +4,6 @@ import { memo, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { styled } from 'styled-components';
 
-import Identicon from '@common/Identicon.tsx';
-
 import { useAccounts } from '@contexts/AccountsContext.tsx';
 
 import { CssFontRegularS, CssFontSemiBoldM, CssFontSemiBoldS, SConnectButton } from '@helpers/reusableStyles.ts';
@@ -24,6 +22,8 @@ import HeartIcon from '@images/icons/heart.svg';
 import ImageIcon from '@images/icons/image.svg';
 
 import ConnectModal from '@modals/ConnectModal/ConnectModal.tsx';
+
+import Identicon from './Identicon.tsx';
 
 const SContainer = styled.div`
   position: relative;

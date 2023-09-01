@@ -25,7 +25,7 @@ const SIntroText = styled.p`
   ${CssFontRegularM}
 
   max-width: 320px;
-  margin: 0 auto 40px;
+  margin: 0 auto 80px;
   text-align: center;
   color: ${({ theme }) => theme.textAndIconsSecondary};
 

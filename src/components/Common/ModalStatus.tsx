@@ -32,7 +32,7 @@ const ModalStatus = () => {
     <SModal centered show={isModalVisible}>
       <Modal.Header className='border-0'></Modal.Header>
       <Modal.Body className='text-center'>
-        <Loader />
+        <Loader isSpinning={status.type === ModalStatusTypes.IN_PROGRESS} />
         <SStatusMessage>{status.message}</SStatusMessage>
         {showButton && (
           <ActionButton action={concludeModalStatus} className='main padding32'>

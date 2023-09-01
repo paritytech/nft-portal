@@ -24,7 +24,7 @@ const STable = styled.table`
 
 const CollectionsView = () => {
   const navigate = useNavigate();
-  const collectionsMetadata = useLoadCollectionsData();
+  const { collectionsMetadata } = useLoadCollectionsData();
   const [uiSettings, setUiSettings] = useLocalStorage<UiSettings>('ui-settings', defaultUiSettings);
 
   if (collectionsMetadata === null) {

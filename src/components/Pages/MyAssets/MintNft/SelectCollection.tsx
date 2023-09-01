@@ -59,7 +59,7 @@ const SCollectionOption = styled(Link)`
 `;
 
 const SelectCollection = () => {
-  const collectionsMetadata = useLoadCollectionsData();
+  const { collectionsMetadata } = useLoadCollectionsData();
 
   if (collectionsMetadata === null) {
     return <>Gathering data... please wait</>;
