@@ -174,14 +174,14 @@ export const useCollections = () => {
                 events.some(({ event: { method } }) => {
                   if (method === 'ExtrinsicSuccess') {
                     setStatus({ type: ModalStatusTypes.COMPLETE, message: StatusMessages.METADATA_UPDATED });
-                    setAction(() => () => navigate(routes.myAssets.mintNftMain));
+                    setAction(() => () => navigate(routes.myAssets.collections));
 
                     return true;
                   }
 
                   if (method === 'ExtrinsicFailed') {
                     setStatus({ type: ModalStatusTypes.ERROR, message: StatusMessages.ACTION_FAILED });
-                    setAction(() => () => navigate(routes.myAssets.mintNftMain));
+                    setAction(() => () => navigate(routes.myAssets.collections));
 
                     return true;
                   }

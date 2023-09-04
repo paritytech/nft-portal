@@ -1,5 +1,4 @@
 import { memo } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
 
 import Loader from '@common/Loader.tsx';
@@ -7,8 +6,8 @@ import Title from '@common/Title.tsx';
 
 import { useAccounts } from '@contexts/AccountsContext.tsx';
 
+import { ViewType } from '@helpers/config.ts';
 import { SContentBlockContainer } from '@helpers/reusableStyles.ts';
-import { routes } from '@helpers/routes.ts';
 
 import { useLoadCollectionsMetadata } from '@hooks/useLoadCollectionsMetadata.ts';
 
@@ -19,7 +18,6 @@ const STitle = styled(Title)`
 `;
 
 const MyNfts = () => {
-  const navigate = useNavigate();
   const { collectionsMetadata, isCollectionsMetadataLoading } = useLoadCollectionsMetadata(false);
   const { storedChain, activeAccount } = useAccounts();
 
@@ -53,7 +51,7 @@ const MyNfts = () => {
           <CollectionCard
             key={collectionMetadata.id}
             collectionMetadata={collectionMetadata}
-            openCollection={() => navigate(routes.myAssets.ownedNfts(collectionMetadata.id))}
+            viewType={ViewType.READ}
           />
         ))}
       </SContentBlockContainer>

@@ -6,16 +6,12 @@ import ShowImage from '@common/ShowImage.tsx';
 
 import { ViewType } from '@helpers/config.ts';
 import { NftMetadata } from '@helpers/interfaces.ts';
-import { SItemDescription, SItemImage, SItemName } from '@helpers/reusableStyles.ts';
+import { SItemDescription, SItemImage, SItemName, SRowActionBlock } from '@helpers/reusableStyles.ts';
 
-import ActionBlock from './ActionBlock.tsx';
+import NftActionBlock from './NftActionBlock.tsx';
 
 const SCol = styled.td`
   vertical-align: top;
-`;
-
-const SActionBlock = styled.td`
-  vertical-align: middle;
 `;
 
 interface NftRowProps {
@@ -36,10 +32,10 @@ const NftRow = ({ nftMetadata, viewType }: NftRowProps) => {
         <div>ID #{id}</div>
         <SItemName>{name}</SItemName>
         <SItemDescription>{description}</SItemDescription>
+        <SRowActionBlock>
+          <NftActionBlock viewType={viewType} collectionId={collectionId} nftId={id} />
+        </SRowActionBlock>
       </SCol>
-      <SActionBlock>
-        <ActionBlock viewType={viewType} collectionId={collectionId} nftId={id} />
-      </SActionBlock>
     </tr>
   );
 };

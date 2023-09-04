@@ -69,7 +69,7 @@ const SSeparator = styled.div`
   margin: 12px 0;
 `;
 
-const SActionBlock = styled.div`
+const SConnectActionBlock = styled.div`
   display: flex;
   flex-direction: column;
 
@@ -193,7 +193,7 @@ const Connect = () => {
             <SSeparator />
           </STopInfo>
 
-          <SActionBlock onClick={() => setIsAccountActionsVisible(false)}>
+          <SConnectActionBlock onClick={() => setIsAccountActionsVisible(false)}>
             <SSimpleAction onClick={copyToClipboard}>
               <span>Copy Wallet Address</span>
               <SIcon className={buttonText || ''}>
@@ -225,7 +225,7 @@ const Connect = () => {
                 <ExitIcon />
               </SIcon>
             </SSimpleAction>
-          </SActionBlock>
+          </SConnectActionBlock>
         </SAccountActions>
       </SContainer>
 

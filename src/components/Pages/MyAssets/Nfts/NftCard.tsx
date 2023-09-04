@@ -1,25 +1,15 @@
 import { memo } from 'react';
 import { Card } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
-import { styled } from 'styled-components';
 
 import ShowImage from '@common/ShowImage.tsx';
 
 import { ViewType } from '@helpers/config.ts';
 import { NftMetadata } from '@helpers/interfaces.ts';
-import { SItemName } from '@helpers/reusableStyles.ts';
+import { SCardActionBlock, SItemDescription, SItemName } from '@helpers/reusableStyles.ts';
 import { SCard } from '@helpers/styledComponents.ts';
 
-import ActionBlock from './ActionBlock.tsx';
-
-const SActionBlock = styled.div`
-  display: flex;
-  justify-content: center;
-
-  button {
-    width: 50%;
-  }
-`;
+import NftActionBlock from './NftActionBlock.tsx';
 
 interface NftCardProps {
   nftMetadata: NftMetadata;
@@ -36,10 +26,10 @@ const NftCard = ({ nftMetadata, viewType }: NftCardProps) => {
       <Card.Body>
         <div>ID #{id}</div>
         <SItemName>{name}</SItemName>
-        <Card.Text>{description}</Card.Text>
-        <SActionBlock>
-          <ActionBlock viewType={viewType} collectionId={collectionId} nftId={id} />
-        </SActionBlock>
+        <SItemDescription>{description}</SItemDescription>
+        <SCardActionBlock>
+          <NftActionBlock viewType={viewType} collectionId={collectionId} nftId={id} />
+        </SCardActionBlock>
       </Card.Body>
     </SCard>
   );

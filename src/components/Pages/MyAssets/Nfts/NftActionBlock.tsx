@@ -6,20 +6,20 @@ import ActionButton from '@buttons/ActionButton.tsx';
 import { ViewType } from '@helpers/config.ts';
 import { routes } from '@helpers/routes.ts';
 
-interface ActionBlockProps {
+interface NftActionBlockProps {
   viewType: ViewType;
   collectionId?: string;
   nftId: string;
 }
 
-const ActionBlock = ({ viewType, collectionId, nftId }: ActionBlockProps) => {
+const NftActionBlock = ({ viewType, collectionId, nftId }: NftActionBlockProps) => {
   const navigate = useNavigate();
 
   return (
     <>
       {viewType === ViewType.EDIT && (
         <ActionButton action={() => navigate(routes.myAssets.nftEdit(collectionId, nftId))} className='main'>
-          Edit
+          Edit metadata
         </ActionButton>
       )}
       {viewType === ViewType.READ && (
@@ -31,4 +31,4 @@ const ActionBlock = ({ viewType, collectionId, nftId }: ActionBlockProps) => {
   );
 };
 
-export default memo(ActionBlock);
+export default memo(NftActionBlock);

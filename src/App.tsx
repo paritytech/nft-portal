@@ -5,6 +5,7 @@ import PrivateRoute from '@common/PrivateRoute.tsx';
 
 import Header from '@header/Header.tsx';
 
+import { ViewType } from '@helpers/config.ts';
 import { ALTERNATE_BACKGROUND_CLASSNAME, mediaQueries } from '@helpers/reusableStyles.ts';
 import { routes } from '@helpers/routes.ts';
 
@@ -110,7 +111,7 @@ const App = () => (
               index
               element={
                 <PrivateRoute>
-                  <CollectionsView />
+                  <CollectionsView viewType={ViewType.EDIT} />
                 </PrivateRoute>
               }
             />

@@ -514,13 +514,43 @@ export const SAside = styled.aside`
 `;
 
 export const SItemImage = styled.td`
-  width: 100px;
+  width: 150px;
+  min-width: 150px;
 `;
 
 export const SItemName = styled.div`
-  ${CssFontSemiBoldL};
+  ${CssFontSemiBoldM};
+
+  @media ${mediaQueries.tablet} {
+    ${CssFontSemiBoldL};
+  }
 `;
 
 export const SItemDescription = styled.div`
   ${CssFontRegularS};
+`;
+
+export const SCardActionBlock = styled.div`
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 10px;
+
+  button {
+    width: 50%;
+  }
+`;
+
+export const SRowActionBlock = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+
+  button.main {
+    display: block;
+    height: 30px;
+    line-height: 30px;
+    overflow: hidden;
+  }
 `;
