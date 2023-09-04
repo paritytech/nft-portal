@@ -23,7 +23,7 @@ export const useCollections = () => {
   const { openModalStatus, setStatus, setAction } = useModalStatus();
   const [collectionsMetadata, setCollectionsMetadata] = useState<CollectionMetadata[] | null>(null);
   const [collectionMetadata, setCollectionMetadata] = useState<CollectionMetadata | null>(null);
-  const [isCollectionDataLoading, setIsCollectionDataLoading] = useState(false);
+  const [isCollectionsMetadataLoading, setIsCollectionsMetadataLoading] = useState(false);
 
   // gets IDs of collections that user created
   const getOwnedCollectionIds = useCallback(async () => {
@@ -60,7 +60,7 @@ export const useCollections = () => {
   const getCollectionsMetadata = useCallback(
     async (owned: boolean = true) => {
       if (api) {
-        setIsCollectionDataLoading(true);
+        setIsCollectionsMetadataLoading(true);
 
         try {
           let metadata: CollectionMetadata[] = [];
@@ -98,7 +98,7 @@ export const useCollections = () => {
         } catch (error) {
           //
         } finally {
-          setIsCollectionDataLoading(false);
+          setIsCollectionsMetadataLoading(false);
         }
       }
     },
@@ -108,7 +108,7 @@ export const useCollections = () => {
   const getCollectionMetadata = useCallback(
     async (collectionId: string, owned: boolean = true) => {
       if (api && collectionId) {
-        setIsCollectionDataLoading(true);
+        setIsCollectionsMetadataLoading(true);
 
         try {
           let metadata: CollectionMetadata | null = null;
@@ -138,7 +138,7 @@ export const useCollections = () => {
         } catch (error) {
           //
         } finally {
-          setIsCollectionDataLoading(false);
+          setIsCollectionsMetadataLoading(false);
         }
       } else {
         setCollectionMetadata(null);
@@ -259,7 +259,7 @@ export const useCollections = () => {
     createCollection,
     collectionsMetadata,
     collectionMetadata,
-    isCollectionDataLoading,
+    isCollectionsMetadataLoading,
     getCollectionConfig,
   };
 };

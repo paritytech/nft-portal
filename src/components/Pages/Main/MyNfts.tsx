@@ -10,7 +10,7 @@ import { useAccounts } from '@contexts/AccountsContext.tsx';
 import { SContentBlockContainer } from '@helpers/reusableStyles.ts';
 import { routes } from '@helpers/routes.ts';
 
-import { useLoadCollectionsData } from '@hooks/useLoadCollectionsData.ts';
+import { useLoadCollectionsMetadata } from '@hooks/useLoadCollectionsMetadata.ts';
 
 import CollectionCard from '@pages/MyAssets/Collections/CollectionCard.tsx';
 
@@ -20,14 +20,14 @@ const STitle = styled(Title)`
 
 const MyNfts = () => {
   const navigate = useNavigate();
-  const { collectionsMetadata, isCollectionDataLoading } = useLoadCollectionsData(false);
+  const { collectionsMetadata, isCollectionsMetadataLoading } = useLoadCollectionsMetadata(false);
   const { storedChain, activeAccount } = useAccounts();
 
   if (!activeAccount || !storedChain) {
     return null;
   }
 
-  if (!collectionsMetadata || isCollectionDataLoading) {
+  if (!collectionsMetadata || isCollectionsMetadataLoading) {
     return <Loader isSpinning />;
   }
 

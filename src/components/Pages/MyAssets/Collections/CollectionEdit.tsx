@@ -17,7 +17,7 @@ import { useCollections } from '@hooks/useCollections.ts';
 
 const CollectionEdit = () => {
   const { collectionId } = useParams();
-  const { getCollectionMetadata, saveCollectionMetadata, collectionMetadata, isCollectionDataLoading } =
+  const { getCollectionMetadata, saveCollectionMetadata, collectionMetadata, isCollectionsMetadataLoading } =
     useCollections();
   const collectionNameRef = useRef<HTMLInputElement>(null);
   const collectionDescriptionRef = useRef<HTMLTextAreaElement>(null);
@@ -51,7 +51,7 @@ const CollectionEdit = () => {
     }
   }, [collectionId, getCollectionMetadata]);
 
-  if (isCollectionDataLoading) {
+  if (isCollectionsMetadataLoading) {
     return <>Gathering data... please wait</>;
   }
 

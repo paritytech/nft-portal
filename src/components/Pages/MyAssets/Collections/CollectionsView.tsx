@@ -10,7 +10,7 @@ import { UiSettings } from '@helpers/interfaces.ts';
 import { SContentBlockContainer } from '@helpers/reusableStyles.ts';
 import { routes } from '@helpers/routes.ts';
 
-import { useLoadCollectionsData } from '@hooks/useLoadCollectionsData.ts';
+import { useLoadCollectionsMetadata } from '@hooks/useLoadCollectionsMetadata.ts';
 import { useLocalStorage } from '@hooks/useLocalStorage.ts';
 
 import CollectionCard from './CollectionCard.tsx';
@@ -24,7 +24,7 @@ const STable = styled.table`
 
 const CollectionsView = () => {
   const navigate = useNavigate();
-  const { collectionsMetadata } = useLoadCollectionsData();
+  const { collectionsMetadata } = useLoadCollectionsMetadata();
   const [uiSettings, setUiSettings] = useLocalStorage<UiSettings>('ui-settings', defaultUiSettings);
 
   if (collectionsMetadata === null) {
