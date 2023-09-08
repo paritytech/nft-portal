@@ -20,6 +20,7 @@ import NftEdit from '@pages/MyAssets/Nfts/NftEdit.tsx';
 import Nfts from '@pages/MyAssets/Nfts/Nfts.tsx';
 import OwnedNft from '@pages/MyAssets/OwnedNfts/OwnedNft.tsx';
 import OwnedNfts from '@pages/MyAssets/OwnedNfts/OwnedNfts.tsx';
+import PageNotFound from '@common/PageNotFound.tsx';
 
 const SMainContainer = styled.main`
   width: 100%;
@@ -167,7 +168,8 @@ const App = () => (
           </Route>
         </Route>
 
-        <Route path='*' element={<Navigate to={routes.homepage} replace />} />
+        <Route path="/404" element={<PageNotFound />} />
+        <Route path="*" element={<Navigate to="/404" />} />
       </Routes>
     </SMainContainer>
   </>
