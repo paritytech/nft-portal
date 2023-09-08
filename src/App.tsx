@@ -1,6 +1,7 @@
 import { Navigate, Outlet, Route, Routes } from 'react-router-dom';
 import { createGlobalStyle, styled } from 'styled-components';
 
+import PageNotFound from '@common/PageNotFound.tsx';
 import PrivateRoute from '@common/PrivateRoute.tsx';
 
 import Header from '@header/Header.tsx';
@@ -20,7 +21,6 @@ import NftEdit from '@pages/MyAssets/Nfts/NftEdit.tsx';
 import Nfts from '@pages/MyAssets/Nfts/Nfts.tsx';
 import OwnedNft from '@pages/MyAssets/OwnedNfts/OwnedNft.tsx';
 import OwnedNfts from '@pages/MyAssets/OwnedNfts/OwnedNfts.tsx';
-import PageNotFound from '@common/PageNotFound.tsx';
 
 const SMainContainer = styled.main`
   width: 100%;
@@ -169,7 +169,7 @@ const App = () => (
         </Route>
 
         <Route path={routes.notFound} element={<PageNotFound />} />
-        <Route path="*" element={<Navigate to={routes.notFound} />} />
+        <Route path='*' element={<Navigate to={routes.notFound} />} />
       </Routes>
     </SMainContainer>
   </>
