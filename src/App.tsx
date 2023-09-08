@@ -168,8 +168,8 @@ const App = () => (
           </Route>
         </Route>
 
-        <Route path="/404" element={<PageNotFound />} />
-        <Route path="*" element={<Navigate to="/404" />} />
+        <Route path={routes.notFound} element={<PageNotFound />} />
+        <Route path="*" element={<Navigate to={routes.notFound} />} />
       </Routes>
     </SMainContainer>
   </>
