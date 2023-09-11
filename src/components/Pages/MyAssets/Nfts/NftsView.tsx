@@ -3,11 +3,11 @@ import { styled } from 'styled-components';
 
 import ViewAs from '@common/ViewAs.tsx';
 
-import { ViewAsOptions, ViewType, defaultUiSettings } from '@helpers/config.ts';
+import { ViewAsOptions, ViewType } from '@helpers/config.ts';
 import { NftMetadata, UiSettings } from '@helpers/interfaces.ts';
 import { SContentBlockContainer } from '@helpers/reusableStyles.ts';
 
-import { useLocalStorage } from '@hooks/useLocalStorage.ts';
+import { LS_KEY_UI, defaultUiSettings, useLocalStorage } from '@hooks/useLocalStorage.ts';
 
 import NftCard from './NftCard.tsx';
 import NftRow from './NftRow.tsx';
@@ -24,7 +24,7 @@ interface NftsViewProps {
 }
 
 const NftsView = ({ nftsMetadata, viewType }: NftsViewProps) => {
-  const [uiSettings, setUiSettings] = useLocalStorage<UiSettings>('ui-settings', defaultUiSettings);
+  const [uiSettings, setUiSettings] = useLocalStorage<UiSettings>(LS_KEY_UI, defaultUiSettings);
 
   if (nftsMetadata === null) {
     return <>Gathering data... please wait</>;

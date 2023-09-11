@@ -4,12 +4,12 @@ import { styled } from 'styled-components';
 import Title from '@common/Title.tsx';
 import ViewAs from '@common/ViewAs.tsx';
 
-import { ViewAsOptions, ViewType, defaultUiSettings } from '@helpers/config.ts';
+import { ViewAsOptions, ViewType } from '@helpers/config.ts';
 import { UiSettings } from '@helpers/interfaces.ts';
 import { SContentBlockContainer } from '@helpers/reusableStyles.ts';
 
 import { useLoadCollectionsMetadata } from '@hooks/useLoadCollectionsMetadata.ts';
-import { useLocalStorage } from '@hooks/useLocalStorage.ts';
+import { LS_KEY_UI, defaultUiSettings, useLocalStorage } from '@hooks/useLocalStorage.ts';
 
 import CollectionCard from './CollectionCard.tsx';
 import CollectionRow from './CollectionRow.tsx';
@@ -26,7 +26,7 @@ interface CollectionsViewProps {
 
 const CollectionsView = ({ viewType }: CollectionsViewProps) => {
   const { collectionsMetadata } = useLoadCollectionsMetadata();
-  const [uiSettings, setUiSettings] = useLocalStorage<UiSettings>('ui-settings', defaultUiSettings);
+  const [uiSettings, setUiSettings] = useLocalStorage<UiSettings>(LS_KEY_UI, defaultUiSettings);
 
   if (collectionsMetadata === null) {
     return <>Gathering data... please wait</>;

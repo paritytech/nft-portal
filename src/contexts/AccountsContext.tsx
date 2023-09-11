@@ -7,7 +7,7 @@ import { ChainThemes, chains } from '@helpers/config.ts';
 import { ActiveAccount, Chain, ThemeStyle } from '@helpers/interfaces.ts';
 import { themes } from '@helpers/reusableStyles.ts';
 
-import { useLocalStorage } from '@hooks/useLocalStorage.ts';
+import { LS_KEY_ACCOUNT, LS_KEY_CHAIN, useLocalStorage } from '@hooks/useLocalStorage.ts';
 
 interface AccountsContextProviderProps {
   children: ReactElement;
@@ -40,8 +40,8 @@ export const AccountsContextProvider = ({ children }: AccountsContextProviderPro
   const [activeWallet, setActiveWallet] = useState<BaseWallet | null>(null);
   const [api, setApi] = useState<ApiPromise | null>(null);
   const [theme, setTheme] = useState<ThemeStyle>(themes.polkadot);
-  const [storedActiveAccount, setStoredActiveAccount] = useLocalStorage<ActiveAccount | null>('activeAccount', null);
-  const [storedChain, setStoredChain] = useLocalStorage<Chain | null>('chain', null);
+  const [storedActiveAccount, setStoredActiveAccount] = useLocalStorage<ActiveAccount | null>(LS_KEY_ACCOUNT, null);
+  const [storedChain, setStoredChain] = useLocalStorage<Chain | null>(LS_KEY_CHAIN, null);
   const [isAccountActionsVisible, setIsAccountActionsVisible] = useState(false);
 
   const setupApi = useCallback(async () => {
