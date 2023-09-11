@@ -10,7 +10,6 @@ import ActionButton from '@buttons/ActionButton.tsx';
 import FileDropZone from '@common/FileDropZone.tsx';
 import ModalStatus from '@common/ModalStatus.tsx';
 import Radio from '@common/Radio.tsx';
-import ShowRestrictionMessage from '@common/ShowRestrictionMessage.tsx';
 
 import { useAccounts } from '@contexts/AccountsContext.tsx';
 
@@ -27,6 +26,8 @@ import { useNfts } from '@hooks/useNfts.ts';
 import QRCodeIcon from '@images/icons/qr-code.svg';
 
 import QRScannerModal from '@modals/QRScannerModal/QRScannerModal.tsx';
+
+import ShowRestrictionMessage from './ShowRestrictionMessage.tsx';
 
 const MintToInput = styled.div`
   position: relative;
@@ -52,7 +53,7 @@ const SMintPrice = styled.div`
 const MintNft = () => {
   const { collectionId } = useParams();
   const { getCollectionConfig } = useCollections();
-  const { mintNft } = useNfts(collectionId || '');
+  const { mintNft } = useNfts(collectionId);
   const { api, activeAccount } = useAccounts();
   const {
     restrictionMessages,

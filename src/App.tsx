@@ -1,10 +1,12 @@
 import { Navigate, Outlet, Route, Routes } from 'react-router-dom';
 import { createGlobalStyle, styled } from 'styled-components';
 
+import PageNotFound from '@common/PageNotFound.tsx';
 import PrivateRoute from '@common/PrivateRoute.tsx';
 
 import Header from '@header/Header.tsx';
 
+import { ViewType } from '@helpers/config.ts';
 import { ALTERNATE_BACKGROUND_CLASSNAME, mediaQueries } from '@helpers/reusableStyles.ts';
 import { routes } from '@helpers/routes.ts';
 
@@ -16,7 +18,9 @@ import MintNft from '@pages/MyAssets/MintNft/MintNft.tsx';
 import MintNftIndex from '@pages/MyAssets/MintNft/MintNftIndex.tsx';
 import SelectCollection from '@pages/MyAssets/MintNft/SelectCollection.tsx';
 import NftEdit from '@pages/MyAssets/Nfts/NftEdit.tsx';
-import MyNfts from '@pages/MyAssets/Nfts/Nfts.tsx';
+import Nfts from '@pages/MyAssets/Nfts/Nfts.tsx';
+import OwnedNft from '@pages/MyAssets/OwnedNfts/OwnedNft.tsx';
+import OwnedNfts from '@pages/MyAssets/OwnedNfts/OwnedNfts.tsx';
 
 const SMainContainer = styled.main`
   width: 100%;
@@ -108,7 +112,7 @@ const App = () => (
               index
               element={
                 <PrivateRoute>
-                  <CollectionsView />
+                  <CollectionsView viewType={ViewType.EDIT} />
                 </PrivateRoute>
               }
             />
@@ -122,12 +126,32 @@ const App = () => (
               }
             />
 
+            <Route path={routes.myAssets.ownedNfts()} element={<Outlet />}>
+              <Route
+                index
+                element={
+                  <PrivateRoute>
+                    <OwnedNfts />
+                  </PrivateRoute>
+                }
+              />
+
+              <Route
+                path={routes.myAssets.ownedNft()}
+                element={
+                  <PrivateRoute redirectTo={routes.homepage}>
+                    <OwnedNft />
+                  </PrivateRoute>
+                }
+              />
+            </Route>
+
             <Route path={routes.myAssets.nfts()} element={<Outlet />}>
               <Route
                 index
                 element={
                   <PrivateRoute redirectTo={routes.myAssets.collections}>
-                    <MyNfts />
+                    <Nfts />
                   </PrivateRoute>
                 }
               />
@@ -144,7 +168,8 @@ const App = () => (
           </Route>
         </Route>
 
-        <Route path='*' element={<Navigate to={routes.homepage} replace />} />
+        <Route path={routes.notFound} element={<PageNotFound />} />
+        <Route path='*' element={<Navigate to={routes.notFound} />} />
       </Routes>
     </SMainContainer>
   </>

@@ -23,9 +23,10 @@ export const useCollections = () => {
   const { openModalStatus, setStatus, setAction } = useModalStatus();
   const [collectionsMetadata, setCollectionsMetadata] = useState<CollectionMetadata[] | null>(null);
   const [collectionMetadata, setCollectionMetadata] = useState<CollectionMetadata | null>(null);
-  const [isCollectionDataLoading, setIsCollectionDataLoading] = useState(false);
+  const [isCollectionsMetadataLoading, setIsCollectionsMetadataLoading] = useState(false);
 
-  const getCollectionIds = useCallback(async () => {
+  // gets IDs of collections the user owns
+  const getOwnedCollectionIds = useCallback(async () => {
     if (api && activeAccount) {
       const results = await api.query.nfts.collectionAccount.keys(activeAccount.address);
 
@@ -42,61 +43,78 @@ export const useCollections = () => {
     return null;
   }, [api, activeAccount]);
 
-  const getCollectionsMetadata = useCallback(async () => {
-    if (api) {
-      setIsCollectionDataLoading(true);
+  // gets IDs of collections where user owns at least one NFT
+  const getCollectionIds = useCallback(async () => {
+    if (api && activeAccount) {
+      const results = await api.query.nfts.account.keys(activeAccount.address);
 
-      try {
-        let metadata: CollectionMetadata[] = [];
+      const collectionIds = results
+        .map(({ args: [, collectionId] }) => collectionId)
+        .sort((a, b) => a.cmp(b))
+        .map((collectionId) => collectionId.toString());
 
-        const ownedCollectionIds = await getCollectionIds();
-        if (!ownedCollectionIds) {
-          setCollectionsMetadata(metadata);
-          return;
-        }
-
-        const rawMetadata = await api.query.nfts.collectionMetadataOf.multi(ownedCollectionIds);
-
-        if (Array.isArray(rawMetadata) && rawMetadata.length > 0) {
-          const fetchCalls = rawMetadata.map((metadata) => {
-            const primitiveMetadata = metadata.toPrimitive() as unknown as CollectionMetadataPrimitive;
-            if (!primitiveMetadata?.data) {
-              return null;
-            }
-
-            return fetch(getFetchableUrl(primitiveMetadata.data));
-          });
-
-          const fetchedData = await Promise.all(fetchCalls);
-          const parsedData = await Promise.all(fetchedData.map((data) => (data !== null ? data.json() : null)));
-
-          metadata = parsedData.map((data, index) => ({
-            id: ownedCollectionIds[index],
-            name: data?.name,
-            description: data?.description,
-            image: getCidHash(data?.image),
-          }));
-        }
-
-        setCollectionsMetadata(metadata);
-      } catch (error) {
-        //
-      } finally {
-        setIsCollectionDataLoading(false);
-      }
+      return [...new Set(collectionIds)];
     }
-  }, [api, getCollectionIds]);
+  }, [api, activeAccount]);
+
+  const getCollectionsMetadata = useCallback(
+    async (owned: boolean = true) => {
+      if (api) {
+        setIsCollectionsMetadataLoading(true);
+
+        try {
+          let metadata: CollectionMetadata[] = [];
+
+          const collectionIds = owned ? await getOwnedCollectionIds() : await getCollectionIds();
+          if (!collectionIds) {
+            setCollectionsMetadata(metadata);
+            return;
+          }
+
+          const rawMetadata = await api.query.nfts.collectionMetadataOf.multi(collectionIds);
+
+          if (Array.isArray(rawMetadata) && rawMetadata.length > 0) {
+            const fetchCalls = rawMetadata.map((metadata) => {
+              const primitiveMetadata = metadata.toPrimitive() as unknown as CollectionMetadataPrimitive;
+              if (!primitiveMetadata?.data) {
+                return null;
+              }
+
+              return fetch(getFetchableUrl(primitiveMetadata.data));
+            });
+
+            const fetchedData = await Promise.all(fetchCalls);
+            const parsedData = await Promise.all(fetchedData.map((data) => (data !== null ? data.json() : null)));
+
+            metadata = parsedData.map((data, index) => ({
+              id: collectionIds[index],
+              name: data?.name,
+              description: data?.description,
+              image: getCidHash(data?.image),
+            }));
+          }
+
+          setCollectionsMetadata(metadata);
+        } catch (error) {
+          //
+        } finally {
+          setIsCollectionsMetadataLoading(false);
+        }
+      }
+    },
+    [api, getOwnedCollectionIds, getCollectionIds],
+  );
 
   const getCollectionMetadata = useCallback(
-    async (collectionId: string) => {
+    async (collectionId: string, owned: boolean = true) => {
       if (api && collectionId) {
-        setIsCollectionDataLoading(true);
+        setIsCollectionsMetadataLoading(true);
 
         try {
           let metadata: CollectionMetadata | null = null;
 
-          const ownedCollectionIds = await getCollectionIds();
-          if (!ownedCollectionIds || !ownedCollectionIds.includes(collectionId)) {
+          const collectionIds = owned ? await getOwnedCollectionIds() : await getCollectionIds();
+          if (!collectionIds || !collectionIds.includes(collectionId)) {
             return;
           }
 
@@ -120,13 +138,13 @@ export const useCollections = () => {
         } catch (error) {
           //
         } finally {
-          setIsCollectionDataLoading(false);
+          setIsCollectionsMetadataLoading(false);
         }
       } else {
         setCollectionMetadata(null);
       }
     },
-    [api, getCollectionIds],
+    [api, getOwnedCollectionIds, getCollectionIds],
   );
 
   const saveCollectionMetadata = useCallback(
@@ -156,14 +174,14 @@ export const useCollections = () => {
                 events.some(({ event: { method } }) => {
                   if (method === 'ExtrinsicSuccess') {
                     setStatus({ type: ModalStatusTypes.COMPLETE, message: StatusMessages.METADATA_UPDATED });
-                    setAction(() => () => navigate(routes.myAssets.mintNftMain));
+                    setAction(() => () => navigate(routes.myAssets.collections));
 
                     return true;
                   }
 
                   if (method === 'ExtrinsicFailed') {
                     setStatus({ type: ModalStatusTypes.ERROR, message: StatusMessages.ACTION_FAILED });
-                    setAction(() => () => navigate(routes.myAssets.mintNftMain));
+                    setAction(() => () => navigate(routes.myAssets.collections));
 
                     return true;
                   }
@@ -241,7 +259,7 @@ export const useCollections = () => {
     createCollection,
     collectionsMetadata,
     collectionMetadata,
-    isCollectionDataLoading,
+    isCollectionsMetadataLoading,
     getCollectionConfig,
   };
 };

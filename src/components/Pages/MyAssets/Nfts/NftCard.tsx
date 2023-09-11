@@ -1,20 +1,22 @@
 import { memo } from 'react';
 import { Card } from 'react-bootstrap';
-import { Link, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 import ShowImage from '@common/ShowImage.tsx';
 
+import { ViewType } from '@helpers/config.ts';
 import { NftMetadata } from '@helpers/interfaces.ts';
-import { routes } from '@helpers/routes.ts';
-import { SCard, SCardEdit } from '@helpers/styledComponents.ts';
+import { SCardActionBlock, SItemDescription, SItemName } from '@helpers/reusableStyles.ts';
+import { SCard } from '@helpers/styledComponents.ts';
 
-import EditIcon from '@images/icons/edit.svg';
+import NftActionBlock from './NftActionBlock.tsx';
 
 interface NftCardProps {
   nftMetadata: NftMetadata;
+  viewType: ViewType;
 }
 
-const NftCard = ({ nftMetadata }: NftCardProps) => {
+const NftCard = ({ nftMetadata, viewType }: NftCardProps) => {
   const { collectionId } = useParams();
   const { id, name, description, image } = nftMetadata;
 
@@ -22,15 +24,12 @@ const NftCard = ({ nftMetadata }: NftCardProps) => {
     <SCard>
       <ShowImage imageCid={image} altText={description} />
       <Card.Body>
-        <SCardEdit className='text-muted'>
-          <span>ID #{id}</span>
-          <Link to={routes.myAssets.nftEdit(collectionId, id)}>
-            Edit
-            <EditIcon />
-          </Link>
-        </SCardEdit>
-        <Card.Title>{name}</Card.Title>
-        <Card.Text>{description}</Card.Text>
+        <div>ID #{id}</div>
+        <SItemName>{name}</SItemName>
+        <SItemDescription>{description}</SItemDescription>
+        <SCardActionBlock>
+          <NftActionBlock viewType={viewType} collectionId={collectionId} nftId={id} />
+        </SCardActionBlock>
       </Card.Body>
     </SCard>
   );

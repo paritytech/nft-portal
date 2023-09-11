@@ -1,55 +1,38 @@
 import { memo } from 'react';
 import { Card } from 'react-bootstrap';
-import { useNavigate } from 'react-router-dom';
-import { styled } from 'styled-components';
 
 import ShowImage from '@common/ShowImage.tsx';
 
+import { ViewType } from '@helpers/config.ts';
 import { CollectionMetadata } from '@helpers/interfaces.ts';
-import { CssFontRegularS, CssFontSemiBoldL } from '@helpers/reusableStyles.ts';
-import { routes } from '@helpers/routes.ts';
+import { SCardActionBlock, SItemDescription, SItemName } from '@helpers/reusableStyles.ts';
 import { SCard } from '@helpers/styledComponents.ts';
 
 import { useCountOwnedNfts } from '@hooks/useCountOwnedNfts.ts';
 
-const SLinkCard = styled(SCard)`
-  cursor: pointer;
-
-  .card-img {
-    border-radius: 12px;
-  }
-
-  .card-title {
-    ${CssFontSemiBoldL}
-  }
-
-  .card-text {
-    ${CssFontRegularS}
-    color: ${({ theme }) => theme.textAndIconsTertiary}
-  }
-`;
+import CollectionActionBlock from './CollectionActionBlock.tsx';
 
 interface CollectionCardProps {
   collectionMetadata: CollectionMetadata;
+  viewType: ViewType;
 }
 
-const CollectionCard = ({ collectionMetadata }: CollectionCardProps) => {
+const CollectionCard = ({ collectionMetadata, viewType }: CollectionCardProps) => {
   const { id, name, description, image } = collectionMetadata;
   const counter = useCountOwnedNfts(id);
-  const navigate = useNavigate();
-
-  const goIntoCollection = () => {
-    navigate(routes.myAssets.nfts(id));
-  };
 
   return (
-    <SLinkCard onClick={goIntoCollection}>
+    <SCard>
       <ShowImage imageCid={image} altText={description} />
       <Card.Body>
-        <Card.Title>{name}</Card.Title>
-        <Card.Text>{counter}</Card.Text>
+        <SItemName>{name}</SItemName>
+        <SItemDescription>{counter}</SItemDescription>
+        <SItemDescription>{description}</SItemDescription>
+        <SCardActionBlock>
+          <CollectionActionBlock viewType={viewType} collectionId={id} />
+        </SCardActionBlock>
       </Card.Body>
-    </SLinkCard>
+    </SCard>
   );
 };
 

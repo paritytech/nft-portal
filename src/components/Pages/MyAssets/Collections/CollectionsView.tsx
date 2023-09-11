@@ -4,11 +4,11 @@ import { styled } from 'styled-components';
 import Title from '@common/Title.tsx';
 import ViewAs from '@common/ViewAs.tsx';
 
-import { ViewAsOptions, defaultUiSettings } from '@helpers/config.ts';
+import { ViewAsOptions, ViewType, defaultUiSettings } from '@helpers/config.ts';
 import { UiSettings } from '@helpers/interfaces.ts';
 import { SContentBlockContainer } from '@helpers/reusableStyles.ts';
 
-import { useLoadCollectionsData } from '@hooks/useLoadCollectionsData.ts';
+import { useLoadCollectionsMetadata } from '@hooks/useLoadCollectionsMetadata.ts';
 import { useLocalStorage } from '@hooks/useLocalStorage.ts';
 
 import CollectionCard from './CollectionCard.tsx';
@@ -20,8 +20,12 @@ const STable = styled.table`
   }
 `;
 
-const CollectionsView = () => {
-  const collectionsMetadata = useLoadCollectionsData();
+interface CollectionsViewProps {
+  viewType: ViewType;
+}
+
+const CollectionsView = ({ viewType }: CollectionsViewProps) => {
+  const { collectionsMetadata } = useLoadCollectionsMetadata();
   const [uiSettings, setUiSettings] = useLocalStorage<UiSettings>('ui-settings', defaultUiSettings);
 
   if (collectionsMetadata === null) {
@@ -39,14 +43,18 @@ const CollectionsView = () => {
       <SContentBlockContainer>
         {uiSettings.viewAs === ViewAsOptions.CARDS &&
           collectionsMetadata.map((collectionMetadata) => (
-            <CollectionCard key={collectionMetadata.id} collectionMetadata={collectionMetadata} />
+            <CollectionCard key={collectionMetadata.id} collectionMetadata={collectionMetadata} viewType={viewType} />
           ))}
 
         {uiSettings.viewAs === ViewAsOptions.TABLE && (
           <STable>
             <tbody>
               {collectionsMetadata.map((collectionMetadata) => (
-                <CollectionRow key={collectionMetadata.id} collectionMetadata={collectionMetadata} />
+                <CollectionRow
+                  key={collectionMetadata.id}
+                  collectionMetadata={collectionMetadata}
+                  viewType={viewType}
+                />
               ))}
             </tbody>
           </STable>

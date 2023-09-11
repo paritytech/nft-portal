@@ -1,13 +1,11 @@
 import { memo } from 'react';
 import { styled } from 'styled-components';
 
-import { useModalStatus } from '@contexts/ModalStatusContext.tsx';
-
-import { ModalStatusTypes } from '@helpers/config.ts';
-
 import PolkadotIcon from '@images/icons/polkadot.svg';
 
 const SSpinner = styled.div`
+  display: flex;
+  justify-content: center;
   margin-bottom: 20px;
 
   svg {
@@ -31,20 +29,14 @@ const SSpinner = styled.div`
   }
 `;
 
-const Loader = () => {
-  const { status } = useModalStatus();
+interface LoaderProps {
+  isSpinning: boolean;
+}
 
-  if (status === null) {
-    return null;
-  }
-
-  const spinIt = status.type === ModalStatusTypes.IN_PROGRESS ? 'spin-me-right-round' : '';
-
-  return (
-    <SSpinner className={spinIt}>
-      <PolkadotIcon />
-    </SSpinner>
-  );
-};
+const Loader = ({ isSpinning }: LoaderProps) => (
+  <SSpinner className={isSpinning ? 'spin-me-right-round' : ''}>
+    <PolkadotIcon />
+  </SSpinner>
+);
 
 export default memo(Loader);

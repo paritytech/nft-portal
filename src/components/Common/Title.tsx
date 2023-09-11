@@ -14,12 +14,17 @@ const STitle = styled.div`
     }
   }
 
-  &.main {
+  &.main,
+  &.secondary {
     margin-bottom: 30px;
   }
 
   &.secondary {
-    ${CssFontBoldXL}
+    ${CssFontBoldL}
+
+    @media ${mediaQueries.tablet} {
+      ${CssFontBoldXL}
+    }
   }
 
   a {

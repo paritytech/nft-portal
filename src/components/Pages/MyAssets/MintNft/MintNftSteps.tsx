@@ -4,11 +4,12 @@ import { useParams } from 'react-router-dom';
 import { styled } from 'styled-components';
 
 import ShowImage from '@common/ShowImage.tsx';
-import Step from '@common/Step.tsx';
 
 import { mediaQueries } from '@helpers/reusableStyles.ts';
 
 import { useCollections } from '@hooks/useCollections.ts';
+
+import Step from './Step.tsx';
 
 const SMintNftSteps = styled.div`
   display: inline-block;

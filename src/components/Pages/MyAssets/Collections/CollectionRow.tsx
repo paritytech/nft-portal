@@ -1,54 +1,43 @@
 import { memo } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
 
 import ShowImage from '@common/ShowImage.tsx';
 
+import { ViewType } from '@helpers/config.ts';
 import { CollectionMetadata } from '@helpers/interfaces.ts';
-import { CssFontRegularS, CssFontSemiBoldL } from '@helpers/reusableStyles.ts';
-import { routes } from '@helpers/routes.ts';
+import { SItemDescription, SItemImage, SItemName, SRowActionBlock } from '@helpers/reusableStyles.ts';
 
 import { useCountOwnedNfts } from '@hooks/useCountOwnedNfts.ts';
 
-const SRow = styled.tr`
-  cursor: pointer;
-`;
+import CollectionActionBlock from './CollectionActionBlock.tsx';
 
-const STableImage = styled.td`
-  width: 100px;
-`;
-
-const SName = styled.div`
-  ${CssFontSemiBoldL};
-`;
-
-const SCounter = styled.div`
-  ${CssFontRegularS};
+const SCol = styled.td`
+  vertical-align: top;
 `;
 
 interface CollectionRowProps {
   collectionMetadata: CollectionMetadata;
+  viewType: ViewType;
 }
 
-const CollectionRow = ({ collectionMetadata }: CollectionRowProps) => {
+const CollectionRow = ({ collectionMetadata, viewType }: CollectionRowProps) => {
   const { id, name, description, image } = collectionMetadata;
   const counter = useCountOwnedNfts(id);
-  const navigate = useNavigate();
-
-  const goIntoCollection = () => {
-    navigate(routes.myAssets.nfts(id));
-  };
 
   return (
-    <SRow onClick={goIntoCollection}>
-      <STableImage>
+    <tr>
+      <SItemImage>
         <ShowImage imageCid={image} altText={description} />
-      </STableImage>
-      <td>
-        <SName>{name}</SName>
-        <SCounter>{counter}</SCounter>
-      </td>
-    </SRow>
+      </SItemImage>
+      <SCol>
+        <SItemName>{name}</SItemName>
+        <SItemDescription>{counter}</SItemDescription>
+        <SItemDescription>{description}</SItemDescription>
+        <SRowActionBlock>
+          <CollectionActionBlock viewType={viewType} collectionId={id} />
+        </SRowActionBlock>
+      </SCol>
+    </tr>
   );
 };
 
