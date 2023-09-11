@@ -8,10 +8,10 @@ const LOCAL_STORAGE_VERSION = '1.0.0';
 export const defaultUISettings = { viewAs: ViewAsOptions.CARDS };
 
 export enum LocalStorageKeys {
-  ACCOUNT = 'LSK_ACCOUNT',
-  CHAIN = 'LSK_CHAIN',
-  UI_SETTINGS = 'LSK_UI_SETTINGS',
-  VERSION = 'LSK_VERSION',
+  ACCOUNT = 'ACCOUNT',
+  CHAIN = 'CHAIN',
+  UI_SETTINGS = 'UI_SETTINGS',
+  VERSION = 'VERSION',
 }
 
 export const useLocalStorage = <T>(key: string, initialValue: T | (() => T)): [T, typeof setValue] => {
