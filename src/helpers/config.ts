@@ -3,11 +3,11 @@ import { WalletConnectConfiguration } from '@polkadot-onboard/wallet-connect';
 import { Chain } from './interfaces.ts';
 
 export enum ChainTitles {
-  POLKADOT_ASSET_HUB = 'polkadot asset hub',
-  KUSAMA_ASSET_HUB = 'kusama asset hub',
-  WESTEND_ASSET_HUB = 'westend asset hub',
-  ROCOCO_ASSET_HUB = 'rococo asset hub',
-  LOCALHOST = 'localhost',
+  POLKADOT_ASSET_HUB = 'PolkadotHub',
+  KUSAMA_ASSET_HUB = 'KusamaHub',
+  WESTEND_ASSET_HUB = 'WestendHub',
+  ROCOCO_ASSET_HUB = 'RococoHub',
+  LOCALHOST = 'Localhost',
 }
 
 export enum ChainUrls {
@@ -79,7 +79,6 @@ export enum ViewType {
 export const APP_NAME = 'nft-portal';
 export const IPFS_GATEWAY = process.env.REACT_APP_IPFS_GATEWAY;
 export const IPFS_NATIVE_SCHEME = 'ipfs://';
-export const defaultUiSettings = { viewAs: ViewAsOptions.CARDS };
 
 // first chain in the list will be default chain
 export const chains: Chain[] = [

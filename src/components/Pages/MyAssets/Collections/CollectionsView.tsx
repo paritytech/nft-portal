@@ -4,12 +4,12 @@ import { styled } from 'styled-components';
 import Title from '@common/Title.tsx';
 import ViewAs from '@common/ViewAs.tsx';
 
-import { ViewAsOptions, ViewType, defaultUiSettings } from '@helpers/config.ts';
-import { UiSettings } from '@helpers/interfaces.ts';
+import { ViewAsOptions, ViewType } from '@helpers/config.ts';
+import { UISettings } from '@helpers/interfaces.ts';
 import { SContentBlockContainer } from '@helpers/reusableStyles.ts';
 
 import { useLoadCollectionsMetadata } from '@hooks/useLoadCollectionsMetadata.ts';
-import { useLocalStorage } from '@hooks/useLocalStorage.ts';
+import { LocalStorageKeys, defaultUISettings, useLocalStorage } from '@hooks/useLocalStorage.ts';
 
 import CollectionCard from './CollectionCard.tsx';
 import CollectionRow from './CollectionRow.tsx';
@@ -26,7 +26,7 @@ interface CollectionsViewProps {
 
 const CollectionsView = ({ viewType }: CollectionsViewProps) => {
   const { collectionsMetadata } = useLoadCollectionsMetadata();
-  const [uiSettings, setUiSettings] = useLocalStorage<UiSettings>('ui-settings', defaultUiSettings);
+  const [storedUISettings, setStoredUISettings] = useLocalStorage<UISettings>(LocalStorageKeys.UI_SETTINGS, defaultUISettings);
 
   if (collectionsMetadata === null) {
     return <>Gathering data... please wait</>;
@@ -39,14 +39,14 @@ const CollectionsView = ({ viewType }: CollectionsViewProps) => {
   return (
     <>
       <Title className='main'>My Collections</Title>
-      <ViewAs handleChange={setUiSettings} uiSettings={uiSettings} />
+      <ViewAs handleChange={setStoredUISettings} storedUISettings={storedUISettings} />
       <SContentBlockContainer>
-        {uiSettings.viewAs === ViewAsOptions.CARDS &&
+        {storedUISettings.viewAs === ViewAsOptions.CARDS &&
           collectionsMetadata.map((collectionMetadata) => (
             <CollectionCard key={collectionMetadata.id} collectionMetadata={collectionMetadata} viewType={viewType} />
           ))}
 
-        {uiSettings.viewAs === ViewAsOptions.TABLE && (
+        {storedUISettings.viewAs === ViewAsOptions.TABLE && (
           <STable>
             <tbody>
               {collectionsMetadata.map((collectionMetadata) => (
