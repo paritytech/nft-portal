@@ -3,26 +3,27 @@ import { useEffect, useState } from 'react';
 import { ViewAsOptions } from '@helpers/config.ts';
 
 // change this whenever a breaking change is introduced that uses local storage
-const LS_VERSION = '1.0.0';
+const LOCAL_STORAGE_VERSION = '1.0.0';
 
-export const LS_KEY_ACCOUNT = 'activeAccount';
-export const LS_KEY_CHAIN = 'chain';
-export const LS_KEY_UI = 'ui-settings';
+export const defaultUISettings = { viewAs: ViewAsOptions.CARDS };
 
-export const defaultUiSettings = { viewAs: ViewAsOptions.CARDS };
-
-const LS_KEYS = [LS_KEY_ACCOUNT, LS_KEY_CHAIN, LS_KEY_UI];
+export enum LocalStorageKeys {
+  LSK_ACCOUNT = 'ACCOUNT',
+  LSK_CHAIN = 'CHAIN',
+  LSK_UI_SETTINGS = 'UI_SETTINGS',
+  LSK_VERSION = 'VERSION',
+}
 
 export const useLocalStorage = <T>(key: string, initialValue: T | (() => T)): [T, typeof setValue] => {
   const [value, setValue] = useState<T>(() => {
-    const storageVersion = localStorage.getItem('version');
+    const storageVersion = localStorage.getItem(LocalStorageKeys.LSK_VERSION);
 
-    if (storageVersion === null || JSON.parse(storageVersion) !== LS_VERSION) {
-      LS_KEYS.forEach((key) => {
+    if (storageVersion === null || JSON.parse(storageVersion) !== LOCAL_STORAGE_VERSION) {
+      Object.keys(LocalStorageKeys).forEach((key) => {
         localStorage.removeItem(key);
       });
 
-      localStorage.setItem('version', JSON.stringify(LS_VERSION));
+      localStorage.setItem(LocalStorageKeys.LSK_VERSION, JSON.stringify(LOCAL_STORAGE_VERSION));
     }
 
     const jsonValue = localStorage.getItem(key);

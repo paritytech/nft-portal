@@ -9,7 +9,7 @@ import { UiSettings } from '@helpers/interfaces.ts';
 import { SContentBlockContainer } from '@helpers/reusableStyles.ts';
 
 import { useLoadCollectionsMetadata } from '@hooks/useLoadCollectionsMetadata.ts';
-import { LS_KEY_UI, defaultUiSettings, useLocalStorage } from '@hooks/useLocalStorage.ts';
+import { LocalStorageKeys, defaultUISettings, useLocalStorage } from '@hooks/useLocalStorage.ts';
 
 import CollectionCard from './CollectionCard.tsx';
 import CollectionRow from './CollectionRow.tsx';
@@ -26,7 +26,7 @@ interface CollectionsViewProps {
 
 const CollectionsView = ({ viewType }: CollectionsViewProps) => {
   const { collectionsMetadata } = useLoadCollectionsMetadata();
-  const [uiSettings, setUiSettings] = useLocalStorage<UiSettings>(LS_KEY_UI, defaultUiSettings);
+  const [uiSettings, setUiSettings] = useLocalStorage<UiSettings>(LocalStorageKeys.LSK_UI_SETTINGS, defaultUISettings);
 
   if (collectionsMetadata === null) {
     return <>Gathering data... please wait</>;
