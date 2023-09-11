@@ -10,7 +10,7 @@ export const handler = async (event) => {
   Object.keys(fields).forEach((key) => {
     if (key === 'file') {
       const { filename, content } = fields[key];
-      formData.append('file', content, filename);
+      formData.append(key, content, filename);
     } else {
       formData.append(key, fields[key]);
     }
