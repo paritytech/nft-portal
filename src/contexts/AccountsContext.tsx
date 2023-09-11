@@ -40,8 +40,8 @@ export const AccountsContextProvider = ({ children }: AccountsContextProviderPro
   const [activeWallet, setActiveWallet] = useState<BaseWallet | null>(null);
   const [api, setApi] = useState<ApiPromise | null>(null);
   const [theme, setTheme] = useState<ThemeStyle>(themes.polkadot);
-  const [storedActiveAccount, setStoredActiveAccount] = useLocalStorage<ActiveAccount | null>(LocalStorageKeys.LSK_ACCOUNT, null);
-  const [storedChain, setStoredChain] = useLocalStorage<Chain | null>(LocalStorageKeys.LSK_CHAIN, null);
+  const [storedActiveAccount, setStoredActiveAccount] = useLocalStorage<ActiveAccount | null>(LocalStorageKeys.ACCOUNT, null);
+  const [storedChain, setStoredChain] = useLocalStorage<Chain | null>(LocalStorageKeys.CHAIN, null);
   const [isAccountActionsVisible, setIsAccountActionsVisible] = useState(false);
 
   const setupApi = useCallback(async () => {

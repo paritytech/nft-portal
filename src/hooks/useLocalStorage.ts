@@ -8,22 +8,22 @@ const LOCAL_STORAGE_VERSION = '1.0.0';
 export const defaultUISettings = { viewAs: ViewAsOptions.CARDS };
 
 export enum LocalStorageKeys {
-  LSK_ACCOUNT = 'ACCOUNT',
-  LSK_CHAIN = 'CHAIN',
-  LSK_UI_SETTINGS = 'UI_SETTINGS',
-  LSK_VERSION = 'VERSION',
+  ACCOUNT = 'LSK_ACCOUNT',
+  CHAIN = 'LSK_CHAIN',
+  UI_SETTINGS = 'LSK_UI_SETTINGS',
+  VERSION = 'LSK_VERSION',
 }
 
 export const useLocalStorage = <T>(key: string, initialValue: T | (() => T)): [T, typeof setValue] => {
   const [value, setValue] = useState<T>(() => {
-    const storageVersion = localStorage.getItem(LocalStorageKeys.LSK_VERSION);
+    const storageVersion = localStorage.getItem(LocalStorageKeys.VERSION);
 
     if (storageVersion === null || JSON.parse(storageVersion) !== LOCAL_STORAGE_VERSION) {
       Object.keys(LocalStorageKeys).forEach((key) => {
         localStorage.removeItem(key);
       });
 
-      localStorage.setItem(LocalStorageKeys.LSK_VERSION, JSON.stringify(LOCAL_STORAGE_VERSION));
+      localStorage.setItem(LocalStorageKeys.VERSION, JSON.stringify(LOCAL_STORAGE_VERSION));
     }
 
     const jsonValue = localStorage.getItem(key);

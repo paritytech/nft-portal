@@ -24,7 +24,7 @@ interface NftsViewProps {
 }
 
 const NftsView = ({ nftsMetadata, viewType }: NftsViewProps) => {
-  const [storedUISettings, setStoredUISettings] = useLocalStorage<UISettings>(LocalStorageKeys.LSK_UI_SETTINGS, defaultUISettings);
+  const [storedUISettings, setStoredUISettings] = useLocalStorage<UISettings>(LocalStorageKeys.UI_SETTINGS, defaultUISettings);
 
   if (nftsMetadata === null) {
     return <>Gathering data... please wait</>;
