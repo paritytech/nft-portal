@@ -11,5 +11,5 @@ export const prefecthCid = async (file: File): Promise<{ cid: string; url: strin
     return { cid: cid.toV1().toString(), url };
   }
 
-  throw new Error('failed to prefetch cid');
+  throw new Error('Failed to prefetch CID');
 };
