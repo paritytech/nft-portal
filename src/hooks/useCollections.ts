@@ -25,7 +25,7 @@ export const useCollections = () => {
   const [collectionMetadata, setCollectionMetadata] = useState<CollectionMetadata | null>(null);
   const [isCollectionsMetadataLoading, setIsCollectionsMetadataLoading] = useState(false);
 
-  // gets IDs of collections that user created
+  // gets IDs of collections the user owns
   const getOwnedCollectionIds = useCallback(async () => {
     if (api && activeAccount) {
       const results = await api.query.nfts.collectionAccount.keys(activeAccount.address);
