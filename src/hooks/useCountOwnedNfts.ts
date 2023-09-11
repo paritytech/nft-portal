@@ -3,12 +3,12 @@ import { useEffect, useState } from 'react';
 import { useNfts } from './useNfts.ts';
 
 export const useCountOwnedNfts = (id: string) => {
-  const { getOwnedNftIdsOfCollection } = useNfts(id);
+  const { getOwnedNftIdsInCollection } = useNfts(id);
   const [itemCounter, setItemCounter] = useState<number>();
 
   useEffect(() => {
     const countOwnedItems = async () => {
-      const ownedNftIds = await getOwnedNftIdsOfCollection();
+      const ownedNftIds = await getOwnedNftIdsInCollection();
 
       if (Array.isArray(ownedNftIds)) {
         setItemCounter(ownedNftIds.length);
@@ -18,7 +18,7 @@ export const useCountOwnedNfts = (id: string) => {
     };
 
     countOwnedItems();
-  }, [getOwnedNftIdsOfCollection]);
+  }, [getOwnedNftIdsInCollection]);
 
   const counter = typeof itemCounter !== 'undefined' ? `${itemCounter} items` : '...';
 

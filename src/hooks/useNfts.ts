@@ -33,7 +33,7 @@ export const useNfts = (collectionId?: string) => {
     }
   }, [api, collectionId]);
 
-  const getOwnedNftIdsOfCollection = useCallback(
+  const getOwnedNftIdsInCollection = useCallback(
     async (specifiedCollectionId = '') => {
       if (api && activeAccount && collectionId) {
         const collectionIdParam = specifiedCollectionId || collectionId;
@@ -61,7 +61,7 @@ export const useNfts = (collectionId?: string) => {
       try {
         let metadata: NftMetadata[] = [];
 
-        const ownedNftIds = await getOwnedNftIdsOfCollection();
+        const ownedNftIds = await getOwnedNftIdsInCollection();
         if (!ownedNftIds) {
           setNftsMetadata(metadata);
           return;
@@ -99,7 +99,7 @@ export const useNfts = (collectionId?: string) => {
         setIsNftDataLoading(false);
       }
     }
-  }, [api, activeAccount, collectionId, getOwnedNftIdsOfCollection]);
+  }, [api, activeAccount, collectionId, getOwnedNftIdsInCollection]);
 
   const getNftMetadata = useCallback(
     async (nftId: string) => {
@@ -109,7 +109,7 @@ export const useNfts = (collectionId?: string) => {
         try {
           let metadata: NftMetadata | null = null;
 
-          const ownedNftIds = await getOwnedNftIdsOfCollection();
+          const ownedNftIds = await getOwnedNftIdsInCollection();
           if (!ownedNftIds || !ownedNftIds.includes(nftId)) {
             setNftMetadata(metadata);
             return;
@@ -140,7 +140,7 @@ export const useNfts = (collectionId?: string) => {
         }
       }
     },
-    [api, collectionId, getOwnedNftIdsOfCollection],
+    [api, collectionId, getOwnedNftIdsInCollection],
   );
 
   const mintNft = useCallback(
@@ -265,7 +265,7 @@ export const useNfts = (collectionId?: string) => {
 
   return {
     getNftIds,
-    getOwnedNftIdsOfCollection,
+    getOwnedNftIdsInCollection,
     nftsMetadata,
     nftMetadata,
     mintNft,
