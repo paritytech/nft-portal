@@ -73,10 +73,14 @@ const FileDropZone = ({ imageSourceUrl, setImageSourceUrl, imageCid, setImageCid
       if (acceptedFiles.length > 0) {
         cleanup();
 
-        const { cid, url } = await prefecthCid(acceptedFiles[0]);
+        try {
+          const { cid, url } = await prefecthCid(acceptedFiles[0]);
 
-        setImageCid(cid);
-        setImageSourceUrl(url);
+          setImageCid(cid);
+          setImageSourceUrl(url);
+        } catch (error) {
+          console.error(error);
+        }
       }
     },
     [setImageCid, setImageSourceUrl, cleanup],

@@ -5,10 +5,16 @@ import { parseMultipartForm } from '../parseMultipartForm';
 
 export const handler = async (event) => {
   const fields = await parseMultipartForm(event);
-  const { filename, content } = fields.file;
-
   const formData = new FormData();
-  formData.append('file', content, filename);
+
+  Object.keys(fields).forEach((key) => {
+    if (key === 'file') {
+      const { filename, content } = fields[key];
+      formData.append('file', content, filename);
+    } else {
+      formData.append(key, fields[key]);
+    }
+  })
 
   try {
     const result = await axios.post('https://api.pinata.cloud/pinning/pinFileToIPFS', formData, {
