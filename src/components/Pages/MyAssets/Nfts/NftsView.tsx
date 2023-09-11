@@ -4,7 +4,7 @@ import { styled } from 'styled-components';
 import ViewAs from '@common/ViewAs.tsx';
 
 import { ViewAsOptions, ViewType } from '@helpers/config.ts';
-import { NftMetadata, UiSettings } from '@helpers/interfaces.ts';
+import { NftMetadata, UISettings } from '@helpers/interfaces.ts';
 import { SContentBlockContainer } from '@helpers/reusableStyles.ts';
 
 import { LocalStorageKeys, defaultUISettings, useLocalStorage } from '@hooks/useLocalStorage.ts';
@@ -24,7 +24,7 @@ interface NftsViewProps {
 }
 
 const NftsView = ({ nftsMetadata, viewType }: NftsViewProps) => {
-  const [uiSettings, setUiSettings] = useLocalStorage<UiSettings>(LocalStorageKeys.LSK_UI_SETTINGS, defaultUISettings);
+  const [storedUISettings, setStoredUISettings] = useLocalStorage<UISettings>(LocalStorageKeys.LSK_UI_SETTINGS, defaultUISettings);
 
   if (nftsMetadata === null) {
     return <>Gathering data... please wait</>;
@@ -36,14 +36,14 @@ const NftsView = ({ nftsMetadata, viewType }: NftsViewProps) => {
 
   return (
     <>
-      <ViewAs handleChange={setUiSettings} uiSettings={uiSettings} />
+      <ViewAs handleChange={setStoredUISettings} storedUISettings={storedUISettings} />
       <SContentBlockContainer>
-        {uiSettings.viewAs === ViewAsOptions.CARDS &&
+        {storedUISettings.viewAs === ViewAsOptions.CARDS &&
           nftsMetadata.map((nftMetadata) => (
             <NftCard key={nftMetadata.id} nftMetadata={nftMetadata} viewType={viewType} />
           ))}
 
-        {uiSettings.viewAs === ViewAsOptions.TABLE && (
+        {storedUISettings.viewAs === ViewAsOptions.TABLE && (
           <STable>
             <tbody>
               {nftsMetadata.map((nftMetadata) => (

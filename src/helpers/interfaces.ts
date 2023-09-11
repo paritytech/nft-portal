@@ -132,7 +132,7 @@ export interface NftWitnessData {
   ownedItem?: string;
 }
 
-export interface UiSettings {
+export interface UISettings {
   viewAs: ViewAsOptions;
 }
 
