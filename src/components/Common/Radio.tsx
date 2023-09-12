@@ -14,6 +14,8 @@ const SLabel = styled.label`
   margin-bottom: 12px;
 
   svg {
+    min-width: 24px;
+    min-height: 24px;
     width: 24px;
     height: 24px;
   }
