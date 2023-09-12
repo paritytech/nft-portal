@@ -241,17 +241,6 @@ export const useCollections = () => {
     [api, activeAccount, activeWallet, setStatus, openModalStatus, saveCollectionMetadata],
   );
 
-  const getCollectionConfig = useCallback(
-    async (collectionId: string) => {
-      if (api) {
-        const config = await api.query.nfts.collectionConfigOf(collectionId);
-
-        return config;
-      }
-    },
-    [api],
-  );
-
   return {
     getCollectionsMetadata,
     getCollectionMetadata,
@@ -260,6 +249,5 @@ export const useCollections = () => {
     collectionsMetadata,
     collectionMetadata,
     isCollectionsMetadataLoading,
-    getCollectionConfig,
   };
 };

@@ -5,13 +5,11 @@ import { useAccounts } from '@contexts/AccountsContext.tsx';
 import { MintTypes } from '@helpers/config.ts';
 import { CollectionConfigJson } from '@helpers/interfaces.ts';
 
-import { useCollections } from './useCollections.ts';
 import { useNfts } from './useNfts.ts';
 import { useRestrictions } from './useRestrictions.tsx';
 
 export const useCheckMintingEligibility = (collectionId: string) => {
   const { api } = useAccounts();
-  const { getCollectionConfig } = useCollections();
   const { getNft, getNftIds, getOwnedNftIdsInCollection } = useNfts(collectionId);
   const { nftTaken, allNftsMinted, mustBeHolderOf, restrictionMessages, clearRestrictions } = useRestrictions();
   const [isEligibleToMint, setIsEligibleToMint] = useState(false);
@@ -111,8 +109,9 @@ export const useCheckMintingEligibility = (collectionId: string) => {
 
   const checkEligibilityToMint = useCallback(
     async () => {
-      if (collectionId) {
-        const rawConfig = await getCollectionConfig(collectionId);
+      if (api && collectionId) {
+        const rawConfig = await api.query.nfts.collectionConfigOf(collectionId);
+
         if (rawConfig) {
           const config = rawConfig.toJSON() as unknown as CollectionConfigJson;
 
@@ -128,7 +127,7 @@ export const useCheckMintingEligibility = (collectionId: string) => {
     },
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [collectionId],
+    [api, collectionId],
   );
 
   useEffect(() => {

@@ -554,3 +554,20 @@ export const SRowActionBlock = styled.div`
     overflow: hidden;
   }
 `;
+
+export const SInputWithIcon = styled.div`
+  position: relative;
+
+  .form-control[type='text'] {
+    padding-right: 50px;
+  }
+
+  svg {
+    position: absolute;
+    top: 8px;
+    right: 10px;
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+  }
+`;

@@ -15,13 +15,20 @@ import { useAccounts } from '@contexts/AccountsContext.tsx';
 
 import { RestrictionTypes } from '@helpers/config.ts';
 import { CollectionConfigJson, CollectionMetadataData, NftWitnessData } from '@helpers/interfaces.ts';
-import { CssFontSemiBoldL, SAside, SFormBlock, SInfoRow, SPageControls } from '@helpers/reusableStyles.ts';
+import {
+  CssFontSemiBoldL,
+  SAside,
+  SFormBlock,
+  SInfoRow,
+  SInputWithIcon,
+  SPageControls,
+} from '@helpers/reusableStyles.ts';
 import { SFormLayout, SGroup, SImageSelection, SLabel } from '@helpers/styledComponents.ts';
 import { generateNftId, planckToUnit } from '@helpers/utilities.ts';
 
 import { useCheckMintingEligibility } from '@hooks/useCheckMintingEligibility.ts';
-import { useCollections } from '@hooks/useCollections.ts';
 import { useNfts } from '@hooks/useNfts.ts';
+import { useQRCodeScanner } from '@hooks/useQRCodeScanner.ts';
 
 import QRCodeIcon from '@images/icons/qr-code.svg';
 
@@ -29,30 +36,12 @@ import QRScannerModal from '@modals/QRScannerModal/QRScannerModal.tsx';
 
 import ShowRestrictionMessage from './ShowRestrictionMessage.tsx';
 
-const MintToInput = styled.div`
-  position: relative;
-
-  .form-control[type='text'] {
-    padding-right: 50px;
-  }
-
-  svg {
-    position: absolute;
-    top: 8px;
-    right: 10px;
-    width: 32px;
-    height: 32px;
-    cursor: pointer;
-  }
-`;
-
 const SMintPrice = styled.div`
   ${CssFontSemiBoldL}
 `;
 
 const MintNft = () => {
   const { collectionId } = useParams();
-  const { getCollectionConfig } = useCollections();
   const { mintNft } = useNfts(collectionId);
   const { api, activeAccount } = useAccounts();
   const {
@@ -68,22 +57,7 @@ const MintNft = () => {
   const nftReceiverRef = useRef<HTMLInputElement>(null);
   const [imageCid, setImageCid] = useState<string | undefined>();
   const [imageSourceUrl, setImageSourceUrl] = useState<string>();
-  const [isQRCodeScannerOpen, setIsQRCodeScannerOpen] = useState(false);
-
-  const handleShow = () => {
-    setIsQRCodeScannerOpen(!isQRCodeScannerOpen);
-  };
-
-  const handleClose = () => {
-    setIsQRCodeScannerOpen(false);
-  };
-
-  const handleScan = (address: string) => {
-    if (nftReceiverRef.current) {
-      nftReceiverRef.current.value = address;
-      setIsQRCodeScannerOpen(false);
-    }
-  };
+  const { isQRCodeScannerOpen, handleShow, handleClose, handleScan } = useQRCodeScanner(nftReceiverRef);
 
   const submitMintNft = useCallback(
     async (event: FormEvent) => {
@@ -111,8 +85,8 @@ const MintNft = () => {
 
   useEffect(() => {
     const getPrice = async () => {
-      if (collectionId) {
-        const rawConfig = await getCollectionConfig(collectionId);
+      if (api && collectionId) {
+        const rawConfig = await api.query.nfts.collectionConfigOf(collectionId);
 
         if (rawConfig) {
           const jsonConfig = rawConfig.toJSON() as unknown as CollectionConfigJson;
@@ -124,7 +98,7 @@ const MintNft = () => {
     };
 
     getPrice();
-  }, [collectionId, getCollectionConfig]);
+  }, [api, collectionId]);
 
   if (activeAccount === null) {
     return null;
@@ -160,15 +134,16 @@ const MintNft = () => {
               <SLabel>
                 <span>Mint To</span>
               </SLabel>
-              <MintToInput>
+              <SInputWithIcon>
                 <FormControl
                   type='text'
                   ref={nftReceiverRef}
-                  placeholder='Receiver Wallet'
+                  placeholder='Receiver account'
                   defaultValue={activeAccount.address}
+                  required
                 />
                 <QRCodeIcon onClick={handleShow} />
-              </MintToInput>
+              </SInputWithIcon>
             </SGroup>
 
             <SGroup>
