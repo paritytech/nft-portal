@@ -79,6 +79,7 @@ export enum ViewType {
 export const APP_NAME = 'nft-portal';
 export const IPFS_GATEWAY = process.env.REACT_APP_IPFS_GATEWAY;
 export const IPFS_NATIVE_SCHEME = 'ipfs://';
+export const IPFS_CID_VERSION = 1;
 
 // first chain in the list will be default chain
 export const chains: Chain[] = [
