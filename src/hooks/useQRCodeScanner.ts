@@ -1,4 +1,4 @@
-import { useState, RefObject } from "react";
+import { RefObject, useState } from 'react';
 
 export const useQRCodeScanner = (inputRef: RefObject<HTMLInputElement>) => {
   const [isQRCodeScannerOpen, setIsQRCodeScannerOpen] = useState(false);
@@ -19,4 +19,4 @@ export const useQRCodeScanner = (inputRef: RefObject<HTMLInputElement>) => {
   };
 
   return { isQRCodeScannerOpen, handleShow, handleClose, handleScan };
-}
+};
