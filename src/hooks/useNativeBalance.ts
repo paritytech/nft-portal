@@ -13,7 +13,7 @@ export const useNativeBalance = () => {
         const { data: balance } = await api.query.system.account(activeAccount.address);
         setNativeBalance(balance.free.toBn());
       } catch (error) {
-        //
+        console.error('Failed to get native balance', error);
       }
     }
   }, [activeAccount, api]);

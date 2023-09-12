@@ -14,7 +14,7 @@ export const useWalletAccounts = () => {
       try {
         await wallet.connect();
       } catch (error) {
-        //
+        console.error('Failed to connect to wallet', error);
       }
 
       const accounts = await wallet.getAccounts();

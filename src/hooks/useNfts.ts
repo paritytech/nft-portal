@@ -94,7 +94,7 @@ export const useNfts = (collectionId?: string) => {
 
         setNftsMetadata(metadata);
       } catch (error) {
-        //
+        console.error('Failed to get NFTs metadata', error);
       } finally {
         setIsNftDataLoading(false);
       }
@@ -134,7 +134,7 @@ export const useNfts = (collectionId?: string) => {
 
           setNftMetadata(metadata);
         } catch (error) {
-          //
+          console.error('Failed to get NFT metadata', error);
         } finally {
           setIsNftDataLoading(false);
         }
@@ -256,7 +256,7 @@ export const useNfts = (collectionId?: string) => {
           const response = await api.query.nfts.item(collectionId, nftId);
           return response.toHuman();
         } catch (error) {
-          //
+          console.error('Failed to get NFT', error);
         }
       }
     },

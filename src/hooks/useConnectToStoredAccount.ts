@@ -18,7 +18,7 @@ export const useConnectToStoredAccount = () => {
         try {
           await foundWallet.connect();
         } catch (error) {
-          //
+          console.error('Failed to connect to stored wallet', error);
         }
 
         const accounts = await foundWallet.getAccounts();
