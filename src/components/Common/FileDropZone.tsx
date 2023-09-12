@@ -79,7 +79,7 @@ const FileDropZone = ({ imageSourceUrl, setImageSourceUrl, imageCid, setImageCid
           setImageCid(cid);
           setImageSourceUrl(url);
         } catch (error) {
-          console.error(error);
+          console.error('Failed to handle the file', error);
         }
       }
     },

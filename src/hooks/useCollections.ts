@@ -96,7 +96,7 @@ export const useCollections = () => {
 
           setCollectionsMetadata(metadata);
         } catch (error) {
-          //
+          console.error('Failed to get collections metadata', error);
         } finally {
           setIsCollectionsMetadataLoading(false);
         }
@@ -136,7 +136,7 @@ export const useCollections = () => {
 
           setCollectionMetadata(metadata);
         } catch (error) {
-          //
+          console.error('Failed to get collection metadata', error);
         } finally {
           setIsCollectionsMetadataLoading(false);
         }
